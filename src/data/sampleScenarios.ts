@@ -275,188 +275,215 @@ export const sampleScenarios: Record<string, SampleScenario> = {
     aiContext: 'Struggling with multiple high-interest debts. Needs encouragement, simple strategies, and focus on debt payoff. Avoid overwhelming with too many options.'
   },
 
-  nearRetirement: {
-    id: 'near-retirement-001',
-    name: 'Near Retirement',
-    description: '50+ years old, focused on retirement preparation, needs conservative investment strategies',
+  millennialProfessional: {
+    id: 'millennial-professional-001',
+    name: 'Millennial Professional',
+    description: 'Early 30s professional juggling student loans, building emergency fund, and cautiously starting to invest',
     userProfile: {
-      id: 'near-retirement-001',
-      firstName: 'Morgan',
-      age: 52,
-      ageRange: '50-55',
-      income: 95000,
-      monthlyExpenses: 5200,
-      riskTolerance: 'conservative',
-      financialLiteracy: 'advanced',
-      mainGoals: ['retirement'],
+      id: 'millennial-professional-001',
+      firstName: 'Taylor',
+      age: 31,
+      ageRange: '31-35',
+      income: 68000,
+      monthlyExpenses: 4200,
+      riskTolerance: 'moderate',
+      financialLiteracy: 'intermediate',
+      mainGoals: ['pay_down_debt', 'build_emergency', 'start_investing'],
       communicationStyle: 'detailed',
-      notificationFrequency: 'monthly',
-      preferredLanguage: 'technical',
-      aiPersonality: 'professional',
-      detailLevel: 'high',
+      notificationFrequency: 'weekly',
+      preferredLanguage: 'simple',
+      aiPersonality: 'encouraging',
+      detailLevel: 'medium',
       hasSampleData: true,
       onboardingCompleted: true
     },
     accounts: [
       {
         id: 'checking-004',
-        name: 'US Bank Checking',
+        name: 'Chase Checking',
         type: 'checking',
-        balance: 15000,
+        balance: 3200,
         monthlyContribution: 0
       },
       {
         id: 'savings-004',
-        name: 'Money Market Account',
+        name: 'High-Yield Savings',
         type: 'savings',
-        balance: 45000,
-        interestRate: 4.8,
-        monthlyContribution: 1000
+        balance: 8500,
+        interestRate: 4.2,
+        monthlyContribution: 300
       },
       {
-        id: 'investment-004a',
+        id: 'student-loan-004',
+        name: 'Federal Student Loan',
+        type: 'loan',
+        balance: 28000,
+        interestRate: 5.8,
+        monthlyContribution: 320
+      },
+      {
+        id: 'credit-card-004',
+        name: 'Chase Sapphire',
+        type: 'credit_card',
+        balance: 4200,
+        interestRate: 19.9,
+        monthlyContribution: 150
+      },
+      {
+        id: 'investment-004',
         name: '401k',
         type: 'investment',
-        balance: 280000,
-        monthlyContribution: 1200
-      },
-      {
-        id: 'investment-004b',
-        name: 'IRA',
-        type: 'investment',
-        balance: 85000,
-        monthlyContribution: 500
-      },
-      {
-        id: 'mortgage-004',
-        name: 'Home Mortgage',
-        type: 'loan',
-        balance: 180000,
-        interestRate: 6.8,
-        monthlyContribution: 1200
+        balance: 12000,
+        monthlyContribution: 400
       }
     ],
     goals: [
       {
         id: 'goal-009',
-        name: 'Retirement Fund',
-        type: 'retirement',
-        targetAmount: 1000000,
-        currentAmount: 365000,
-        targetDate: '2032-12-31',
+        name: 'Emergency Fund',
+        type: 'emergency_fund',
+        targetAmount: 12600, // 3 months expenses
+        currentAmount: 8500,
+        targetDate: '2025-12-31',
         priority: 'high'
       },
       {
         id: 'goal-010',
-        name: 'Pay off Mortgage',
+        name: 'Pay off Credit Card',
         type: 'debt_payoff',
-        targetAmount: 180000,
-        currentAmount: 180000,
-        targetDate: '2035-12-31',
+        targetAmount: 4200,
+        currentAmount: 4200,
+        targetDate: '2025-06-30',
+        priority: 'high'
+      },
+      {
+        id: 'goal-011',
+        name: 'Start Investing',
+        type: 'investment',
+        targetAmount: 5000,
+        currentAmount: 0,
+        targetDate: '2025-12-31',
+        priority: 'medium'
+      },
+      {
+        id: 'goal-012',
+        name: 'Save for House',
+        type: 'custom',
+        targetAmount: 25000,
+        currentAmount: 0,
+        targetDate: '2027-12-31',
         priority: 'medium'
       }
     ],
     expectedOpportunities: [
-      'Catch-up 401k contributions',
-      'Roth IRA conversion',
-      'CD ladder for stability',
-      'Mortgage refinancing',
-      'Tax optimization strategies'
+      'Balance transfer for credit card debt',
+      'Increase 401k contribution to get employer match',
+      'High-yield savings account optimization',
+      'Student loan refinancing options',
+      'Beginner-friendly investment education'
     ],
-    aiContext: 'Near retirement with significant assets. Needs professional, technical approach. Focus on retirement optimization and tax strategies.'
+    aiContext: 'Early 30s professional juggling multiple financial priorities. Needs encouraging, clear guidance with simple explanations. Focus on debt payoff, emergency fund, and cautious investing start.'
   },
 
-  entrepreneur: {
-    id: 'entrepreneur-001',
-    name: 'Entrepreneur',
-    description: 'Business owner with variable income, needs flexible financial strategies',
+  weddingSaver: {
+    id: 'wedding-saver-001',
+    name: 'Wedding Saver',
+    description: 'Late 20s professional saving for wedding while managing student loans and building emergency fund',
     userProfile: {
-      id: 'entrepreneur-001',
-      firstName: 'Riley',
-      age: 35,
-      ageRange: '31-35',
-      income: 120000, // Variable
-      monthlyExpenses: 6000,
-      riskTolerance: 'aggressive',
-      financialLiteracy: 'advanced',
-      mainGoals: ['start_investing', 'save_big_goal'],
-      communicationStyle: 'concise',
+      id: 'wedding-saver-001',
+      firstName: 'Sam',
+      age: 28,
+      ageRange: '26-30',
+      income: 62000,
+      monthlyExpenses: 3800,
+      riskTolerance: 'conservative',
+      financialLiteracy: 'beginner',
+      mainGoals: ['save_big_goal', 'pay_down_debt', 'build_emergency'],
+      communicationStyle: 'detailed',
       notificationFrequency: 'weekly',
-      preferredLanguage: 'technical',
-      aiPersonality: 'analytical',
-      detailLevel: 'high',
+      preferredLanguage: 'simple',
+      aiPersonality: 'encouraging',
+      detailLevel: 'medium',
       hasSampleData: true,
       onboardingCompleted: true
     },
     accounts: [
       {
         id: 'checking-005',
-        name: 'Business Checking',
+        name: 'Wells Fargo Checking',
         type: 'checking',
-        balance: 25000,
+        balance: 2800,
         monthlyContribution: 0
       },
       {
         id: 'savings-005',
-        name: 'Business Savings',
+        name: 'Wedding Savings',
         type: 'savings',
-        balance: 35000,
-        interestRate: 4.5,
-        monthlyContribution: 2000
+        balance: 12000,
+        interestRate: 4.0,
+        monthlyContribution: 800
+      },
+      {
+        id: 'student-loan-005',
+        name: 'Private Student Loan',
+        type: 'loan',
+        balance: 22000,
+        interestRate: 7.2,
+        monthlyContribution: 280
+      },
+      {
+        id: 'credit-card-005',
+        name: 'Capital One Card',
+        type: 'credit_card',
+        balance: 1800,
+        interestRate: 22.4,
+        monthlyContribution: 75
       },
       {
         id: 'investment-005',
-        name: 'SEP-IRA',
+        name: '401k',
         type: 'investment',
-        balance: 45000,
-        monthlyContribution: 1500
-      },
-      {
-        id: 'business-loan-005',
-        name: 'Business Line of Credit',
-        type: 'loan',
-        balance: 15000,
-        interestRate: 8.5,
+        balance: 8500,
         monthlyContribution: 300
       }
     ],
     goals: [
       {
         id: 'goal-011',
-        name: 'Business Expansion Fund',
+        name: 'Wedding Fund',
         type: 'custom',
-        targetAmount: 100000,
-        currentAmount: 35000,
-        targetDate: '2025-12-31',
+        targetAmount: 25000,
+        currentAmount: 12000,
+        targetDate: '2025-10-31',
         priority: 'high'
       },
       {
         id: 'goal-012',
-        name: 'Retirement Fund',
-        type: 'retirement',
-        targetAmount: 500000,
-        currentAmount: 45000,
-        targetDate: '2040-12-31',
+        name: 'Emergency Fund',
+        type: 'emergency_fund',
+        targetAmount: 11400, // 3 months expenses
+        currentAmount: 0,
+        targetDate: '2026-06-30',
         priority: 'medium'
       },
       {
         id: 'goal-013',
-        name: 'Emergency Fund',
-        type: 'emergency_fund',
-        targetAmount: 36000, // 6 months expenses
-        currentAmount: 35000,
-        targetDate: '2024-06-30',
+        name: 'Pay off Credit Card',
+        type: 'debt_payoff',
+        targetAmount: 1800,
+        currentAmount: 1800,
+        targetDate: '2025-03-31',
         priority: 'high'
       }
     ],
     expectedOpportunities: [
-      'Maximize SEP-IRA contributions',
-      'Business investment opportunities',
-      'Tax-advantaged accounts',
-      'Investment diversification',
-      'Business credit optimization'
+      'High-yield savings account for wedding fund',
+      'Balance transfer for credit card debt',
+      'Student loan refinancing options',
+      'Budget optimization for wedding savings',
+      'Emergency fund building strategies'
     ],
-    aiContext: 'Entrepreneur with variable income and aggressive risk tolerance. Needs analytical approach with focus on business growth and tax optimization.'
+    aiContext: 'Late 20s professional saving for major life milestone while managing debt. Needs encouraging, simple guidance focused on wedding savings and debt management.'
   }
 };
 
@@ -483,11 +510,11 @@ export class SampleScenarioUtils {
     return Object.values(sampleScenarios).filter(scenario => {
       switch (type) {
         case 'beginner':
-          return ['recentGrad', 'debtStruggler'].includes(scenario.id);
+          return ['recentGrad', 'debtStruggler', 'weddingSaver'].includes(scenario.id);
         case 'intermediate':
-          return ['youngProfessional'].includes(scenario.id);
+          return ['youngProfessional', 'millennialProfessional'].includes(scenario.id);
         case 'advanced':
-          return ['nearRetirement', 'entrepreneur'].includes(scenario.id);
+          return ['youngProfessional'].includes(scenario.id); // Keep young professional as advanced for now
         default:
           return false;
       }

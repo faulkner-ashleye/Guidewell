@@ -69,89 +69,61 @@ export function Onboarding() {
   };
 
   const handleSkip = () => {
-    // Load recent graduate scenario data when user skips
-    const recentGradScenario = sampleScenarios.recentGrad;
+    // Randomly select a scenario when user skips onboarding
+    const scenarioIds = Object.keys(sampleScenarios);
+    const randomScenarioId = scenarioIds[Math.floor(Math.random() * scenarioIds.length)];
+    const selectedScenario = sampleScenarios[randomScenarioId];
+    
+    console.log(`Loading random scenario: ${selectedScenario.name} (${selectedScenario.description})`);
+    console.log(`Scenario details:`, selectedScenario);
     // Cast accounts to match the app's Account type (remove 'debt' type)
-    const accounts = recentGradScenario.accounts.map(account => ({
+    const accounts = selectedScenario.accounts.map(account => ({
       ...account,
       type: account.type === 'debt' ? 'loan' : account.type
     })) as any;
     setAccounts(accounts);
     setTransactions([]); // Sample scenarios don't include transactions yet
     
-    // Add some sample manual contributions for testing
+    // Add some sample manual contributions for testing (generic)
     const sampleContributions = [
       {
         id: 'sample-contrib-1',
-        accountId: 'savings-001', // Recent grad's savings account
-        amount: 722,
+        accountId: accounts[0]?.id || 'sample-account-1',
+        amount: Math.floor(Math.random() * 1000) + 200,
         date: '2025-01-15',
-        description: 'Wedding fund contribution',
+        description: 'Sample contribution',
         createdAt: new Date().toISOString()
       },
       {
         id: 'sample-contrib-2',
-        accountId: 'checking-001', // Recent grad's checking account
-        amount: -150,
+        accountId: accounts[1]?.id || 'sample-account-2',
+        amount: -(Math.floor(Math.random() * 200) + 50),
         date: '2025-01-14',
-        description: 'Manual expense entry',
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: 'sample-contrib-3',
-        accountId: 'student-loan-001', // Student loan
-        amount: -120,
-        date: '2025-01-13',
-        description: 'Student loan payment',
+        description: 'Sample expense',
         createdAt: new Date().toISOString()
       }
     ];
     setContributions(sampleContributions);
     
-    // Add some sample goals for testing
-    const sampleGoals = [
-      {
-        id: 'wedding-fund-goal',
-        name: 'Emergency Fund',
-        type: 'savings' as const,
-        accountId: 'savings-001', // Recent grad's savings account
-        target: 6000,
-        targetDate: '2026-07-15', // 18 months from January 2025
-        monthlyContribution: 200, // $4,500 needed ÷ 18 months
-        priority: 'high' as const,
-        note: 'Build emergency fund for financial security',
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: 'credit-card-payoff',
-        name: 'Credit Card Payoff',
-        type: 'debt' as const,
-        accountId: 'credit-card-001', // Credit card
-        target: 0, // Payoff goal
-        targetDate: '2025-12-31',
-        monthlyContribution: 200,
-        priority: 'high' as const,
-        note: 'Pay off high-interest credit card debt',
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: 'student-loan-payoff',
-        name: 'Student Loan Payoff',
-        type: 'debt' as const,
-        accountId: 'student-loan-001', // Student loan
-        target: 25000, // Student loan balance
-        targetDate: '2027-12-31', // 3-year payoff timeline
-        monthlyContribution: 400, // Aggressive payoff: $25K ÷ 30 months
-        priority: 'medium' as const,
-        note: 'Pay off student loan over 3 years',
-        createdAt: new Date().toISOString()
-      }
-    ];
-    setGoals(sampleGoals);
+    // Convert goals from sample scenario to app format
+    const convertedGoals = selectedScenario.goals.map(goal => ({
+      id: goal.id,
+      name: goal.name,
+      type: goal.type === 'debt_payoff' ? 'debt' as const : 
+            goal.type === 'emergency_fund' ? 'savings' as const :
+            goal.type === 'investment' ? 'investing' as const :
+            'savings' as const,
+      target: goal.targetAmount,
+      targetDate: goal.targetDate,
+      priority: goal.priority,
+      note: `Sample goal from ${selectedScenario.name} scenario`,
+      createdAt: new Date().toISOString()
+    }));
+    setGoals(convertedGoals);
     
     // Set user profile with sample data flag and any completed onboarding data
     setUserProfile({
-      ...recentGradScenario.userProfile,
+      ...selectedScenario.userProfile,
       ...data, // Preserve any completed onboarding data
       hasSampleData: true // Flag to indicate sample data was loaded
     });
