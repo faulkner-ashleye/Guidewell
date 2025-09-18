@@ -113,6 +113,34 @@ export function Plan() {
         rightAction={<QuickActionsButton onClick={() => setQaOpen(true)} />}
       />
 
+      {/* Sample Data Message */}
+      {userProfile?.hasSampleData && (
+        <div className="plan-sample-banner">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '8px' }}>
+            <span style={{ fontSize: '20px' }}>📊</span>
+            <strong>Sample Data Mode</strong>
+          </div>
+          <p style={{ margin: '0 0 12px 0', fontSize: '14px' }}>
+            You're viewing sample accounts and goals. Add your own accounts to see your real financial plan.
+          </p>
+          <button 
+            onClick={() => setConnectOpen(true)}
+            style={{
+              background: 'var(--color-primary)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '8px 16px',
+              fontSize: '13px',
+              fontWeight: '500',
+              cursor: 'pointer'
+            }}
+          >
+            Add My Accounts
+          </button>
+        </div>
+      )}
+
       {/* Overview: Net worth cards + stacked area */}
       <section className="plan-overview">
         <div className="plan-summary-grid">

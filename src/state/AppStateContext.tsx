@@ -89,6 +89,59 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   const [validationErrors, setValidationErrors] = useState<string[] | null>(null);
 
   const clearSampleData = () => {
+    // Show a more user-friendly notification
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      z-index: 10000;
+      max-width: 400px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      animation: slideIn 0.3s ease-out;
+    `;
+    
+    notification.innerHTML = `
+      <div style="display: flex; align-items: center; margin-bottom: 12px;">
+        <span style="font-size: 24px; margin-right: 12px;">🎉</span>
+        <strong style="font-size: 16px;">Welcome to your real data!</strong>
+      </div>
+      <p style="margin: 0 0 12px 0;">We've cleared the sample data so you can see your personal financial picture.</p>
+      <p style="margin: 0; font-size: 13px; opacity: 0.9;">Your accounts, goals, and transactions will now be displayed with Guidewell's personalized guidance.</p>
+    `;
+    
+    // Add CSS animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(notification);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+      notification.style.animation = 'slideIn 0.3s ease-out reverse';
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+        if (style.parentNode) {
+          style.parentNode.removeChild(style);
+        }
+      }, 300);
+    }, 5000);
+    
     // Clear all sample data when user adds their own accounts
     setAccounts([]);
     setGoals([]);
