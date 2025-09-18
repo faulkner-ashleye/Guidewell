@@ -26,7 +26,7 @@ export function AccountList({ accounts }: AccountListProps) {
   if (accounts.length === 0) {
     return (
       <div className="account-list-empty">
-        <div className="empty-message" style={{ color: COLORS.textMuted }}>
+        <div className="empty-message text-gray-500">
           No accounts yet — connect one to begin.
         </div>
       </div>
@@ -41,22 +41,22 @@ export function AccountList({ accounts }: AccountListProps) {
         
         return (
           <div key={type} className="account-type-section">
-            <h3 className="account-type-title" style={{ color: COLORS.text }}>
+            <h3 className="account-type-title text-gray-900">
               {getAccountTypeLabel(type)}
             </h3>
             <div className="account-cards">
               {typeAccounts.map(account => (
-                <div key={account.id} className="account-card" style={{ backgroundColor: COLORS.card, borderColor: COLORS.border }}>
+                <div key={account.id} className="account-card bg-white border-gray-200">
                   <div className="account-card-content">
                     <div className="account-icon">
                       {getAccountIcon(account.type)}
                     </div>
                     <div className="account-info">
-                      <div className="account-name" style={{ color: COLORS.text }}>
+                      <div className="account-name text-gray-900">
                         {account.name}
                       </div>
                       {(account.apr || account.minPayment) && (
-                        <div className="account-details" style={{ color: COLORS.textMuted }}>
+                        <div className="account-details text-gray-500">
                           {account.apr && (
                             <span className="account-apr">
                               {account.apr}% APR
@@ -71,7 +71,7 @@ export function AccountList({ accounts }: AccountListProps) {
                         </div>
                       )}
                     </div>
-                    <div className="account-balance" style={{ color: COLORS.text }}>
+                    <div className="account-balance text-gray-900">
                       {formatMoney(account.balance)}
                     </div>
                   </div>

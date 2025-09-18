@@ -13,15 +13,15 @@ function Row({ icon, title, desc, onClick }:{
   icon: string; title: string; desc: string; onClick: () => void;
 }) {
   return (
-    <button onClick={onClick} style={{
-      width:'100%', textAlign:'left', padding:'12px', border:'1px solid rgba(0,0,0,0.1)',
-      borderRadius:12, background:'transparent', display:'grid', gap:2
-    }}>
-      <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-        <span aria-hidden style={{ fontSize:18 }}>{icon}</span>
+    <button 
+      onClick={onClick} 
+      className="w-full text-left p-md border border-gray-200 rounded-xl bg-transparent hover:bg-gray-50 transition-colors grid gap-xs"
+    >
+      <div className="flex items-center gap-sm">
+        <span aria-hidden className="text-lg">{icon}</span>
         <strong>{title}</strong>
       </div>
-      <span style={{ opacity:0.75, fontSize:13 }}>{desc}</span>
+      <span className="opacity-75 text-xs">{desc}</span>
     </button>
   );
 }
@@ -31,7 +31,7 @@ export default function QuickActionsSheet({
 }: Props) {
   return (
     <Sheet open={open} onClose={onClose} title="Quick actions">
-      <div style={{ display:'grid', gap:10, padding:'8px 4px' }}>
+      <div className="grid gap-sm py-xs px-xs">
         <Row icon="🎯" title="Add goal"
              desc="Savings, debt payoff, or investing starter"
              onClick={() => { onClose(); onAddGoal(); }} />
@@ -42,7 +42,7 @@ export default function QuickActionsSheet({
              desc="Record a manual deposit or payment"
              onClick={() => { onClose(); onLogContribution(); }} />
       </div>
-      <div style={{ marginTop:8, opacity:0.7, fontSize:12, padding:'0 4px' }}>
+      <div className="mt-xs opacity-70 text-xs px-xs">
         Educational scenarios only — not financial advice.
       </div>
     </Sheet>

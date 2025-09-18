@@ -1,17 +1,15 @@
 import React from 'react';
-import { COLORS } from '../ui/colors';
-import './ProgressBar.css';
 
 interface ProgressBarProps {
   percent: number;
   color?: string;
 }
 
-export function ProgressBar({ percent, color = COLORS.savings }: ProgressBarProps) {
+export function ProgressBar({ percent, color = '#10b981' }: ProgressBarProps) {
   return (
-    <div className="progress-bar-container">
+    <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
       <div 
-        className="progress-bar-fill"
+        className="h-full transition-all duration-300 ease-in-out"
         style={{ 
           width: `${Math.max(0, Math.min(100, percent))}%`,
           backgroundColor: color

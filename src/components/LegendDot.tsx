@@ -13,7 +13,7 @@ export function LegendDot({ color, label, value }: LegendDotProps) {
     <div className="legend-dot">
       <div 
         className="legend-dot-color" 
-        style={{ backgroundColor: color }}
+        style={{ backgroundColor: color } as React.CSSProperties}
       />
       <div className="legend-dot-text">
         <span className="legend-dot-label">{label}</span>

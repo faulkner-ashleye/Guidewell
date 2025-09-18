@@ -66,74 +66,38 @@ export function AccountRow({
   };
   
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '8px'
-    }}>
+    <div className="flex flex-col gap-xs">
       <div 
-        style={{
-          display: 'grid', 
-          gridTemplateColumns: '1fr auto', 
-          alignItems: 'center',
-          cursor: onNavigateToAccount && accountId ? 'pointer' : 'default',
-          padding: '8px',
-          borderRadius: '6px',
-          transition: 'background-color 0.2s ease'
-        }}
+        className={`grid grid-cols-[1fr_auto] items-center p-xs rounded-md transition-colors ${
+          onNavigateToAccount && accountId ? 'cursor-pointer hover:bg-gray-50' : 'cursor-default'
+        }`}
         onClick={() => onNavigateToAccount && accountId && onNavigateToAccount(accountId)}
-        onMouseEnter={(e) => {
-          if (onNavigateToAccount && accountId) {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (onNavigateToAccount && accountId) {
-            e.currentTarget.style.backgroundColor = 'transparent';
-          }
-        }}
       >
         <div>
-          <div style={{ color: COLORS.text }}>{badge} {name}</div>
-          {meta && <div style={{ color: COLORS.textMuted, fontSize: 12 }}>{meta}</div>}
+          <div className="text-gray-900">{badge} {name}</div>
+          {meta && <div className="text-gray-500 text-xs">{meta}</div>}
         </div>
-        <div style={{ color: COLORS.text }}>{value}</div>
+        <div className="text-gray-900">{value}</div>
       </div>
       
       {/* Goal Section - Now available for all account types */}
       {accountId && (
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '8px 12px',
-          background: COLORS.bg,
-          border: `1px solid ${COLORS.border}`,
-          borderRadius: '6px',
-          fontSize: '12px'
-        }}>
+        <div className="flex justify-between items-center px-sm py-xs bg-gray-50 border border-gray-200 rounded-md text-xs">
           {hasGoal ? (
             <>
-              <div style={{ color: COLORS.textMuted }}>
-                🎯 Linked to: <span style={{ color: getGoalButtonColor() }}>{goalName}</span>
+              <div className="text-gray-500">
+                🎯 Linked to: <span className="text-blue-600">{goalName}</span>
               </div>
               <button
                 onClick={() => goalId && onViewGoal?.(goalId)}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: COLORS.primary,
-                  cursor: 'pointer',
-                  fontSize: '12px',
-                  textDecoration: 'underline'
-                }}
+                className="bg-transparent border-none text-blue-600 cursor-pointer text-xs underline hover:text-blue-700"
               >
                 View Goal
               </button>
             </>
           ) : (
             <>
-              <div style={{ color: COLORS.textMuted }}>
+              <div className="text-gray-500">
                 {accountType === 'credit_card' ? 'No payoff goal set' :
                  accountType === 'loan' ? 'No payoff goal set' :
                  accountType === 'investment' ? 'No investment goal set' :
@@ -141,16 +105,7 @@ export function AccountRow({
               </div>
               <button
                 onClick={() => onCreateGoal?.(accountId)}
-                style={{
-                  background: getGoalButtonColor(),
-                  border: 'none',
-                  color: 'white',
-                  cursor: 'pointer',
-                  fontSize: '12px',
-                  padding: '4px 8px',
-                  borderRadius: '4px',
-                  fontWeight: '500'
-                }}
+                className="bg-blue-600 border-none text-white cursor-pointer text-xs px-xs py-xs rounded font-medium hover:bg-blue-700 transition-colors"
               >
                 {getGoalButtonText()}
               </button>

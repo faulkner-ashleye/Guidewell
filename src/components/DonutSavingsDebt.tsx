@@ -47,11 +47,11 @@ export function DonutSavingsDebt({ savingsTotal, debtTotal }: DonutSavingsDebtPr
       
       <div className="donut-legend">
         <div className="legend-item">
-          <div className="legend-dot-color" style={{ backgroundColor: COLORS.savings }} />
+          <div className="legend-dot-color bg-success" />
           <span className="legend-text">Savings: {formatCurrency(savingsTotal)}</span>
         </div>
         <div className="legend-item">
-          <div className="legend-dot-color" style={{ backgroundColor: COLORS.debt }} />
+          <div className="legend-dot-color bg-error" />
           <span className="legend-text">Debt: {formatCurrency(debtTotal)}</span>
         </div>
       </div>

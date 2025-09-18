@@ -14,7 +14,7 @@ export function GoalList({ accounts }: GoalListProps) {
   if (goals.length === 0) {
     return (
       <div className="goal-list-empty">
-        <div className="empty-message" style={{ color: COLORS.textMuted }}>
+        <div className="empty-message text-gray-500">
           No goals yet — add one to get started.
         </div>
       </div>
@@ -24,16 +24,16 @@ export function GoalList({ accounts }: GoalListProps) {
   return (
     <div className="goal-list">
       {goals.map(goal => (
-        <div key={goal.id} className="goal-card" style={{ backgroundColor: COLORS.card, borderColor: COLORS.border }}>
+        <div key={goal.id} className="goal-card bg-white border-gray-200">
           <div className="goal-card-header">
-            <span className="goal-name" style={{ color: COLORS.text }}>
+            <span className="goal-name text-gray-900">
               {goal.name}
             </span>
-            <span className="goal-progress-text" style={{ color: COLORS.text }}>
+            <span className="goal-progress-text text-gray-900">
               {goal.progress}%
             </span>
           </div>
-          <div className="goal-amounts" style={{ color: COLORS.textMuted }}>
+          <div className="goal-amounts text-gray-500">
             {formatMoney(goal.current)} of {formatMoney(goal.target)}
           </div>
           <ProgressBar percent={goal.progress} color={COLORS.savings} />

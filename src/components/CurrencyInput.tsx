@@ -43,37 +43,18 @@ export function CurrencyInput({
     if (value !== undefined) {
       setDisplayValue(value.toFixed(2));
     }
-    // Reset border color
-    e.target.style.borderColor = '#e5e7eb';
   };
 
   return (
-    <div style={{ width: '100%' }}>
+    <div className="w-full">
       {label && (
-        <label style={{ 
-          display: 'block', 
-          marginBottom: '8px', 
-          fontSize: '14px', 
-          fontWeight: '500',
-          color: '#374151'
-        }}>
+        <label className="block mb-xs text-sm font-medium text-gray-700">
           {label}
         </label>
       )}
       
-      <div style={{ position: 'relative' }}>
-        <span 
-          style={{
-            position: 'absolute',
-            left: '12px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            color: '#6b7280',
-            fontSize: '16px',
-            fontWeight: '500',
-            pointerEvents: 'none'
-          }}
-        >
+      <div className="relative">
+        <span className="absolute left-md top-1/2 transform -translate-y-1/2 text-gray-500 text-base font-medium pointer-events-none">
           $
         </span>
         
@@ -83,21 +64,11 @@ export function CurrencyInput({
           onChange={handleChange}
           placeholder={placeholder}
           disabled={disabled}
-          style={{
-            width: '100%',
-            padding: '12px 12px 12px 32px',
-            border: '2px solid #e5e7eb',
-            borderRadius: '8px',
-            fontSize: '16px',
-            fontWeight: '500',
-            backgroundColor: disabled ? '#f9fafb' : 'white',
-            color: disabled ? '#9ca3af' : '#111827',
-            outline: 'none',
-            transition: 'border-color 0.2s ease'
-          }}
-          onFocus={(e) => {
-            e.target.style.borderColor = '#3b82f6';
-          }}
+          className={`w-full pl-lg pr-md py-md border-2 border-gray-200 rounded-lg text-base font-medium outline-none transition-colors ${
+            disabled 
+              ? 'bg-gray-50 text-gray-400' 
+              : 'bg-white text-gray-900 focus:border-blue-600'
+          }`}
           onBlur={handleBlur}
         />
       </div>

@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { COLORS } from '../ui/colors';
-import './Tabs.css';
 
 interface Tab {
   id: string;
@@ -24,26 +22,25 @@ export function Tabs({ tabs, defaultTab, onTabChange, children }: TabsProps) {
   };
 
   return (
-    <div className="tabs-container">
-      <div className="tabs-header">
+    <div className="w-full">
+      <div className="flex border-b border-gray-200">
         {tabs.map(tab => (
           <button
             key={tab.id}
-            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+            className={`px-lg py-md text-sm font-medium border-b-2 transition-colors ${
+              activeTab === tab.id 
+                ? 'bg-white text-gray-900 border-blue-600' 
+                : 'bg-transparent text-gray-500 border-transparent hover:text-gray-700'
+            }`}
             onClick={() => handleTabClick(tab.id)}
-            style={{
-              backgroundColor: activeTab === tab.id ? COLORS.card : 'transparent',
-              color: activeTab === tab.id ? COLORS.text : COLORS.textMuted,
-              borderColor: COLORS.border
-            }}
           >
-            {tab.icon && <span className="tab-icon">{tab.icon}</span>}
-            <span className="tab-label">{tab.label}</span>
+            {tab.icon && <span className="mr-xs">{tab.icon}</span>}
+            <span>{tab.label}</span>
           </button>
         ))}
       </div>
       
-      <div className="tabs-content">
+      <div className="mt-md">
         {React.Children.map(children, (child, index) => {
           if (React.isValidElement(child) && child.props.tabId === activeTab) {
             return child;
@@ -61,7 +58,7 @@ interface TabPanelProps {
 }
 
 export function TabPanel({ tabId, children }: TabPanelProps) {
-  return <div className="tab-panel">{children}</div>;
+  return <div>{children}</div>;
 }
 
 
