@@ -24,3 +24,4 @@ export function ProgressBar({ percent, color = COLORS.savings }: ProgressBarProp
 
 
 
+

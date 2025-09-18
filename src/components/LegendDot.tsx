@@ -26,3 +26,4 @@ export function LegendDot({ color, label, value }: LegendDotProps) {
 
 
 
+
