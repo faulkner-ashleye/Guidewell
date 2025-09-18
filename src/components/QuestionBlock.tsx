@@ -17,49 +17,29 @@ export function QuestionBlock({
 }: QuestionBlockProps) {
   return (
     <div 
-      style={{
-        padding: '24px',
-        border: '1px solid #e5e7eb',
-        borderRadius: '12px',
-        backgroundColor: locked ? '#f9fafb' : 'white',
-        opacity: locked ? 0.7 : 1,
-        position: 'relative'
-      }}
+      className={`p-lg border border-gray-200 rounded-xl relative ${
+        locked ? 'bg-gray-50 opacity-70' : 'bg-white'
+      }`}
     >
       {completed && (
-        <div 
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            color: '#10b981',
-            fontSize: '20px'
-          }}
-        >
+        <div className="absolute top-sm right-sm text-success text-xl">
           ✓
         </div>
       )}
       
-      <h3 style={{ 
-        margin: '0 0 8px 0', 
-        fontSize: '18px', 
-        fontWeight: '600',
-        color: locked ? '#6b7280' : '#111827'
-      }}>
+      <h3 className={`mb-xs text-lg font-semibold ${
+        locked ? 'text-gray-500' : 'text-gray-900'
+      }`}>
         {title}
       </h3>
       
       {description && (
-        <p style={{ 
-          margin: '0 0 20px 0', 
-          color: '#6b7280', 
-          fontSize: '14px' 
-        }}>
+        <p className="mb-lg text-gray-500 text-sm">
           {description}
         </p>
       )}
       
-      <div style={{ pointerEvents: locked ? 'none' : 'auto' }}>
+      <div className={locked ? 'pointer-events-none' : 'pointer-events-auto'}>
         {children}
       </div>
     </div>

@@ -5,18 +5,14 @@ interface NarrativeCardProps {
   narrative: string;
   onViewBreakdown?: () => void;
   style?: React.CSSProperties;
+  className?: string;
 }
 
-export function NarrativeCard({ title, narrative, onViewBreakdown, style }: NarrativeCardProps) {
+export function NarrativeCard({ title, narrative, onViewBreakdown, style, className }: NarrativeCardProps) {
   return (
     <div 
-      style={{
-        background: 'white',
-        border: '1px solid #e5e7eb',
-        borderRadius: '12px',
-        padding: '24px',
-        ...style
-      }}
+      className={`bg-white border border-gray-200 rounded-xl p-lg ${className || ''}`}
+      style={style}
     >
       <h3 style={{
         margin: '0 0 16px 0',

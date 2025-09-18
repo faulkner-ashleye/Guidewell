@@ -150,34 +150,23 @@ export function BuildStrategy() {
   };
 
   return (
-    <div style={{ background: '#f9fafb', minHeight: '100vh' }}>
+    <div className="bg-gray-50 min-h-screen">
       <AppHeader 
         title="Build Your Strategy"
         leftAction={
           <button
             onClick={handleBack}
-            style={{ 
-              background: 'transparent', 
-              border: 'none', 
-              fontSize: '24px', 
-              color: '#374151',
-              cursor: 'pointer'
-            }}
+            className="bg-transparent border-none text-2xl text-gray-700 cursor-pointer"
           >
             ←
           </button>
         }
       />
 
-      <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+      <div className="p-lg container-md mx-auto">
         {/* Step 1: Scope Selection */}
         <div 
-          className={`strategy-step ${animateStep >= 1 ? 'animate-in' : 'animate-out'}`}
-          style={{
-            transform: animateStep >= 1 ? 'translateX(0)' : 'translateX(100%)',
-            opacity: animateStep >= 1 ? 1 : 0,
-            transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
-          }}
+          className={`strategy-step ${animateStep >= 1 ? 'animate-slide-up' : 'animate-fade-in'}`}
         >
           <QuestionBlock
             title="Step 1: Choose Your Scope"
@@ -212,13 +201,8 @@ export function BuildStrategy() {
 
           {/* Secondary selection for specific scopes */}
           {scope && scope !== 'all' && (
-            <div style={{ marginTop: '20px' }}>
-              <div style={{ 
-                marginBottom: '12px', 
-                fontSize: '14px', 
-                fontWeight: '500',
-                color: '#374151'
-              }}>
+            <div className="mt-lg">
+              <div className="mb-sm text-sm font-medium text-gray-700">
                 Choose scope for {scope}:
               </div>
               <ChipGroup>
@@ -238,27 +222,14 @@ export function BuildStrategy() {
 
           {/* Account dropdown for single account selection */}
           {scope && scope !== 'all' && scopeSelection === 'one' && (
-            <div style={{ marginTop: '20px' }}>
-              <label style={{ 
-                display: 'block', 
-                marginBottom: '8px', 
-                fontSize: '14px', 
-                fontWeight: '500',
-                color: '#374151'
-              }}>
+            <div className="mt-lg">
+              <label className="block mb-xs text-sm font-medium text-gray-700">
                 Select Account:
               </label>
               <select
                 value={accountId || ''}
                 onChange={(e) => handleAccountSelect(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '2px solid #e5e7eb',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  backgroundColor: 'white'
-                }}
+                className="w-full p-md border-2 border-gray-200 rounded-lg text-sm bg-white"
               >
                 <option value="">Choose an account...</option>
                 {scope && mockAccounts[scope]?.map(account => (
@@ -274,14 +245,9 @@ export function BuildStrategy() {
 
         {/* Step 2: Strategy Selection */}
         {scope && (scope === 'all' || scopeSelection === 'all' || accountId) && (
-          <div 
-            className={`strategy-step ${animateStep >= 2 ? 'animate-in' : 'animate-out'}`}
-            style={{
-              transform: animateStep >= 2 ? 'translateX(0)' : 'translateX(100%)',
-              opacity: animateStep >= 2 ? 1 : 0,
-              transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
-            }}
-          >
+        <div 
+          className={`strategy-step ${animateStep >= 2 ? 'animate-slide-up' : 'animate-fade-in'}`}
+        >
             <QuestionBlock
               title="Step 2: Choose Your Strategy"
               description="Select a strategy that aligns with your goals"
@@ -317,14 +283,9 @@ export function BuildStrategy() {
 
         {/* Step 3: Timeframe Selection */}
         {strategy && (
-          <div 
-            className={`strategy-step ${animateStep >= 3 ? 'animate-in' : 'animate-out'}`}
-            style={{
-              transform: animateStep >= 3 ? 'translateX(0)' : 'translateX(100%)',
-              opacity: animateStep >= 3 ? 1 : 0,
-              transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
-            }}
-          >
+        <div 
+          className={`strategy-step ${animateStep >= 3 ? 'animate-slide-up' : 'animate-fade-in'}`}
+        >
             <QuestionBlock
               title="Step 3: Set Your Timeline"
               description="How long do you want to follow this strategy?"
@@ -354,14 +315,9 @@ export function BuildStrategy() {
 
         {/* Step 4: Extra Contribution Input */}
         {timeframe && (
-          <div 
-            className={`strategy-step ${animateStep >= 4 ? 'animate-in' : 'animate-out'}`}
-            style={{
-              transform: animateStep >= 4 ? 'translateX(0)' : 'translateX(100%)',
-              opacity: animateStep >= 4 ? 1 : 0,
-              transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
-            }}
-          >
+        <div 
+          className={`strategy-step ${animateStep >= 4 ? 'animate-slide-up' : 'animate-fade-in'}`}
+        >
             <QuestionBlock
               title="Step 4: Extra Contribution (Optional)"
               description="How much extra can you contribute monthly? Leave blank if you don't want to specify."
@@ -383,14 +339,7 @@ export function BuildStrategy() {
             />
             
             {/* Debug Info */}
-            <div style={{ 
-              marginTop: '16px', 
-              padding: '12px', 
-              background: '#f3f4f6', 
-              borderRadius: '8px',
-              fontSize: '12px',
-              color: '#374151'
-            }}>
+            <div className="mt-md p-md bg-gray-100 rounded-lg text-xs text-gray-700">
               <strong>Debug Info:</strong><br/>
               Scope: {scope || 'undefined'}<br/>
               Strategy: {strategy || 'undefined'}<br/>
@@ -400,7 +349,7 @@ export function BuildStrategy() {
             </div>
 
             {/* Build Strategy Button */}
-            <div style={{ marginTop: '24px', textAlign: 'center' }}>
+            <div className="mt-lg text-center">
               <button
                 onClick={(e) => {
                   console.log('Button clicked!', e);
@@ -408,18 +357,11 @@ export function BuildStrategy() {
                   handleViewBreakdown();
                 }}
                 disabled={!scope || !strategy || !timeframe}
-                style={{
-                  padding: '16px 32px',
-                  background: (!scope || !strategy || !timeframe) ? '#9ca3af' : '#10b981',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '12px',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  cursor: (!scope || !strategy || !timeframe) ? 'not-allowed' : 'pointer',
-                  transition: 'all 0.2s ease',
-                  boxShadow: (!scope || !strategy || !timeframe) ? 'none' : '0 4px 12px rgba(16, 185, 129, 0.3)'
-                }}
+                className={`px-lg py-md text-white border-none rounded-xl text-base font-semibold transition-all ${
+                  (!scope || !strategy || !timeframe) 
+                    ? 'bg-gray-400 cursor-not-allowed' 
+                    : 'bg-success cursor-pointer hover:bg-green-600 shadow-lg'
+                }`}
                 onMouseEnter={(e) => {
                   if (!(!scope || !strategy || !timeframe)) {
                     e.currentTarget.style.background = '#059669';
@@ -444,13 +386,7 @@ export function BuildStrategy() {
 
 
         {/* Footer */}
-        <div style={{ 
-          textAlign: 'center', 
-          color: '#999', 
-          fontSize: '12px',
-          marginTop: '40px',
-          padding: '20px 0'
-        }}>
+        <div className="text-center text-gray-400 text-xs mt-xl py-lg">
           Educational scenarios only — not financial advice.
         </div>
       </div>

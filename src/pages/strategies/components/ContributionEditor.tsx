@@ -91,50 +91,30 @@ export function ContributionEditor({
   const suggestedHigh = Math.floor(0.15 * mockMonthlyInflow);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <div className="flex flex-col gap-lg">
       {/* Input Mode Toggle */}
-      <div style={{ marginBottom: '12px' }}>
-        <div style={{
-          marginBottom: '8px',
-          fontSize: '14px',
-          fontWeight: '500',
-          color: '#374151'
-        }}>
+      <div className="mb-sm">
+        <div className="mb-xs text-sm font-medium text-gray-700">
           Input Mode:
         </div>
-        <div style={{
-          display: 'flex',
-          gap: '12px'
-        }}>
+        <div className="flex gap-sm">
           <button
             onClick={() => setInputMode('dollar')}
-            style={{
-              padding: '8px 16px',
-              border: inputMode === 'dollar' ? '2px solid #3b82f6' : '2px solid #d1d5db',
-              borderRadius: '6px',
-              fontSize: '14px',
-              fontWeight: '500',
-              cursor: 'pointer',
-              backgroundColor: inputMode === 'dollar' ? '#eff6ff' : 'white',
-              color: inputMode === 'dollar' ? '#1d4ed8' : '#374151',
-              transition: 'all 0.2s ease'
-            }}
+            className={`px-md py-xs border-2 rounded-md text-sm font-medium cursor-pointer transition-all ${
+              inputMode === 'dollar' 
+                ? 'border-blue-600 bg-blue-50 text-blue-700' 
+                : 'border-gray-300 bg-white text-gray-700'
+            }`}
           >
             $ Dollar Amount
           </button>
           <button
             onClick={() => setInputMode('percent')}
-            style={{
-              padding: '8px 16px',
-              border: inputMode === 'percent' ? '2px solid #3b82f6' : '2px solid #d1d5db',
-              borderRadius: '6px',
-              fontSize: '14px',
-              fontWeight: '500',
-              cursor: 'pointer',
-              backgroundColor: inputMode === 'percent' ? '#eff6ff' : 'white',
-              color: inputMode === 'percent' ? '#1d4ed8' : '#374151',
-              transition: 'all 0.2s ease'
-            }}
+            className={`px-md py-xs border-2 rounded-md text-sm font-medium cursor-pointer transition-all ${
+              inputMode === 'percent' 
+                ? 'border-blue-600 bg-blue-50 text-blue-700' 
+                : 'border-gray-300 bg-white text-gray-700'
+            }`}
           >
             % Percentage
           </button>
@@ -160,15 +140,11 @@ export function ContributionEditor({
         
         {/* Baseline estimation helper */}
         {inputMode === 'percent' && (
-          <div style={{
-            marginTop: '8px',
-            padding: '8px 12px',
-            background: baselineMonthly > 0 ? '#f0f9ff' : '#fef2f2',
-            border: `1px solid ${baselineMonthly > 0 ? '#bae6fd' : '#fecaca'}`,
-            borderRadius: '6px',
-            fontSize: '12px',
-            color: baselineMonthly > 0 ? '#0369a1' : '#dc2626'
-          }}>
+          <div className={`mt-xs px-sm py-xs rounded-md text-xs ${
+            baselineMonthly > 0 
+              ? 'bg-blue-50 border border-blue-200 text-blue-700' 
+              : 'bg-red-50 border border-red-200 text-red-600'
+          }`}>
             {baselineMonthly > 0 ? (
               <>
                 Estimated baseline: ${baselineMonthly.toLocaleString()}/mo → {extraPercent || 0}% ≈ ${computedExtra?.toLocaleString() || 0} extra
@@ -181,27 +157,14 @@ export function ContributionEditor({
         
         {/* Helper text when empty */}
         {computedExtra === undefined && inputMode === 'dollar' && (
-          <div style={{
-            marginTop: '8px',
-            fontSize: '12px',
-            color: '#6b7280',
-            fontStyle: 'italic'
-          }}>
+          <div className="mt-xs text-xs text-gray-500 italic">
             If left blank, we'll assume the maximum time for the selected timeline.
           </div>
         )}
         
         {/* Suggested range for dollar mode */}
         {computedExtra === undefined && inputMode === 'dollar' && (
-          <div style={{
-            marginTop: '8px',
-            padding: '8px 12px',
-            background: '#f0f9ff',
-            border: '1px solid #bae6fd',
-            borderRadius: '6px',
-            fontSize: '12px',
-            color: '#0369a1'
-          }}>
+          <div className="mt-xs px-sm py-xs bg-blue-50 border border-blue-200 rounded-md text-xs text-blue-700">
             Suggested range: ${suggestedLow.toLocaleString()}–${suggestedHigh.toLocaleString()} based on recent inflows
           </div>
         )}
@@ -210,49 +173,28 @@ export function ContributionEditor({
       {/* Allocation section - only show if extra is provided */}
       {computedExtra !== undefined && (
         <div>
-          <div style={{
-            marginBottom: '12px',
-            fontSize: '14px',
-            fontWeight: '500',
-            color: '#374151'
-          }}>
+          <div className="mb-sm text-sm font-medium text-gray-700">
             Allocation Method:
           </div>
           
-          <div style={{
-            display: 'flex',
-            gap: '12px',
-            marginBottom: '20px'
-          }}>
+          <div className="flex gap-sm mb-lg">
             <button
               onClick={() => handleAllocationModeChange('preset')}
-              style={{
-                padding: '8px 16px',
-                border: allocMode === 'preset' ? '2px solid #3b82f6' : '2px solid #d1d5db',
-                borderRadius: '6px',
-                fontSize: '14px',
-                fontWeight: '500',
-                cursor: 'pointer',
-                backgroundColor: allocMode === 'preset' ? '#eff6ff' : 'white',
-                color: allocMode === 'preset' ? '#1d4ed8' : '#374151',
-                transition: 'all 0.2s ease'
-              }}
+              className={`px-md py-xs border-2 rounded-md text-sm font-medium cursor-pointer transition-all ${
+                allocMode === 'preset' 
+                  ? 'border-blue-600 bg-blue-50 text-blue-700' 
+                  : 'border-gray-300 bg-white text-gray-700'
+              }`}
             >
               Use Preset
             </button>
             <button
               onClick={() => handleAllocationModeChange('custom')}
-              style={{
-                padding: '8px 16px',
-                border: allocMode === 'custom' ? '2px solid #3b82f6' : '2px solid #d1d5db',
-                borderRadius: '6px',
-                fontSize: '14px',
-                fontWeight: '500',
-                cursor: 'pointer',
-                backgroundColor: allocMode === 'custom' ? '#eff6ff' : 'white',
-                color: allocMode === 'custom' ? '#1d4ed8' : '#374151',
-                transition: 'all 0.2s ease'
-              }}
+              className={`px-md py-xs border-2 rounded-md text-sm font-medium cursor-pointer transition-all ${
+                allocMode === 'custom' 
+                  ? 'border-blue-600 bg-blue-50 text-blue-700' 
+                  : 'border-gray-300 bg-white text-gray-700'
+              }`}
             >
               Custom Split
             </button>
@@ -260,22 +202,9 @@ export function ContributionEditor({
 
           {/* Allocation inputs */}
           {allocMode === 'custom' && (
-            <div style={{
-              display: 'grid',
-              gap: '16px',
-              padding: '16px',
-              background: '#f9fafb',
-              borderRadius: '8px',
-              border: '1px solid #e5e7eb'
-            }}>
+            <div className="grid gap-md p-md bg-gray-50 rounded-lg border border-gray-200">
               <div>
-                <label style={{
-                  display: 'block',
-                  marginBottom: '8px',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  color: '#374151'
-                }}>
+                <label className="block mb-xs text-sm font-medium text-gray-700">
                   Debt Payoff ($):
                 </label>
                 <input
@@ -292,13 +221,7 @@ export function ContributionEditor({
                 />
               </div>
               <div>
-                <label style={{
-                  display: 'block',
-                  marginBottom: '8px',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  color: '#374151'
-                }}>
+                <label className="block mb-xs text-sm font-medium text-gray-700">
                   Savings ($):
                 </label>
                 <input
@@ -315,13 +238,7 @@ export function ContributionEditor({
                 />
               </div>
               <div>
-                <label style={{
-                  display: 'block',
-                  marginBottom: '8px',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  color: '#374151'
-                }}>
+                <label className="block mb-xs text-sm font-medium text-gray-700">
                   Investing ($):
                 </label>
                 <input
@@ -339,14 +256,11 @@ export function ContributionEditor({
               </div>
               
               {/* Validation */}
-              <div style={{
-                padding: '12px',
-                background: isValidAllocation ? '#f0fdf4' : '#fef2f2',
-                border: `1px solid ${isValidAllocation ? '#bbf7d0' : '#fecaca'}`,
-                borderRadius: '6px',
-                fontSize: '14px',
-                color: isValidAllocation ? '#166534' : '#dc2626'
-              }}>
+              <div className={`p-sm rounded-md text-sm ${
+                isValidAllocation 
+                  ? 'bg-green-50 border border-green-200 text-green-700' 
+                  : 'bg-red-50 border border-red-200 text-red-600'
+              }`}>
                 Total: ${totalAllocation.toLocaleString()}
                 {computedExtra && (
                   <>
@@ -360,21 +274,11 @@ export function ContributionEditor({
 
           {/* Preset allocation display */}
           {allocMode === 'preset' && allocation && (
-            <div style={{
-              padding: '16px',
-              background: '#f0f9ff',
-              borderRadius: '8px',
-              border: '1px solid #bae6fd'
-            }}>
-              <div style={{
-                fontSize: '14px',
-                fontWeight: '500',
-                color: '#0369a1',
-                marginBottom: '8px'
-              }}>
+            <div className="p-md bg-blue-50 rounded-lg border border-blue-200">
+              <div className="text-sm font-medium text-blue-700 mb-xs">
                 Preset Allocation:
               </div>
-              <div style={{ display: 'grid', gap: '4px', fontSize: '14px', color: '#0369a1' }}>
+              <div className="grid gap-xs text-sm text-blue-700">
                 <div>Debt Payoff: ${allocation.debt.toLocaleString()}</div>
                 <div>Savings: ${allocation.savings.toLocaleString()}</div>
                 <div>Investing: ${allocation.investing.toLocaleString()}</div>

@@ -21,7 +21,7 @@ export function Strategies() {
     <div className="strategies">
       <AppHeader title="Strategies" />
 
-      <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+      <div className="p-lg container-md mx-auto">
         {/* Intro Card */}
         <Card className="intro-card">
           <h2 className="intro-title">
@@ -33,7 +33,7 @@ export function Strategies() {
         </Card>
 
         {/* Strategy Cards */}
-        <div style={{ display: 'grid', gap: '20px', marginBottom: '24px' }}>
+        <div className="grid-auto mb-lg">
           {/* Recommended Strategy Card */}
           <Card className="strategy-card recommended">
             <div className="strategy-card-header">
@@ -74,7 +74,7 @@ export function Strategies() {
         </div>
 
         {/* Footer */}
-        <div style={{ textAlign: 'center', color: '#999', fontSize: '12px' }}>
+        <div className="text-center text-muted text-xs">
           Educational scenarios only — not financial advice.
         </div>
       </div>

@@ -3,24 +3,14 @@ import React from 'react';
 interface ChartPlaceholderProps {
   data?: any;
   style?: React.CSSProperties;
+  className?: string;
 }
 
-export function ChartPlaceholder({ data, style }: ChartPlaceholderProps) {
+export function ChartPlaceholder({ data, style, className }: ChartPlaceholderProps) {
   return (
     <div 
-      style={{
-        height: '220px',
-        background: 'white',
-        border: '1px solid #e5e7eb',
-        borderRadius: '12px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-        overflow: 'hidden',
-        ...style
-      }}
+      className={`h-55 bg-white border border-gray-200 rounded-xl flex flex-col items-center justify-center relative overflow-hidden ${className || ''}`}
+      style={style}
     >
       {/* Background pattern */}
       <div style={{

@@ -124,49 +124,29 @@ export function CustomStrategy() {
 
   if (!hasValidData) {
     return (
-      <div style={{ background: '#f9fafb', minHeight: '100vh' }}>
+      <div className="bg-gray-50 min-h-screen">
         <AppHeader 
           title="Custom Strategy"
           leftAction={
             <button
               onClick={handleBack}
-              style={{ 
-                background: 'transparent', 
-                border: 'none', 
-                fontSize: '24px', 
-                color: '#374151',
-                cursor: 'pointer'
-              }}
+              className="bg-transparent border-none text-2xl text-gray-700 cursor-pointer"
             >
               ←
             </button>
           }
         />
         
-        <div style={{ 
-          padding: '40px 20px', 
-          textAlign: 'center',
-          maxWidth: '600px',
-          margin: '0 auto'
-        }}>
-          <h2 style={{ margin: '0 0 16px 0', fontSize: '24px', fontWeight: '600' }}>
+        <div className="p-xl text-center container-sm mx-auto">
+          <h2 className="mb-md text-2xl font-semibold">
             No Strategy Found
           </h2>
-          <p style={{ margin: '0 0 24px 0', color: '#6b7280', fontSize: '16px' }}>
+          <p className="mb-lg text-gray-500 text-base">
             No strategy data was found. Please build a strategy first.
           </p>
           <button
             onClick={() => navigate('/build-strategy')}
-            style={{
-              padding: '12px 24px',
-              background: '#3b82f6',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '14px',
-              fontWeight: '600',
-              cursor: 'pointer'
-            }}
+            className="px-lg py-md bg-blue-600 text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
           >
             Build Strategy
           </button>
@@ -176,30 +156,24 @@ export function CustomStrategy() {
   }
 
   return (
-    <div style={{ background: '#f9fafb', minHeight: '100vh' }}>
+    <div className="bg-gray-50 min-h-screen">
       <AppHeader 
         title="Custom Strategy"
         leftAction={
           <button
             onClick={handleBack}
-            style={{ 
-              background: 'transparent', 
-              border: 'none', 
-              fontSize: '24px', 
-              color: '#374151',
-              cursor: 'pointer'
-            }}
+            className="bg-transparent border-none text-2xl text-gray-700 cursor-pointer"
           >
             ←
           </button>
         }
       />
 
-      <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+      <div className="p-lg container-md mx-auto">
         {/* Chart Placeholder */}
         <ChartPlaceholder 
           data={{ strategy, timeframe, extra }}
-          style={{ marginBottom: '24px' }}
+          className="mb-lg"
         />
 
         {/* Narrative Card */}
@@ -208,28 +182,18 @@ export function CustomStrategy() {
                 strategy === 'goal_keeper' ? 'Goal Keeper' : 'Nest Builder'}
           narrative={generateNarrative()}
           onViewBreakdown={handleViewBreakdown}
-          style={{ marginBottom: '24px' }}
+          className="mb-lg"
         />
 
         {/* Edit Parameters Accordion */}
         <div className="edit-parameters">
-          <h3 style={{ 
-            margin: '0 0 20px 0', 
-            fontSize: '20px', 
-            fontWeight: '600',
-            color: '#111827'
-          }}>
+          <h3 className="mb-lg text-xl font-semibold text-gray-900">
             Edit Parameters
           </h3>
 
           {/* Strategy Selection */}
           <div className="parameter-section">
-            <h4 style={{ 
-              margin: '0 0 12px 0', 
-              fontSize: '16px', 
-              fontWeight: '500',
-              color: '#374151'
-            }}>
+            <h4 className="mb-sm text-base font-medium text-gray-700">
               Strategy
             </h4>
             <StrategyCardSelect
@@ -240,12 +204,7 @@ export function CustomStrategy() {
 
           {/* Timeline Selection */}
           <div className="parameter-section">
-            <h4 style={{ 
-              margin: '0 0 12px 0', 
-              fontSize: '16px', 
-              fontWeight: '500',
-              color: '#374151'
-            }}>
+            <h4 className="mb-sm text-base font-medium text-gray-700">
               Timeline
             </h4>
             <TimelineChips
@@ -256,12 +215,7 @@ export function CustomStrategy() {
 
           {/* Contribution Editor */}
           <div className="parameter-section">
-            <h4 style={{ 
-              margin: '0 0 12px 0', 
-              fontSize: '16px', 
-              fontWeight: '500',
-              color: '#374151'
-            }}>
+            <h4 className="mb-sm text-base font-medium text-gray-700">
               Contribution
             </h4>
             <ContributionEditor
@@ -280,22 +234,10 @@ export function CustomStrategy() {
           </div>
 
           {/* Run Again Button */}
-          <div style={{ marginTop: '32px' }}>
+          <div className="mt-xl">
             <button
               onClick={handleRunAgain}
-              style={{
-                width: '100%',
-                padding: '16px 24px',
-                background: '#10b981',
-                color: 'white',
-                border: 'none',
-                borderRadius: '12px',
-                fontSize: '16px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
-              }}
+              className="w-full px-lg py-md bg-success text-white border-none rounded-xl text-base font-semibold cursor-pointer transition-all shadow-lg"
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = '#059669';
                 e.currentTarget.style.transform = 'translateY(-2px)';
@@ -313,13 +255,7 @@ export function CustomStrategy() {
         </div>
 
         {/* Footer */}
-        <div style={{ 
-          textAlign: 'center', 
-          color: '#999', 
-          fontSize: '12px',
-          marginTop: '40px',
-          padding: '20px 0'
-        }}>
+        <div className="text-center text-gray-400 text-xs mt-xl py-lg">
           Educational scenarios only — not financial advice.
         </div>
       </div>
