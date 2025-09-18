@@ -1,0 +1,53 @@
+# Guidewell Project Context
+
+## Current State
+- React app with onboarding flow implemented
+- Plaid Link integration for account connection
+- Express server with mock endpoints
+- Photo/document upload functionality
+- Global state management with Context API
+
+## Recent Work
+- Fixed Plaid Link duplicate script warnings
+- Implemented singleton pattern for Plaid Link
+- Enhanced DocUpload component with camera capture
+- Added debounce mechanism to prevent multiple requests
+- Created comprehensive onboarding flow
+
+## Key Components
+- PlaidLinkButton: Handles Plaid Link integration
+- DocUpload: Photo/document upload with preview
+- Onboarding: Multi-step flow for user setup
+- Connect: Account connection step
+- AppStateContext: Global state management
+
+## Server Endpoints
+- POST /plaid/link/token/create
+- POST /plaid/item/public_token/exchange
+- GET /plaid/accounts
+- GET /test (health check)
+
+## Known Issues
+- Multiple link token requests (being addressed with debounce)
+- Server needs proper Plaid credentials for production
+- Need to implement real document parsing
+
+## Next Steps
+- Implement real document parsing
+- Add more account types
+- Enhance mobile UX
+- Add data persistence
+- Implement user authentication
+
+## Architecture Decisions
+- Using Context API instead of Redux for simplicity
+- Express server for Plaid integration
+- Mobile-first design approach
+- Educational focus with compliance disclaimers
+- Singleton pattern for Plaid Link to prevent duplicates
+
+
+
+
+
+

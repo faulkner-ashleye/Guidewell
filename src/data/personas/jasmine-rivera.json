@@ -1,0 +1,256 @@
+{
+  "seed": "guidewell-jasmine-v6",
+  "override_accounts": [
+    {
+      "type": "depository",
+      "subtype": "checking",
+      "official_name": "Associated Bank Checking",
+      "identity": {
+        "names": ["Jasmine Rivera"],
+        "emails": [
+          { "primary": true, "type": "primary", "data": "jasmine.rivera@example.com" }
+        ],
+        "phone_numbers": [
+          { "primary": true, "type": "mobile", "data": "5551234567" }
+        ],
+        "addresses": [
+          {
+            "primary": true,
+            "data": {
+              "street": "123 Oak Street",
+              "city": "Minneapolis",
+              "region": "MN",
+              "postal_code": "55408",
+              "country": "US"
+            }
+          }
+        ]
+      },
+      "transactions": [
+        {
+          "date_transacted": "2025-08-30",
+          "date_posted": "2025-08-30",
+          "currency": "USD",
+          "amount": 3143,
+          "description": "Direct deposit — Associated Bank"
+        },
+        {
+          "date_transacted": "2025-09-01",
+          "date_posted": "2025-09-02",
+          "currency": "USD",
+          "amount": -800,
+          "description": "Rent — Duplex share"
+        },
+        {
+          "date_transacted": "2025-09-05",
+          "date_posted": "2025-09-05",
+          "currency": "USD",
+          "amount": -130,
+          "description": "Utilities — Gas/Electric"
+        },
+        {
+          "date_transacted": "2025-09-06",
+          "date_posted": "2025-09-07",
+          "currency": "USD",
+          "amount": -65,
+          "description": "Target — Household Supplies"
+        },
+        {
+          "date_transacted": "2025-09-07",
+          "date_posted": "2025-09-08",
+          "currency": "USD",
+          "amount": -45,
+          "description": "Amazon — Online Shopping"
+        },
+        {
+          "date_transacted": "2025-09-10",
+          "date_posted": "2025-09-10",
+          "currency": "USD",
+          "amount": -120,
+          "description": "Student Loan Payment"
+        },
+        {
+          "date_transacted": "2025-09-12",
+          "date_posted": "2025-09-12",
+          "currency": "USD",
+          "amount": -200,
+          "description": "Transfer to Associated Bank Wedding Fund"
+        },
+        {
+          "date_transacted": "2025-09-13",
+          "date_posted": "2025-09-13",
+          "currency": "USD",
+          "amount": -60,
+          "description": "Dining Out — Brunch with Friends"
+        }
+      ]
+    },
+    {
+      "type": "depository",
+      "subtype": "savings",
+      "official_name": "Associated Bank Wedding Fund"
+    },
+    {
+      "type": "credit",
+      "subtype": "credit card",
+      "official_name": "Everyday Rewards Card",
+      "starting_balance": 1870,
+      "liability": {
+        "type": "credit",
+        "purchase_apr": 21.9,
+        "balance_transfer_apr": 15.9,
+        "cash_apr": 27.9,
+        "special_apr": 0,
+        "last_payment_amount": 75,
+        "minimum_payment_amount": 45
+      }
+    },
+    {
+      "type": "loan",
+      "subtype": "student",
+      "official_name": "Federal Loan A",
+      "liability": {
+        "type": "student",
+        "origination_date": "2019-09-01",
+        "principal": 9500,
+        "nominal_apr": 3.5,
+        "loan_name": "Direct Unsubsidized",
+        "repayment_model": { "type": "standard", "non_repayment_months": 6, "repayment_months": 120 }
+      }
+    },
+    {
+      "type": "loan",
+      "subtype": "student",
+      "official_name": "Federal Loan B",
+      "liability": {
+        "type": "student",
+        "origination_date": "2020-09-01",
+        "principal": 8200,
+        "nominal_apr": 5.2,
+        "loan_name": "Direct Subsidized",
+        "repayment_model": { "type": "standard", "non_repayment_months": 6, "repayment_months": 120 }
+      }
+    },
+    {
+      "type": "loan",
+      "subtype": "student",
+      "official_name": "Federal Loan C",
+      "liability": {
+        "type": "student",
+        "origination_date": "2021-09-01",
+        "principal": 6300,
+        "nominal_apr": 7.1,
+        "loan_name": "Direct Unsubsidized",
+        "repayment_model": { "type": "standard", "non_repayment_months": 6, "repayment_months": 120 }
+      }
+    },
+    {
+      "type": "investment",
+      "subtype": "brokerage",
+      "official_name": "Fidelity Investments Brokerage",
+      "identity": {
+        "names": ["Jasmine Rivera"],
+        "emails": [
+          { "primary": true, "type": "primary", "data": "jasmine.rivera@example.com" }
+        ],
+        "phone_numbers": [
+          { "primary": true, "type": "mobile", "data": "5551234567" }
+        ],
+        "addresses": [
+          {
+            "primary": true,
+            "data": {
+              "street": "123 Oak Street",
+              "city": "Minneapolis",
+              "region": "MN",
+              "postal_code": "55408",
+              "country": "US"
+            }
+          }
+        ]
+      },
+      "investment_transactions": [
+        {
+          "date": "2023-07-01",
+          "name": "buy stock",
+          "quantity": 25,
+          "price": 400,
+          "fees": 0,
+          "type": "buy",
+          "currency": "USD",
+          "security": {
+            "ticker_symbol": "SPY",
+            "currency": "USD",
+            "name": "SPDR S&P 500 ETF Trust"
+          }
+        },
+        {
+          "date": "2023-08-15",
+          "name": "buy stock",
+          "quantity": 15,
+          "price": 420,
+          "fees": 0,
+          "type": "buy",
+          "currency": "USD",
+          "security": {
+            "ticker_symbol": "SPY",
+            "currency": "USD",
+            "name": "SPDR S&P 500 ETF Trust"
+          }
+        },
+        {
+          "date": "2023-10-01",
+          "name": "buy stock",
+          "quantity": 10,
+          "price": 410,
+          "fees": 0,
+          "type": "buy",
+          "currency": "USD",
+          "security": {
+            "ticker_symbol": "SPY",
+            "currency": "USD",
+            "name": "SPDR S&P 500 ETF Trust"
+          }
+        }
+      ],
+      "holdings": [
+        {
+          "institution_price": 450,
+          "institution_price_as_of": "2024-01-15",
+          "cost_basis": 400,
+          "quantity": 25,
+          "currency": "USD",
+          "security": {
+            "ticker_symbol": "SPY",
+            "currency": "USD",
+            "name": "SPDR S&P 500 ETF Trust"
+          }
+        },
+        {
+          "institution_price": 450,
+          "institution_price_as_of": "2024-01-15",
+          "cost_basis": 420,
+          "quantity": 15,
+          "currency": "USD",
+          "security": {
+            "ticker_symbol": "SPY",
+            "currency": "USD",
+            "name": "SPDR S&P 500 ETF Trust"
+          }
+        },
+        {
+          "institution_price": 450,
+          "institution_price_as_of": "2024-01-15",
+          "cost_basis": 410,
+          "quantity": 10,
+          "currency": "USD",
+          "security": {
+            "ticker_symbol": "SPY",
+            "currency": "USD",
+            "name": "SPDR S&P 500 ETF Trust"
+          }
+        }
+      ]
+    }
+  ]
+}

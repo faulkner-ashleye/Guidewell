@@ -1,0 +1,100 @@
+# Guidewell AI Instructions
+
+## Code Generation Guidelines
+
+### React Components
+- Always use functional components with hooks
+- Include proper TypeScript types for props and state
+- Use semantic HTML elements (section, article, button, etc.)
+- Include ARIA labels for accessibility
+- Implement proper error handling with try/catch blocks
+- Use loading states for async operations
+
+### Financial Content
+- Always use conditional phrasing: "could", "might", "scenario shows", "may vary"
+- Include educational disclaimers on all financial content
+- Never provide specific financial advice
+- Emphasize that results are hypothetical and may vary
+- Use language like "educational scenarios" and "not financial advice"
+
+### Mobile-First Design
+- Design for mobile screens first (320px+)
+- Use responsive CSS with mobile-first approach
+- Ensure touch targets are at least 44px
+- Test on mobile devices
+- Use appropriate font sizes for mobile readability
+
+### State Management
+- Use Context API for global state
+- Keep component state local when possible
+- Use selectors for derived state
+- Implement proper cleanup in useEffect hooks
+- Use useCallback and useMemo for performance optimization
+
+### Plaid Integration
+- Use singleton pattern to prevent duplicate script loading
+- Implement debounce for API requests
+- Handle errors gracefully with user-friendly messages
+- Use mock data for development
+- Include proper loading states
+
+### Onboarding Flow
+- Make steps optional with skip functionality
+- Provide clear navigation (Back, Next, Skip)
+- Use progressive disclosure
+- Include educational disclaimers
+- Support photo/document upload
+
+### Server Development
+- Use Express.js with TypeScript
+- Implement proper CORS configuration
+- Use environment variables for sensitive data
+- Handle errors with appropriate HTTP status codes
+- Include health check endpoints
+
+## Code Examples
+
+### Component Structure
+```typescript
+interface ComponentProps {
+  // Define props with proper types
+}
+
+export default function Component({ prop }: ComponentProps) {
+  const [state, setState] = useState<StateType>(initialValue);
+  
+  useEffect(() => {
+    // Include cleanup
+    return () => {
+      // Cleanup logic
+    };
+  }, [dependencies]);
+
+  return (
+    <section>
+      {/* Use semantic HTML */}
+    </section>
+  );
+}
+```
+
+### Financial Disclaimer
+```typescript
+<p className="disclaimer">
+  Educational scenarios only — not financial, legal, or investment advice. 
+  Actual results may vary.
+</p>
+```
+
+### Conditional Phrasing
+```typescript
+<p>This scenario could show potential outcomes based on your inputs.</p>
+<p>Results might vary depending on market conditions.</p>
+<p>This is for educational purposes only.</p>
+```
+
+
+
+
+
+

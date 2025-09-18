@@ -1,0 +1,68 @@
+# Guidewell Project Rules
+
+## Project Overview
+Guidewell is a mobile-first React + TypeScript web app that helps people in their 20s-30s explore financial trade-offs across debt, savings, and investing. The app is educational only (not financial advice) and uses conditional phrasing like "could / might / this scenario shows."
+
+## Key Technologies
+- React 18 with TypeScript
+- React Router for navigation
+- Context API for global state management
+- Express.js server with Plaid integration
+- Mobile-first responsive design
+
+## Code Style & Patterns
+- Use functional components with hooks
+- Prefer TypeScript interfaces over types for complex objects
+- Use conditional phrasing for financial content ("could", "might", "scenario shows")
+- Mobile-first CSS with responsive design
+- Educational disclaimers on all financial content
+
+## File Structure
+- `/src/app` - Main app component and routing
+- `/src/pages` - Page components (Home, Strategies, Goals, Settings, Onboarding)
+- `/src/components` - Reusable UI components
+- `/src/state` - Global state management (Context API)
+- `/src/data` - Type definitions and presets
+- `/src/utils` - Utility functions
+- `/src/hooks` - Custom React hooks
+- `/server` - Express server with Plaid integration
+
+## Financial Compliance
+- Always include educational disclaimers
+- Use conditional language ("could", "might", "scenario shows")
+- Never provide specific financial advice
+- Emphasize that results may vary
+- Make it clear this is for educational purposes only
+
+## Component Guidelines
+- Use semantic HTML elements
+- Include proper ARIA labels for accessibility
+- Implement proper error handling
+- Use loading states for async operations
+- Follow mobile-first design principles
+
+## State Management
+- Use Context API for global state
+- Keep local state for component-specific data
+- Use selectors for derived state
+- Implement proper cleanup in useEffect hooks
+
+## Server Integration
+- Use Express.js for backend
+- Integrate with Plaid API for financial data
+- Implement proper CORS configuration
+- Use environment variables for sensitive data
+- Handle errors gracefully
+
+## Testing & Development
+- Use mock data for development
+- Implement proper error boundaries
+- Test on mobile devices
+- Ensure accessibility compliance
+- Use proper TypeScript types throughout
+
+
+
+
+
+

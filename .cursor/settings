@@ -1,0 +1,40 @@
+{
+  "typescript": {
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "react": {
+    "preferFunctionalComponents": true,
+    "useHooks": true,
+    "preferTypeScript": true
+  },
+  "styling": {
+    "mobileFirst": true,
+    "responsiveDesign": true,
+    "accessibility": true
+  },
+  "financial": {
+    "educationalOnly": true,
+    "conditionalPhrasing": true,
+    "disclaimers": true
+  },
+  "plaid": {
+    "singletonPattern": true,
+    "debounceRequests": true,
+    "errorHandling": true
+  },
+  "onboarding": {
+    "multiStep": true,
+    "photoUpload": true,
+    "accountConnection": true
+  }
+}
+
+
+
+
+
+

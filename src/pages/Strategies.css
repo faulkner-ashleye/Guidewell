@@ -1,0 +1,449 @@
+.strategies {
+  padding: 20px 16px 100px 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Hub Page Styles */
+.intro-card {
+  margin-bottom: 24px;
+}
+
+.intro-title {
+  margin: 0 0 12px 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.intro-description {
+  margin: 0;
+  color: #666;
+  font-size: 16px;
+}
+
+.strategy-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.strategy-card-icon {
+  font-size: 24px;
+}
+
+.strategy-card-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.strategy-card-description {
+  margin: 0 0 20px 0;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.strategy-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.strategy-button--primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.strategy-button--primary:hover {
+  background: #2563eb;
+}
+
+.strategy-button--secondary {
+  background: #10b981;
+  color: white;
+}
+
+.strategy-button--secondary:hover {
+  background: #059669;
+}
+
+
+.baseline-section {
+  margin-bottom: 24px;
+}
+
+.baseline-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 16px 0;
+}
+
+.baseline-placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.baseline-chart {
+  flex: 1;
+}
+
+.baseline-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.stat-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.strategy-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.strategy-card {
+  transition: all 0.2s ease;
+}
+
+.strategy-card:hover {
+  transform: translateY(-2px);
+}
+
+.strategy-card-content {
+  text-align: center;
+}
+
+.strategy-card-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.strategy-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 12px 0;
+}
+
+.strategy-card p {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+  margin: 0 0 20px 0;
+}
+
+.strategy-button {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.strategy-button:hover {
+  background: #2563eb;
+}
+
+.strategy-card.recommended {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-color: #f59e0b;
+}
+
+.strategy-card.build-your-own {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border-color: #3b82f6;
+}
+
+/* Stepper Styles */
+.stepper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.stepper-header {
+  margin-bottom: 8px;
+}
+
+.stepper-steps {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.stepper-steps::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 32px;
+  right: 32px;
+  height: 2px;
+  background: #e5e7eb;
+  z-index: 1;
+}
+
+.stepper-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
+}
+
+.stepper-step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.stepper-step.active .stepper-step-number {
+  background: #3b82f6;
+  color: white;
+}
+
+.stepper-step.completed .stepper-step-number {
+  background: #10b981;
+  color: white;
+}
+
+.stepper-step-label {
+  font-size: 12px;
+  color: #6b7280;
+  text-align: center;
+}
+
+.stepper-step.active .stepper-step-label {
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.stepper-content {
+  min-height: 300px;
+}
+
+.stepper-content h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 12px 0;
+}
+
+.stepper-content p {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+.preset-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.preset-card {
+  text-align: left;
+  cursor: pointer;
+}
+
+.preset-card h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 8px 0;
+}
+
+.preset-card p {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+}
+
+.preset-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.preset-timeline {
+  font-size: 12px;
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.preset-risk {
+  font-size: 12px;
+  color: #6b7280;
+  text-transform: capitalize;
+}
+
+.allocation-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.results-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.result-label {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.result-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.strategy-narrative {
+  margin-top: 24px;
+}
+
+.strategy-narrative h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 12px 0;
+}
+
+.strategy-narrative p {
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.stepper-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.stepper-button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.stepper-button.primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.stepper-button.primary:hover {
+  background: #2563eb;
+}
+
+.stepper-button.secondary {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.stepper-button.secondary:hover {
+  background: #e5e7eb;
+}
+
+@media (max-width: 480px) {
+  .strategies {
+    padding: 16px 12px 100px 12px;
+  }
+  
+  
+  .strategy-card-icon {
+    font-size: 40px;
+  }
+  
+  .stepper-steps {
+    gap: 8px;
+  }
+  
+  .stepper-step-number {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  
+  .stepper-step-label {
+    font-size: 11px;
+  }
+  
+  .stepper-actions {
+    flex-direction: column;
+  }
+  
+  .stepper-button {
+    width: 100%;
+  }
+}
+
+
+
+
+
