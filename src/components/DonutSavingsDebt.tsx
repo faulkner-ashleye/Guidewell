@@ -2,7 +2,6 @@ import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { COLORS } from '../ui/colors';
 import { formatCurrency } from '../state/selectors';
-import './DonutSavingsDebt.css';
 
 interface DonutSavingsDebtProps {
   savingsTotal: number;
@@ -20,8 +19,8 @@ export function DonutSavingsDebt({ savingsTotal, debtTotal }: DonutSavingsDebtPr
   const debtPercent = total > 0 ? Math.round((debtTotal / total) * 100) : 0;
 
   return (
-    <div className="donut-container">
-      <div className="donut-chart">
+    <div className="flex flex-col items-center gap-5">
+      <div className="relative w-50 h-50">
         <ResponsiveContainer width="100%" height={200}>
           <PieChart>
             <Pie
@@ -39,20 +38,20 @@ export function DonutSavingsDebt({ savingsTotal, debtTotal }: DonutSavingsDebtPr
             </Pie>
           </PieChart>
         </ResponsiveContainer>
-        <div className="donut-center">
-          <div className="donut-percentage">{savingsPercent}%</div>
-          <div className="donut-label">Savings</div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
+          <div className="text-2xl font-bold text-white leading-none">{savingsPercent}%</div>
+          <div className="text-xs text-[#B6B6B6] mt-1">Savings</div>
         </div>
       </div>
       
-      <div className="donut-legend">
-        <div className="legend-item">
-          <div className="legend-dot-color bg-success" />
-          <span className="legend-text">Savings: {formatCurrency(savingsTotal)}</span>
+      <div className="flex flex-col gap-2 w-full">
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-success" />
+          <span className="text-sm text-white font-medium">Savings: {formatCurrency(savingsTotal)}</span>
         </div>
-        <div className="legend-item">
-          <div className="legend-dot-color bg-error" />
-          <span className="legend-text">Debt: {formatCurrency(debtTotal)}</span>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-error" />
+          <span className="text-sm text-white font-medium">Debt: {formatCurrency(debtTotal)}</span>
         </div>
       </div>
     </div>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Account } from '../state/AppStateContext';
 import { COLORS } from '../ui/colors';
-import './GoalAccountLinker.css';
 
 interface GoalAccountLinkerProps {
   accounts: Account[];
@@ -28,7 +27,7 @@ export function GoalAccountLinker({
   
   if (eligibleAccounts.length === 0) {
     return (
-      <div className="goal-linker-empty">
+      <div className="mt-2 text-xs text-center py-2">
         <span style={{ color: COLORS.textMuted }}>
           No savings accounts available for goals
         </span>
@@ -37,15 +36,15 @@ export function GoalAccountLinker({
   }
   
   return (
-    <div className="goal-linker">
-      <div className="goal-linker-current">
+    <div className="relative mt-2">
+      <div className="flex items-center justify-between">
         {currentAccount ? (
-          <div className="linked-account">
-            <span className="account-name" style={{ color: COLORS.text }}>
+          <div className="flex items-center justify-between w-full">
+            <span className="text-xs font-medium" style={{ color: COLORS.text }}>
               {currentAccount.name}
             </span>
             <button 
-              className="unlink-btn"
+              className="bg-transparent border-none cursor-pointer text-[11px] underline p-0"
               onClick={onUnlinkAccount}
               style={{ color: COLORS.textMuted }}
             >
@@ -54,16 +53,9 @@ export function GoalAccountLinker({
           </div>
         ) : (
           <button 
-            className="link-btn"
+            className="text-xs underline bg-transparent border-none cursor-pointer"
             onClick={() => setIsOpen(true)}
-            style={{ 
-              color: COLORS.textMuted,
-              backgroundColor: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: '12px',
-              textDecoration: 'underline'
-            }}
+            style={{ color: COLORS.textMuted }}
           >
             Link to account
           </button>
@@ -71,24 +63,24 @@ export function GoalAccountLinker({
       </div>
       
       {isOpen && (
-        <div className="goal-linker-dropdown" style={{ backgroundColor: COLORS.card, borderColor: COLORS.border }}>
-          <div className="dropdown-header">
-            <span style={{ color: COLORS.text, fontSize: '14px', fontWeight: '500' }}>
+        <div className="absolute top-full left-0 right-0 z-10 border border-gray-200 rounded-lg p-3 mt-1 shadow-lg" style={{ backgroundColor: COLORS.card, borderColor: COLORS.border }}>
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm font-medium" style={{ color: COLORS.text }}>
               Choose account for goal
             </span>
             <button 
-              className="close-btn"
+              className="bg-transparent border-none cursor-pointer text-lg p-0 w-5 h-5 flex items-center justify-center"
               onClick={() => setIsOpen(false)}
               style={{ color: COLORS.textMuted }}
             >
               ×
             </button>
           </div>
-          <div className="dropdown-accounts">
+          <div className="flex flex-col gap-1">
             {eligibleAccounts.map(account => (
               <button
                 key={account.id}
-                className={`account-option ${account.id === currentLinkedAccountId ? 'selected' : ''}`}
+                className={`px-3 py-2 rounded-md cursor-pointer transition-all duration-200 border text-left hover:-translate-y-0.5 hover:shadow-md ${account.id === currentLinkedAccountId ? 'opacity-80' : ''}`}
                 onClick={() => {
                   onLinkAccount(account.id);
                   setIsOpen(false);
@@ -99,9 +91,9 @@ export function GoalAccountLinker({
                   border: `1px solid ${COLORS.border}`
                 }}
               >
-                <div className="account-info">
-                  <span className="account-name">{account.name}</span>
-                  <span className="account-balance" style={{ color: COLORS.textMuted }}>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-xs font-medium">{account.name}</span>
+                  <span className="text-[11px]" style={{ color: COLORS.textMuted }}>
                     ${account.balance.toLocaleString()}
                     {account.goalTarget && ` / $${account.goalTarget.toLocaleString()}`}
                   </span>
