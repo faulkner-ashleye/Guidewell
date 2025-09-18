@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { OnboardingState } from '../../data/onboardingTypes';
 import { useAppState } from '../../state/AppStateContext';
-import { transformJasmineData, jasmineProfile, transformJasmineTransactions } from '../../data/personas/jasmineRiveraTransformed';
+import { sampleScenarios, SampleScenarioUtils } from '../../data/sampleScenarios';
 import { Welcome } from './steps/Welcome';
 import { Goals } from './steps/Goals';
 import { Priority } from './steps/Priority';
@@ -69,17 +69,21 @@ export function Onboarding() {
   };
 
   const handleSkip = () => {
-    // Load Jasmine Rivera's realistic financial data when user skips
-    const jasmineAccounts = transformJasmineData();
-    const jasmineTransactions = transformJasmineTransactions();
-    setAccounts(jasmineAccounts);
-    setTransactions(jasmineTransactions);
+    // Load recent graduate scenario data when user skips
+    const recentGradScenario = sampleScenarios.recentGrad;
+    // Cast accounts to match the app's Account type (remove 'debt' type)
+    const accounts = recentGradScenario.accounts.map(account => ({
+      ...account,
+      type: account.type === 'debt' ? 'loan' : account.type
+    })) as any;
+    setAccounts(accounts);
+    setTransactions([]); // Sample scenarios don't include transactions yet
     
     // Add some sample manual contributions for testing
     const sampleContributions = [
       {
         id: 'sample-contrib-1',
-        accountId: 'jasmine-1', // Jasmine's savings account
+        accountId: 'savings-001', // Recent grad's savings account
         amount: 722,
         date: '2025-01-15',
         description: 'Wedding fund contribution',
@@ -87,7 +91,7 @@ export function Onboarding() {
       },
       {
         id: 'sample-contrib-2',
-        accountId: 'jasmine-0', // Jasmine's checking account
+        accountId: 'checking-001', // Recent grad's checking account
         amount: -150,
         date: '2025-01-14',
         description: 'Manual expense entry',
@@ -95,7 +99,7 @@ export function Onboarding() {
       },
       {
         id: 'sample-contrib-3',
-        accountId: 'jasmine-3', // Federal Loan A
+        accountId: 'student-loan-001', // Student loan
         amount: -120,
         date: '2025-01-13',
         description: 'Student loan payment',
@@ -108,21 +112,21 @@ export function Onboarding() {
     const sampleGoals = [
       {
         id: 'wedding-fund-goal',
-        name: 'Wedding Fund',
+        name: 'Emergency Fund',
         type: 'savings' as const,
-        accountId: 'jasmine-1', // Jasmine's savings account
-        target: 15000,
+        accountId: 'savings-001', // Recent grad's savings account
+        target: 6000,
         targetDate: '2026-07-15', // 18 months from January 2025
-        monthlyContribution: 722, // $13,000 needed ÷ 18 months
+        monthlyContribution: 200, // $4,500 needed ÷ 18 months
         priority: 'high' as const,
-        note: 'Dream wedding fund - $15K goal over 18 months',
+        note: 'Build emergency fund for financial security',
         createdAt: new Date().toISOString()
       },
       {
         id: 'credit-card-payoff',
         name: 'Credit Card Payoff',
         type: 'debt' as const,
-        accountId: 'jasmine-2', // Jasmine's credit card
+        accountId: 'credit-card-001', // Credit card
         target: 0, // Payoff goal
         targetDate: '2025-12-31',
         monthlyContribution: 200,
@@ -134,13 +138,12 @@ export function Onboarding() {
         id: 'student-loan-payoff',
         name: 'Student Loan Payoff',
         type: 'debt' as const,
-        accountId: 'jasmine-3', // Primary account (for backward compatibility)
-        accountIds: ['jasmine-3', 'jasmine-4', 'jasmine-5'], // All three student loans
-        target: 23880, // Current total debt amount after $120 payment ($8,080 + $7,100 + $8,700)
+        accountId: 'student-loan-001', // Student loan
+        target: 25000, // Student loan balance
         targetDate: '2027-12-31', // 3-year payoff timeline
-        monthlyContribution: 800, // Aggressive payoff: $23.88K ÷ 30 months
+        monthlyContribution: 400, // Aggressive payoff: $25K ÷ 30 months
         priority: 'medium' as const,
-        note: 'Pay off all student loans (3 loans) over 3 years',
+        note: 'Pay off student loan over 3 years',
         createdAt: new Date().toISOString()
       }
     ];
@@ -148,7 +151,7 @@ export function Onboarding() {
     
     // Set user profile with sample data flag and any completed onboarding data
     setUserProfile({
-      ...jasmineProfile,
+      ...recentGradScenario.userProfile,
       ...data, // Preserve any completed onboarding data
       hasSampleData: true // Flag to indicate sample data was loaded
     });
