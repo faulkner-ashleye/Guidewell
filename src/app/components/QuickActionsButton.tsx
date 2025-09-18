@@ -1,12 +1,26 @@
 'use client';
 export default function QuickActionsButton({ onClick }:{ onClick:()=>void }) {
+  const handleClick = () => {
+    console.log('QuickActionsButton clicked');
+    onClick();
+  };
+
   return (
     <button 
       aria-label="Quick actions" 
-      onClick={onClick} 
-      className="inline-flex items-center gap-xs px-sm py-xs rounded-lg border border-gray-300 bg-transparent hover:bg-gray-50 transition-colors"
+      onClick={handleClick} 
+      className="quick-actions-button"
+      style={{ 
+        backgroundColor: '#007bff', 
+        color: 'white', 
+        padding: '8px 16px', 
+        border: 'none', 
+        borderRadius: '8px',
+        cursor: 'pointer',
+        fontSize: '14px'
+      }}
     >
-      <span className="text-lg leading-none">＋</span>
+      <span className="quick-actions-icon">＋</span>
       <span>Quick actions</span>
     </button>
   );

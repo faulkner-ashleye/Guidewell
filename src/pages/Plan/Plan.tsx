@@ -106,15 +106,7 @@ export function Plan() {
   };
 
   return (
-    <main style={{ 
-      background: COLORS.bg, 
-      color: COLORS.text, 
-      padding: 16, 
-      display: 'grid', 
-      gap: 16,
-      maxWidth: 1200,
-      margin: '0 auto'
-    }}>
+    <main className="plan-page">
       <AppHeader
         title="Plan"
         subtitle="Accounts & Goals"
@@ -122,8 +114,8 @@ export function Plan() {
       />
 
       {/* Overview: Net worth cards + stacked area */}
-      <section style={{ display: 'grid', gap: 12 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+      <section className="plan-overview">
+        <div className="plan-summary-grid">
           <SummaryCard title="Assets" value={formatMoney(assets)} />
           <SummaryCard title="Debts"  value={formatMoney(debts)} />
           <SummaryCard 
@@ -136,67 +128,33 @@ export function Plan() {
       </section>
 
       {/* Tabbed Interface for Accounts and Goals */}
-      <section style={{ 
-        background: COLORS.card, 
-        border: `1px solid ${COLORS.border}`, 
-        borderRadius: 12 
-      }}>
+      <section className="plan-tabbed-section">
         {/* Tab Headers */}
-        <div style={{ 
-          display: 'flex', 
-          borderBottom: `1px solid ${COLORS.border}`,
-          background: COLORS.bg
-        }}>
+        <div className="plan-tab-headers">
           <button
             onClick={() => setActiveTab('accounts')}
-            style={{
-              flex: 1,
-              padding: '12px 16px',
-              border: 'none',
-              background: activeTab === 'accounts' ? COLORS.card : 'transparent',
-              color: activeTab === 'accounts' ? COLORS.text : COLORS.textMuted,
-              cursor: 'pointer',
-              fontSize: '14px',
-              fontWeight: activeTab === 'accounts' ? '600' : '500',
-              borderBottom: activeTab === 'accounts' ? `2px solid ${COLORS.primary}` : '2px solid transparent',
-              borderRadius: '12px 12px 0 0'
-            }}
+            className={`plan-tab-button ${activeTab === 'accounts' ? 'active' : ''}`}
           >
             Accounts
           </button>
           <button
             onClick={() => setActiveTab('goals')}
-            style={{
-              flex: 1,
-              padding: '12px 16px',
-              border: 'none',
-              background: activeTab === 'goals' ? COLORS.card : 'transparent',
-              color: activeTab === 'goals' ? COLORS.text : COLORS.textMuted,
-              cursor: 'pointer',
-              fontSize: '14px',
-              fontWeight: activeTab === 'goals' ? '600' : '500',
-              borderBottom: activeTab === 'goals' ? `2px solid ${COLORS.primary}` : '2px solid transparent',
-              borderRadius: '12px 12px 0 0'
-            }}
+            className={`plan-tab-button ${activeTab === 'goals' ? 'active' : ''}`}
           >
             Goals
           </button>
         </div>
 
         {/* Tab Content */}
-        <div style={{ padding: 16 }}>
+        <div className="plan-tab-content">
           {activeTab === 'accounts' ? (
             <>
               {accounts.length === 0 ? (
-                <div style={{ 
-                  padding: 24, 
-                  textAlign: 'center', 
-                  color: COLORS.textMuted
-                }}>
+                <div className="plan-empty-state">
                   No accounts yet — connect one to begin.
                 </div>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div className="plan-accounts-list">
                   {(['checking','savings','investment','credit_card','loan'] as const).map((type) => {
                     const list = groups[type] || [];
                     if (list.length === 0) return null;
@@ -204,36 +162,17 @@ export function Plan() {
                                  type.charAt(0).toUpperCase() + type.slice(1) + (type.endsWith('s') ? '' : 's');
                     return (
                       <div key={type}>
-                        <div style={{ 
-                          display: 'flex', 
-                          justifyContent: 'space-between', 
-                          alignItems: 'center',
-                          marginBottom: '8px'
-                        }}>
-                          <h3 style={{ 
-                            margin: 0, 
-                            fontSize: 16, 
-                            color: COLORS.text,
-                            textTransform: 'capitalize'
-                          }}>
+                        <div className="plan-account-type-header">
+                          <h3 className="plan-account-type-title">
                             {title} ({list.length})
                           </h3>
-                          <span style={{ 
-                            color: COLORS.textMuted, 
-                            fontWeight: 600, 
-                            fontSize: 14 
-                          }}>
+                          <span className="plan-account-type-balance">
                             {formatMoney(sumBalances(list, [type as any]))}
                           </span>
                         </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        <div className="plan-account-list">
                           {list.map((a) => (
-                            <div key={a.id} style={{
-                              background: COLORS.bg,
-                              border: `1px solid ${COLORS.border}`,
-                              borderRadius: 8,
-                              padding: 12
-                            }}>
+                            <div key={a.id} className="plan-account-item">
                               <AccountRow
                                 name={a.name}
                                 value={formatMoney(a.balance)}
@@ -261,7 +200,7 @@ export function Plan() {
                 </div>
               )}
               
-              <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div className="plan-actions-section">
                 <PlaidLinkButton 
                   key="plaid-link-plan"
                   userId="demo-user-123"
@@ -272,17 +211,7 @@ export function Plan() {
                 />
                 <button 
                   onClick={() => setOpen(true)}
-                  style={{
-                    backgroundColor: 'transparent',
-                    color: COLORS.textMuted,
-                    border: `1px solid ${COLORS.border}`,
-                    borderRadius: '8px',
-                    padding: '12px 16px',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    width: '100%'
-                  }}
+                  className="plan-button-secondary"
                 >
                   Add accounts another way
                 </button>
@@ -291,15 +220,11 @@ export function Plan() {
           ) : (
             <>
               {goals.length === 0 ? (
-                <div style={{ 
-                  padding: 24, 
-                  textAlign: 'center', 
-                  color: COLORS.textMuted
-                }}>
+                <div className="plan-empty-state">
                   No goals yet — add one to get started.
                 </div>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div className="plan-goals-list">
                   {goals.map(goal => {
                     // Calculate progress based on linked account(s) or target
                     let current = 0;
@@ -337,34 +262,18 @@ export function Plan() {
                       <div 
                         key={goal.id} 
                         onClick={() => handleNavigateToGoal(goal.id)}
-                        style={{
-                          background: COLORS.bg,
-                          border: `1px solid ${COLORS.border}`,
-                          borderRadius: 8,
-                          padding: 12,
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: '8px',
-                          cursor: 'pointer',
-                          transition: 'background-color 0.2s ease'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = COLORS.bg;
-                        }}
+                        className="plan-goal-item"
                       >
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <span style={{ color: COLORS.text, fontWeight: 500 }}>{goal.name}</span>
-                          <span style={{ color: COLORS.text, fontWeight: 600 }}>{progress}%</span>
+                        <div className="plan-goal-header">
+                          <span className="plan-goal-name">{goal.name}</span>
+                          <span className="plan-goal-progress">{progress}%</span>
                         </div>
-                        <div style={{ color: COLORS.textMuted, fontSize: 12 }}>
+                        <div className="plan-goal-details">
                           {formatMoney(current)} of {formatMoney(goal.target)}
                           {goal.type === 'debt' && ' (payoff goal)'}
                         </div>
                         {linkedAccountNames.length > 0 && (
-                          <div style={{ color: COLORS.textMuted, fontSize: 11 }}>
+                          <div className="plan-goal-linked">
                             Linked: {linkedAccountNames.join(', ')}
                           </div>
                         )}
@@ -374,7 +283,7 @@ export function Plan() {
                           COLORS.savings
                         } />
                         {goal.note && (
-                          <div style={{ color: COLORS.textMuted, fontSize: 11, fontStyle: 'italic' }}>
+                          <div className="plan-goal-note">
                             "{goal.note}"
                           </div>
                         )}
@@ -383,20 +292,10 @@ export function Plan() {
                   })}
                 </div>
               )}
-              <div style={{ marginTop: 16 }}>
+              <div className="plan-actions-section">
                 <button 
                   onClick={handleAddGoal}
-                  style={{
-                    backgroundColor: COLORS.savings,
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '8px',
-                    padding: '12px 16px',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    width: '100%'
-                  }}
+                  className="plan-button-primary"
                 >
                   + Add a Goal
                 </button>
@@ -408,14 +307,9 @@ export function Plan() {
 
       {/* Nudges (simple, conditional, compliant) */}
       {(assets > 0 && debts > 0) && (
-        <section style={{ 
-          background: COLORS.card, 
-          border: `1px solid ${COLORS.border}`, 
-          borderRadius: 12, 
-          padding: 12 
-        }}>
+        <section className="plan-nudge-section">
           <strong>Heads-up:</strong>{' '}
-          <span style={{ color: COLORS.textMuted }}>
+          <span style={{ color: 'var(--color-text-muted)' }}>
             If more cash flows to high-APR debt, your interest costs could decrease. Educational scenarios only — not financial advice.
           </span>
         </section>
@@ -432,7 +326,7 @@ export function Plan() {
       </Sheet>
 
       {/* Compliance footer */}
-      <footer style={{ color: COLORS.textMuted, fontSize: 12 }}>
+      <footer className="plan-footer">
         Educational scenarios only — not financial, legal, or investment advice. Actual results may vary.
       </footer>
 
@@ -468,7 +362,7 @@ export function Plan() {
 
       {/* Connect account sheet (Plaid or other methods) */}
       <Sheet open={connectOpen} onClose={() => setConnectOpen(false)} title="Connect account">
-        <div style={{ display:'grid', gap:12 }}>
+        <div className="plan-connect-sheet">
           <PlaidLinkButton onSuccess={(linked: any) => { 
             clearSampleData();
             setAccounts(linked);

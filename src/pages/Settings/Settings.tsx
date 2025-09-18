@@ -85,7 +85,7 @@ export function Settings() {
   return (
     <div className="settings">
       <div className="settings-header">
-        <div className="flex justify-between items-center">
+        <div className="settings-header-content">
           <div>
             <h1 className="settings-title">Settings</h1>
             <p className="settings-subtitle">

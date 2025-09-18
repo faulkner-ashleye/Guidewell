@@ -9,6 +9,12 @@
   margin-bottom: 24px;
 }
 
+.settings-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .settings-title {
   font-size: 28px;
   font-weight: 700;

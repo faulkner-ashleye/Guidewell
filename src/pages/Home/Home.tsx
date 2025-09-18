@@ -56,7 +56,7 @@ export function Home() {
   const hasChartData = savingsTotal + debtTotal > 0;
 
   return (
-    <div className="home bg-card text-text">
+    <div className="home">
       <HomeHeader
         greeting={`Hi ${userProfile?.firstName || 'there'} 👋`}
         subtitle="Your financial snapshot today"
@@ -65,7 +65,7 @@ export function Home() {
 
       {/* Sample Data Message */}
       {userProfile?.hasSampleData && (
-        <div className="sample-data-banner rounded-lg p-md m-lg text-center text-sm">
+        <div className="sample-data-banner">
           📊 We've pre-loaded the app with sample data so you can see what the experience is like
         </div>
       )}

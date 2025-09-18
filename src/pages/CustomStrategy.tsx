@@ -124,29 +124,29 @@ export function CustomStrategy() {
 
   if (!hasValidData) {
     return (
-      <div className="bg-gray-50 min-h-screen">
+      <div className="custom-strategy-page">
         <AppHeader 
           title="Custom Strategy"
           leftAction={
             <button
               onClick={handleBack}
-              className="bg-transparent border-none text-2xl text-gray-700 cursor-pointer"
+              className="back-button"
             >
               ←
             </button>
           }
         />
         
-        <div className="p-xl text-center container-sm mx-auto">
-          <h2 className="mb-md text-2xl font-semibold">
+        <div className="no-strategy-container">
+          <h2 className="no-strategy-title">
             No Strategy Found
           </h2>
-          <p className="mb-lg text-gray-500 text-base">
+          <p className="no-strategy-description">
             No strategy data was found. Please build a strategy first.
           </p>
           <button
             onClick={() => navigate('/build-strategy')}
-            className="px-lg py-md bg-blue-600 text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
+            className="no-strategy-button"
           >
             Build Strategy
           </button>
@@ -156,24 +156,24 @@ export function CustomStrategy() {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="custom-strategy-page">
       <AppHeader 
         title="Custom Strategy"
         leftAction={
           <button
             onClick={handleBack}
-            className="bg-transparent border-none text-2xl text-gray-700 cursor-pointer"
+            className="back-button"
           >
             ←
           </button>
         }
       />
 
-      <div className="p-lg container-md mx-auto">
+      <div className="custom-strategy-content">
         {/* Chart Placeholder */}
         <ChartPlaceholder 
           data={{ strategy, timeframe, extra }}
-          className="mb-lg"
+          className="chart-placeholder"
         />
 
         {/* Narrative Card */}
@@ -182,18 +182,18 @@ export function CustomStrategy() {
                 strategy === 'goal_keeper' ? 'Goal Keeper' : 'Nest Builder'}
           narrative={generateNarrative()}
           onViewBreakdown={handleViewBreakdown}
-          className="mb-lg"
+          className="narrative-card"
         />
 
         {/* Edit Parameters Accordion */}
         <div className="edit-parameters">
-          <h3 className="mb-lg text-xl font-semibold text-gray-900">
+          <h3 className="edit-parameters-title">
             Edit Parameters
           </h3>
 
           {/* Strategy Selection */}
           <div className="parameter-section">
-            <h4 className="mb-sm text-base font-medium text-gray-700">
+            <h4 className="parameter-section-title">
               Strategy
             </h4>
             <StrategyCardSelect
@@ -204,7 +204,7 @@ export function CustomStrategy() {
 
           {/* Timeline Selection */}
           <div className="parameter-section">
-            <h4 className="mb-sm text-base font-medium text-gray-700">
+            <h4 className="parameter-section-title">
               Timeline
             </h4>
             <TimelineChips
@@ -215,7 +215,7 @@ export function CustomStrategy() {
 
           {/* Contribution Editor */}
           <div className="parameter-section">
-            <h4 className="mb-sm text-base font-medium text-gray-700">
+            <h4 className="parameter-section-title">
               Contribution
             </h4>
             <ContributionEditor
@@ -234,10 +234,10 @@ export function CustomStrategy() {
           </div>
 
           {/* Run Again Button */}
-          <div className="mt-xl">
+          <div className="run-again-container">
             <button
               onClick={handleRunAgain}
-              className="w-full px-lg py-md bg-success text-white border-none rounded-xl text-base font-semibold cursor-pointer transition-all shadow-lg"
+              className="run-again-button"
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = '#059669';
                 e.currentTarget.style.transform = 'translateY(-2px)';
@@ -255,7 +255,7 @@ export function CustomStrategy() {
         </div>
 
         {/* Footer */}
-        <div className="text-center text-gray-400 text-xs mt-xl py-lg">
+        <div className="custom-strategy-footer">
           Educational scenarios only — not financial advice.
         </div>
       </div>

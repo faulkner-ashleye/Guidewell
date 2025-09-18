@@ -1,3 +1,105 @@
+/* Build Strategy Page Styles */
+.build-strategy-page {
+  background: var(--color-bg);
+  min-height: 100vh;
+}
+
+.build-strategy-content {
+  padding: var(--spacing-lg);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.back-button {
+  background: transparent;
+  border: none;
+  font-size: var(--font-size-2xl);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.scope-secondary-selection {
+  margin-top: var(--spacing-lg);
+}
+
+.scope-secondary-label {
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.account-selection {
+  margin-top: var(--spacing-lg);
+}
+
+.account-selection-label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.account-selection-dropdown {
+  width: 100%;
+  padding: var(--spacing-md);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  background: var(--color-card);
+  color: var(--color-text);
+}
+
+.debug-info {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-xs);
+  color: var(--color-text);
+}
+
+.build-strategy-button-container {
+  margin-top: var(--spacing-lg);
+  text-align: center;
+}
+
+.build-strategy-button {
+  padding: var(--spacing-md) var(--spacing-lg);
+  color: var(--color-text);
+  border: none;
+  border-radius: var(--radius-xl);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  transition: all var(--transition-normal);
+}
+
+.build-strategy-button-disabled {
+  background: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+.build-strategy-button-enabled {
+  background: var(--color-success);
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+}
+
+.build-strategy-button-enabled:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+}
+
+.build-strategy-footer {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  margin-top: var(--spacing-xl);
+  padding: var(--spacing-lg) 0;
+}
+
 /* Build Strategy Animation Styles */
 .strategy-step {
   margin-bottom: 24px;

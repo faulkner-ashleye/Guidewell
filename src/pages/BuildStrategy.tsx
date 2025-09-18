@@ -150,20 +150,20 @@ export function BuildStrategy() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="build-strategy-page">
       <AppHeader 
         title="Build Your Strategy"
         leftAction={
           <button
             onClick={handleBack}
-            className="bg-transparent border-none text-2xl text-gray-700 cursor-pointer"
+            className="back-button"
           >
             ←
           </button>
         }
       />
 
-      <div className="p-lg container-md mx-auto">
+      <div className="build-strategy-content">
         {/* Step 1: Scope Selection */}
         <div 
           className={`strategy-step ${animateStep >= 1 ? 'animate-slide-up' : 'animate-fade-in'}`}
@@ -201,8 +201,8 @@ export function BuildStrategy() {
 
           {/* Secondary selection for specific scopes */}
           {scope && scope !== 'all' && (
-            <div className="mt-lg">
-              <div className="mb-sm text-sm font-medium text-gray-700">
+            <div className="scope-secondary-selection">
+              <div className="scope-secondary-label">
                 Choose scope for {scope}:
               </div>
               <ChipGroup>
@@ -222,14 +222,14 @@ export function BuildStrategy() {
 
           {/* Account dropdown for single account selection */}
           {scope && scope !== 'all' && scopeSelection === 'one' && (
-            <div className="mt-lg">
-              <label className="block mb-xs text-sm font-medium text-gray-700">
+            <div className="account-selection">
+              <label className="account-selection-label">
                 Select Account:
               </label>
               <select
                 value={accountId || ''}
                 onChange={(e) => handleAccountSelect(e.target.value)}
-                className="w-full p-md border-2 border-gray-200 rounded-lg text-sm bg-white"
+                className="account-selection-dropdown"
               >
                 <option value="">Choose an account...</option>
                 {scope && mockAccounts[scope]?.map(account => (
@@ -339,7 +339,7 @@ export function BuildStrategy() {
             />
             
             {/* Debug Info */}
-            <div className="mt-md p-md bg-gray-100 rounded-lg text-xs text-gray-700">
+            <div className="debug-info">
               <strong>Debug Info:</strong><br/>
               Scope: {scope || 'undefined'}<br/>
               Strategy: {strategy || 'undefined'}<br/>
@@ -349,7 +349,7 @@ export function BuildStrategy() {
             </div>
 
             {/* Build Strategy Button */}
-            <div className="mt-lg text-center">
+            <div className="build-strategy-button-container">
               <button
                 onClick={(e) => {
                   console.log('Button clicked!', e);
@@ -357,10 +357,10 @@ export function BuildStrategy() {
                   handleViewBreakdown();
                 }}
                 disabled={!scope || !strategy || !timeframe}
-                className={`px-lg py-md text-white border-none rounded-xl text-base font-semibold transition-all ${
+                className={`build-strategy-button ${
                   (!scope || !strategy || !timeframe) 
-                    ? 'bg-gray-400 cursor-not-allowed' 
-                    : 'bg-success cursor-pointer hover:bg-green-600 shadow-lg'
+                    ? 'build-strategy-button-disabled' 
+                    : 'build-strategy-button-enabled'
                 }`}
                 onMouseEnter={(e) => {
                   if (!(!scope || !strategy || !timeframe)) {
@@ -386,7 +386,7 @@ export function BuildStrategy() {
 
 
         {/* Footer */}
-        <div className="text-center text-gray-400 text-xs mt-xl py-lg">
+        <div className="build-strategy-footer">
           Educational scenarios only — not financial advice.
         </div>
       </div>

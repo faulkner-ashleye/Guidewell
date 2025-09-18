@@ -1,1 +1,222 @@
-/* Plan page now uses inline styles for the coaching hub layout */
+/* Plan page styling */
+.plan-page {
+  background: var(--color-bg);
+  color: var(--color-text);
+  padding: var(--spacing-lg);
+  display: grid;
+  gap: var(--spacing-lg);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.plan-overview {
+  display: grid;
+  gap: var(--spacing-sm);
+}
+
+.plan-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--spacing-sm);
+}
+
+.plan-tabbed-section {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+}
+
+.plan-tab-headers {
+  display: flex;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.plan-tab-button {
+  flex: 1;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  border-bottom: 2px solid transparent;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  transition: all var(--transition-normal);
+}
+
+.plan-tab-button.active {
+  background: var(--color-card);
+  color: var(--color-text);
+  font-weight: var(--font-weight-semibold);
+  border-bottom-color: var(--color-primary);
+}
+
+.plan-tab-button:hover {
+  background: var(--color-card);
+  color: var(--color-text);
+}
+
+.plan-tab-content {
+  padding: var(--spacing-lg);
+}
+
+.plan-empty-state {
+  padding: var(--spacing-2xl);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.plan-accounts-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.plan-account-type-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.plan-account-type-title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  color: var(--color-text);
+  text-transform: capitalize;
+}
+
+.plan-account-type-balance {
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+}
+
+.plan-account-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.plan-account-item {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-sm);
+}
+
+.plan-actions-section {
+  margin-top: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.plan-button-secondary {
+  background-color: transparent;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  width: 100%;
+  transition: all var(--transition-normal);
+}
+
+.plan-button-secondary:hover {
+  background-color: var(--color-card);
+  color: var(--color-text);
+}
+
+.plan-goals-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.plan-goal-item {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-normal);
+}
+
+.plan-goal-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.plan-goal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.plan-goal-name {
+  color: var(--color-text);
+  font-weight: var(--font-weight-medium);
+}
+
+.plan-goal-progress {
+  color: var(--color-text);
+  font-weight: var(--font-weight-semibold);
+}
+
+.plan-goal-details {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.plan-goal-linked {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.plan-goal-note {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-style: italic;
+}
+
+.plan-button-primary {
+  background-color: var(--color-savings);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  width: 100%;
+  transition: all var(--transition-normal);
+}
+
+.plan-button-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.plan-nudge-section {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-sm);
+}
+
+.plan-footer {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.plan-connect-sheet {
+  display: grid;
+  gap: var(--spacing-sm);
+}

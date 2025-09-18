@@ -1,10 +1,106 @@
 /* Custom Strategy Page Styles */
+.custom-strategy-page {
+  background: var(--color-bg);
+  min-height: 100vh;
+}
+
+.custom-strategy-content {
+  padding: var(--spacing-lg);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.no-strategy-container {
+  padding: var(--spacing-xl);
+  text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.no-strategy-title {
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.no-strategy-description {
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-base);
+}
+
+.no-strategy-button {
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--color-primary);
+  color: var(--color-text);
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+}
+
+.chart-placeholder {
+  margin-bottom: var(--spacing-lg);
+}
+
+.narrative-card {
+  margin-bottom: var(--spacing-lg);
+}
+
+.edit-parameters-title {
+  margin-bottom: var(--spacing-lg);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.parameter-section-title {
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.run-again-container {
+  margin-top: var(--spacing-xl);
+}
+
+.run-again-button {
+  width: 100%;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--color-success);
+  color: var(--color-text);
+  border: none;
+  border-radius: var(--radius-xl);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-lg);
+}
+
+.run-again-button:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+}
+
+.custom-strategy-footer {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  margin-top: var(--spacing-xl);
+  padding: var(--spacing-lg) 0;
+}
+
 .edit-parameters {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 24px;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+  margin-bottom: var(--spacing-2xl);
 }
 
 .parameter-section {
