@@ -18,7 +18,7 @@ import AddGoalModal from '../../app/plan/components/AddGoalModal';
 import LogContributionModal from '../../app/components/LogContributionModal';
 import PlaidLinkButton from '../../components/PlaidLinkButton';
 import Sheet from '../../app/components/Sheet';
-import { COLORS } from '../../ui/colors';
+// Removed COLORS import - using design system utilities instead
 import './Home.css';
 
 export function Home() {
@@ -56,7 +56,7 @@ export function Home() {
   const hasChartData = savingsTotal + debtTotal > 0;
 
   return (
-    <div className="home" style={{ backgroundColor: COLORS.bg, color: COLORS.text }}>
+    <div className="home bg-card text-text">
       <HomeHeader
         greeting={`Hi ${userProfile?.firstName || 'there'} 👋`}
         subtitle="Your financial snapshot today"
@@ -65,16 +65,7 @@ export function Home() {
 
       {/* Sample Data Message */}
       {userProfile?.hasSampleData && (
-        <div style={{
-          background: '#f0f9ff',
-          border: '1px solid #0ea5e9',
-          borderRadius: '8px',
-          padding: '12px 16px',
-          margin: '16px',
-          textAlign: 'center',
-          fontSize: '14px',
-          color: '#0c4a6e'
-        }}>
+        <div className="sample-data-banner rounded-lg p-md m-lg text-center text-sm">
           📊 We've pre-loaded the app with sample data so you can see what the experience is like
         </div>
       )}
@@ -167,10 +158,7 @@ export function Home() {
                     <div className="activity-main">
                       <div className="activity-description">{item.description}</div>
                       <div 
-                        className="activity-amount"
-                        style={{ 
-                          color: item.amount >= 0 ? '#10b981' : '#ef4444' 
-                        }}
+                        className={`activity-amount ${item.amount >= 0 ? 'activity-positive' : 'activity-negative'}`}
                       >
                         {item.amount >= 0 ? '+' : ''}{formatCurrency(item.amount)}
                       </div>
@@ -179,15 +167,7 @@ export function Home() {
                       <span className="activity-date">{item.date}</span>
                       <span className="activity-account">{item.accountName}</span>
                       <span 
-                        className={`activity-source ${item.source}`}
-                        style={{
-                          backgroundColor: item.source === 'linked' ? '#e0f2fe' : '#f0fdf4',
-                          color: item.source === 'linked' ? '#0369a1' : '#166534',
-                          padding: '2px 6px',
-                          borderRadius: '4px',
-                          fontSize: '11px',
-                          fontWeight: '500'
-                        }}
+                        className={`activity-source ${item.source === 'linked' ? 'source-linked' : 'source-manual'} px-xs py-xs rounded-sm text-xs font-medium`}
                       >
                         {item.source === 'linked' ? 'Linked' : 'Manual'}
                       </span>
@@ -239,7 +219,7 @@ export function Home() {
 
       {/* Connect account sheet (Plaid or other methods) */}
       <Sheet open={connectOpen} onClose={() => setConnectOpen(false)} title="Connect account">
-        <div style={{ display:'grid', gap:12 }}>
+        <div className="grid-auto">
           <PlaidLinkButton onSuccess={(linked: any) => { 
             clearSampleData();
             setAccounts(linked);

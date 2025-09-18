@@ -369,3 +369,178 @@
   .print\:flex { display: flex !important; }
   .print\:grid { display: grid !important; }
 }
+
+/* Migration Support Utilities */
+
+/* Conditional Color Utilities */
+.text-positive { color: var(--color-success); }
+.text-negative { color: var(--color-error); }
+.bg-positive { background-color: var(--color-success); }
+.bg-negative { background-color: var(--color-error); }
+
+/* Dynamic Width/Height Utilities */
+.w-dynamic { width: var(--dynamic-width, auto); }
+.h-dynamic { height: var(--dynamic-height, auto); }
+.w-percentage { width: var(--percentage-width, 100%); }
+.h-percentage { height: var(--percentage-height, 100%); }
+
+/* Chart-specific Utilities */
+.chart-bar { 
+  background: var(--color-primary); 
+  transition: height var(--transition-normal);
+}
+.chart-slice { 
+  background: conic-gradient(var(--chart-gradient, var(--color-primary) 0deg, transparent 0deg)); 
+}
+.progress-fill { 
+  background: var(--color-primary); 
+  transition: width var(--transition-normal);
+}
+
+/* Layout Utilities */
+.grid-auto { 
+  display: grid; 
+  gap: var(--spacing-md); 
+}
+.flex-center { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+.flex-between { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+}
+
+/* Status-based Utilities */
+.status-success { 
+  background-color: rgba(16, 185, 129, 0.1); 
+  color: var(--color-success); 
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+.status-error { 
+  background-color: rgba(239, 68, 68, 0.1); 
+  color: var(--color-error); 
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+.status-warning { 
+  background-color: rgba(245, 158, 11, 0.1); 
+  color: var(--color-warning); 
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+/* Source-based Utilities */
+.source-linked { 
+  background-color: rgba(14, 165, 233, 0.1); 
+  color: var(--color-primary); 
+}
+.source-manual { 
+  background-color: rgba(16, 185, 129, 0.1); 
+  color: var(--color-success); 
+}
+
+/* Sample Data Utilities */
+.sample-data-banner { 
+  background: rgba(14, 165, 233, 0.1); 
+  border: 1px solid rgba(14, 165, 233, 0.3); 
+  color: var(--color-primary);
+}
+
+/* Activity Item Utilities */
+.activity-positive { color: var(--color-success); }
+.activity-negative { color: var(--color-error); }
+
+/* Form Utilities */
+.form-grid { 
+  display: grid; 
+  gap: var(--spacing-md); 
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.form-row { 
+  display: flex; 
+  gap: var(--spacing-md); 
+  align-items: end;
+}
+
+/* Card Variants */
+.card-elevated { 
+  box-shadow: var(--shadow-lg); 
+  border: 1px solid var(--color-border);
+}
+.card-interactive { 
+  cursor: pointer; 
+  transition: all var(--transition-normal);
+}
+.card-interactive:hover { 
+  box-shadow: var(--shadow-md); 
+  transform: translateY(-2px);
+}
+
+/* Text Utilities */
+.text-balance { text-wrap: balance; }
+.text-pretty { text-wrap: pretty; }
+
+/* Spacing Utilities */
+.space-y-sm > * + * { margin-top: var(--spacing-sm); }
+.space-y-md > * + * { margin-top: var(--spacing-md); }
+.space-y-lg > * + * { margin-top: var(--spacing-lg); }
+.space-x-sm > * + * { margin-left: var(--spacing-sm); }
+.space-x-md > * + * { margin-left: var(--spacing-md); }
+.space-x-lg > * + * { margin-left: var(--spacing-lg); }
+
+/* Aspect Ratio Utilities */
+.aspect-square { aspect-ratio: 1 / 1; }
+.aspect-video { aspect-ratio: 16 / 9; }
+.aspect-4-3 { aspect-ratio: 4 / 3; }
+
+/* Container Utilities */
+.container-sm { max-width: 640px; }
+.container-md { max-width: 768px; }
+.container-lg { max-width: 1024px; }
+.container-xl { max-width: 1280px; }
+
+/* Animation Utilities */
+.animate-fade-in { 
+  animation: fadeIn 0.3s ease-in-out; 
+}
+.animate-slide-up { 
+  animation: slideUp 0.3s ease-out; 
+}
+.animate-bounce-in { 
+  animation: bounceIn 0.5s ease-out; 
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes bounceIn {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.3); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.05); 
+  }
+  70% { 
+    transform: scale(0.9); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+}

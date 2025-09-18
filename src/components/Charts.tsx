@@ -21,7 +21,7 @@ export function LineChart({ title, data = [], labels = [], className = '' }: Cha
             <div
               key={index}
               className="chart-bar"
-              style={{ height: `${(value / maxValue) * 100}%` }}
+              style={{ height: `${(value / maxValue) * 100}%` } as React.CSSProperties}
             />
           ))}
         </div>
@@ -82,7 +82,7 @@ export function ProgressChart({ value, max, label, className = '' }: { value: nu
       <div className="progress-bar">
         <div 
           className="progress-fill" 
-          style={{ width: `${percentage}%` }}
+          style={{ width: `${percentage}%` } as React.CSSProperties}
         />
       </div>
       <div className="progress-text">
