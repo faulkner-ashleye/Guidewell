@@ -142,7 +142,7 @@ export function AvatarSystemDemo() {
                         </div>
                         <div className="allocation-item">
                           <span className="allocation-label">Investment:</span>
-                          <span className="allocation-value">{avatar.allocation.investment}%</span>
+                          <span className="allocation-value">{avatar.allocation.investing}%</span>
                         </div>
                       </div>
                     </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NarrativeAvatar, AvatarUtils, allAvatars } from '../data/narrativeAvatars';
+import { NarrativeAvatar, AvatarUtils, anchorAvatars } from '../data/narrativeAvatars';
 import './AvatarSelector.css';
 
 interface AvatarSelectorProps {
@@ -25,7 +25,6 @@ export function AvatarSelector({
 
   // Get appropriate avatars based on context
   const availableAvatars = AvatarUtils.getAvatarsForContext(accountTypes, focusCategory);
-  const anchorAvatars = availableAvatars.filter(avatar => avatar.tier === 'anchor');
   const supportingAvatars = availableAvatars.filter(avatar => avatar.tier === 'supporting');
 
   // Get recommended avatars if user profile is provided
@@ -33,7 +32,11 @@ export function AvatarSelector({
     ? AvatarUtils.getRecommendedAvatars(userProfile)
     : anchorAvatars;
 
-  const displayAvatars = showSupporting ? availableAvatars : anchorAvatars;
+  // When focusing on a specific category, show all avatars by default
+  // When comparing all accounts, show only anchor avatars by default
+  const displayAvatars = focusCategory 
+    ? availableAvatars // Always show all when focusing on a category
+    : (showSupporting ? availableAvatars : anchorAvatars); // Show anchor only when comparing all
 
   const handleAvatarClick = (avatar: NarrativeAvatar) => {
     onAvatarSelect(avatar);
@@ -91,14 +94,14 @@ export function AvatarSelector({
                   ></div>
                   <div 
                     className="allocation-segment investment"
-                    style={{ width: `${avatar.allocation.investment}%` }}
-                    title={`${avatar.allocation.investment}% Investment`}
+                    style={{ width: `${avatar.allocation.investing}%` }}
+                    title={`${avatar.allocation.investing}% Investment`}
                   ></div>
                 </div>
                 <div className="allocation-labels">
                   <span className="allocation-label">Debt: {avatar.allocation.debt}%</span>
                   <span className="allocation-label">Savings: {avatar.allocation.savings}%</span>
-                  <span className="allocation-label">Investment: {avatar.allocation.investment}%</span>
+                  <span className="allocation-label">Investment: {avatar.allocation.investing}%</span>
                 </div>
               </div>
             </div>
@@ -109,7 +112,7 @@ export function AvatarSelector({
         ))}
       </div>
 
-      {supportingAvatars.length > 0 && (
+      {supportingAvatars.length > 0 && !focusCategory && (
         <div className="avatar-toggle">
           <button 
             className={`toggle-button ${showSupporting ? 'active' : ''}`}

@@ -36,7 +36,7 @@ export interface StrategyConfig {
   allocation: {
     debt: number;
     savings: number;
-    investment: number;
+    investing: number;
   };
   targetAmount?: number;
   riskLevel: 'low' | 'medium' | 'high';
@@ -50,7 +50,7 @@ export interface StrategyResult {
     month: number;
     debt: number;
     savings: number;
-    investment: number;
+    investing: number;
     total: number;
     cumulativeDebt: number;
     cumulativeSavings: number;
@@ -60,7 +60,7 @@ export interface StrategyResult {
   allocationBreakdown?: {
     debt: { amount: number; percentage: number };
     savings: { amount: number; percentage: number };
-    investment: { amount: number; percentage: number };
+    investing: { amount: number; percentage: number };
   };
   riskMetrics?: {
     annualReturn: number;

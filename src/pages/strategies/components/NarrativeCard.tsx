@@ -50,23 +50,31 @@ export function NarrativeCard({ title, narrative, onViewBreakdown, style, classN
         {onViewBreakdown && (
           <button
             onClick={onViewBreakdown}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#2563eb';
+              e.currentTarget.style.borderColor = '#2563eb';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = '#3b82f6';
+              e.currentTarget.style.borderColor = '#3b82f6';
+            }}
             style={{
-              background: 'transparent',
-              border: 'none',
-              color: '#3b82f6',
+              background: '#3b82f6',
+              border: '2px solid #3b82f6',
+              color: 'white',
               fontSize: '14px',
               fontWeight: '500',
               cursor: 'pointer',
               textDecoration: 'none',
               display: 'flex',
               alignItems: 'center',
-              gap: '4px'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = '#2563eb';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = '#3b82f6';
+              gap: '4px',
+              padding: '8px 16px',
+              borderRadius: '6px',
+              minWidth: '120px',
+              justifyContent: 'center',
+              position: 'relative',
+              zIndex: 1000
             }}
           >
             See full breakdown →

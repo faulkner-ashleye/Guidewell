@@ -1,7 +1,7 @@
 import React from 'react';
 import { anchorAvatars, NarrativeAvatar } from '../../../data/narrativeAvatars';
 
-type Strategy = 'debt_crusher' | 'goal_keeper' | 'nest_builder';
+type Strategy = 'debt_crusher' | 'goal_keeper' | 'nest_builder' | 'steady_payer' | 'juggler' | 'interest_minimizer' | 'safety_builder' | 'auto_pilot' | 'opportunistic_saver' | 'future_investor' | 'balanced_builder' | 'risk_taker';
 
 interface StrategyCardSelectProps {
   selected: Strategy;

@@ -11,7 +11,7 @@ export function useStrategyEngine() {
     // Real financial calculations based on allocation
     const debtAllocation = monthlyContribution * (config.allocation.debt / 100);
     const savingsAllocation = monthlyContribution * (config.allocation.savings / 100);
-    const investmentAllocation = monthlyContribution * (config.allocation.investment / 100);
+    const investmentAllocation = monthlyContribution * (config.allocation.investing / 100);
     
     // Calculate investment growth using real compound interest
     const years = totalMonths / 12;
@@ -45,7 +45,7 @@ export function useStrategyEngine() {
         month,
         debt: debtAllocation,
         savings: savingsAllocation,
-        investment: investmentAllocation,
+        investing: investmentAllocation,
         total: monthlyContribution,
         // Add cumulative values for better visualization
         cumulativeDebt: debtAllocation * month,
@@ -64,7 +64,7 @@ export function useStrategyEngine() {
       allocationBreakdown: {
         debt: { amount: debtAllocation * totalMonths, percentage: config.allocation.debt },
         savings: { amount: savingsResult.finalValue, percentage: config.allocation.savings },
-        investment: { amount: investmentResult.finalValue, percentage: config.allocation.investment }
+        investing: { amount: investmentResult.finalValue, percentage: config.allocation.investing }
       },
       riskMetrics: {
         annualReturn,
@@ -80,7 +80,7 @@ export function useStrategyEngine() {
     
     return `This scenario shows how ${name} could work over ${timeline} months. 
     With a monthly contribution of $${monthlyContribution.toLocaleString()}, you might allocate 
-    ${allocation.debt}% to debt payoff, ${allocation.savings}% to savings, and ${allocation.investment}% to investments. 
+    ${allocation.debt}% to debt payoff, ${allocation.savings}% to savings, and ${allocation.investing}% to investments. 
     This could potentially grow your money to approximately $${projectedValue.toLocaleString()}, 
     representing a growth of $${growth.toLocaleString()}. Remember, these are educational scenarios 
     and actual results may vary significantly.`;

@@ -11,7 +11,7 @@ export interface NarrativeAvatar {
   allocation: {
     debt: number;
     savings: number;
-    investment: number;
+    investing: number;
   };
   riskLevel: 'low' | 'medium' | 'high';
   timeline: 'short' | 'medium' | 'long';
@@ -28,7 +28,7 @@ export const debtAvatars: NarrativeAvatar[] = [
     narrative: "I'm throwing every extra dollar at my balances so I can be free sooner.",
     balance: 'Accelerates payoff, but leaves little room for saving or investing.',
     description: 'Focus on debt to reduce what you owe faster.',
-    allocation: { debt: 80, savings: 10, investment: 10 },
+    allocation: { debt: 80, savings: 10, investing: 10 },
     riskLevel: 'low',
     timeline: 'short'
   },
@@ -41,7 +41,7 @@ export const debtAvatars: NarrativeAvatar[] = [
     narrative: "I'll pay more than the minimum, but keep it manageable.",
     balance: 'Slower than Crusher, but steady progress without financial strain.',
     description: 'Stick to a consistent plan with a little extra each month.',
-    allocation: { debt: 60, savings: 25, investment: 15 },
+    allocation: { debt: 60, savings: 25, investing: 15 },
     riskLevel: 'low',
     timeline: 'medium'
   },
@@ -54,7 +54,7 @@ export const debtAvatars: NarrativeAvatar[] = [
     narrative: "Some months I do more, others I scale back.",
     balance: 'Flexible, but unpredictable; debt takes longer to clear.',
     description: 'Flex payments based on what life allows each month.',
-    allocation: { debt: 50, savings: 30, investment: 20 },
+    allocation: { debt: 50, savings: 30, investing: 20 },
     riskLevel: 'medium',
     timeline: 'medium'
   },
@@ -67,7 +67,7 @@ export const debtAvatars: NarrativeAvatar[] = [
     narrative: "I want to waste as little as possible on interest.",
     balance: 'Cost-efficient, but progress may feel slower emotionally than Crusher.',
     description: 'Target the highest-interest debts first.',
-    allocation: { debt: 70, savings: 20, investment: 10 },
+    allocation: { debt: 70, savings: 20, investing: 10 },
     riskLevel: 'low',
     timeline: 'medium'
   }
@@ -84,7 +84,7 @@ export const savingsAvatars: NarrativeAvatar[] = [
     narrative: "I'm saving for milestones — a home, wedding, or travel — and want to hit them faster.",
     balance: 'Accelerates goals, but limits debt payoff or investing.',
     description: 'Put more toward savings to reach goals sooner.',
-    allocation: { debt: 30, savings: 60, investment: 10 },
+    allocation: { debt: 30, savings: 60, investing: 10 },
     riskLevel: 'low',
     timeline: 'medium'
   },
@@ -97,7 +97,7 @@ export const savingsAvatars: NarrativeAvatar[] = [
     narrative: "If I cover my basics, I can handle life's surprises.",
     balance: 'More conservative than Goal Keeper; builds security before milestones.',
     description: 'Focus on an emergency cushion first.',
-    allocation: { debt: 40, savings: 50, investment: 10 },
+    allocation: { debt: 40, savings: 50, investing: 10 },
     riskLevel: 'low',
     timeline: 'short'
   },
@@ -110,7 +110,7 @@ export const savingsAvatars: NarrativeAvatar[] = [
     narrative: "I'll save a set amount each payday and let it run in the background.",
     balance: 'Reliable habit, but slower to hit big goals compared to Goal Keeper.',
     description: 'Automate steady transfers without thinking about it.',
-    allocation: { debt: 35, savings: 45, investment: 20 },
+    allocation: { debt: 35, savings: 45, investing: 20 },
     riskLevel: 'low',
     timeline: 'long'
   },
@@ -123,7 +123,7 @@ export const savingsAvatars: NarrativeAvatar[] = [
     narrative: "When extra money comes in, I funnel it into savings.",
     balance: 'Gives bursts of progress, but lacks the consistency of Goal Keeper.',
     description: 'Stash away bonuses, refunds, or side-hustle income.',
-    allocation: { debt: 40, savings: 55, investment: 5 },
+    allocation: { debt: 40, savings: 55, investing: 5 },
     riskLevel: 'medium',
     timeline: 'medium'
   }
@@ -140,7 +140,7 @@ export const investmentAvatars: NarrativeAvatar[] = [
     narrative: "I want to build wealth over time, even if the ride isn't always smooth.",
     balance: 'A growth-focused middle path — balances fluctuate, but future payoff is strong.',
     description: 'Invest for long-term growth, with some ups and downs.',
-    allocation: { debt: 20, savings: 20, investment: 60 },
+    allocation: { debt: 20, savings: 20, investing: 60 },
     riskLevel: 'medium',
     timeline: 'long'
   },
@@ -153,7 +153,7 @@ export const investmentAvatars: NarrativeAvatar[] = [
     narrative: "I'll dip my toes in now so my money has time to grow.",
     balance: 'More cautious than Nest Builder; builds momentum slowly but steadily.',
     description: 'Start small to build the habit and confidence.',
-    allocation: { debt: 40, savings: 30, investment: 30 },
+    allocation: { debt: 40, savings: 30, investing: 30 },
     riskLevel: 'low',
     timeline: 'long'
   },
@@ -166,7 +166,7 @@ export const investmentAvatars: NarrativeAvatar[] = [
     narrative: "I want stability and growth together.",
     balance: 'More conservative than Nest Builder; reduces risk, but limits upside.',
     description: 'Split between safe and growth-oriented assets.',
-    allocation: { debt: 30, savings: 35, investment: 35 },
+    allocation: { debt: 30, savings: 35, investing: 35 },
     riskLevel: 'low',
     timeline: 'long'
   },
@@ -179,7 +179,7 @@ export const investmentAvatars: NarrativeAvatar[] = [
     narrative: "I'm young enough to take swings now and see bigger potential gains.",
     balance: 'More aggressive than Nest Builder; higher upside, but setbacks sting harder.',
     description: 'Go bold with higher-risk, higher-reward investments.',
-    allocation: { debt: 10, savings: 10, investment: 80 },
+    allocation: { debt: 10, savings: 10, investing: 80 },
     riskLevel: 'high',
     timeline: 'long'
   }
@@ -194,9 +194,9 @@ export const allAvatars: NarrativeAvatar[] = [
 
 // Anchor avatars (the main 3)
 export const anchorAvatars: NarrativeAvatar[] = [
-  debtAvatars.find(a => a.tier === 'anchor')!,
-  savingsAvatars.find(a => a.tier === 'anchor')!,
-  investmentAvatars.find(a => a.tier === 'anchor')!
+  debtAvatars.find(a => a.id === 'debt_crusher')!,
+  savingsAvatars.find(a => a.id === 'goal_keeper')!,
+  investmentAvatars.find(a => a.id === 'nest_builder')!
 ];
 
 // Utility functions
@@ -290,7 +290,7 @@ export class AvatarUtils {
     }
     
     if (avatar.category === 'investment' && totalInvestment > 0) {
-      const investmentAllocation = monthlyContribution * (avatar.allocation.investment / 100);
+      const investmentAllocation = monthlyContribution * (avatar.allocation.investing / 100);
       narrative += ` With $${investmentAllocation.toFixed(0)}/month toward investments, you could build long-term wealth.`;
     }
     

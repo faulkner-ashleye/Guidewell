@@ -7,7 +7,7 @@ export const strategyPresets: StrategyPreset[] = [
     description: 'Pay off smallest debts first to build momentum',
     type: 'debt_payoff',
     defaultTimeline: 24,
-    defaultAllocation: { debt: 80, savings: 10, investment: 10 },
+    defaultAllocation: { debt: 80, savings: 10, investing: 10 },
     riskLevel: 'low'
   },
   {
@@ -16,7 +16,7 @@ export const strategyPresets: StrategyPreset[] = [
     description: 'Build 3-6 months of expenses before investing',
     type: 'emergency_fund',
     defaultTimeline: 12,
-    defaultAllocation: { debt: 20, savings: 70, investment: 10 },
+    defaultAllocation: { debt: 20, savings: 70, investing: 10 },
     riskLevel: 'low'
   },
   {
@@ -25,7 +25,7 @@ export const strategyPresets: StrategyPreset[] = [
     description: 'Balance debt payoff with long-term investing',
     type: 'investment',
     defaultTimeline: 36,
-    defaultAllocation: { debt: 40, savings: 20, investment: 40 },
+    defaultAllocation: { debt: 40, savings: 20, investing: 40 },
     riskLevel: 'medium'
   },
   {
@@ -34,7 +34,7 @@ export const strategyPresets: StrategyPreset[] = [
     description: 'Minimize debt payments, maximize investment growth',
     type: 'investment',
     defaultTimeline: 60,
-    defaultAllocation: { debt: 20, savings: 10, investment: 70 },
+    defaultAllocation: { debt: 20, savings: 10, investing: 70 },
     riskLevel: 'high'
   }
 ];

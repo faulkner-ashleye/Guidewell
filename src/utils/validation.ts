@@ -43,9 +43,9 @@ export const StrategyConfigSchema = z.object({
   allocation: z.object({
     debt: z.number().min(0, 'Debt allocation cannot be negative').max(100, 'Debt allocation cannot exceed 100%'),
     savings: z.number().min(0, 'Savings allocation cannot be negative').max(100, 'Savings allocation cannot exceed 100%'),
-    investment: z.number().min(0, 'Investment allocation cannot be negative').max(100, 'Investment allocation cannot exceed 100%')
+    investing: z.number().min(0, 'Investment allocation cannot be negative').max(100, 'Investment allocation cannot exceed 100%')
   }).refine(
-    data => Math.abs(data.debt + data.savings + data.investment - 100) < 0.01,
+    data => Math.abs(data.debt + data.savings + data.investing - 100) < 0.01,
     { message: 'Allocation percentages must sum to 100%' }
   ),
   targetAmount: z.number().positive().optional(),

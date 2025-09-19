@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { CurrencyInput } from '../../../components/CurrencyInput';
-import { estimateBaselineMonthly, Scope, Strat } from '../../../state/baseline';
+import { estimateBaselineMonthly, Scope } from '../../../state/baseline';
 import { Account } from '../../../state/AppStateContext';
 import { Transaction } from '../../../lib/supabase';
 
-type Strategy = 'debt_crusher' | 'goal_keeper' | 'nest_builder';
+type Strategy = 'debt_crusher' | 'goal_keeper' | 'nest_builder' | 'steady_payer' | 'juggler' | 'interest_minimizer' | 'safety_builder' | 'auto_pilot' | 'opportunistic_saver' | 'future_investor' | 'balanced_builder' | 'risk_taker';
 
 interface ContributionEditorProps {
   extra: number | undefined;
@@ -57,12 +57,36 @@ export function ContributionEditor({
   // Get preset allocation based on strategy
   const getPresetAllocation = (strategy: Strategy) => {
     switch (strategy) {
+      // Debt-focused avatars
       case 'debt_crusher':
+        return { debt: 80, savings: 10, investing: 10 };
+      case 'steady_payer':
+        return { debt: 60, savings: 25, investing: 15 };
+      case 'juggler':
+        return { debt: 50, savings: 30, investing: 20 };
+      case 'interest_minimizer':
         return { debt: 70, savings: 20, investing: 10 };
+      
+      // Savings-focused avatars
       case 'goal_keeper':
-        return { debt: 30, savings: 50, investing: 20 };
+        return { debt: 30, savings: 60, investing: 10 };
+      case 'safety_builder':
+        return { debt: 40, savings: 50, investing: 10 };
+      case 'auto_pilot':
+        return { debt: 35, savings: 45, investing: 20 };
+      case 'opportunistic_saver':
+        return { debt: 40, savings: 55, investing: 5 };
+      
+      // Investment-focused avatars
       case 'nest_builder':
-        return { debt: 20, savings: 30, investing: 50 };
+        return { debt: 20, savings: 20, investing: 60 };
+      case 'future_investor':
+        return { debt: 40, savings: 30, investing: 30 };
+      case 'balanced_builder':
+        return { debt: 30, savings: 35, investing: 35 };
+      case 'risk_taker':
+        return { debt: 10, savings: 10, investing: 80 };
+      
       default:
         return { debt: 40, savings: 30, investing: 30 };
     }

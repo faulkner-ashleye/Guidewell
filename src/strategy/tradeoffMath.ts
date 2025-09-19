@@ -41,7 +41,10 @@ export function formatCurrency(amount: number): string {
 
 // Format percentage for display
 export function formatPercentage(value: number): string {
-  return `${Math.round(value * 100)}%`;
+  // If value is already in percentage form (>= 1), don't multiply by 100
+  // If value is in decimal form (< 1), multiply by 100
+  const percentage = value >= 1 ? value : value * 100;
+  return `${Math.round(percentage * 100) / 100}%`;
 }
 
 // Humanize months to readable format

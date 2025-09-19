@@ -3,18 +3,52 @@ import { useNavigate } from 'react-router-dom';
 import { Card } from '../components/Card';
 import { Disclaimer } from '../components/Disclaimer';
 import AppHeader from '../app/components/AppHeader';
+import { useAppState } from '../state/AppStateContext';
+import { sumByType } from '../state/selectors';
 import './Strategies.css';
 
 export function Strategies() {
   const navigate = useNavigate();
+  
+  // Get real account data
+  const { accounts = [], userProfile } = useAppState();
+  
+  // Calculate financial summary
+  const savingsTotal = sumByType(accounts, ['checking', 'savings']);
+  const debtTotal = sumByType(accounts, ['credit_card', 'loan']);
+  const investmentTotal = sumByType(accounts, ['investment']);
+  
+  const hasData = accounts.length > 0;
+  const hasDebt = debtTotal > 0;
+  const hasSavings = savingsTotal > 0;
+  const hasInvestments = investmentTotal > 0;
 
   const handleBuildStrategy = () => {
     navigate('/build-strategy');
   };
 
   const handleViewStrategy = () => {
-    // Route stub - placeholder for recommended strategy
-    console.log('View recommended strategy');
+    // Generate recommended strategy based on user's financial situation
+    let recommendedStrategy = 'balanced_builder'; // default
+    
+    if (hasDebt && debtTotal > savingsTotal) {
+      recommendedStrategy = 'debt_crusher';
+    } else if (!hasSavings || savingsTotal < 5000) {
+      recommendedStrategy = 'goal_keeper';
+    } else if (hasSavings && !hasInvestments) {
+      recommendedStrategy = 'nest_builder';
+    }
+    
+    // Navigate to custom strategy with recommended settings
+    navigate('/custom-strategy', {
+      state: {
+        scope: 'all',
+        strategy: recommendedStrategy,
+        timeframe: 'mid',
+        extra: 0,
+        allocation: undefined // Will use avatar default
+      }
+    });
   };
 
   return (
@@ -43,7 +77,17 @@ export function Strategies() {
               </h3>
             </div>
             <p className="strategy-card-description">
-              Based on your profile, we suggest starting with a balanced approach that focuses on building your emergency fund while paying down high-interest debt.
+              {hasData ? (
+                hasDebt && debtTotal > savingsTotal ? 
+                  "Based on your current debt situation, we recommend focusing on debt reduction strategies to improve your financial foundation." :
+                !hasSavings || savingsTotal < 5000 ?
+                  "Based on your current savings, we recommend building your emergency fund and savings goals first." :
+                hasSavings && !hasInvestments ?
+                  "Based on your savings progress, we recommend starting to invest for long-term wealth building." :
+                  "Based on your balanced financial profile, we recommend a diversified approach across debt, savings, and investments."
+              ) : (
+                "Connect your accounts to get a personalized strategy recommendation based on your financial situation."
+              )}
             </p>
             <button 
               onClick={handleViewStrategy}

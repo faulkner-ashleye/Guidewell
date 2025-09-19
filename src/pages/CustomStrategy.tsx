@@ -12,7 +12,7 @@ import { AvatarUtils } from '../data/narrativeAvatars';
 import './CustomStrategy.css';
 
 type Scope = 'all' | 'debts' | 'savings' | 'investing';
-type Strategy = 'debt_crusher' | 'goal_keeper' | 'nest_builder';
+type Strategy = 'debt_crusher' | 'goal_keeper' | 'nest_builder' | 'steady_payer' | 'juggler' | 'interest_minimizer' | 'safety_builder' | 'auto_pilot' | 'opportunistic_saver' | 'future_investor' | 'balanced_builder' | 'risk_taker';
 type Timeframe = 'short' | 'mid' | 'long';
 
 export function CustomStrategy() {
@@ -34,7 +34,7 @@ export function CustomStrategy() {
   const [breakdownOpen, setBreakdownOpen] = useState(false);
   
   // Derived values
-  const maxMonths = timeframe === 'short' ? 12 : timeframe === 'mid' ? 60 : 120;
+  // const maxMonths = timeframe === 'short' ? 12 : timeframe === 'mid' ? 60 : 120;
   
   // Calculate goals monthly contribution
   const goalsMonthly = goals.reduce((sum, goal) => sum + (goal.monthlyContribution || 0), 0);
@@ -95,10 +95,10 @@ export function CustomStrategy() {
 
     let narrative = `This ${avatar.name} scenario focuses on ${scopeText} over ${timeframeText[timeframe]}. `;
     
-    if (extra === undefined || extra === null) {
-      narrative += `Since no extra contribution was specified, we'll assume the maximum timeline of ${maxTimeText[timeframe]} for this educational scenario. `;
+    if (extra === undefined || extra === null || extra === 0) {
+      narrative += `With $0/month toward savings, your goals could accelerate. `;
     } else {
-      narrative += `With a monthly extra contribution of $${extra.toLocaleString()}, this strategy can help accelerate your progress. `;
+      narrative += `With $${extra.toLocaleString()}/month toward savings, your goals could accelerate. `;
     }
 
     // Add strategy-specific details

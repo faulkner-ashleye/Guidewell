@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import AppHeader from '../app/components/AppHeader';
 import { QuestionBlock } from '../components/QuestionBlock';
 import { ChipGroup, Chip } from '../components/ChipGroup';
-import { CardSelect, SelectCard } from '../components/CardSelect';
 import { ContributionEditor } from './strategies/components/ContributionEditor';
+import { AvatarSelector } from '../components/AvatarSelector';
+import { NarrativeAvatar } from '../data/narrativeAvatars';
 import { useAppState } from '../state/AppStateContext';
 import './BuildStrategy.css';
 
+type Strategy = 'debt_crusher' | 'goal_keeper' | 'nest_builder' | 'steady_payer' | 'juggler' | 'interest_minimizer' | 'safety_builder' | 'auto_pilot' | 'opportunistic_saver' | 'future_investor' | 'balanced_builder' | 'risk_taker';
+
 type ScopeType = 'all' | 'debts' | 'savings' | 'investing';
-type StrategyType = 'debt_crusher' | 'goal_keeper' | 'nest_builder';
 type TimeframeType = 'short' | 'mid' | 'long';
 type AllocationMode = 'preset' | 'custom';
 
@@ -23,7 +25,7 @@ export function BuildStrategy() {
   const [scope, setScope] = useState<ScopeType>();
   const [scopeSelection, setScopeSelection] = useState<'all' | 'one'>(); // New: all vs one selection
   const [accountId, setAccountId] = useState<string>();
-  const [strategy, setStrategy] = useState<StrategyType>();
+  const [selectedAvatar, setSelectedAvatar] = useState<NarrativeAvatar | null>(null);
   const [timeframe, setTimeframe] = useState<TimeframeType>();
   const [extra, setExtra] = useState<number>();
   const [allocMode, setAllocMode] = useState<AllocationMode>('preset');
@@ -35,23 +37,11 @@ export function BuildStrategy() {
   // Animation state
   const [animateStep, setAnimateStep] = useState<number>(1);
 
-  // Mock accounts for dropdown
-  const mockAccounts = {
-    debts: [
-      { id: 'debt1', name: 'Credit Card #1', balance: 2500 },
-      { id: 'debt2', name: 'Student Loan', balance: 15000 },
-      { id: 'debt3', name: 'Car Loan', balance: 8000 }
-    ],
-    savings: [
-      { id: 'sav1', name: 'Emergency Fund', balance: 5000 },
-      { id: 'sav2', name: 'Vacation Fund', balance: 1200 },
-      { id: 'sav3', name: 'Wedding Fund', balance: 3000 }
-    ],
-    investing: [
-      { id: 'inv1', name: '401(k)', balance: 25000 },
-      { id: 'inv2', name: 'Roth IRA', balance: 8000 },
-      { id: 'inv3', name: 'Brokerage Account', balance: 5000 }
-    ]
+  // Real accounts organized by type for dropdown
+  const accountsByType = {
+    debts: accounts.filter(acc => acc.type === 'credit_card' || acc.type === 'loan'),
+    savings: accounts.filter(acc => acc.type === 'checking' || acc.type === 'savings'),
+    investing: accounts.filter(acc => acc.type === 'investment')
   };
 
   const handleBack = () => {
@@ -85,21 +75,16 @@ export function BuildStrategy() {
     setTimeout(() => setAnimateStep(2), 300);
   };
 
-  const handleStrategySelect = (selectedStrategy: StrategyType) => {
-    setStrategy(selectedStrategy);
+  const handleAvatarSelect = (avatar: NarrativeAvatar) => {
+    setSelectedAvatar(avatar);
     
-    // Set preset allocation based on strategy
-    switch (selectedStrategy) {
-      case 'debt_crusher':
-        setAlloc({ debt: 70, savings: 20, investing: 10 });
-        break;
-      case 'goal_keeper':
-        setAlloc({ debt: 30, savings: 50, investing: 20 });
-        break;
-      case 'nest_builder':
-        setAlloc({ debt: 20, savings: 30, investing: 50 });
-        break;
-    }
+    // Set allocation based on avatar
+    setAlloc({ 
+      debt: avatar.allocation.debt, 
+      savings: avatar.allocation.savings, 
+      investing: avatar.allocation.investing 
+    });
+    
     // Trigger animation for next step
     setTimeout(() => setAnimateStep(3), 300);
   };
@@ -111,25 +96,16 @@ export function BuildStrategy() {
   };
 
 
-  const handleAllocationModeChange = (mode: AllocationMode) => {
-    setAllocMode(mode);
-  };
-
-  const handleAllocationChange = (type: 'debt' | 'savings' | 'investing', value: number) => {
-    if (!alloc) return;
-    
-    const newAlloc = { ...alloc, [type]: value };
-    setAlloc(newAlloc);
-  };
 
 
   const handleViewBreakdown = () => {
-    console.log('Build Strategy button clicked!', { scope, strategy, timeframe, extra, alloc });
+    console.log('Build Strategy button clicked!', { scope, selectedAvatar, timeframe, extra, alloc });
     // Navigate to custom strategy page with current data
     navigate('/custom-strategy', {
       state: {
         scope,
-        strategy,
+        strategy: selectedAvatar?.id,
+        avatar: selectedAvatar,
         timeframe,
         extra,
         allocation: alloc
@@ -142,7 +118,7 @@ export function BuildStrategy() {
   const isStepCompleted = (step: number): boolean => {
     switch (step) {
       case 1: return scope !== undefined && (scope === 'all' || scopeSelection === 'all' || !!accountId);
-      case 2: return strategy !== undefined;
+      case 2: return selectedAvatar !== null;
       case 3: return timeframe !== undefined;
       case 4: return true; // Extra contribution is optional, always considered "completed"
       default: return false;
@@ -232,7 +208,7 @@ export function BuildStrategy() {
                 className="account-selection-dropdown"
               >
                 <option value="">Choose an account...</option>
-                {scope && mockAccounts[scope]?.map(account => (
+                {scope && accountsByType[scope]?.map(account => (
                   <option key={account.id} value={account.id}>
                     {account.name} (${account.balance.toLocaleString()})
                   </option>
@@ -254,35 +230,18 @@ export function BuildStrategy() {
               completed={isStepCompleted(2)}
               locked={isStepCompleted(2)}
             >
-            <CardSelect>
-              <SelectCard
-                title="Debt Crusher"
-                description="Aggressively pay down debt while maintaining minimal savings"
-                selected={strategy === 'debt_crusher'}
-                onClick={() => handleStrategySelect('debt_crusher')}
-                icon="💪"
-              />
-              <SelectCard
-                title="Goal Keeper"
-                description="Balanced approach focusing on savings goals and debt management"
-                selected={strategy === 'goal_keeper'}
-                onClick={() => handleStrategySelect('goal_keeper')}
-                icon="🎯"
-              />
-              <SelectCard
-                title="Nest Builder"
-                description="Long-term wealth building with emphasis on investments"
-                selected={strategy === 'nest_builder'}
-                onClick={() => handleStrategySelect('nest_builder')}
-                icon="🏗️"
-              />
-            </CardSelect>
+            <AvatarSelector
+              accountTypes={accounts.map(account => account.type)}
+              focusCategory={scope === 'debts' ? 'debt' : scope === 'savings' ? 'savings' : scope === 'investing' ? 'investment' : undefined}
+              selectedAvatar={selectedAvatar?.id}
+              onAvatarSelect={handleAvatarSelect}
+            />
             </QuestionBlock>
           </div>
         )}
 
         {/* Step 3: Timeframe Selection */}
-        {strategy && (
+        {selectedAvatar && (
         <div 
           className={`strategy-step ${animateStep >= 3 ? 'animate-slide-up' : 'animate-fade-in'}`}
         >
@@ -328,7 +287,7 @@ export function BuildStrategy() {
               extra={extra}
               allocMode={allocMode}
               allocation={alloc}
-              strategy={strategy || 'debt_crusher'}
+              strategy={(selectedAvatar?.id || 'debt_crusher') as Strategy}
               scope={scope || 'all'}
               accounts={accounts}
               transactions={transactions}
@@ -342,10 +301,10 @@ export function BuildStrategy() {
             <div className="debug-info">
               <strong>Debug Info:</strong><br/>
               Scope: {scope || 'undefined'}<br/>
-              Strategy: {strategy || 'undefined'}<br/>
+              Strategy: {selectedAvatar?.name || 'undefined'}<br/>
               Timeframe: {timeframe || 'undefined'}<br/>
               Extra: {extra || 'undefined'}<br/>
-              Button disabled: {(!scope || !strategy || !timeframe).toString()}
+              Button disabled: {(!scope || !selectedAvatar || !timeframe).toString()}
             </div>
 
             {/* Build Strategy Button */}
@@ -353,24 +312,24 @@ export function BuildStrategy() {
               <button
                 onClick={(e) => {
                   console.log('Button clicked!', e);
-                  console.log('Current state:', { scope, strategy, timeframe, extra, alloc });
+                  console.log('Current state:', { scope, selectedAvatar, timeframe, extra, alloc });
                   handleViewBreakdown();
                 }}
-                disabled={!scope || !strategy || !timeframe}
+                disabled={!scope || !selectedAvatar || !timeframe}
                 className={`build-strategy-button ${
-                  (!scope || !strategy || !timeframe) 
+                  (!scope || !selectedAvatar || !timeframe) 
                     ? 'build-strategy-button-disabled' 
                     : 'build-strategy-button-enabled'
                 }`}
                 onMouseEnter={(e) => {
-                  if (!(!scope || !strategy || !timeframe)) {
+                  if (!(!scope || !selectedAvatar || !timeframe)) {
                     e.currentTarget.style.background = '#059669';
                     e.currentTarget.style.transform = 'translateY(-2px)';
                     e.currentTarget.style.boxShadow = '0 6px 16px rgba(16, 185, 129, 0.4)';
                   }
                 }}
                 onMouseLeave={(e) => {
-                  if (!(!scope || !strategy || !timeframe)) {
+                  if (!(!scope || !selectedAvatar || !timeframe)) {
                     e.currentTarget.style.background = '#10b981';
                     e.currentTarget.style.transform = 'translateY(0)';
                     e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.3)';

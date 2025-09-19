@@ -3,7 +3,7 @@ import { Transaction } from '../lib/supabase';
 
 // Strategy scope
 export type Scope = 'all' | 'debts' | 'savings' | 'investing';
-export type Strat = 'debt_crusher' | 'goal_keeper' | 'nest_builder';
+export type Strat = 'debt_crusher' | 'goal_keeper' | 'nest_builder' | 'steady_payer' | 'juggler' | 'interest_minimizer' | 'safety_builder' | 'auto_pilot' | 'opportunistic_saver' | 'future_investor' | 'balanced_builder' | 'risk_taker';
 
 type Inputs = {
   accounts: Account[];
@@ -24,11 +24,28 @@ export function estimateBaselineMonthly(
   if (scope === 'investing') return estimateInvestingMonthly(accounts, transactions, goalsMonthly, lookbackDays);
 
   // 2) 'all' → weighted by chosen strategy focus
-  // MVP: use debts baseline if strategy is debt_crusher; savings if goal_keeper; investing if nest_builder
+  // Map avatar strategies to their respective categories
   switch (strategy) {
-    case 'debt_crusher':  return estimateDebtsMonthly(accounts, transactions, lookbackDays);
-    case 'goal_keeper':   return estimateSavingsMonthly(accounts, transactions, goalsMonthly, lookbackDays);
-    case 'nest_builder':  return estimateInvestingMonthly(accounts, transactions, goalsMonthly, lookbackDays);
+    // Debt-focused avatars
+    case 'debt_crusher':
+    case 'steady_payer':
+    case 'juggler':
+    case 'interest_minimizer':
+      return estimateDebtsMonthly(accounts, transactions, lookbackDays);
+    
+    // Savings-focused avatars
+    case 'goal_keeper':
+    case 'safety_builder':
+    case 'auto_pilot':
+    case 'opportunistic_saver':
+      return estimateSavingsMonthly(accounts, transactions, goalsMonthly, lookbackDays);
+    
+    // Investment-focused avatars
+    case 'nest_builder':
+    case 'future_investor':
+    case 'balanced_builder':
+    case 'risk_taker':
+      return estimateInvestingMonthly(accounts, transactions, goalsMonthly, lookbackDays);
   }
 }
 
