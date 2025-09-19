@@ -8,6 +8,7 @@ import { StrategyCardSelect } from './strategies/components/StrategyCardSelect';
 import { TimelineChips } from './strategies/components/TimelineChips';
 import { ContributionEditor } from './strategies/components/ContributionEditor';
 import { BreakdownModal } from '../app/strategies/components/BreakdownModal';
+import { AvatarUtils } from '../data/narrativeAvatars';
 import './CustomStrategy.css';
 
 type Scope = 'all' | 'debts' | 'savings' | 'investing';
@@ -75,12 +76,9 @@ export function CustomStrategy() {
 
   // Generate narrative based on current selections
   const generateNarrative = () => {
-    const strategyNames = {
-      debt_crusher: 'Debt Crusher',
-      goal_keeper: 'Goal Keeper', 
-      nest_builder: 'Nest Builder'
-    };
-
+    const avatar = AvatarUtils.getAvatarById(strategy);
+    if (!avatar) return 'Select a strategy to see your narrative.';
+    
     const timeframeText = {
       short: '3-12 months',
       mid: '1-5 years',
@@ -95,9 +93,9 @@ export function CustomStrategy() {
 
     const scopeText = scope === 'all' ? 'all accounts' : scope;
 
-    let narrative = `This ${strategyNames[strategy]} scenario focuses on ${scopeText} over ${timeframeText[timeframe]}. `;
+    let narrative = `This ${avatar.name} scenario focuses on ${scopeText} over ${timeframeText[timeframe]}. `;
     
-    if (extra === undefined) {
+    if (extra === undefined || extra === null) {
       narrative += `Since no extra contribution was specified, we'll assume the maximum timeline of ${maxTimeText[timeframe]} for this educational scenario. `;
     } else {
       narrative += `With a monthly extra contribution of $${extra.toLocaleString()}, this strategy can help accelerate your progress. `;

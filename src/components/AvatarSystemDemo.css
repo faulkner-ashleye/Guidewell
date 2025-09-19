@@ -1,0 +1,282 @@
+.avatar-system-demo {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.demo-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.demo-header h2 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1F2937;
+  margin: 0 0 8px 0;
+}
+
+.demo-header p {
+  font-size: 16px;
+  color: #6B7280;
+  margin: 0;
+}
+
+.demo-controls {
+  background: #F9FAFB;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+  border: 1px solid #E5E7EB;
+}
+
+.context-selector h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1F2937;
+  margin: 0 0 16px 0;
+}
+
+.context-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.context-button {
+  background: white;
+  border: 2px solid #D1D5DB;
+  color: #374151;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.context-button:hover {
+  border-color: #3B82F6;
+  color: #3B82F6;
+}
+
+.context-button.active {
+  background: #3B82F6;
+  color: white;
+  border-color: #3B82F6;
+}
+
+.context-description {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid #E5E7EB;
+}
+
+.context-description p {
+  margin: 0;
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.avatar-selector-container {
+  margin-bottom: 32px;
+}
+
+.selected-avatar-details {
+  background: #F0F9FF;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+  border: 1px solid #DBEAFE;
+}
+
+.selected-avatar-details h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1F2937;
+  margin: 0 0 20px 0;
+}
+
+.avatar-detail-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #E5E7EB;
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.detail-icon {
+  font-size: 48px;
+}
+
+.detail-info h4 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1F2937;
+  margin: 0 0 4px 0;
+}
+
+.detail-category {
+  font-size: 12px;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.detail-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.detail-section h5 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-section p {
+  font-size: 14px;
+  color: #6B7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.allocation-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.allocation-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #F9FAFB;
+  border-radius: 6px;
+}
+
+.allocation-label {
+  font-size: 13px;
+  color: #6B7280;
+  font-weight: 500;
+}
+
+.allocation-value {
+  font-size: 13px;
+  color: #1F2937;
+  font-weight: 600;
+}
+
+.risk-timeline {
+  display: flex;
+  gap: 8px;
+}
+
+.risk-badge,
+.timeline-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.risk-badge {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.timeline-badge {
+  background: #EFF6FF;
+  color: #1D4ED8;
+}
+
+.demo-info {
+  background: #F9FAFB;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #E5E7EB;
+}
+
+.demo-info h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1F2937;
+  margin: 0 0 20px 0;
+  text-align: center;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.info-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #E5E7EB;
+}
+
+.info-card h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1F2937;
+  margin: 0 0 12px 0;
+}
+
+.info-card p {
+  font-size: 14px;
+  color: #6B7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .avatar-system-demo {
+    padding: 16px;
+  }
+  
+  .demo-header h2 {
+    font-size: 24px;
+  }
+  
+  .context-buttons {
+    flex-direction: column;
+  }
+  
+  .context-button {
+    width: 100%;
+  }
+  
+  .detail-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .detail-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}

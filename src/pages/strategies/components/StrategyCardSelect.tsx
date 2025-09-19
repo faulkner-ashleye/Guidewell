@@ -1,10 +1,13 @@
 import React from 'react';
+import { anchorAvatars, NarrativeAvatar } from '../../../data/narrativeAvatars';
 
 type Strategy = 'debt_crusher' | 'goal_keeper' | 'nest_builder';
 
 interface StrategyCardSelectProps {
   selected: Strategy;
   onSelect: (strategy: Strategy) => void;
+  accountTypes?: string[];
+  focusCategory?: 'debt' | 'savings' | 'investment';
 }
 
 interface SelectCardProps {
@@ -42,27 +45,21 @@ function SelectCard({ title, description, selected, onClick, icon }: SelectCardP
   );
 }
 
-export function StrategyCardSelect({ selected, onSelect }: StrategyCardSelectProps) {
-  const strategies = [
-    {
-      id: 'debt_crusher' as Strategy,
-      title: 'Debt Crusher',
-      description: 'Aggressively pay down debt while maintaining minimal savings',
-      icon: '💪'
-    },
-    {
-      id: 'goal_keeper' as Strategy,
-      title: 'Goal Keeper', 
-      description: 'Balanced approach focusing on savings goals and debt management',
-      icon: '🎯'
-    },
-    {
-      id: 'nest_builder' as Strategy,
-      title: 'Nest Builder',
-      description: 'Long-term wealth building with emphasis on investments',
-      icon: '🏗️'
-    }
-  ];
+export function StrategyCardSelect({ selected, onSelect, accountTypes = [], focusCategory }: StrategyCardSelectProps) {
+  // Get appropriate avatars based on context
+  const availableAvatars = focusCategory 
+    ? anchorAvatars.filter(avatar => avatar.category === focusCategory)
+    : anchorAvatars;
+
+  const strategies = availableAvatars.map(avatar => ({
+    id: avatar.id as Strategy,
+    title: avatar.name,
+    description: avatar.description,
+    icon: avatar.emoji,
+    narrative: avatar.narrative,
+    balance: avatar.balance,
+    allocation: avatar.allocation
+  }));
 
   return (
     <div className="flex flex-col gap-md">

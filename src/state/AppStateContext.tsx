@@ -21,6 +21,8 @@ export interface UserProfile {
   comfortLevel?: string;
   primaryGoalAccountId?: string; // ID of account linked to primary goal
   hasSampleData?: boolean; // Flag to indicate if sample data was loaded
+  riskTolerance?: 'conservative' | 'moderate' | 'aggressive';
+  financialLiteracy?: 'beginner' | 'intermediate' | 'advanced';
 }
 
 export interface StrategyAllocation {

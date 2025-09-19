@@ -1,0 +1,275 @@
+.avatar-selector {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.avatar-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.avatar-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1F2937;
+  margin: 0 0 8px 0;
+}
+
+.avatar-description {
+  font-size: 16px;
+  color: #6B7280;
+  margin: 0;
+}
+
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.avatar-card {
+  background: white;
+  border: 2px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-card:hover {
+  border-color: #3B82F6;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-card.selected {
+  border-color: #3B82F6;
+  background: #EFF6FF;
+}
+
+.avatar-card.anchor {
+  border-color: #10B981;
+}
+
+.avatar-card.anchor:hover {
+  border-color: #059669;
+}
+
+.avatar-card.anchor.selected {
+  background: #ECFDF5;
+}
+
+.avatar-icon {
+  font-size: 48px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.avatar-content {
+  text-align: center;
+}
+
+.avatar-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1F2937;
+  margin: 0 0 12px 0;
+}
+
+.avatar-narrative {
+  font-size: 14px;
+  color: #374151;
+  font-style: italic;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+}
+
+.avatar-balance {
+  margin-bottom: 20px;
+}
+
+.balance-label {
+  font-size: 12px;
+  color: #6B7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.balance-text {
+  display: block;
+  font-size: 13px;
+  color: #374151;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.avatar-allocation {
+  margin-top: 16px;
+}
+
+.allocation-bar {
+  display: flex;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  background: #F3F4F6;
+}
+
+.allocation-segment {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.allocation-segment.debt {
+  background: #EF4444;
+}
+
+.allocation-segment.savings {
+  background: #10B981;
+}
+
+.allocation-segment.investment {
+  background: #3B82F6;
+}
+
+.allocation-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #6B7280;
+}
+
+.allocation-label {
+  font-weight: 500;
+}
+
+.anchor-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #10B981;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.avatar-toggle {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.toggle-button {
+  background: #F3F4F6;
+  color: #374151;
+  border: 1px solid #D1D5DB;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-button:hover {
+  background: #E5E7EB;
+  color: #1F2937;
+}
+
+.toggle-button.active {
+  background: #3B82F6;
+  color: white;
+  border-color: #3B82F6;
+}
+
+.recommended-section {
+  background: #F9FAFB;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #E5E7EB;
+}
+
+.recommended-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1F2937;
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+.recommended-avatars {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.recommended-avatar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.recommended-avatar:hover {
+  border-color: #3B82F6;
+  background: #EFF6FF;
+}
+
+.recommended-icon {
+  font-size: 20px;
+}
+
+.recommended-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .avatar-selector {
+    padding: 16px;
+  }
+  
+  .avatar-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .avatar-card {
+    padding: 16px;
+  }
+  
+  .avatar-icon {
+    font-size: 40px;
+  }
+  
+  .avatar-name {
+    font-size: 18px;
+  }
+  
+  .recommended-avatars {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .recommended-avatar {
+    width: 100%;
+    max-width: 200px;
+    justify-content: center;
+  }
+}

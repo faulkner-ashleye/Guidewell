@@ -1,0 +1,142 @@
+import React, { useState } from 'react';
+import { NarrativeAvatar, AvatarUtils, allAvatars } from '../data/narrativeAvatars';
+import './AvatarSelector.css';
+
+interface AvatarSelectorProps {
+  accountTypes: string[];
+  focusCategory?: 'debt' | 'savings' | 'investment';
+  selectedAvatar?: string;
+  onAvatarSelect: (avatar: NarrativeAvatar) => void;
+  userProfile?: {
+    riskTolerance: 'conservative' | 'moderate' | 'aggressive';
+    mainGoals: string[];
+    financialLiteracy: 'beginner' | 'intermediate' | 'advanced';
+  };
+}
+
+export function AvatarSelector({ 
+  accountTypes, 
+  focusCategory, 
+  selectedAvatar, 
+  onAvatarSelect,
+  userProfile 
+}: AvatarSelectorProps) {
+  const [showSupporting, setShowSupporting] = useState(false);
+
+  // Get appropriate avatars based on context
+  const availableAvatars = AvatarUtils.getAvatarsForContext(accountTypes, focusCategory);
+  const anchorAvatars = availableAvatars.filter(avatar => avatar.tier === 'anchor');
+  const supportingAvatars = availableAvatars.filter(avatar => avatar.tier === 'supporting');
+
+  // Get recommended avatars if user profile is provided
+  const recommendedAvatars = userProfile 
+    ? AvatarUtils.getRecommendedAvatars(userProfile)
+    : anchorAvatars;
+
+  const displayAvatars = showSupporting ? availableAvatars : anchorAvatars;
+
+  const handleAvatarClick = (avatar: NarrativeAvatar) => {
+    onAvatarSelect(avatar);
+  };
+
+  const getCategoryTitle = () => {
+    if (focusCategory === 'debt') return 'Debt Strategies';
+    if (focusCategory === 'savings') return 'Savings Strategies';
+    if (focusCategory === 'investment') return 'Investment Strategies';
+    return 'Financial Strategies';
+  };
+
+  const getCategoryDescription = () => {
+    if (focusCategory === 'debt') return 'Choose how to approach your debt payoff';
+    if (focusCategory === 'savings') return 'Choose how to build your savings';
+    if (focusCategory === 'investment') return 'Choose how to grow your investments';
+    return 'Choose a strategy that fits your financial goals';
+  };
+
+  return (
+    <div className="avatar-selector">
+      <div className="avatar-header">
+        <h3 className="avatar-title">{getCategoryTitle()}</h3>
+        <p className="avatar-description">{getCategoryDescription()}</p>
+      </div>
+
+      <div className="avatar-grid">
+        {displayAvatars.map(avatar => (
+          <div
+            key={avatar.id}
+            className={`avatar-card ${selectedAvatar === avatar.id ? 'selected' : ''} ${
+              avatar.tier === 'anchor' ? 'anchor' : 'supporting'
+            }`}
+            onClick={() => handleAvatarClick(avatar)}
+          >
+            <div className="avatar-icon">{avatar.emoji}</div>
+            <div className="avatar-content">
+              <h4 className="avatar-name">{avatar.name}</h4>
+              <p className="avatar-narrative">"{avatar.narrative}"</p>
+              <div className="avatar-balance">
+                <span className="balance-label">Balance:</span>
+                <span className="balance-text">{avatar.balance}</span>
+              </div>
+              <div className="avatar-allocation">
+                <div className="allocation-bar">
+                  <div 
+                    className="allocation-segment debt"
+                    style={{ width: `${avatar.allocation.debt}%` }}
+                    title={`${avatar.allocation.debt}% Debt`}
+                  ></div>
+                  <div 
+                    className="allocation-segment savings"
+                    style={{ width: `${avatar.allocation.savings}%` }}
+                    title={`${avatar.allocation.savings}% Savings`}
+                  ></div>
+                  <div 
+                    className="allocation-segment investment"
+                    style={{ width: `${avatar.allocation.investment}%` }}
+                    title={`${avatar.allocation.investment}% Investment`}
+                  ></div>
+                </div>
+                <div className="allocation-labels">
+                  <span className="allocation-label">Debt: {avatar.allocation.debt}%</span>
+                  <span className="allocation-label">Savings: {avatar.allocation.savings}%</span>
+                  <span className="allocation-label">Investment: {avatar.allocation.investment}%</span>
+                </div>
+              </div>
+            </div>
+            {avatar.tier === 'anchor' && (
+              <div className="anchor-badge">Main Strategy</div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {supportingAvatars.length > 0 && (
+        <div className="avatar-toggle">
+          <button 
+            className={`toggle-button ${showSupporting ? 'active' : ''}`}
+            onClick={() => setShowSupporting(!showSupporting)}
+          >
+            {showSupporting ? 'Show Main Strategies Only' : `Show All ${focusCategory || 'Financial'} Strategies (${supportingAvatars.length} more)`}
+          </button>
+        </div>
+      )}
+
+      {userProfile && recommendedAvatars.length > 0 && (
+        <div className="recommended-section">
+          <h4 className="recommended-title">Recommended for You</h4>
+          <div className="recommended-avatars">
+            {recommendedAvatars.slice(0, 2).map(avatar => (
+              <div
+                key={`rec-${avatar.id}`}
+                className="recommended-avatar"
+                onClick={() => handleAvatarClick(avatar)}
+              >
+                <span className="recommended-icon">{avatar.emoji}</span>
+                <span className="recommended-name">{avatar.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
