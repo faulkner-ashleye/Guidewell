@@ -4,6 +4,7 @@
 export interface DesignTokens {
   spacing: SpacingTokens;
   typography: TypographyTokens;
+  icons: IconTokens;
   colors: ColorTokens;
   radius: RadiusTokens;
   shadows: ShadowTokens;
@@ -25,29 +26,86 @@ export interface TypographyTokens {
   fontSize: FontSizeTokens;
   fontWeight: FontWeightTokens;
   lineHeight: LineHeightTokens;
+  letterSpacing: LetterSpacingTokens;
+  fontFamily: FontFamilyTokens;
 }
 
 export interface FontSizeTokens {
-  xs: string;
-  sm: string;
-  base: string;
-  lg: string;
-  xl: string;
-  '2xl': string;
-  '3xl': string;
+  xs: string;        // 12px (0.75rem)
+  sm: string;        // 14px (0.875rem)
+  base: string;      // 16px (1rem)
+  lg: string;        // 18px (1.125rem)
+  xl: string;        // 20px (1.25rem)
+  '2xl': string;     // 24px (1.5rem)
+  '3xl': string;     // 30px (1.875rem)
+  '4xl': string;     // 32px (2rem)
 }
 
 export interface FontWeightTokens {
-  normal: string;
-  medium: string;
-  semibold: string;
-  bold: string;
+  light: string;     // 200
+  normal: string;    // 400
+  medium: string;    // 500
+  semibold: string;  // 600
+  bold: string;      // 700
+  extrabold: string; // 800
 }
 
 export interface LineHeightTokens {
-  tight: string;
-  normal: string;
-  relaxed: string;
+  tight: string;     // 1.25
+  normal: string;    // 1.5
+  relaxed: string;   // 1.75
+  loose: string;     // 2
+}
+
+export interface LetterSpacingTokens {
+  tighter: string;   // -0.05em
+  tight: string;     // -0.025em
+  normal: string;    // 0em
+  wide: string;      // 0.025em
+  wider: string;     // 0.05em
+  widest: string;    // 0.1em
+}
+
+export interface FontFamilyTokens {
+  sans: string;      // Manrope font family
+  mono: string;      // Monospace fallback
+  icons: string;     // Material Icons font family
+}
+
+export interface IconTokens {
+  size: IconSizeTokens;
+  color: IconColorTokens;
+  alignment: IconAlignmentTokens;
+}
+
+export interface IconSizeTokens {
+  xs: string;        // 12px
+  sm: string;        // 16px
+  md: string;        // 20px
+  lg: string;        // 24px
+  xl: string;        // 28px
+  '2xl': string;     // 32px
+  '3xl': string;     // 40px
+  '4xl': string;     // 48px
+}
+
+export interface IconColorTokens {
+  primary: string;
+  success: string;
+  warning: string;
+  error: string;
+  debt: string;
+  savings: string;
+  investing: string;
+  muted: string;
+  white: string;
+}
+
+export interface IconAlignmentTokens {
+  top: string;
+  middle: string;
+  bottom: string;
+  baseline: string;
 }
 
 export interface ColorTokens {
@@ -106,24 +164,70 @@ export const designTokens: DesignTokens = {
   },
   typography: {
     fontSize: {
-      xs: '11px',
-      sm: '12px',
-      base: '14px',
-      lg: '16px',
-      xl: '18px',
-      '2xl': '20px',
-      '3xl': '24px'
+      xs: '12px',      // 0.75rem
+      sm: '14px',      // 0.875rem
+      base: '16px',    // 1rem
+      lg: '18px',      // 1.125rem
+      xl: '20px',      // 1.25rem
+      '2xl': '24px',   // 1.5rem
+      '3xl': '30px',   // 1.875rem
+      '4xl': '32px'    // 2rem
     },
     fontWeight: {
+      light: '200',
       normal: '400',
       medium: '500',
       semibold: '600',
-      bold: '700'
+      bold: '700',
+      extrabold: '800'
     },
     lineHeight: {
       tight: '1.25',
       normal: '1.5',
-      relaxed: '1.75'
+      relaxed: '1.75',
+      loose: '2'
+    },
+    letterSpacing: {
+      tighter: '-0.05em',
+      tight: '-0.025em',
+      normal: '0em',
+      wide: '0.025em',
+      wider: '0.05em',
+      widest: '0.1em'
+    },
+    fontFamily: {
+      sans: '"Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
+      mono: '"SF Mono", "Monaco", "Inconsolata", "Roboto Mono", "Courier New", monospace',
+      icons: '"Material Symbols Outlined"'
+    }
+  },
+  icons: {
+    size: {
+      xs: '12px',
+      sm: '16px',
+      md: '20px',
+      lg: '24px',
+      xl: '28px',
+      '2xl': '32px',
+      '3xl': '40px',
+      '4xl': '48px'
+    },
+    color: {
+      primary: 'var(--color-primary)',
+      success: 'var(--color-success)',
+      warning: 'var(--color-warning)',
+      error: 'var(--color-error)',
+      debt: 'var(--color-debt)',
+      savings: 'var(--color-savings)',
+      investing: 'var(--color-investing)',
+      muted: 'var(--color-text-muted)',
+      white: 'white'
+    },
+    alignment: {
+      top: 'top',
+      middle: 'middle',
+      bottom: 'bottom',
+      baseline: 'baseline'
     }
   },
   colors: {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Icon, IconNames } from './Icon';
 
 interface NavItem {
   path: string;
@@ -8,10 +9,10 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { path: '/home', label: 'Home', icon: '🏠' },
-  { path: '/strategies', label: 'Strategies', icon: '📊' },
-  { path: '/plan', label: 'Plan', icon: '📋' },
-  { path: '/settings', label: 'Settings', icon: '⚙️' }
+  { path: '/home', label: 'Home', icon: IconNames.home },
+  { path: '/strategies', label: 'Strategies', icon: IconNames.show_chart },
+  { path: '/plan', label: 'Plan', icon: IconNames.description },
+  { path: '/settings', label: 'Settings', icon: IconNames.settings }
 ];
 
 export function NavBar() {
@@ -29,7 +30,15 @@ export function NavBar() {
               : ''
           }`}
         >
-          <span className="navbar-icon">{item.icon}</span>
+          <Icon 
+            name={item.icon} 
+            size="sm" 
+            className={`navbar-icon ${
+              location.pathname === item.path 
+                ? 'icon-primary' 
+                : 'icon-muted'
+            }`}
+          />
           <span className="navbar-label">{item.label}</span>
         </Link>
       ))}

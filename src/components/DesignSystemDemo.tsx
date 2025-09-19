@@ -7,6 +7,7 @@ import { Select } from './Inputs';
 import { Chip, ChipGroup } from './Chips';
 import { ProgressChart } from './Charts';
 import { Modal } from './Modal';
+import { Icon, IconNames } from './Icon';
 import './DesignSystemDemo.css';
 
 export function DesignSystemDemo() {
@@ -35,13 +36,31 @@ export function DesignSystemDemo() {
   ];
 
   const typographyExamples = [
-    { name: 'xs', class: 'text-xs', size: '11px' },
-    { name: 'sm', class: 'text-sm', size: '12px' },
-    { name: 'base', class: 'text-base', size: '14px' },
-    { name: 'lg', class: 'text-lg', size: '16px' },
-    { name: 'xl', class: 'text-xl', size: '18px' },
-    { name: '2xl', class: 'text-2xl', size: '20px' },
-    { name: '3xl', class: 'text-3xl', size: '24px' }
+    { name: 'xs', class: 'text-xs', size: '12px' },
+    { name: 'sm', class: 'text-sm', size: '14px' },
+    { name: 'base', class: 'text-base', size: '16px' },
+    { name: 'lg', class: 'text-lg', size: '18px' },
+    { name: 'xl', class: 'text-xl', size: '20px' },
+    { name: '2xl', class: 'text-2xl', size: '24px' },
+    { name: '3xl', class: 'text-3xl', size: '30px' },
+    { name: '4xl', class: 'text-4xl', size: '32px' }
+  ];
+
+  const typographyScaleExamples = [
+    { name: 'Display 1', class: 'typography-display1', size: '32px', weight: '600', description: 'Large display text' },
+    { name: 'Display 2', class: 'typography-display2', size: '30px', weight: '600', description: 'Medium display text' },
+    { name: 'H1', class: 'typography-h1', size: '24px', weight: '600', description: 'Main heading' },
+    { name: 'H2', class: 'typography-h2', size: '20px', weight: '600', description: 'Section heading' },
+    { name: 'H3', class: 'typography-h3', size: '18px', weight: '600', description: 'Subsection heading' },
+    { name: 'H4', class: 'typography-h4', size: '16px', weight: '600', description: 'Card heading' },
+    { name: 'H5', class: 'typography-h5', size: '16px', weight: '600', description: 'Small heading' },
+    { name: 'H6', class: 'typography-h6', size: '14px', weight: '600', description: 'Tiny heading' },
+    { name: 'Subtitle 1', class: 'typography-subtitle1', size: '14px', weight: '500', description: 'Medium weight subtitle' },
+    { name: 'Subtitle 2', class: 'typography-subtitle2', size: '14px', weight: '500', description: 'Alternative subtitle' },
+    { name: 'Body 1', class: 'typography-body1', size: '16px', weight: '400', description: 'Main body text' },
+    { name: 'Body 2', class: 'typography-body2', size: '14px', weight: '400', description: 'Secondary body text' },
+    { name: 'Overline', class: 'typography-overline', size: '12px', weight: '400', description: 'Uppercase labels' },
+    { name: 'Caption', class: 'typography-caption', size: '12px', weight: '400', description: 'Small captions' }
   ];
 
   const radiusExamples = [
@@ -58,6 +77,43 @@ export function DesignSystemDemo() {
     { name: 'md', class: 'shadow-md', value: '0 4px 6px rgba(0, 0, 0, 0.1)' },
     { name: 'lg', class: 'shadow-lg', value: '0 10px 15px rgba(0, 0, 0, 0.1)' },
     { name: 'xl', class: 'shadow-xl', value: '0 20px 25px rgba(0, 0, 0, 0.1)' }
+  ];
+
+  const iconSizeExamples = [
+    { name: 'xs', size: 'xs', value: '12px' },
+    { name: 'sm', size: 'sm', value: '16px' },
+    { name: 'md', size: 'md', value: '20px' },
+    { name: 'lg', size: 'lg', value: '24px' },
+    { name: 'xl', size: 'xl', value: '28px' },
+    { name: '2xl', size: '2xl', value: '32px' },
+    { name: '3xl', size: '3xl', value: '40px' },
+    { name: '4xl', size: '4xl', value: '48px' }
+  ];
+
+  const iconColorExamples = [
+    { name: 'Primary', color: 'primary' },
+    { name: 'Success', color: 'success' },
+    { name: 'Warning', color: 'warning' },
+    { name: 'Error', color: 'error' },
+    { name: 'Debt', color: 'debt' },
+    { name: 'Savings', color: 'savings' },
+    { name: 'Investing', color: 'investing' },
+    { name: 'Muted', color: 'muted' }
+  ];
+
+  const commonIcons = [
+    { name: 'Home', icon: IconNames.home },
+    { name: 'Settings', icon: IconNames.settings },
+    { name: 'Account Balance', icon: IconNames.account_balance },
+    { name: 'Credit Card', icon: IconNames.credit_card },
+    { name: 'Savings', icon: IconNames.savings },
+    { name: 'Trending Up', icon: IconNames.trending_up },
+    { name: 'Payment', icon: IconNames.payment },
+    { name: 'Check Circle', icon: IconNames.check_circle },
+    { name: 'Warning', icon: IconNames.warning },
+    { name: 'Error', icon: IconNames.error },
+    { name: 'Search', icon: IconNames.search },
+    { name: 'Add', icon: IconNames.add }
   ];
 
   return (
@@ -130,7 +186,7 @@ export function DesignSystemDemo() {
       {/* Typography System */}
       <Card className="demo-section">
         <h2>Typography System</h2>
-        <p>Consistent font sizes and weights:</p>
+        <p>Consistent font sizes and weights using Manrope font:</p>
         <div className="typography-examples">
           {typographyExamples.map((type) => (
             <div key={type.name} className="typography-example">
@@ -140,6 +196,31 @@ export function DesignSystemDemo() {
               <div className="typography-info">
                 <code>{type.class}</code>
                 <span>{type.size}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {/* Comprehensive Typography Scale */}
+      <Card className="demo-section">
+        <h2>Typography Scale Tokens</h2>
+        <p>Complete typography scale matching design system specifications:</p>
+        <div className="typography-scale-examples">
+          {typographyScaleExamples.map((type) => (
+            <div key={type.name} className="typography-scale-example">
+              <div className={`typography-scale-sample ${type.class}`}>
+                {type.name} - {type.description}
+              </div>
+              <div className="typography-scale-info">
+                <div className="typography-scale-details">
+                  <code>{type.class}</code>
+                  <span>{type.size}</span>
+                  <span>{type.weight}</span>
+                </div>
+                <div className="typography-scale-description">
+                  {type.description}
+                </div>
               </div>
             </div>
           ))}
@@ -184,6 +265,74 @@ export function DesignSystemDemo() {
         </div>
       </Card>
 
+      {/* Icon System */}
+      <Card className="demo-section">
+        <h2>Icon System</h2>
+        <p>Google Material Symbols Outlined (weight 300) with consistent sizing and colors:</p>
+        
+        {/* Basic Icon Test */}
+        <div className="icon-section">
+          <h3>Basic Icon Test</h3>
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px' }}>
+            <span className="material-icons" style={{ fontSize: '24px' }}>home</span>
+            <span>Direct Material Icons (home)</span>
+          </div>
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px' }}>
+            <Icon name="home" size="lg" />
+            <span>Icon Component (home)</span>
+          </div>
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px' }}>
+            <Icon name="settings" size="lg" color="primary" />
+            <span>Icon Component (settings)</span>
+          </div>
+        </div>
+        
+        {/* Icon Sizes */}
+        <div className="icon-section">
+          <h3>Icon Sizes</h3>
+          <div className="icon-size-examples">
+            {iconSizeExamples.map((iconSize) => (
+              <div key={iconSize.name} className="icon-size-example">
+                <Icon name={IconNames.home} size={iconSize.size as any} />
+                <div className="icon-size-info">
+                  <code>icon-{iconSize.name}</code>
+                  <span>{iconSize.value}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Icon Colors */}
+        <div className="icon-section">
+          <h3>Icon Colors</h3>
+          <div className="icon-color-examples">
+            {iconColorExamples.map((iconColor) => (
+              <div key={iconColor.name} className="icon-color-example">
+                <Icon name={IconNames.account_balance} color={iconColor.color as any} />
+                <div className="icon-color-info">
+                  <code>icon-{iconColor.color}</code>
+                  <span>{iconColor.name}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Common Icons */}
+        <div className="icon-section">
+          <h3>Common Financial Icons</h3>
+          <div className="common-icons-examples">
+            {commonIcons.map((icon) => (
+              <div key={icon.name} className="common-icon-example">
+                <Icon name={icon.icon} />
+                <span className="common-icon-label">{icon.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Card>
+
       {/* Component Examples */}
       <Card className="demo-section">
         <h2>Component Examples</h2>
@@ -194,13 +343,34 @@ export function DesignSystemDemo() {
           <div className="component-group">
             <h4>Buttons</h4>
             <div className="button-examples">
-              <button className="btn btn-primary">Primary</button>
-              <button className="btn btn-secondary">Secondary</button>
-              <button className="btn btn-success">Success</button>
-              <button className="btn btn-error">Error</button>
-              <button className="btn btn-debt">Debt</button>
-              <button className="btn btn-savings">Savings</button>
-              <button className="btn btn-investing">Investing</button>
+              <button className="btn btn-primary">
+                <Icon name={IconNames.add} size="sm" className="icon-white" />
+                Primary
+              </button>
+              <button className="btn btn-secondary">
+                <Icon name={IconNames.settings} size="sm" />
+                Secondary
+              </button>
+              <button className="btn btn-success">
+                <Icon name={IconNames.check_circle} size="sm" className="icon-white" />
+                Success
+              </button>
+              <button className="btn btn-error">
+                <Icon name={IconNames.error} size="sm" className="icon-white" />
+                Error
+              </button>
+              <button className="btn btn-debt">
+                <Icon name={IconNames.credit_card} size="sm" className="icon-white" />
+                Debt
+              </button>
+              <button className="btn btn-savings">
+                <Icon name={IconNames.savings} size="sm" className="icon-white" />
+                Savings
+              </button>
+              <button className="btn btn-investing">
+                <Icon name={IconNames.trending_up} size="sm" className="icon-white" />
+                Investing
+              </button>
             </div>
           </div>
 
@@ -208,20 +378,26 @@ export function DesignSystemDemo() {
           <div className="component-group">
             <h4>Inputs</h4>
             <div className="input-examples">
-              <Input
-                placeholder="Enter text..."
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-              />
-              <Select
-                value={selectValue}
-                onChange={(e) => setSelectValue(e.target.value)}
-                options={[
-                  { value: 'option1', label: 'Option 1' },
-                  { value: 'option2', label: 'Option 2' },
-                  { value: 'option3', label: 'Option 3' }
-                ]}
-              />
+              <div className="input-with-icon">
+                <Icon name={IconNames.search} size="sm" className="icon-muted" />
+                <Input
+                  placeholder="Search accounts..."
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                />
+              </div>
+              <div className="input-with-icon">
+                <Icon name={IconNames.account_balance} size="sm" className="icon-muted" />
+                <Select
+                  value={selectValue}
+                  onChange={(e) => setSelectValue(e.target.value)}
+                  options={[
+                    { value: 'option1', label: 'Checking Account' },
+                    { value: 'option2', label: 'Savings Account' },
+                    { value: 'option3', label: 'Investment Account' }
+                  ]}
+                />
+              </div>
             </div>
           </div>
 

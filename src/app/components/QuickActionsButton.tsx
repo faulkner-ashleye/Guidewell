@@ -1,4 +1,6 @@
 'use client';
+import { Icon, IconNames } from '../../components/Icon';
+
 export default function QuickActionsButton({ onClick }:{ onClick:()=>void }) {
   const handleClick = () => {
     console.log('QuickActionsButton clicked');
@@ -17,10 +19,13 @@ export default function QuickActionsButton({ onClick }:{ onClick:()=>void }) {
         border: 'none', 
         borderRadius: '8px',
         cursor: 'pointer',
-        fontSize: '14px'
+        fontSize: '14px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px'
       }}
     >
-      <span className="quick-actions-icon">＋</span>
+      <Icon name={IconNames.add} size="sm" className="icon-white" />
       <span>Quick actions</span>
     </button>
   );

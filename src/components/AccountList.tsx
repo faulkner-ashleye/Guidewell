@@ -2,6 +2,7 @@ import React from 'react';
 import { Account } from '../state/AppStateContext';
 import { groupAccountsByType, formatMoney, getAccountTypeLabel } from '../state/planSelectors';
 import { COLORS } from '../ui/colors';
+import { Icon, IconNames } from './Icon';
 
 interface AccountListProps {
   accounts: Account[];
@@ -13,13 +14,13 @@ export function AccountList({ accounts }: AccountListProps) {
   
   const getAccountIcon = (type: Account['type']): string => {
     const icons: Record<Account['type'], string> = {
-      'checking': '💳',
-      'savings': '💰',
-      'credit_card': '💳',
-      'loan': '🏦',
-      'investment': '📈'
+      'checking': IconNames.account_balance_wallet,
+      'savings': IconNames.savings,
+      'credit_card': IconNames.credit_card,
+      'loan': IconNames.account_balance,
+      'investment': IconNames.trending_up
     };
-    return icons[type] || '💳';
+    return icons[type] || IconNames.account_balance_wallet;
   };
   
   if (accounts.length === 0) {
@@ -48,7 +49,7 @@ export function AccountList({ accounts }: AccountListProps) {
                 <div key={account.id} className="px-4 py-3 sm:px-3 sm:py-2.5 rounded-lg border border-gray-200 bg-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
                   <div className="flex items-center gap-3">
                     <div className="text-lg sm:text-base w-6 sm:w-5 text-center flex-shrink-0">
-                      {getAccountIcon(account.type)}
+                      <Icon name={getAccountIcon(account.type)} size="sm" className="icon-muted" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="text-sm sm:text-xs font-medium mb-0.5 text-gray-900 text-truncate">

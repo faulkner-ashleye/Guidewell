@@ -1,5 +1,6 @@
 'use client';
 import Sheet from './Sheet';
+import { Icon, IconNames } from '../../components/Icon';
 
 type Props = {
   open: boolean;
@@ -31,7 +32,7 @@ function Row({ icon, title, desc, onClick }:{
       onMouseLeave={(e) => (e.target as HTMLButtonElement).style.backgroundColor = 'transparent'}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <span aria-hidden style={{ fontSize: '18px' }}>{icon}</span>
+        <Icon name={icon} size="sm" className="icon-muted" />
         <strong>{title}</strong>
       </div>
       <span style={{ opacity: 0.75, fontSize: '12px' }}>{desc}</span>
@@ -54,13 +55,13 @@ export default function QuickActionsSheet({
         paddingLeft: '4px',
         paddingRight: '4px'
       }}>
-        <Row icon="🎯" title="Add goal"
+        <Row icon={IconNames.add} title="Add goal"
              desc="Savings, debt payoff, or investing starter"
              onClick={() => { onClose(); onAddGoal(); }} />
-        <Row icon="🔗" title="Connect account"
+        <Row icon={IconNames.account_balance_wallet} title="Connect account"
              desc="Link via Plaid (or add another way)"
              onClick={() => { onClose(); onConnectAccount(); }} />
-        <Row icon="💸" title="Log contribution"
+        <Row icon={IconNames.payment} title="Log contribution"
              desc="Record a manual deposit or payment"
              onClick={() => { onClose(); onLogContribution(); }} />
       </div>
