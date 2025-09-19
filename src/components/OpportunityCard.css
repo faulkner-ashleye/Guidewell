@@ -1,0 +1,220 @@
+.opportunity-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+  overflow: hidden;
+  border: 1px solid #E5E7EB;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.opportunity-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.opportunity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 16px 0 16px;
+}
+
+.opportunity-title h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1F2937;
+  line-height: 1.4;
+}
+
+.opportunity-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.confidence-badge {
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.dismiss-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #6B7280;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.dismiss-button:hover {
+  background-color: #F3F4F6;
+  color: #374151;
+}
+
+.opportunity-details {
+  padding: 16px;
+}
+
+.opportunity-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.metric {
+  text-align: center;
+  padding: 12px;
+  background: #F9FAFB;
+  border-radius: 8px;
+}
+
+.metric.highlight {
+  background: #EFF6FF;
+  border: 1px solid #DBEAFE;
+}
+
+.metric-label {
+  display: block;
+  font-size: 12px;
+  color: #6B7280;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.metric-value {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1F2937;
+}
+
+.metric.highlight .metric-value {
+  color: #1D4ED8;
+}
+
+.opportunity-attributes {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.attribute {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #6B7280;
+}
+
+.attribute-icon {
+  font-size: 16px;
+}
+
+.attribute-text {
+  text-transform: capitalize;
+}
+
+.opportunity-description {
+  margin-bottom: 16px;
+}
+
+.opportunity-description p {
+  margin: 0;
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.opportunity-action {
+  background: #F9FAFB;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.action-required,
+.estimated-impact {
+  font-size: 13px;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.action-required:last-child,
+.estimated-impact:last-child {
+  margin-bottom: 0;
+}
+
+.action-required strong,
+.estimated-impact strong {
+  color: #1F2937;
+}
+
+.opportunity-footer {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  background: #F9FAFB;
+  border-top: 1px solid #E5E7EB;
+}
+
+.action-button {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.action-button.primary {
+  background: #3B82F6;
+  color: white;
+}
+
+.action-button.primary:hover {
+  background: #2563EB;
+}
+
+.action-button.secondary {
+  background: white;
+  color: #6B7280;
+  border: 1px solid #D1D5DB;
+}
+
+.action-button.secondary:hover {
+  background: #F9FAFB;
+  color: #374151;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+  .opportunity-metrics {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .opportunity-attributes {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .opportunity-footer {
+    flex-direction: column;
+  }
+  
+  .action-button {
+    flex: none;
+  }
+}

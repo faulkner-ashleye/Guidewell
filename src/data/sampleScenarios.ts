@@ -484,6 +484,382 @@ export const sampleScenarios: Record<string, SampleScenario> = {
       'Emergency fund building strategies'
     ],
     aiContext: 'Late 20s professional saving for major life milestone while managing debt. Needs encouraging, simple guidance focused on wedding savings and debt management.'
+  },
+
+  gigWorker: {
+    id: 'gig-worker-001',
+    name: 'Gig Worker',
+    description: 'Freelancer with irregular income, needs flexible financial planning and emergency fund strategies',
+    userProfile: {
+      id: 'gig-worker-001',
+      firstName: 'Riley',
+      age: 29,
+      ageRange: '26-30',
+      income: 45000, // Variable income
+      monthlyExpenses: 3200,
+      riskTolerance: 'moderate',
+      financialLiteracy: 'intermediate',
+      mainGoals: ['build_emergency', 'start_investing', 'save_big_goal'],
+      communicationStyle: 'concise',
+      notificationFrequency: 'weekly',
+      preferredLanguage: 'mixed',
+      aiPersonality: 'analytical',
+      detailLevel: 'high',
+      hasSampleData: true,
+      onboardingCompleted: true
+    },
+    accounts: [
+      {
+        id: 'checking-006',
+        name: 'Business Checking',
+        type: 'checking',
+        balance: 4500,
+        monthlyContribution: 0
+      },
+      {
+        id: 'savings-006',
+        name: 'Emergency Fund',
+        type: 'savings',
+        balance: 8000,
+        interestRate: 4.2,
+        monthlyContribution: 500
+      },
+      {
+        id: 'investment-006',
+        name: 'Roth IRA',
+        type: 'investment',
+        balance: 12000,
+        monthlyContribution: 400
+      },
+      {
+        id: 'credit-card-006',
+        name: 'Business Credit Card',
+        type: 'credit_card',
+        balance: 3200,
+        interestRate: 16.9,
+        monthlyContribution: 120
+      }
+    ],
+    goals: [
+      {
+        id: 'goal-014',
+        name: '6-Month Emergency Fund',
+        type: 'emergency_fund',
+        targetAmount: 19200, // 6 months expenses
+        currentAmount: 8000,
+        targetDate: '2025-12-31',
+        priority: 'high'
+      },
+      {
+        id: 'goal-015',
+        name: 'Maximize Roth IRA',
+        type: 'investment',
+        targetAmount: 7000, // Annual max
+        currentAmount: 12000,
+        targetDate: '2024-12-31',
+        priority: 'high'
+      },
+      {
+        id: 'goal-016',
+        name: 'Save for Equipment',
+        type: 'custom',
+        targetAmount: 5000,
+        currentAmount: 0,
+        targetDate: '2025-06-30',
+        priority: 'medium'
+      }
+    ],
+    expectedOpportunities: [
+      'High-yield savings for irregular income',
+      'Tax-advantaged retirement accounts',
+      'Business expense optimization',
+      'Income smoothing strategies',
+      'Freelancer-specific financial planning'
+    ],
+    aiContext: 'Freelancer with variable income needs flexible financial strategies. Requires analytical approach with focus on emergency fund and tax optimization.'
+  },
+
+  newParent: {
+    id: 'new-parent-001',
+    name: 'New Parent',
+    description: 'New parent adjusting to single income, managing childcare costs and planning for child\'s future',
+    userProfile: {
+      id: 'new-parent-001',
+      firstName: 'Morgan',
+      age: 31,
+      ageRange: '31-35',
+      income: 55000, // Reduced from dual income
+      monthlyExpenses: 4200, // Increased with childcare
+      riskTolerance: 'conservative',
+      financialLiteracy: 'beginner',
+      mainGoals: ['build_emergency', 'save_big_goal', 'start_investing'],
+      communicationStyle: 'detailed',
+      notificationFrequency: 'weekly',
+      preferredLanguage: 'simple',
+      aiPersonality: 'encouraging',
+      detailLevel: 'medium',
+      hasSampleData: true,
+      onboardingCompleted: true
+    },
+    accounts: [
+      {
+        id: 'checking-007',
+        name: 'Family Checking',
+        type: 'checking',
+        balance: 3200,
+        monthlyContribution: 0
+      },
+      {
+        id: 'savings-007',
+        name: 'Family Emergency Fund',
+        type: 'savings',
+        balance: 15000,
+        interestRate: 4.0,
+        monthlyContribution: 300
+      },
+      {
+        id: 'investment-007',
+        name: '529 College Fund',
+        type: 'investment',
+        balance: 5000,
+        monthlyContribution: 200
+      },
+      {
+        id: 'investment-007b',
+        name: '401k',
+        type: 'investment',
+        balance: 18000,
+        monthlyContribution: 300
+      }
+    ],
+    goals: [
+      {
+        id: 'goal-017',
+        name: 'Child Emergency Fund',
+        type: 'emergency_fund',
+        targetAmount: 25200, // 6 months expenses
+        currentAmount: 15000,
+        targetDate: '2025-12-31',
+        priority: 'high'
+      },
+      {
+        id: 'goal-018',
+        name: 'College Fund',
+        type: 'custom',
+        targetAmount: 50000,
+        currentAmount: 5000,
+        targetDate: '2040-12-31',
+        priority: 'medium'
+      },
+      {
+        id: 'goal-019',
+        name: 'Family Vacation',
+        type: 'custom',
+        targetAmount: 3000,
+        currentAmount: 0,
+        targetDate: '2025-08-31',
+        priority: 'low'
+      }
+    ],
+    expectedOpportunities: [
+      '529 college savings plan optimization',
+      'Childcare expense budgeting',
+      'Life insurance planning',
+      'Family emergency fund strategies',
+      'Tax-advantaged savings for children'
+    ],
+    aiContext: 'New parent adjusting to single income and increased expenses. Needs encouraging, simple guidance focused on family financial security and child\'s future.'
+  },
+
+  earlyRetirement: {
+    id: 'early-retirement-001',
+    name: 'Early Retirement Planner',
+    description: 'High earner in 30s aggressively saving for early retirement, optimizing tax strategies',
+    userProfile: {
+      id: 'early-retirement-001',
+      firstName: 'Casey',
+      age: 34,
+      ageRange: '31-35',
+      income: 120000,
+      monthlyExpenses: 4500,
+      riskTolerance: 'aggressive',
+      financialLiteracy: 'advanced',
+      mainGoals: ['retirement', 'start_investing', 'save_big_goal'],
+      communicationStyle: 'detailed',
+      notificationFrequency: 'monthly',
+      preferredLanguage: 'technical',
+      aiPersonality: 'analytical',
+      detailLevel: 'high',
+      hasSampleData: true,
+      onboardingCompleted: true
+    },
+    accounts: [
+      {
+        id: 'checking-008',
+        name: 'High-Yield Checking',
+        type: 'checking',
+        balance: 12000,
+        monthlyContribution: 0
+      },
+      {
+        id: 'savings-008',
+        name: 'Taxable Savings',
+        type: 'savings',
+        balance: 25000,
+        interestRate: 4.5,
+        monthlyContribution: 2000
+      },
+      {
+        id: 'investment-008',
+        name: '401k Max',
+        type: 'investment',
+        balance: 85000,
+        monthlyContribution: 1917 // Max annual contribution
+      },
+      {
+        id: 'investment-008b',
+        name: 'Roth IRA',
+        type: 'investment',
+        balance: 45000,
+        monthlyContribution: 583 // Max annual contribution
+      },
+      {
+        id: 'investment-008c',
+        name: 'Taxable Brokerage',
+        type: 'investment',
+        balance: 120000,
+        monthlyContribution: 3000
+      }
+    ],
+    goals: [
+      {
+        id: 'goal-020',
+        name: 'Financial Independence',
+        type: 'retirement',
+        targetAmount: 2000000,
+        currentAmount: 275000,
+        targetDate: '2035-12-31',
+        priority: 'high'
+      },
+      {
+        id: 'goal-021',
+        name: 'Tax Optimization',
+        type: 'custom',
+        targetAmount: 0,
+        currentAmount: 0,
+        targetDate: '2024-12-31',
+        priority: 'high'
+      },
+      {
+        id: 'goal-022',
+        name: 'Real Estate Investment',
+        type: 'custom',
+        targetAmount: 100000,
+        currentAmount: 0,
+        targetDate: '2026-12-31',
+        priority: 'medium'
+      }
+    ],
+    expectedOpportunities: [
+      'Tax-advantaged account optimization',
+      'Asset allocation strategies',
+      'Real estate investment planning',
+      'Tax loss harvesting',
+      'Advanced investment strategies'
+    ],
+    aiContext: 'High earner with advanced financial knowledge seeking early retirement. Requires analytical, technical approach with focus on tax optimization and advanced strategies.'
+  },
+
+  debtFree: {
+    id: 'debt-free-001',
+    name: 'Recently Debt-Free',
+    description: 'Just paid off all debt, now focusing on building wealth and investing',
+    userProfile: {
+      id: 'debt-free-001',
+      firstName: 'Jordan',
+      age: 32,
+      ageRange: '31-35',
+      income: 68000,
+      monthlyExpenses: 3800,
+      riskTolerance: 'moderate',
+      financialLiteracy: 'intermediate',
+      mainGoals: ['start_investing', 'build_emergency', 'save_big_goal'],
+      communicationStyle: 'detailed',
+      notificationFrequency: 'weekly',
+      preferredLanguage: 'mixed',
+      aiPersonality: 'encouraging',
+      detailLevel: 'medium',
+      hasSampleData: true,
+      onboardingCompleted: true
+    },
+    accounts: [
+      {
+        id: 'checking-009',
+        name: 'Main Checking',
+        type: 'checking',
+        balance: 8500,
+        monthlyContribution: 0
+      },
+      {
+        id: 'savings-009',
+        name: 'Emergency Fund',
+        type: 'savings',
+        balance: 15000,
+        interestRate: 4.2,
+        monthlyContribution: 800
+      },
+      {
+        id: 'investment-009',
+        name: '401k',
+        type: 'investment',
+        balance: 25000,
+        monthlyContribution: 600
+      },
+      {
+        id: 'investment-009b',
+        name: 'Roth IRA',
+        type: 'investment',
+        balance: 12000,
+        monthlyContribution: 500
+      }
+    ],
+    goals: [
+      {
+        id: 'goal-023',
+        name: 'Maximize 401k',
+        type: 'investment',
+        targetAmount: 23000, // Annual max
+        currentAmount: 25000,
+        targetDate: '2024-12-31',
+        priority: 'high'
+      },
+      {
+        id: 'goal-024',
+        name: 'House Down Payment',
+        type: 'custom',
+        targetAmount: 60000,
+        currentAmount: 0,
+        targetDate: '2027-12-31',
+        priority: 'high'
+      },
+      {
+        id: 'goal-025',
+        name: 'Investment Portfolio',
+        type: 'investment',
+        targetAmount: 100000,
+        currentAmount: 37000,
+        targetDate: '2030-12-31',
+        priority: 'medium'
+      }
+    ],
+    expectedOpportunities: [
+      'Increase 401k contributions',
+      'Taxable investment account',
+      'High-yield savings optimization',
+      'Real estate investment planning',
+      'Wealth building strategies'
+    ],
+    aiContext: 'Recently debt-free individual ready to build wealth. Needs encouraging guidance with focus on investment strategies and wealth building.'
   }
 };
 
