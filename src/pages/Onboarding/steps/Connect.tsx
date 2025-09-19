@@ -4,6 +4,8 @@ import Sheet from '../../../components/Sheet';
 import { ConnectChoose } from './ConnectChoose';
 import { useAppState } from '../../../state/AppStateContext';
 import ServerTest from '../../../components/ServerTest';
+import { Button, ButtonVariants, ButtonColors } from '../../../components/Button';
+import '../../../components/Button.css';
 
 export default function Connect({ onNext, onBack, onSkip }: { onNext: () => void; onBack: () => void; onSkip: () => void }) {
   const [open, setOpen] = useState(false);
@@ -29,11 +31,21 @@ export default function Connect({ onNext, onBack, onSkip }: { onNext: () => void
       />
 
       {/* Add accounts another way button / sheet */}
-      <button onClick={() => setOpen(true)}>
+      <Button 
+        variant={ButtonVariants.outline}
+        color={ButtonColors.secondary}
+        onClick={() => setOpen(true)}
+      >
         Add accounts another way
-      </button>
+      </Button>
       
-      <button onClick={onSkip}>Skip</button>
+      <Button 
+        variant={ButtonVariants.outline}
+        color={ButtonColors.secondary}
+        onClick={onSkip}
+      >
+        Skip
+      </Button>
       
       <Sheet open={open} onClose={() => setOpen(false)} title="Upload documents or enter manually">
         <ConnectChoose 

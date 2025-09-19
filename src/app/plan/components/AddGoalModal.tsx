@@ -1,6 +1,8 @@
 'use client';
 import React, { useMemo, useState, useEffect } from 'react';
 import { Account, Goal, GoalType } from '../../types';
+import { Button, ButtonVariants, ButtonColors } from '../../../components/Button';
+import '../../../components/Button.css';
 
 type Props = {
   open: boolean;
@@ -337,8 +339,20 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
         </div>
 
         <div className="modal-footer">
-          <button className="btn btn-secondary" onClick={onClose}>Cancel</button>
-          <button className="btn btn-primary" onClick={handleSave}>Save goal</button>
+          <Button 
+            variant={ButtonVariants.outline}
+            color={ButtonColors.secondary}
+            onClick={onClose}
+          >
+            Cancel
+          </Button>
+          <Button 
+            variant={ButtonVariants.contained}
+            color={ButtonColors.secondary}
+            onClick={handleSave}
+          >
+            Save goal
+          </Button>
         </div>
       </div>
     </div>

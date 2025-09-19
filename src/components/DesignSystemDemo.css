@@ -475,6 +475,46 @@
   gap: var(--spacing-md);
 }
 
+/* Button System Demo Styles */
+.button-group {
+  margin-bottom: var(--spacing-xl);
+}
+
+.button-group h5 {
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.button-variants {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.button-variant {
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  background: var(--color-background-paper);
+}
+
+.button-variant h6 {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.button-variant .button-examples {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  align-items: flex-start;
+}
+
 /* Input Examples */
 .input-examples {
   display: grid;

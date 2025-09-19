@@ -1,5 +1,7 @@
 import React from 'react';
 import { getCurrentTheme, setTheme } from '../ui/colors';
+import { Button, ButtonVariants, ButtonColors, ButtonSizes } from './Button';
+import './Button.css';
 
 export function ThemeToggle() {
   const [currentTheme, setCurrentTheme] = React.useState<'light' | 'dark'>('dark');
@@ -17,13 +19,15 @@ export function ThemeToggle() {
   };
 
   return (
-    <button
+    <Button
+      variant={ButtonVariants.outline}
+      color={ButtonColors.secondary}
+      size={ButtonSizes.small}
       onClick={toggleTheme}
-      className="btn btn-secondary btn-sm"
       aria-label={`Switch to ${currentTheme === 'dark' ? 'light' : 'dark'} theme`}
     >
       {currentTheme === 'dark' ? '☀️' : '🌙'}
-    </button>
+    </Button>
   );
 }
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import { OnboardingState } from '../../../data/onboardingTypes';
 import { onboardingCopy } from '../copy';
+import { Button, ButtonVariants, ButtonColors } from '../../../components/Button';
+import '../../../components/Button.css';
 
 interface FinishProps {
   data: OnboardingState;
@@ -42,8 +44,20 @@ export function Finish({ data, update, onFinish, onBack }: FinishProps) {
       </ul>
 
       <div>
-        <button onClick={onBack}>Back</button>
-        <button onClick={() => onFinish(data)}>Save & continue</button>
+        <Button 
+          variant={ButtonVariants.outline}
+          color={ButtonColors.secondary}
+          onClick={onBack}
+        >
+          Back
+        </Button>
+        <Button 
+          variant={ButtonVariants.contained}
+          color={ButtonColors.secondary}
+          onClick={() => onFinish(data)}
+        >
+          Save & continue
+        </Button>
       </div>
       <p className="disclaimer">{onboardingCopy.disclaimer}</p>
     </div>

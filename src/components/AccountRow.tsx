@@ -1,5 +1,8 @@
 import React from 'react';
 import { COLORS } from '../ui/colors';
+import { Button, ButtonVariants, ButtonColors, ButtonSizes } from './Button';
+import { Icon, IconNames } from './Icon';
+import './Button.css';
 
 interface AccountRowProps {
   name: string;
@@ -103,12 +106,15 @@ export function AccountRow({
                  accountType === 'investment' ? 'No investment goal set' :
                  'No goal linked to this account'}
               </div>
-              <button
+              <Button
+                variant={ButtonVariants.text}
+                color={ButtonColors.secondary}
+                size={ButtonSizes.small}
                 onClick={() => onCreateGoal?.(accountId)}
-                className="bg-blue-600 border-none text-white cursor-pointer text-xs px-xs py-xs rounded font-medium hover:bg-blue-700 transition-colors"
               >
-                {getGoalButtonText()}
-              </button>
+                Set Goal
+                <Icon name={IconNames.add} size="sm" />
+              </Button>
             </>
           )}
         </div>

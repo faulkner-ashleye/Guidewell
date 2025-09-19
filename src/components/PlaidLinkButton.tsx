@@ -1,6 +1,9 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { PlaidLinkOptions } from 'react-plaid-link';
 import { usePlaidLinkSingleton } from '../hooks/usePlaidLinkSingleton';
+import { Button, ButtonVariants, ButtonColors } from './Button';
+import { Icon, IconNames } from './Icon';
+import './Button.css';
 
 type Props = {
   userId?: string;
@@ -95,12 +98,18 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
 
   if (error) return <div>{error}</div>;
   if (plaidError) return <div>Plaid Error: {plaidError}</div>;
-  if (!isInitialized || !linkToken) return <button disabled>Plaid unavailable</button>;
+  if (!isInitialized || !linkToken) return <Button variant={ButtonVariants.contained} color={ButtonColors.secondary} disabled>Plaid unavailable</Button>;
 
   
   return (
-    <button onClick={() => open()} disabled={!ready}>
+    <Button 
+      variant={ButtonVariants.contained}
+      color={ButtonColors.secondary}
+      onClick={() => open()} 
+      disabled={!ready}
+    >
+      <Icon name={IconNames.account_balance_wallet} size="sm" />
       Connect with Plaid
-    </button>
+    </Button>
   );
 }

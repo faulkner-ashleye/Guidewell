@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { ThemeSwitcher, ThemeSwitcherPresets } from './ThemeSwitcher';
 import { Card } from './Card';
-// Button component will be created inline for demo purposes
+import { Button, ButtonVariants, ButtonColors, ButtonSizes } from './Button';
+import './Button.css';
 import { Input } from './Inputs';
 import { Select } from './Inputs';
 import { Chip, ChipGroup } from './Chips';
@@ -26,10 +27,20 @@ export function DesignSystemDemo() {
   ];
 
   const colorExamples = [
-    { name: 'Primary', class: 'bg-primary', text: 'text-white' },
-    { name: 'Success', class: 'bg-success', text: 'text-white' },
-    { name: 'Warning', class: 'bg-warning', text: 'text-white' },
-    { name: 'Error', class: 'bg-error', text: 'text-white' },
+    // Brand Colors
+    { name: 'Primary Main', class: 'bg-primary', text: 'text-white' },
+    { name: 'Primary Dark', class: 'bg-primary-dark', text: 'text-white' },
+    { name: 'Primary Light', class: 'bg-primary-light', text: 'text-white' },
+    { name: 'Primary Subtle', class: 'bg-primary-subtle', text: 'text-primary-subtle-contrast' },
+    { name: 'Secondary Main', class: 'bg-secondary', text: 'text-white' },
+    
+    // Semantic Colors
+    { name: 'Error Main', class: 'bg-error', text: 'text-white' },
+    { name: 'Warning Main', class: 'bg-warning', text: 'text-white' },
+    { name: 'Info Main', class: 'bg-info', text: 'text-white' },
+    { name: 'Success Main', class: 'bg-success', text: 'text-white' },
+    
+    // Financial Context Colors
     { name: 'Debt', class: 'bg-debt', text: 'text-white' },
     { name: 'Savings', class: 'bg-savings', text: 'text-white' },
     { name: 'Investing', class: 'bg-investing', text: 'text-white' }
@@ -339,38 +350,109 @@ export function DesignSystemDemo() {
         <p>Interactive components using the design system:</p>
         
         <div className="component-examples">
-          {/* Buttons */}
+          {/* Button System */}
           <div className="component-group">
-            <h4>Buttons</h4>
-            <div className="button-examples">
-              <button className="btn btn-primary">
-                <Icon name={IconNames.add} size="sm" className="icon-white" />
-                Primary
-              </button>
-              <button className="btn btn-secondary">
-                <Icon name={IconNames.settings} size="sm" />
-                Secondary
-              </button>
-              <button className="btn btn-success">
-                <Icon name={IconNames.check_circle} size="sm" className="icon-white" />
-                Success
-              </button>
-              <button className="btn btn-error">
-                <Icon name={IconNames.error} size="sm" className="icon-white" />
-                Error
-              </button>
-              <button className="btn btn-debt">
-                <Icon name={IconNames.credit_card} size="sm" className="icon-white" />
-                Debt
-              </button>
-              <button className="btn btn-savings">
-                <Icon name={IconNames.savings} size="sm" className="icon-white" />
-                Savings
-              </button>
-              <button className="btn btn-investing">
-                <Icon name={IconNames.trending_up} size="sm" className="icon-white" />
-                Investing
-              </button>
+            <h4>Button System</h4>
+            <p>Comprehensive button system with 2 color sets and 3 variants:</p>
+            
+            {/* Secondary Color Set */}
+            <div className="button-group">
+              <h5>Secondary Color Set</h5>
+              <div className="button-variants">
+                <div className="button-variant">
+                  <h6>Contained</h6>
+                  <div className="button-examples">
+                    <Button variant={ButtonVariants.contained} color={ButtonColors.secondary}>
+                      Label
+                    </Button>
+                    <Button variant={ButtonVariants.contained} color={ButtonColors.secondary} disabled>
+                      Disabled
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="button-variant">
+                  <h6>Outline</h6>
+                  <div className="button-examples">
+                    <Button variant={ButtonVariants.outline} color={ButtonColors.secondary}>
+                      Label
+                    </Button>
+                    <Button variant={ButtonVariants.outline} color={ButtonColors.secondary} disabled>
+                      Disabled
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="button-variant">
+                  <h6>Text</h6>
+                  <div className="button-examples">
+                    <Button variant={ButtonVariants.text} color={ButtonColors.secondary}>
+                      Label
+                    </Button>
+                    <Button variant={ButtonVariants.text} color={ButtonColors.secondary} disabled>
+                      Disabled
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Error Color Set */}
+            <div className="button-group">
+              <h5>Error Color Set</h5>
+              <div className="button-variants">
+                <div className="button-variant">
+                  <h6>Contained (Secondary Only)</h6>
+                  <div className="button-examples">
+                    <Button variant={ButtonVariants.contained} color={ButtonColors.error}>
+                      Label (Uses Secondary)
+                    </Button>
+                    <Button variant={ButtonVariants.contained} color={ButtonColors.error} disabled>
+                      Disabled (Uses Secondary)
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="button-variant">
+                  <h6>Outline</h6>
+                  <div className="button-examples">
+                    <Button variant={ButtonVariants.outline} color={ButtonColors.error}>
+                      Label
+                    </Button>
+                    <Button variant={ButtonVariants.outline} color={ButtonColors.error} disabled>
+                      Disabled
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="button-variant">
+                  <h6>Text</h6>
+                  <div className="button-examples">
+                    <Button variant={ButtonVariants.text} color={ButtonColors.error}>
+                      Label
+                    </Button>
+                    <Button variant={ButtonVariants.text} color={ButtonColors.error} disabled>
+                      Disabled
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Button Sizes */}
+            <div className="button-group">
+              <h5>Button Sizes</h5>
+              <div className="button-examples">
+                <Button variant={ButtonVariants.contained} color={ButtonColors.secondary} size={ButtonSizes.small}>
+                  Small
+                </Button>
+                <Button variant={ButtonVariants.contained} color={ButtonColors.secondary} size={ButtonSizes.medium}>
+                  Medium
+                </Button>
+                <Button variant={ButtonVariants.contained} color={ButtonColors.secondary} size={ButtonSizes.large}>
+                  Large
+                </Button>
+              </div>
             </div>
           </div>
 
@@ -469,9 +551,13 @@ export function DesignSystemDemo() {
       <Card className="demo-section">
         <h2>Modal Component</h2>
         <p>Modal component with design system styling:</p>
-        <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+        <Button 
+          variant={ButtonVariants.contained}
+          color={ButtonColors.secondary}
+          onClick={() => setShowModal(true)}
+        >
           Open Modal
-        </button>
+        </Button>
       </Card>
 
       {/* Modal */}
@@ -480,12 +566,20 @@ export function DesignSystemDemo() {
           <h3>Design System Modal</h3>
           <p>This modal demonstrates the design system's modal component with consistent styling.</p>
           <div className="modal-actions">
-            <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
+            <Button 
+              variant={ButtonVariants.outline}
+              color={ButtonColors.secondary}
+              onClick={() => setShowModal(false)}
+            >
               Cancel
-            </button>
-            <button className="btn btn-primary" onClick={() => setShowModal(false)}>
+            </Button>
+            <Button 
+              variant={ButtonVariants.contained}
+              color={ButtonColors.secondary}
+              onClick={() => setShowModal(false)}
+            >
               Confirm
-            </button>
+            </Button>
           </div>
         </div>
       </Modal>

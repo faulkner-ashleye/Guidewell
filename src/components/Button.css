@@ -1,0 +1,229 @@
+/* Button Base Styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  text-decoration: none;
+  position: relative;
+  outline: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-secondary-contrast-text), 0 0 0 5px var(--color-secondary-main / 0.3);
+}
+
+/* Button Sizes */
+.btn--small {
+  padding: 8px 16px;
+  font-size: 14px;
+  line-height: 18px;
+  min-height: 36px;
+  min-width: 44px; /* Ensure minimum tap target */
+}
+
+.btn--medium {
+  padding: 12px 24px;
+  font-size: 18px;
+  line-height: 22px;
+  min-height: 40px;
+}
+
+.btn--large {
+  padding: 16px 32px;
+  font-size: 18px;
+  line-height: 22px;
+  min-height: 48px;
+}
+
+/* Secondary Color Set - Contained Variant */
+.btn--contained.btn--secondary {
+  background-color: var(--color-secondary-main);
+  color: var(--color-secondary-contrast-text);
+  border: 1px solid var(--color-secondary-main);
+}
+
+.btn--contained.btn--secondary:hover:not(:disabled) {
+  background-color: var(--color-secondary-dark);
+  border-color: var(--color-secondary-dark);
+}
+
+.btn--contained.btn--secondary:focus-visible {
+  background-color: var(--color-secondary-main);
+  border-color: var(--color-secondary-main);
+  box-shadow: 0 0 0 2px var(--color-secondary-main), 0 0 0 4px var(--color-secondary-states-focus);
+}
+
+.btn--contained.btn--secondary:active:not(:disabled) {
+  background-color: var(--color-secondary-dark);
+  border-color: var(--color-secondary-dark);
+  box-shadow: 0 0 0 2px var(--color-secondary-main), 0 0 0 4px var(--color-secondary-states-focus);
+}
+
+.btn--contained.btn--secondary:disabled {
+  background-color: var(--color-grey-300);
+  color: var(--color-grey-500);
+  border-color: var(--color-grey-300);
+  cursor: not-allowed;
+}
+
+/* Secondary Color Set - Outline Variant */
+.btn--outline.btn--secondary {
+  background-color: transparent;
+  color: var(--color-secondary-main);
+  border: 1px solid var(--color-secondary-main);
+}
+
+.btn--outline.btn--secondary:hover:not(:disabled) {
+  background-color: var(--color-secondary-states-hover);
+  color: var(--color-secondary-main);
+  border-color: var(--color-secondary-main);
+}
+
+.btn--outline.btn--secondary:focus-visible {
+  background-color: transparent;
+  color: var(--color-secondary-main);
+  border-color: var(--color-secondary-main);
+  box-shadow: 0 0 0 2px var(--color-secondary-main), 0 0 0 4px var(--color-secondary-states-focus);
+}
+
+.btn--outline.btn--secondary:active:not(:disabled) {
+  background-color: var(--color-secondary-states-selected);
+  color: var(--color-secondary-main);
+  border-color: var(--color-secondary-main);
+  box-shadow: 0 0 0 2px var(--color-secondary-main), 0 0 0 4px var(--color-secondary-states-focus);
+}
+
+.btn--outline.btn--secondary:disabled {
+  background-color: transparent;
+  color: var(--color-grey-500);
+  border-color: var(--color-grey-300);
+  cursor: not-allowed;
+}
+
+/* Secondary Color Set - Text Variant */
+.btn--text.btn--secondary {
+  background-color: transparent;
+  color: var(--color-secondary-main);
+  border: 1px solid transparent;
+}
+
+.btn--text.btn--secondary:hover:not(:disabled) {
+  background-color: var(--color-secondary-states-hover);
+  color: var(--color-secondary-main);
+  border-color: transparent;
+}
+
+.btn--text.btn--secondary:focus-visible {
+  background-color: transparent;
+  color: var(--color-secondary-main);
+  border-color: transparent;
+  box-shadow: 0 0 0 2px var(--color-secondary-main), 0 0 0 4px var(--color-secondary-states-focus);
+}
+
+.btn--text.btn--secondary:active:not(:disabled) {
+  background-color: var(--color-secondary-states-selected);
+  color: var(--color-secondary-main);
+  border-color: transparent;
+  box-shadow: 0 0 0 2px var(--color-secondary-main), 0 0 0 4px var(--color-secondary-states-focus);
+}
+
+.btn--text.btn--secondary:disabled {
+  background-color: transparent;
+  color: var(--color-grey-500);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+
+/* Note: All contained buttons use secondary color - error contained variant removed */
+
+/* Error Color Set - Outline Variant */
+.btn--outline.btn--error {
+  background-color: transparent;
+  color: var(--color-error-main);
+  border: 1px solid var(--color-error-main);
+}
+
+.btn--outline.btn--error:hover:not(:disabled) {
+  background-color: var(--color-error-states-hover);
+  color: var(--color-error-main);
+  border-color: var(--color-error-main);
+}
+
+.btn--outline.btn--error:focus-visible {
+  background-color: transparent;
+  color: var(--color-error-main);
+  border-color: var(--color-error-main);
+  box-shadow: 0 0 0 2px var(--color-error-main), 0 0 0 4px var(--color-error-states-focus);
+}
+
+.btn--outline.btn--error:active:not(:disabled) {
+  background-color: var(--color-error-states-selected);
+  color: var(--color-error-main);
+  border-color: var(--color-error-main);
+  box-shadow: 0 0 0 2px var(--color-error-main), 0 0 0 4px var(--color-error-states-focus);
+}
+
+.btn--outline.btn--error:disabled {
+  background-color: transparent;
+  color: var(--color-grey-500);
+  border-color: var(--color-grey-300);
+  cursor: not-allowed;
+}
+
+/* Error Color Set - Text Variant */
+.btn--text.btn--error {
+  background-color: transparent;
+  color: var(--color-error-main);
+  border: 1px solid transparent;
+}
+
+.btn--text.btn--error:hover:not(:disabled) {
+  background-color: var(--color-error-states-hover);
+  color: var(--color-error-main);
+  border-color: transparent;
+}
+
+.btn--text.btn--error:focus-visible {
+  background-color: transparent;
+  color: var(--color-error-main);
+  border-color: transparent;
+  box-shadow: 0 0 0 2px var(--color-error-main), 0 0 0 4px var(--color-error-states-focus);
+}
+
+.btn--text.btn--error:active:not(:disabled) {
+  background-color: var(--color-error-states-selected);
+  color: var(--color-error-main);
+  border-color: transparent;
+  box-shadow: 0 0 0 2px var(--color-error-main), 0 0 0 4px var(--color-error-states-focus);
+}
+
+.btn--text.btn--error:disabled {
+  background-color: transparent;
+  color: var(--color-grey-500);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+
+/* Dark Mode Adjustments */
+[data-theme="dark"] .btn--contained.btn--secondary:disabled,
+[data-theme="dark"] .btn--contained.btn--error:disabled {
+  background-color: var(--color-grey-600);
+  color: var(--color-grey-400);
+  border-color: var(--color-grey-600);
+}
+
+[data-theme="dark"] .btn--outline.btn--secondary:disabled,
+[data-theme="dark"] .btn--outline.btn--error:disabled,
+[data-theme="dark"] .btn--text.btn--secondary:disabled,
+[data-theme="dark"] .btn--text.btn--error:disabled {
+  color: var(--color-grey-400);
+  border-color: var(--color-grey-600);
+}

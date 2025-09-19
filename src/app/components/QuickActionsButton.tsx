@@ -1,4 +1,6 @@
 'use client';
+import { Button, ButtonVariants, ButtonColors } from '../../components/Button';
+import '../../components/Button.css';
 import { Icon, IconNames } from '../../components/Icon';
 
 export default function QuickActionsButton({ onClick }:{ onClick:()=>void }) {
@@ -8,25 +10,14 @@ export default function QuickActionsButton({ onClick }:{ onClick:()=>void }) {
   };
 
   return (
-    <button 
-      aria-label="Quick actions" 
-      onClick={handleClick} 
-      className="quick-actions-button"
-      style={{ 
-        backgroundColor: '#007bff', 
-        color: 'white', 
-        padding: '8px 16px', 
-        border: 'none', 
-        borderRadius: '8px',
-        cursor: 'pointer',
-        fontSize: '14px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px'
-      }}
+    <Button 
+      variant={ButtonVariants.contained}
+      color={ButtonColors.secondary}
+      onClick={handleClick}
+      aria-label="Quick actions"
     >
-      <Icon name={IconNames.add} size="sm" className="icon-white" />
+      <Icon name={IconNames.add} size="md" className="icon-white" />
       <span>Quick actions</span>
-    </button>
+    </Button>
   );
 }

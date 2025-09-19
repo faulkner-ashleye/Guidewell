@@ -5,6 +5,8 @@ import { Disclaimer } from '../../components/Disclaimer';
 import { Select } from '../../components/Inputs';
 import SupabaseTest from '../../components/SupabaseTest';
 import { ThemeToggle } from '../../components/ThemeToggle';
+import { Button, ButtonVariants, ButtonColors } from '../../components/Button';
+import '../../components/Button.css';
 import { useAppState } from '../../state/AppStateContext';
 import { OnboardingState, MainGoal, Timeline as TimelineType, Comfort as ComfortType } from '../../data/onboardingTypes';
 import './Settings.css';
@@ -191,9 +193,13 @@ export function Settings() {
               </div>
             </div>
 
-            <button className="save-button" onClick={handleSave}>
+            <Button 
+              variant={ButtonVariants.contained}
+              color={ButtonColors.secondary}
+              onClick={handleSave}
+            >
               Save Profile
-            </button>
+            </Button>
           </div>
         </Card>
 

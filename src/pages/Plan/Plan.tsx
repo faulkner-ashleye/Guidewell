@@ -27,6 +27,9 @@ import AppHeader from '../../app/components/AppHeader';
 import QuickActionsButton from '../../app/components/QuickActionsButton';
 import QuickActionsSheet from '../../app/components/QuickActionsSheet';
 import LogContributionModal from '../../app/components/LogContributionModal';
+import { Button, ButtonVariants, ButtonColors } from '../../components/Button';
+import { Icon, IconNames } from '../../components/Icon';
+import '../../components/Button.css';
 import './Plan.css';
 
 export function Plan() {
@@ -237,12 +240,13 @@ export function Plan() {
                     setAccounts(linked); 
                   }} 
                 />
-                <button 
+                <Button 
+                  variant={ButtonVariants.outline}
+                  color={ButtonColors.secondary}
                   onClick={() => setOpen(true)}
-                  className="plan-button-secondary"
                 >
                   Add accounts another way
-                </button>
+                </Button>
               </div>
             </>
           ) : (
@@ -321,12 +325,15 @@ export function Plan() {
                 </div>
               )}
               <div className="plan-actions-section">
-                <button 
+                <Button 
+                  variant={ButtonVariants.contained}
+                  color={ButtonColors.secondary}
                   onClick={handleAddGoal}
-                  className="plan-button-primary"
                 >
-                  + Add a Goal
-                </button>
+                  <Icon name={IconNames.add} size="sm" />
+                  Add a Goal
+                </Button>
+                
               </div>
             </>
           )}

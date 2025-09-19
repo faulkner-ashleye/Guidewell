@@ -109,18 +109,142 @@ export interface IconAlignmentTokens {
 }
 
 export interface ColorTokens {
-  bg: string;
-  card: string;
-  border: string;
-  text: string;
-  textMuted: string;
-  primary: string;
-  success: string;
-  warning: string;
-  error: string;
+  // Brand Colors
+  primary: PrimaryColorTokens;
+  secondary: SecondaryColorTokens;
+  
+  // Semantic Colors
+  error: SemanticColorTokens;
+  warning: SemanticColorTokens;
+  info: SemanticColorTokens;
+  success: SemanticColorTokens;
+  
+  // Core Colors
+  text: TextColorTokens;
+  action: ActionColorTokens;
+  background: BackgroundColorTokens;
+  common: CommonColorTokens;
+  grey: GreyColorTokens;
+  root: RootColorTokens;
+  
+  // Financial Context Colors (for Guidewell)
   debt: string;
   savings: string;
   investing: string;
+}
+
+export interface PrimaryColorTokens {
+  main: string;
+  dark: string;
+  light: string;
+  contrastText: string;
+  subtle: string;
+  subtleHover: string;
+  subtleContrast: string;
+  states: {
+    hover: string;
+    selected: string;
+    focus: string;
+    focusVisible: string;
+    outlinedBorder: string;
+    selectedHover: string;
+    selectedFocus: string;
+    activated: string;
+    activatedHover: string;
+    activatedFocus: string;
+  };
+}
+
+export interface SecondaryColorTokens {
+  main: string;
+  dark: string;
+  light: string;
+  contrastText: string;
+  subtle: string;
+  subtleHover: string;
+  subtleContrast: string;
+  states: {
+    hover: string;
+    selected: string;
+    focus: string;
+    focusVisible: string;
+    outlinedBorder: string;
+    selectedHover: string;
+    selectedFocus: string;
+    activated: string;
+    activatedHover: string;
+    activatedFocus: string;
+  };
+}
+
+export interface SemanticColorTokens {
+  main: string;
+  dark: string;
+  light: string;
+  contrastText: string;
+  subtle: string;
+  subtleHover: string;
+  subtleContrast: string;
+  states: {
+    hover: string;
+    selected: string;
+    focus: string;
+    focusVisible: string;
+    outlinedBorder: string;
+  };
+}
+
+export interface TextColorTokens {
+  primary: string;
+  secondary: string;
+  disabled: string;
+  inverse: string;
+}
+
+export interface ActionColorTokens {
+  hoverOpacity: string;
+  focusOpacity: string;
+  selectedOpacity: string;
+  activatedOpacity: string;
+  disabledOpacity: string;
+  hover: string;
+  focus: string;
+  selected: string;
+  active: string;
+  disabled: string;
+  disabledBackground: string;
+}
+
+export interface BackgroundColorTokens {
+  paper: string;
+  default: string;
+}
+
+export interface CommonColorTokens {
+  white: string;
+  black: string;
+}
+
+export interface GreyColorTokens {
+  50: string;
+  100: string;
+  200: string;
+  300: string;
+  400: string;
+  500: string;
+  600: string;
+  700: string;
+  800: string;
+  900: string;
+  A100: string;
+  A200: string;
+  A400: string;
+  A700: string;
+}
+
+export interface RootColorTokens {
+  divider: string;
+  interactiveBorder: string;
 }
 
 export interface RadiusTokens {
@@ -231,18 +355,169 @@ export const designTokens: DesignTokens = {
     }
   },
   colors: {
-    bg: 'var(--color-bg)',
-    card: 'var(--color-card)',
-    border: 'var(--color-border)',
-    text: 'var(--color-text)',
-    textMuted: 'var(--color-text-muted)',
-    primary: 'var(--color-primary)',
-    success: 'var(--color-success)',
-    warning: 'var(--color-warning)',
-    error: 'var(--color-error)',
-    debt: 'var(--color-debt)',
-    savings: 'var(--color-savings)',
-    investing: 'var(--color-investing)'
+    // Brand Colors
+    primary: {
+      main: '#007A2F',
+      dark: '#00441A',
+      light: '#339458',
+      contrastText: '#FFFFFF',
+      subtle: '#C2E5C8',
+      subtleHover: '#9AD4A6',
+      subtleContrast: '#00441A',
+      states: {
+        hover: 'rgba(0, 122, 47, 0.04)',
+        selected: 'rgba(0, 122, 47, 0.08)',
+        focus: 'rgba(0, 122, 47, 0.12)',
+        focusVisible: 'rgba(0, 122, 47, 0.30)',
+        outlinedBorder: 'rgba(0, 122, 47, 0.50)',
+        selectedHover: 'rgba(0, 122, 47, 0.12)',
+        selectedFocus: 'rgba(0, 122, 47, 0.20)',
+        activated: 'rgba(0, 122, 47, 0.12)',
+        activatedHover: 'rgba(0, 122, 47, 0.16)',
+        activatedFocus: 'rgba(0, 122, 47, 0.24)'
+      }
+    },
+    secondary: {
+      main: '#12207B',
+      dark: '#0C1656',
+      light: '#2A3DAA',
+      contrastText: '#FFFFFF',
+      subtle: '#E7E8F1',
+      subtleHover: '#C4C9E8',
+      subtleContrast: '#0C1656',
+      states: {
+        hover: 'rgba(18, 32, 123, 0.04)',
+        selected: 'rgba(18, 32, 123, 0.08)',
+        focus: 'rgba(18, 32, 123, 0.12)',
+        focusVisible: 'rgba(18, 32, 123, 0.30)',
+        outlinedBorder: 'rgba(18, 32, 123, 0.50)',
+        selectedHover: 'rgba(18, 32, 123, 0.12)',
+        selectedFocus: 'rgba(18, 32, 123, 0.20)',
+        activated: 'rgba(18, 32, 123, 0.12)',
+        activatedHover: 'rgba(18, 32, 123, 0.16)',
+        activatedFocus: 'rgba(18, 32, 123, 0.24)'
+      }
+    },
+    
+    // Semantic Colors
+    error: {
+      main: '#DA2727',
+      dark: '#981818',
+      light: '#E15252',
+      contrastText: '#FFFFFF',
+      subtle: '#FFEBEE',
+      subtleHover: '#FFCCD1',
+      subtleContrast: '#710801',
+      states: {
+        hover: 'rgba(218, 39, 39, 0.04)',
+        selected: 'rgba(218, 39, 39, 0.08)',
+        focus: 'rgba(218, 39, 39, 0.12)',
+        focusVisible: 'rgba(218, 39, 39, 0.30)',
+        outlinedBorder: 'rgba(218, 39, 39, 0.50)'
+      }
+    },
+    warning: {
+      main: '#FFCD06',
+      dark: '#FFB600',
+      light: '#FFD844',
+      contrastText: '#FFFFFF',
+      subtle: '#FFF9E0',
+      subtleHover: '#FFEDB0',
+      subtleContrast: '#552C07',
+      states: {
+        hover: 'rgba(255, 205, 6, 0.04)',
+        selected: 'rgba(255, 205, 6, 0.08)',
+        focus: 'rgba(255, 205, 6, 0.12)',
+        focusVisible: 'rgba(255, 205, 6, 0.30)',
+        outlinedBorder: 'rgba(255, 205, 6, 0.50)'
+      }
+    },
+    info: {
+      main: '#247CB7',
+      dark: '#195688',
+      light: '#4F96C5',
+      contrastText: '#FFFFFF',
+      subtle: '#E2F6FD',
+      subtleHover: '#B6E7FA',
+      subtleContrast: '#653570',
+      states: {
+        hover: 'rgba(36, 124, 183, 0.04)',
+        selected: 'rgba(36, 124, 183, 0.08)',
+        focus: 'rgba(36, 124, 183, 0.12)',
+        focusVisible: 'rgba(36, 124, 183, 0.30)',
+        outlinedBorder: 'rgba(36, 124, 183, 0.50)'
+      }
+    },
+    success: {
+      main: '#AAD04E',
+      dark: '#89B81F',
+      light: '#CEE39B',
+      contrastText: '#FFFFFF',
+      subtle: '#F3F9E7',
+      subtleHover: '#E2EEC2',
+      subtleContrast: '#08400E',
+      states: {
+        hover: 'rgba(170, 208, 78, 0.04)',
+        selected: 'rgba(170, 208, 78, 0.08)',
+        focus: 'rgba(170, 208, 78, 0.12)',
+        focusVisible: 'rgba(170, 208, 78, 0.30)',
+        outlinedBorder: 'rgba(170, 208, 78, 0.50)'
+      }
+    },
+    
+    // Core Colors
+    text: {
+      primary: '#212121',
+      secondary: '#656565',
+      disabled: '#9E9E9E',
+      inverse: '#FFFFFF'
+    },
+    action: {
+      hoverOpacity: '0.04',
+      focusOpacity: '0.12',
+      selectedOpacity: '0.08',
+      activatedOpacity: '0.12',
+      disabledOpacity: '0.38',
+      hover: 'rgba(0, 0, 0, 0.04)',
+      focus: 'rgba(0, 0, 0, 0.12)',
+      selected: 'rgba(0, 0, 0, 0.08)',
+      active: 'rgba(0, 0, 0, 0.54)',
+      disabled: 'rgba(0, 0, 0, 0.26)',
+      disabledBackground: 'rgba(0, 0, 0, 0.12)'
+    },
+    background: {
+      paper: '#FFFFFF',
+      default: '#FAFAFA'
+    },
+    common: {
+      white: '#FFFFFF',
+      black: '#000000'
+    },
+    grey: {
+      50: '#FAFAFA',
+      100: '#F5F5F5',
+      200: '#EEEEEE',
+      300: '#E0E0E0',
+      400: '#BDBDBD',
+      500: '#9E9E9E',
+      600: '#757575',
+      700: '#616161',
+      800: '#424242',
+      900: '#212121',
+      A100: '#F5F5F5',
+      A200: '#EEEEEE',
+      A400: '#BDBDBD',
+      A700: '#616161'
+    },
+    root: {
+      divider: '#E0E0E0',
+      interactiveBorder: '#919191'
+    },
+    
+    // Financial Context Colors (for Guidewell)
+    debt: '#DA2727',
+    savings: '#AAD04E',
+    investing: '#247CB7'
   },
   radius: {
     sm: '4px',
@@ -292,7 +567,15 @@ export class DesignSystemUtils {
    * Generate color utility classes
    */
   static getColor(color: keyof ColorTokens): string {
-    return designTokens.colors[color];
+    const colorValue = designTokens.colors[color];
+    if (typeof colorValue === 'string') {
+      return colorValue;
+    }
+    // For nested color objects, return the main color
+    if (typeof colorValue === 'object' && colorValue !== null && 'main' in colorValue) {
+      return (colorValue as any).main;
+    }
+    return '';
   }
 
   /**
@@ -430,33 +713,33 @@ export class ComponentStyles {
 
     const variants = DesignSystemUtils.getComponentVariants('btn', {
       primary: {
-        background: designTokens.colors.primary,
-        color: designTokens.colors.text
+        background: designTokens.colors.primary.main,
+        color: designTokens.colors.text.primary
       },
       secondary: {
         background: 'transparent',
-        color: designTokens.colors.textMuted,
-        border: `1px solid ${designTokens.colors.border}`
+        color: designTokens.colors.text.secondary,
+        border: `1px solid ${designTokens.colors.root.divider}`
       },
       success: {
-        background: designTokens.colors.success,
-        color: designTokens.colors.text
+        background: designTokens.colors.success.main,
+        color: designTokens.colors.success.contrastText
       },
       error: {
-        background: designTokens.colors.error,
-        color: designTokens.colors.text
+        background: designTokens.colors.error.main,
+        color: designTokens.colors.error.contrastText
       },
       debt: {
         background: designTokens.colors.debt,
-        color: designTokens.colors.text
+        color: designTokens.colors.text.inverse
       },
       savings: {
         background: designTokens.colors.savings,
-        color: designTokens.colors.text
+        color: designTokens.colors.text.inverse
       },
       investing: {
         background: designTokens.colors.investing,
-        color: designTokens.colors.text
+        color: designTokens.colors.text.inverse
       }
     });
 
@@ -469,8 +752,8 @@ export class ComponentStyles {
   static generateCardStyles(): string {
     const baseStyles = `
       .card {
-        background: ${designTokens.colors.card};
-        border: 1px solid ${designTokens.colors.border};
+        background: ${designTokens.colors.background.paper};
+        border: 1px solid ${designTokens.colors.root.divider};
         border-radius: ${designTokens.radius.lg};
         padding: ${designTokens.spacing.lg};
         transition: all ${designTokens.transitions.normal};
@@ -507,37 +790,37 @@ export class ComponentStyles {
       .input {
         width: 100%;
         padding: ${designTokens.spacing.sm} ${designTokens.spacing.md};
-        border: 1px solid ${designTokens.colors.border};
+        border: 1px solid ${designTokens.colors.root.interactiveBorder};
         border-radius: ${designTokens.radius.md};
-        background: ${designTokens.colors.card};
-        color: ${designTokens.colors.text};
+        background: ${designTokens.colors.background.paper};
+        color: ${designTokens.colors.text.primary};
         font-size: ${designTokens.typography.fontSize.base};
         transition: all ${designTokens.transitions.normal};
       }
       
       .input:focus {
         outline: none;
-        border-color: ${designTokens.colors.primary};
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        border-color: ${designTokens.colors.primary.main};
+        box-shadow: 0 0 0 3px rgba(0, 122, 47, 0.1);
       }
       
       .input:disabled {
-        background: ${designTokens.colors.bg};
-        color: ${designTokens.colors.textMuted};
+        background: ${designTokens.colors.background.default};
+        color: ${designTokens.colors.text.disabled};
         cursor: not-allowed;
       }
       
       .input::placeholder {
-        color: ${designTokens.colors.textMuted};
+        color: ${designTokens.colors.text.secondary};
       }
     `;
 
     const variants = DesignSystemUtils.getComponentVariants('input', {
       error: {
-        borderColor: designTokens.colors.error
+        borderColor: designTokens.colors.error.main
       },
       success: {
-        borderColor: designTokens.colors.success
+        borderColor: designTokens.colors.success.main
       },
       large: {
         padding: `${designTokens.spacing.md} ${designTokens.spacing.lg}`,

@@ -2,6 +2,8 @@ import React from 'react';
 import { OnboardingState, Timeline as TimelineType } from '../../../data/onboardingTypes';
 import { onboardingCopy } from '../copy';
 import { Chip } from '../components/Chip';
+import { Button, ButtonVariants, ButtonColors } from '../../../components/Button';
+import '../../../components/Button.css';
 
 interface TimelineProps {
   data: OnboardingState;
@@ -38,15 +40,28 @@ export function Timeline({ data, update, onNext, onBack, onSkip }: TimelineProps
 
       <div className="onboarding-actions">
         <div className="action-buttons">
-          <button className="action-button secondary" onClick={onBack}>
+          <Button 
+            variant={ButtonVariants.outline}
+            color={ButtonColors.secondary}
+            onClick={onBack}
+          >
             Back
-          </button>
-          <button className="action-button secondary" onClick={onSkip}>
+          </Button>
+          <Button 
+            variant={ButtonVariants.outline}
+            color={ButtonColors.secondary}
+            onClick={onSkip}
+          >
             {onboardingCopy.skip}
-          </button>
-          <button className="action-button primary" onClick={onNext} disabled={!canProceed}>
+          </Button>
+          <Button 
+            variant={ButtonVariants.contained}
+            color={ButtonColors.secondary}
+            onClick={onNext}
+            disabled={!canProceed}
+          >
             Next
-          </button>
+          </Button>
         </div>
       </div>
       <p className="disclaimer">{onboardingCopy.disclaimer}</p>

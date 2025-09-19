@@ -1,18 +1,113 @@
 /* Global CSS Variables and Base Styles */
 :root {
-  /* Colors */
-  --color-bg: #171717;
-  --color-card: #1C1C1C;
-  --color-border: #3C3C3C;
-  --color-text: #FFFFFF;
-  --color-text-muted: #B6B6B6;
-  --color-debt: #E15252;
-  --color-savings: #89B81F;
-  --color-investing: #8AD2D5;
-  --color-primary: #3B82F6;
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
-  --color-error: #EF4444;
+  /* Light Mode Colors (Default) */
+  /* Brand Colors */
+  --color-primary-main: #007A2F;
+  --color-primary-dark: #00441A;
+  --color-primary-light: #339458;
+  --color-primary-contrast-text: #FFFFFF;
+  --color-primary-subtle: #C2E5C8;
+  --color-primary-subtle-hover: #9AD4A6;
+  --color-primary-subtle-contrast: #00441A;
+  
+  --color-secondary-main: #12207B;
+  --color-secondary-dark: #0C1656;
+  --color-secondary-light: #2A3DAA;
+  --color-secondary-contrast-text: #FFFFFF;
+  --color-secondary-subtle: #E7E8F1;
+  --color-secondary-subtle-hover: #C4C9E8;
+  --color-secondary-subtle-contrast: #0C1656;
+  
+  /* Semantic Colors */
+  --color-error-main: #DA2727;
+  --color-error-dark: #981818;
+  --color-error-light: #E15252;
+  --color-error-contrast-text: #FFFFFF;
+  --color-error-subtle: #FFEBEE;
+  --color-error-subtle-hover: #FFCCD1;
+  --color-error-subtle-contrast: #710801;
+  
+  --color-warning-main: #FFCD06;
+  --color-warning-dark: #FFB600;
+  --color-warning-light: #FFD844;
+  --color-warning-contrast-text: #FFFFFF;
+  --color-warning-subtle: #FFF9E0;
+  --color-warning-subtle-hover: #FFEDB0;
+  --color-warning-subtle-contrast: #552C07;
+  
+  --color-info-main: #247CB7;
+  --color-info-dark: #195688;
+  --color-info-light: #4F96C5;
+  --color-info-contrast-text: #FFFFFF;
+  --color-info-subtle: #E2F6FD;
+  --color-info-subtle-hover: #B6E7FA;
+  --color-info-subtle-contrast: #653570;
+  
+  --color-success-main: #AAD04E;
+  --color-success-dark: #89B81F;
+  --color-success-light: #CEE39B;
+  --color-success-contrast-text: #FFFFFF;
+  --color-success-subtle: #F3F9E7;
+  --color-success-subtle-hover: #E2EEC2;
+  --color-success-subtle-contrast: #08400E;
+  
+  /* Core Colors */
+  --color-text-primary: #212121;
+  --color-text-secondary: #656565;
+  --color-text-disabled: #9E9E9E;
+  --color-text-inverse: #FFFFFF;
+  
+  --color-action-hover: rgba(0, 0, 0, 0.04);
+  --color-action-focus: rgba(0, 0, 0, 0.12);
+  --color-action-selected: rgba(0, 0, 0, 0.08);
+  --color-action-active: rgba(0, 0, 0, 0.54);
+  --color-action-disabled: rgba(0, 0, 0, 0.26);
+  --color-action-disabled-background: rgba(0, 0, 0, 0.12);
+  
+  --color-background-paper: #FFFFFF;
+  --color-background-default: #FAFAFA;
+  
+  --color-common-white: #FFFFFF;
+  --color-common-black: #000000;
+  
+  --color-grey-50: #FAFAFA;
+  --color-grey-100: #F5F5F5;
+  --color-grey-200: #EEEEEE;
+  --color-grey-300: #E0E0E0;
+  --color-grey-400: #BDBDBD;
+  --color-grey-500: #9E9E9E;
+  --color-grey-600: #757575;
+  --color-grey-700: #616161;
+  --color-grey-800: #424242;
+  --color-grey-900: #212121;
+  
+  --color-root-divider: #E0E0E0;
+  --color-root-interactive-border: #919191;
+  
+  /* Button State Colors */
+  --color-secondary-states-hover: rgba(18, 32, 123, 0.04);
+  --color-secondary-states-selected: rgba(18, 32, 123, 0.08);
+  --color-secondary-states-focus: rgba(18, 32, 123, 0.12);
+  
+  --color-error-states-hover: rgba(218, 39, 39, 0.04);
+  --color-error-states-selected: rgba(218, 39, 39, 0.08);
+  --color-error-states-focus: rgba(218, 39, 39, 0.12);
+  
+  /* Financial Context Colors (for Guidewell) */
+  --color-debt: #DA2727;
+  --color-savings: #AAD04E;
+  --color-investing: #247CB7;
+  
+  /* Legacy color mappings for backward compatibility */
+  --color-bg: var(--color-background-paper);
+  --color-card: var(--color-background-paper);
+  --color-border: var(--color-grey-300);
+  --color-text: var(--color-text-primary);
+  --color-text-muted: var(--color-text-secondary);
+  --color-primary: var(--color-primary-main);
+  --color-success: var(--color-success-main);
+  --color-warning: var(--color-warning-main);
+  --color-error: var(--color-error-main);
 
   /* Spacing */
   --spacing-xs: 4px;
@@ -80,20 +175,226 @@
   --z-tooltip: 1100;
 }
 
-/* Light theme */
+/* Light theme (explicit light mode) */
 [data-theme="light"] {
-  --color-bg: #FFFFFF;
-  --color-card: #F8F9FA;
-  --color-border: #E5E7EB;
-  --color-text: #1A1A1A;
-  --color-text-muted: #6B7280;
-  --color-debt: #DC2626;
-  --color-savings: #059669;
-  --color-investing: #0891B2;
-  --color-primary: #2563EB;
-  --color-success: #059669;
-  --color-warning: #D97706;
-  --color-error: #DC2626;
+  /* Brand Colors */
+  --color-primary-main: #007A2F;
+  --color-primary-dark: #00441A;
+  --color-primary-light: #339458;
+  --color-primary-contrast-text: #FFFFFF;
+  --color-primary-subtle: #C2E5C8;
+  --color-primary-subtle-hover: #9AD4A6;
+  --color-primary-subtle-contrast: #00441A;
+  
+  --color-secondary-main: #12207B;
+  --color-secondary-dark: #0C1656;
+  --color-secondary-light: #2A3DAA;
+  --color-secondary-contrast-text: #FFFFFF;
+  --color-secondary-subtle: #E7E8F1;
+  --color-secondary-subtle-hover: #C4C9E8;
+  --color-secondary-subtle-contrast: #0C1656;
+  
+  /* Semantic Colors */
+  --color-error-main: #DA2727;
+  --color-error-dark: #981818;
+  --color-error-light: #E15252;
+  --color-error-contrast-text: #FFFFFF;
+  --color-error-subtle: #FFEBEE;
+  --color-error-subtle-hover: #FFCCD1;
+  --color-error-subtle-contrast: #710801;
+  
+  --color-warning-main: #FFCD06;
+  --color-warning-dark: #FFB600;
+  --color-warning-light: #FFD844;
+  --color-warning-contrast-text: #FFFFFF;
+  --color-warning-subtle: #FFF9E0;
+  --color-warning-subtle-hover: #FFEDB0;
+  --color-warning-subtle-contrast: #552C07;
+  
+  --color-info-main: #247CB7;
+  --color-info-dark: #195688;
+  --color-info-light: #4F96C5;
+  --color-info-contrast-text: #FFFFFF;
+  --color-info-subtle: #E2F6FD;
+  --color-info-subtle-hover: #B6E7FA;
+  --color-info-subtle-contrast: #653570;
+  
+  --color-success-main: #AAD04E;
+  --color-success-dark: #89B81F;
+  --color-success-light: #CEE39B;
+  --color-success-contrast-text: #FFFFFF;
+  --color-success-subtle: #F3F9E7;
+  --color-success-subtle-hover: #E2EEC2;
+  --color-success-subtle-contrast: #08400E;
+  
+  /* Core Colors */
+  --color-text-primary: #212121;
+  --color-text-secondary: #656565;
+  --color-text-disabled: #9E9E9E;
+  --color-text-inverse: #FFFFFF;
+  
+  --color-action-hover: rgba(0, 0, 0, 0.04);
+  --color-action-focus: rgba(0, 0, 0, 0.12);
+  --color-action-selected: rgba(0, 0, 0, 0.08);
+  --color-action-active: rgba(0, 0, 0, 0.54);
+  --color-action-disabled: rgba(0, 0, 0, 0.26);
+  --color-action-disabled-background: rgba(0, 0, 0, 0.12);
+  
+  --color-background-paper: #FFFFFF;
+  --color-background-default: #FAFAFA;
+  
+  --color-common-white: #FFFFFF;
+  --color-common-black: #000000;
+  
+  --color-grey-50: #FAFAFA;
+  --color-grey-100: #F5F5F5;
+  --color-grey-200: #EEEEEE;
+  --color-grey-300: #E0E0E0;
+  --color-grey-400: #BDBDBD;
+  --color-grey-500: #9E9E9E;
+  --color-grey-600: #757575;
+  --color-grey-700: #616161;
+  --color-grey-800: #424242;
+  --color-grey-900: #212121;
+  
+  --color-root-divider: #E0E0E0;
+  --color-root-interactive-border: #919191;
+  
+  /* Button State Colors */
+  --color-secondary-states-hover: rgba(18, 32, 123, 0.04);
+  --color-secondary-states-selected: rgba(18, 32, 123, 0.08);
+  --color-secondary-states-focus: rgba(18, 32, 123, 0.12);
+  
+  --color-error-states-hover: rgba(218, 39, 39, 0.04);
+  --color-error-states-selected: rgba(218, 39, 39, 0.08);
+  --color-error-states-focus: rgba(218, 39, 39, 0.12);
+  
+  /* Financial Context Colors */
+  --color-debt: #DA2727;
+  --color-savings: #AAD04E;
+  --color-investing: #247CB7;
+  
+  /* Legacy mappings */
+  --color-bg: var(--color-background-paper);
+  --color-card: var(--color-background-paper);
+  --color-border: var(--color-grey-300);
+  --color-text: var(--color-text-primary);
+  --color-text-muted: var(--color-text-secondary);
+  --color-primary: var(--color-primary-main);
+  --color-success: var(--color-success-main);
+  --color-warning: var(--color-warning-main);
+  --color-error: var(--color-error-main);
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  /* Brand Colors - Adjusted for dark mode */
+  --color-primary-main: #4CAF50;
+  --color-primary-dark: #2E7D32;
+  --color-primary-light: #66BB6A;
+  --color-primary-contrast-text: #000000;
+  --color-primary-subtle: #1B5E20;
+  --color-primary-subtle-hover: #2E7D32;
+  --color-primary-subtle-contrast: #FFFFFF;
+  
+  --color-secondary-main: #5C6BC0;
+  --color-secondary-dark: #3F51B5;
+  --color-secondary-light: #7986CB;
+  --color-secondary-contrast-text: #FFFFFF;
+  --color-secondary-subtle: #1A237E;
+  --color-secondary-subtle-hover: #283593;
+  --color-secondary-subtle-contrast: #FFFFFF;
+  
+  /* Semantic Colors - Adjusted for dark mode */
+  --color-error-main: #F44336;
+  --color-error-dark: #D32F2F;
+  --color-error-light: #EF5350;
+  --color-error-contrast-text: #FFFFFF;
+  --color-error-subtle: #B71C1C;
+  --color-error-subtle-hover: #C62828;
+  --color-error-subtle-contrast: #FFFFFF;
+  
+  --color-warning-main: #FF9800;
+  --color-warning-dark: #F57C00;
+  --color-warning-light: #FFB74D;
+  --color-warning-contrast-text: #000000;
+  --color-warning-subtle: #E65100;
+  --color-warning-subtle-hover: #FF6F00;
+  --color-warning-subtle-contrast: #FFFFFF;
+  
+  --color-info-main: #2196F3;
+  --color-info-dark: #1976D2;
+  --color-info-light: #42A5F5;
+  --color-info-contrast-text: #FFFFFF;
+  --color-info-subtle: #0D47A1;
+  --color-info-subtle-hover: #1565C0;
+  --color-info-subtle-contrast: #FFFFFF;
+  
+  --color-success-main: #4CAF50;
+  --color-success-dark: #388E3C;
+  --color-success-light: #66BB6A;
+  --color-success-contrast-text: #000000;
+  --color-success-subtle: #1B5E20;
+  --color-success-subtle-hover: #2E7D32;
+  --color-success-subtle-contrast: #FFFFFF;
+  
+  /* Core Colors - Dark mode */
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #B0B0B0;
+  --color-text-disabled: #666666;
+  --color-text-inverse: #000000;
+  
+  --color-action-hover: rgba(255, 255, 255, 0.04);
+  --color-action-focus: rgba(255, 255, 255, 0.12);
+  --color-action-selected: rgba(255, 255, 255, 0.08);
+  --color-action-active: rgba(255, 255, 255, 0.54);
+  --color-action-disabled: rgba(255, 255, 255, 0.26);
+  --color-action-disabled-background: rgba(255, 255, 255, 0.12);
+  
+  --color-background-paper: #121212;
+  --color-background-default: #0D0D0D;
+  
+  --color-common-white: #FFFFFF;
+  --color-common-black: #000000;
+  
+  --color-grey-50: #FAFAFA;
+  --color-grey-100: #F5F5F5;
+  --color-grey-200: #EEEEEE;
+  --color-grey-300: #E0E0E0;
+  --color-grey-400: #BDBDBD;
+  --color-grey-500: #9E9E9E;
+  --color-grey-600: #757575;
+  --color-grey-700: #616161;
+  --color-grey-800: #424242;
+  --color-grey-900: #212121;
+  
+  --color-root-divider: #333333;
+  --color-root-interactive-border: #666666;
+  
+  /* Button State Colors - Adjusted for dark mode */
+  --color-secondary-states-hover: rgba(92, 107, 192, 0.08);
+  --color-secondary-states-selected: rgba(92, 107, 192, 0.12);
+  --color-secondary-states-focus: rgba(92, 107, 192, 0.16);
+  
+  --color-error-states-hover: rgba(244, 67, 54, 0.08);
+  --color-error-states-selected: rgba(244, 67, 54, 0.12);
+  --color-error-states-focus: rgba(244, 67, 54, 0.16);
+  
+  /* Financial Context Colors - Adjusted for dark mode */
+  --color-debt: #F44336;
+  --color-savings: #4CAF50;
+  --color-investing: #2196F3;
+  
+  /* Legacy mappings */
+  --color-bg: var(--color-background-paper);
+  --color-card: var(--color-background-paper);
+  --color-border: var(--color-grey-700);
+  --color-text: var(--color-text-primary);
+  --color-text-muted: var(--color-text-secondary);
+  --color-primary: var(--color-primary-main);
+  --color-success: var(--color-success-main);
+  --color-warning: var(--color-warning-main);
+  --color-error: var(--color-error-main);
 }
 
 /* Base styles */
@@ -607,6 +908,299 @@ body {
 
 .text-investing {
   color: var(--color-investing);
+}
+
+.text-primary-main {
+  color: var(--color-primary-main);
+}
+
+.text-primary-dark {
+  color: var(--color-primary-dark);
+}
+
+.text-primary-light {
+  color: var(--color-primary-light);
+}
+
+.text-primary-subtle-contrast {
+  color: var(--color-primary-subtle-contrast);
+}
+
+.text-secondary-main {
+  color: var(--color-secondary-main);
+}
+
+.text-secondary-dark {
+  color: var(--color-secondary-dark);
+}
+
+.text-secondary-light {
+  color: var(--color-secondary-light);
+}
+
+.text-secondary-subtle-contrast {
+  color: var(--color-secondary-subtle-contrast);
+}
+
+.text-error-main {
+  color: var(--color-error-main);
+}
+
+.text-error-dark {
+  color: var(--color-error-dark);
+}
+
+.text-error-light {
+  color: var(--color-error-light);
+}
+
+.text-error-subtle-contrast {
+  color: var(--color-error-subtle-contrast);
+}
+
+.text-warning-main {
+  color: var(--color-warning-main);
+}
+
+.text-warning-dark {
+  color: var(--color-warning-dark);
+}
+
+.text-warning-light {
+  color: var(--color-warning-light);
+}
+
+.text-warning-subtle-contrast {
+  color: var(--color-warning-subtle-contrast);
+}
+
+.text-info-main {
+  color: var(--color-info-main);
+}
+
+.text-info-dark {
+  color: var(--color-info-dark);
+}
+
+.text-info-light {
+  color: var(--color-info-light);
+}
+
+.text-info-subtle-contrast {
+  color: var(--color-info-subtle-contrast);
+}
+
+.text-success-main {
+  color: var(--color-success-main);
+}
+
+.text-success-dark {
+  color: var(--color-success-dark);
+}
+
+.text-success-light {
+  color: var(--color-success-light);
+}
+
+.text-success-subtle-contrast {
+  color: var(--color-success-subtle-contrast);
+}
+
+.text-grey-50 {
+  color: var(--color-grey-50);
+}
+
+.text-grey-100 {
+  color: var(--color-grey-100);
+}
+
+.text-grey-200 {
+  color: var(--color-grey-200);
+}
+
+.text-grey-300 {
+  color: var(--color-grey-300);
+}
+
+.text-grey-400 {
+  color: var(--color-grey-400);
+}
+
+.text-grey-500 {
+  color: var(--color-grey-500);
+}
+
+.text-grey-600 {
+  color: var(--color-grey-600);
+}
+
+.text-grey-700 {
+  color: var(--color-grey-700);
+}
+
+.text-grey-800 {
+  color: var(--color-grey-800);
+}
+
+.text-grey-900 {
+  color: var(--color-grey-900);
+}
+
+/* Background Color Utilities */
+.bg-primary {
+  background-color: var(--color-primary-main);
+}
+
+.bg-primary-dark {
+  background-color: var(--color-primary-dark);
+}
+
+.bg-primary-light {
+  background-color: var(--color-primary-light);
+}
+
+.bg-primary-subtle {
+  background-color: var(--color-primary-subtle);
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary-main);
+}
+
+.bg-secondary-dark {
+  background-color: var(--color-secondary-dark);
+}
+
+.bg-secondary-light {
+  background-color: var(--color-secondary-light);
+}
+
+.bg-secondary-subtle {
+  background-color: var(--color-secondary-subtle);
+}
+
+.bg-error {
+  background-color: var(--color-error-main);
+}
+
+.bg-error-dark {
+  background-color: var(--color-error-dark);
+}
+
+.bg-error-light {
+  background-color: var(--color-error-light);
+}
+
+.bg-error-subtle {
+  background-color: var(--color-error-subtle);
+}
+
+.bg-warning {
+  background-color: var(--color-warning-main);
+}
+
+.bg-warning-dark {
+  background-color: var(--color-warning-dark);
+}
+
+.bg-warning-light {
+  background-color: var(--color-warning-light);
+}
+
+.bg-warning-subtle {
+  background-color: var(--color-warning-subtle);
+}
+
+.bg-info {
+  background-color: var(--color-info-main);
+}
+
+.bg-info-dark {
+  background-color: var(--color-info-dark);
+}
+
+.bg-info-light {
+  background-color: var(--color-info-light);
+}
+
+.bg-info-subtle {
+  background-color: var(--color-info-subtle);
+}
+
+.bg-success {
+  background-color: var(--color-success-main);
+}
+
+.bg-success-dark {
+  background-color: var(--color-success-dark);
+}
+
+.bg-success-light {
+  background-color: var(--color-success-light);
+}
+
+.bg-success-subtle {
+  background-color: var(--color-success-subtle);
+}
+
+.bg-debt {
+  background-color: var(--color-debt);
+}
+
+.bg-savings {
+  background-color: var(--color-savings);
+}
+
+.bg-investing {
+  background-color: var(--color-investing);
+}
+
+.bg-paper {
+  background-color: var(--color-background-paper);
+}
+
+.bg-default {
+  background-color: var(--color-background-default);
+}
+
+.bg-grey-50 {
+  background-color: var(--color-grey-50);
+}
+
+.bg-grey-100 {
+  background-color: var(--color-grey-100);
+}
+
+.bg-grey-200 {
+  background-color: var(--color-grey-200);
+}
+
+.bg-grey-300 {
+  background-color: var(--color-grey-300);
+}
+
+.bg-grey-400 {
+  background-color: var(--color-grey-400);
+}
+
+.bg-grey-500 {
+  background-color: var(--color-grey-500);
+}
+
+.bg-grey-600 {
+  background-color: var(--color-grey-600);
+}
+
+.bg-grey-700 {
+  background-color: var(--color-grey-700);
+}
+
+.bg-grey-800 {
+  background-color: var(--color-grey-800);
+}
+
+.bg-grey-900 {
+  background-color: var(--color-grey-900);
 }
 
 .rounded-sm {

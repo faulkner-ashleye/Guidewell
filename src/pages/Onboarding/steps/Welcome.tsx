@@ -1,6 +1,8 @@
 import React from 'react';
 import { OnboardingState } from '../../../data/onboardingTypes';
 import { onboardingCopy } from '../copy';
+import { Button, ButtonVariants, ButtonColors } from '../../../components/Button';
+import '../../../components/Button.css';
 
 interface WelcomeProps {
   data: OnboardingState;
@@ -51,9 +53,13 @@ export function Welcome({ data, update, onNext, onSkip }: WelcomeProps) {
       
       <div className="onboarding-actions">
         <div className="action-buttons single-button">
-          <button className="action-button primary" onClick={onNext}>
+          <Button 
+            variant={ButtonVariants.contained}
+            color={ButtonColors.secondary}
+            onClick={onNext}
+          >
             Get started
-          </button>
+          </Button>
         </div>
       </div>
       

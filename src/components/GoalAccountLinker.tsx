@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Account } from '../state/AppStateContext';
 import { COLORS } from '../ui/colors';
+import { Button, ButtonVariants, ButtonColors, ButtonSizes } from './Button';
+import { Icon, IconNames } from './Icon';
+import './Button.css';
 
 interface GoalAccountLinkerProps {
   accounts: Account[];
@@ -52,13 +55,15 @@ export function GoalAccountLinker({
             </button>
           </div>
         ) : (
-          <button 
-            className="text-xs underline bg-transparent border-none cursor-pointer"
+          <Button 
+            variant={ButtonVariants.text}
+            color={ButtonColors.secondary}
+            size={ButtonSizes.small}
             onClick={() => setIsOpen(true)}
-            style={{ color: COLORS.textMuted }}
           >
-            Link to account
-          </button>
+            Set Goal
+            <Icon name={IconNames.add} size="sm" />
+          </Button>
         )}
       </div>
       

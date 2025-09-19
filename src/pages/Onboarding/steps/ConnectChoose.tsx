@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useAppState } from '../../../state/AppStateContext';
 import DocUpload from '../../../components/DocUpload';
 import ManualAccountForm from '../../../components/ManualAccountForm';
+import { Button, ButtonVariants, ButtonColors } from '../../../components/Button';
+import '../../../components/Button.css';
 
 interface ConnectChooseProps {
   onClose: () => void;
@@ -22,25 +24,31 @@ export function ConnectChoose({ onClose, onComplete }: ConnectChooseProps) {
     return (
       <div className="connect-choose">
         <div className="connect-options">
-          <button 
-            className="connect-button secondary" 
+          <Button 
+            variant={ButtonVariants.outline}
+            color={ButtonColors.secondary}
             onClick={() => setMode('upload')}
           >
             Upload documents (photo/PDF)
-          </button>
+          </Button>
           
-          <button 
-            className="connect-button secondary" 
+          <Button 
+            variant={ButtonVariants.outline}
+            color={ButtonColors.secondary}
             onClick={() => setMode('manual')}
           >
             Enter manually
-          </button>
+          </Button>
         </div>
         
         <div className="connect-actions">
-          <button className="action-button secondary" onClick={onClose}>
+          <Button 
+            variant={ButtonVariants.outline}
+            color={ButtonColors.secondary}
+            onClick={onClose}
+          >
             Cancel
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -51,9 +59,13 @@ export function ConnectChoose({ onClose, onComplete }: ConnectChooseProps) {
       <div className="connect-choose">
         <DocUpload onParsed={(arr) => { addLinked(arr); onComplete(); }} />
         <div className="connect-actions">
-          <button className="action-button secondary" onClick={() => setMode('menu')}>
+          <Button 
+            variant={ButtonVariants.outline}
+            color={ButtonColors.secondary}
+            onClick={() => setMode('menu')}
+          >
             Back
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -64,9 +76,13 @@ export function ConnectChoose({ onClose, onComplete }: ConnectChooseProps) {
       <div className="connect-choose">
         <ManualAccountForm onSave={(acc) => { addLinked([acc]); onComplete(); }} />
         <div className="connect-actions">
-          <button className="action-button secondary" onClick={() => setMode('menu')}>
+          <Button 
+            variant={ButtonVariants.outline}
+            color={ButtonColors.secondary}
+            onClick={() => setMode('menu')}
+          >
             Back
-          </button>
+          </Button>
         </div>
       </div>
     );

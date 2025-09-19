@@ -3,6 +3,8 @@ import { ContentItem, ContentRecommendation, ContentRecommendationEngine } from 
 import { ContentRecommendationCard } from './ContentRecommendationCard';
 import { EnhancedUserProfile } from '../data/enhancedUserProfile';
 import { Account, Goal } from '../data/types';
+import { Button, ButtonVariants, ButtonColors } from './Button';
+import './Button.css';
 import './ContentDashboard.css';
 
 interface ContentDashboardProps {
@@ -192,9 +194,13 @@ export function ContentDashboard({
         <div className="error-state">
           <div className="error-icon">⚠️</div>
           <p>{error}</p>
-          <button className="retry-button" onClick={loadRecommendations}>
+          <Button 
+            variant={ButtonVariants.contained}
+            color={ButtonColors.secondary}
+            onClick={loadRecommendations}
+          >
             Try Again
-          </button>
+          </Button>
         </div>
       </div>
     );

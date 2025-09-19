@@ -4,6 +4,8 @@ import { onboardingCopy } from '../copy';
 import { Account } from '../../../state/AppStateContext';
 import { inferGoalsFromAccounts } from '../../../state/selectors';
 import { Chip } from '../components/Chip';
+import { Button, ButtonVariants, ButtonColors } from '../../../components/Button';
+import '../../../components/Button.css';
 
 interface GoalsProps {
   data: OnboardingState;
@@ -53,9 +55,13 @@ export function Goals({ data, update, onNext, onSkip, accounts }: GoalsProps) {
       {shouldShowHint && (
         <div className="hint-box">
           <p>We noticed you have {inferredGoals.includes('pay_down_debt') ? 'debt' : ''}{inferredGoals.includes('pay_down_debt') && inferredGoals.includes('save_big_goal') ? ' and ' : ''}{inferredGoals.includes('save_big_goal') ? 'savings' : ''}—want to include these goals?</p>
-          <button onClick={handleAutoSelect} className="auto-select-button">
+          <Button 
+            variant={ButtonVariants.text}
+            color={ButtonColors.secondary}
+            onClick={handleAutoSelect}
+          >
             Auto-select based on my accounts
-          </button>
+          </Button>
         </div>
       )}
       
@@ -72,12 +78,21 @@ export function Goals({ data, update, onNext, onSkip, accounts }: GoalsProps) {
 
       <div className="onboarding-actions">
         <div className="action-buttons">
-          <button className="action-button secondary" onClick={onSkip}>
+          <Button 
+            variant={ButtonVariants.outline}
+            color={ButtonColors.secondary}
+            onClick={onSkip}
+          >
             {onboardingCopy.skip}
-          </button>
-          <button className="action-button primary" onClick={onNext} disabled={!canProceed}>
+          </Button>
+          <Button 
+            variant={ButtonVariants.contained}
+            color={ButtonColors.secondary}
+            onClick={onNext}
+            disabled={!canProceed}
+          >
             Next
-          </button>
+          </Button>
         </div>
       </div>
       
