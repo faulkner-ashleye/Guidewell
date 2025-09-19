@@ -62,7 +62,7 @@ export function GoalAccountLinker({
             onClick={() => setIsOpen(true)}
           >
             Set Goal
-            <Icon name={IconNames.add} size="sm" />
+            <Icon name={IconNames.add} size="lg" />
           </Button>
         )}
       </div>

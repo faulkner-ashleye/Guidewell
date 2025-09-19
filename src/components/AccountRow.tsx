@@ -113,7 +113,7 @@ export function AccountRow({
                 onClick={() => onCreateGoal?.(accountId)}
               >
                 Set Goal
-                <Icon name={IconNames.add} size="sm" />
+                <Icon name={IconNames.add} size="lg" />
               </Button>
             </>
           )}

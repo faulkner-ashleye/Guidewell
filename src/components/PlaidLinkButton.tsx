@@ -108,7 +108,7 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
       onClick={() => open()} 
       disabled={!ready}
     >
-      <Icon name={IconNames.account_balance_wallet} size="sm" />
+      <Icon name={IconNames.account_balance_wallet} size="lg" />
       Connect with Plaid
     </Button>
   );

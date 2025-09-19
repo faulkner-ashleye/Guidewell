@@ -11,13 +11,13 @@ export default function QuickActionsButton({ onClick }:{ onClick:()=>void }) {
 
   return (
     <Button 
-      variant={ButtonVariants.contained}
+      variant={ButtonVariants.outline}
       color={ButtonColors.secondary}
+      size="large"
       onClick={handleClick}
       aria-label="Quick actions"
     >
-      <Icon name={IconNames.add} size="md" className="icon-white" />
-      <span>Quick actions</span>
+      <Icon name={IconNames.add} size="xl" />
     </Button>
   );
 }

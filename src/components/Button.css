@@ -20,6 +20,11 @@
   box-shadow: 0 0 0 2px var(--color-secondary-contrast-text), 0 0 0 5px var(--color-secondary-main / 0.3);
 }
 
+/* Label padding within buttons (only for text labels, not icons) */
+.btn span:not(.material-icons) {
+  padding: 0 6px;
+}
+
 /* Button Sizes */
 .btn--small {
   padding: 8px 16px;
@@ -37,7 +42,7 @@
 }
 
 .btn--large {
-  padding: 16px 32px;
+  padding: 12px;
   font-size: 18px;
   line-height: 22px;
   min-height: 48px;

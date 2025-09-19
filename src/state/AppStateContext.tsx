@@ -104,7 +104,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
       z-index: 10000;
       max-width: 400px;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       font-size: 14px;
       line-height: 1.5;
       animation: slideIn 0.3s ease-out;

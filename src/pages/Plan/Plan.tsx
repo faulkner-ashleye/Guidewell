@@ -330,7 +330,7 @@ export function Plan() {
                   color={ButtonColors.secondary}
                   onClick={handleAddGoal}
                 >
-                  <Icon name={IconNames.add} size="sm" />
+                  <Icon name={IconNames.add} size="lg" />
                   Add a Goal
                 </Button>
                 
