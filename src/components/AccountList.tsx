@@ -10,7 +10,7 @@ interface AccountListProps {
 
 export function AccountList({ accounts }: AccountListProps) {
   const groupedAccounts = groupAccountsByType(accounts);
-  const accountTypes: Account['type'][] = ['checking', 'savings', 'credit_card', 'loan', 'investment'];
+  const accountTypes: Account['type'][] = ['checking', 'savings', 'credit_card', 'loan', 'investment', 'debt'];
   
   const getAccountIcon = (type: Account['type']): string => {
     const icons: Record<Account['type'], string> = {
@@ -18,7 +18,8 @@ export function AccountList({ accounts }: AccountListProps) {
       'savings': IconNames.savings,
       'credit_card': IconNames.credit_card,
       'loan': IconNames.account_balance,
-      'investment': IconNames.trending_up
+      'investment': IconNames.trending_up,
+      'debt': IconNames.account_balance
     };
     return icons[type] || IconNames.account_balance_wallet;
   };

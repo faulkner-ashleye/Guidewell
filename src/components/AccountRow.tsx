@@ -10,7 +10,7 @@ interface AccountRowProps {
   meta?: string;
   health?: 'ok' | 'warn' | 'alert';
   accountId?: string;
-  accountType?: 'checking' | 'savings' | 'credit_card' | 'loan' | 'investment';
+  accountType?: 'checking' | 'savings' | 'credit_card' | 'loan' | 'investment' | 'debt';
   hasGoal?: boolean;
   goalName?: string;
   goalId?: string;

@@ -1,12 +1,13 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { Goal, Account } from '../app/types';
 import { Transaction } from '../lib/supabase';
 import { Contribution } from './activitySelectors';
 import { EnhancedUserProfile, UserProfileUtils } from '../data/enhancedUserProfile';
 import { ValidationUtils } from '../utils/validation';
 import { OpportunityDetection } from '../data/marketData';
+import { sampleScenarios, SampleScenario } from '../data/sampleScenarios';
 
-export type AccountType = 'loan' | 'credit_card' | 'savings' | 'checking' | 'investment';
+export type AccountType = 'loan' | 'credit_card' | 'savings' | 'checking' | 'investment' | 'debt';
 
 // Re-export Account from types for compatibility
 export type { Account } from '../app/types';
@@ -58,6 +59,7 @@ interface AppStateContextType {
   setUserProfile: (userProfile: UserProfile | null) => void;
   setStrategyConfig: (strategyConfig: StrategyConfig) => void;
   clearSampleData: () => void;
+  loadSampleScenario: (scenarioId: string) => void;
   // New foundation methods
   validateData: () => boolean;
   detectOpportunities: () => void;
@@ -89,6 +91,112 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   const [enhancedUserProfile, setEnhancedUserProfile] = useState<EnhancedUserProfile | null>(null);
   const [opportunities, setOpportunities] = useState<any[] | null>(null);
   const [validationErrors, setValidationErrors] = useState<string[] | null>(null);
+
+  const loadSampleScenario = (scenarioId: string) => {
+    const scenario = sampleScenarios[scenarioId];
+    if (!scenario) {
+      console.error(`Sample scenario '${scenarioId}' not found`);
+      return;
+    }
+
+    // Convert scenario data to app state format
+    const convertedAccounts: Account[] = scenario.accounts.map(account => ({
+      id: account.id,
+      name: account.name,
+      type: account.type,
+      balance: account.balance,
+      interestRate: account.interestRate,
+      monthlyContribution: account.monthlyContribution
+    }));
+
+    const convertedGoals: Goal[] = scenario.goals.map(goal => ({
+      id: goal.id,
+      name: goal.name,
+      type: goal.type,
+      target: goal.targetAmount,
+      targetDate: goal.targetDate,
+      priority: goal.priority,
+      createdAt: new Date().toISOString()
+    }));
+
+    const convertedUserProfile: UserProfile = {
+      firstName: scenario.userProfile.firstName,
+      ageRange: scenario.userProfile.ageRange,
+      mainGoals: scenario.userProfile.mainGoals,
+      hasSampleData: true,
+      riskTolerance: scenario.userProfile.riskTolerance,
+      financialLiteracy: scenario.userProfile.financialLiteracy
+    };
+
+    // Load the scenario data
+    setAccounts(convertedAccounts);
+    setGoals(convertedGoals);
+    setTransactions(scenario.transactions);
+    setContributions([]);
+    setUserProfile(convertedUserProfile);
+
+    // Show notification
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      z-index: 10000;
+      max-width: 400px;
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      animation: slideIn 0.3s ease-out;
+    `;
+    
+    notification.innerHTML = `
+      <div style="display: flex; align-items: center; margin-bottom: 12px;">
+        <span style="font-size: 24px; margin-right: 12px;">📊</span>
+        <strong style="font-size: 16px;">Sample Data Loaded!</strong>
+      </div>
+      <p style="margin: 0 0 12px 0;">Loaded "${scenario.name}" scenario with realistic financial data and recent activity.</p>
+      <p style="margin: 0; font-size: 13px; opacity: 0.9;">Explore Guidewell's features with this sample data, or connect your own accounts anytime.</p>
+    `;
+    
+    // Add CSS animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(notification);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+      notification.style.animation = 'slideIn 0.3s ease-out reverse';
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+        if (style.parentNode) {
+          style.parentNode.removeChild(style);
+        }
+      }, 300);
+    }, 5000);
+  };
+
+  // Load default sample scenario on app start
+  useEffect(() => {
+    // Only load sample data if no accounts are present and no user profile exists
+    if (accounts.length === 0 && !userProfile) {
+      // Load the "recentGrad" scenario by default to show realistic activity
+      loadSampleScenario('recentGrad');
+    }
+  }, []); // Empty dependency array means this runs once on mount
 
   const clearSampleData = () => {
     // Show a more user-friendly notification
@@ -247,6 +355,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     setUserProfile,
     setStrategyConfig,
     clearSampleData,
+    loadSampleScenario,
     // Foundation methods
     validateData,
     detectOpportunities,

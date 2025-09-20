@@ -29,7 +29,8 @@ export function getAccountTypeLabel(type: Account['type']): string {
     'savings': 'Savings', 
     'credit_card': 'Credit Cards',
     'loan': 'Loans',
-    'investment': 'Investments'
+    'investment': 'Investments',
+    'debt': 'Debt'
   };
   return labels[type] || type;
 }

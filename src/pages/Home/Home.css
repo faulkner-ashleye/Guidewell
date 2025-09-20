@@ -93,6 +93,10 @@
     color:var( --color-error-main);
 }
 
+.activity-info{
+    color: var(--color-info-main);
+}
+
 .activity-meta {
   display: flex;
   align-items: center;

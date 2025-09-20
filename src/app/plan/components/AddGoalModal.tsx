@@ -29,9 +29,20 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
   // Eligible accounts by type
   const eligibleAccounts = useMemo(() => {
     switch (type) {
-      case 'savings':   return accounts; // Savings goals can be assigned to any account
-      case 'debt':      return accounts.filter(a => a.type === 'loan' || a.type === 'credit_card'); // Debt goals only for debt accounts
-      case 'investing': return accounts; // Investing goals can be assigned to any account
+      case 'savings':   
+      case 'emergency_fund':
+        return accounts; // Savings goals can be assigned to any account
+      case 'debt':      
+      case 'debt_payoff':
+        return accounts.filter(a => a.type === 'loan' || a.type === 'credit_card' || a.type === 'debt'); // Debt goals only for debt accounts
+      case 'investing': 
+      case 'investment':
+      case 'retirement':
+        return accounts; // Investing goals can be assigned to any account
+      case 'custom':
+        return accounts; // Custom goals can be assigned to any account
+      default:
+        return accounts; // Default to all accounts
     }
   }, [type, accounts]);
 
@@ -104,6 +115,11 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
     savings: 'Savings goal',
     debt: 'Debt payoff goal',
     investing: 'Investing starter goal',
+    debt_payoff: 'Debt payoff goal',
+    emergency_fund: 'Emergency fund goal',
+    retirement: 'Retirement goal',
+    investment: 'Investment goal',
+    custom: 'Custom goal',
   };
 
   const validate = () => {
@@ -209,12 +225,12 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
               <div className="card-compact text-base font-medium">
                 {selectedAccount?.name}
               </div>
-            ) : type === 'debt' && eligibleAccounts.length > 1 ? (
+            ) : type === 'debt' && eligibleAccounts && eligibleAccounts.length > 1 ? (
               <div className="space-y-2">
                 <div className="text-sm text-muted mb-2">
                   Select all accounts you want to include in this payoff goal:
                 </div>
-                {eligibleAccounts.map(account => (
+                {eligibleAccounts?.map(account => (
                   <label key={account.id} className="flex items-center space-x-2 cursor-pointer">
                     <input
                       type="checkbox"
@@ -240,7 +256,7 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
                 onChange={e=>setAccountId(e.target.value || undefined)}
               >
                 <option value="">Not linked yet</option>
-                {eligibleAccounts.map(a => (
+                {eligibleAccounts?.map(a => (
                   <option key={a.id} value={a.id}>{a.name}</option>
                 ))}
               </select>
@@ -248,7 +264,7 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
             <small className="form-help">
               {preselectedAccountId 
                 ? `Goal will be linked to ${selectedAccount?.name}` 
-                : type === 'debt' && eligibleAccounts.length > 1
+                : type === 'debt' && eligibleAccounts && eligibleAccounts.length > 1
                 ? 'Select multiple accounts to create a combined payoff goal.'
                 : 'Linking helps track progress automatically.'
               }

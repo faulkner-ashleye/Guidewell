@@ -1,4 +1,4 @@
-export type GoalType = 'savings' | 'debt' | 'investing';
+export type GoalType = 'savings' | 'debt' | 'investing' | 'debt_payoff' | 'emergency_fund' | 'retirement' | 'investment' | 'custom';
 
 export interface Goal {
   id: string;
@@ -14,7 +14,7 @@ export interface Goal {
   createdAt: string;           // ISO
 }
 
-export type AccountType = 'checking' | 'savings' | 'credit_card' | 'loan' | 'investment';
+export type AccountType = 'checking' | 'savings' | 'credit_card' | 'loan' | 'investment' | 'debt';
 
 export interface Account {
   id: string;
