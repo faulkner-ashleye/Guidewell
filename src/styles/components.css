@@ -136,15 +136,22 @@
   width: 100%;
 }
 
+/* Full width button utility class */
+.btn--full-width {
+  width: 100%;
+}
+
 /* Input Components */
 .input {
   width: 100%;
-  padding: var(--spacing-sm) var(--spacing-md);
+  height: 56px;
+  padding: 0px 12px;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: 4px;
   background: var(--color-card);
-  color: var(--color-text);
-  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  font-size: 16px;
+  line-height: 24px;
   transition: all var(--transition-normal);
 }
 
@@ -176,12 +183,14 @@
 /* Select Components */
 .select {
   width: 100%;
-  padding: var(--spacing-sm) var(--spacing-md);
+  height: 56px;
+  padding: 0px 12px;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: 4px;
   background: var(--color-card);
-  color: var(--color-text);
-  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  font-size: 16px;
+  line-height: 24px;
   cursor: pointer;
   transition: all var(--transition-normal);
 }
@@ -316,25 +325,99 @@
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: all var(--transition-normal);
-  border: 1px solid var(--color-border);
-  background: transparent;
-  color: var(--color-text-muted);
+  border: 1px solid transparent;
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--color-text-primary);
+  position: relative;
+  outline: none;
 }
 
-.chip:hover {
-  background: var(--color-card);
-  color: var(--color-text);
+/* Light mode - UNSELECTED states */
+.chip:not(.chip-active):not(:disabled) {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--color-text-primary);
 }
 
+.chip:not(.chip-active):not(:disabled):hover {
+  background: rgba(0, 0, 0, 0.16);
+  color: var(--color-text-primary);
+}
+
+.chip:not(.chip-active):not(:disabled):focus {
+  background: rgba(0, 0, 0, 0.16);
+  color: var(--color-text-primary);
+  box-shadow: 0 0 0 2px rgba(var(--color-secondary-main-rgb), 0.3);
+}
+
+/* Light mode - SELECTED states */
 .chip-active {
-  background: var(--color-card);
-  color: var(--color-text);
-  border-color: var(--color-primary);
+  background: var(--color-primary-subtle);
+  color: var(--color-primary-dark);
+  border-color: transparent;
+}
+
+.chip-active:hover:not(:disabled) {
+  background: var(--color-primary-subtle-hover);
+  color: var(--color-primary-dark);
+}
+
+.chip-active:focus:not(:disabled) {
+  background: var(--color-primary-subtle-hover);
+  color: var(--color-primary-dark);
+  box-shadow: 0 0 0 2px rgba(var(--color-secondary-main-rgb), 0.3);
+}
+
+.chip-active:disabled {
+  background: rgba(var(--color-primary-subtle-rgb), 0.24);
+  color: var(--color-primary-dark);
+  opacity: 1;
 }
 
 .chip:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* Focus ring for all chips */
+.chip:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--color-secondary-main-rgb), 0.3);
+}
+
+/* Dark mode chip styles */
+[data-theme="dark"] .chip:not(.chip-active):not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .chip:not(.chip-active):not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .chip:not(.chip-active):not(:disabled):focus {
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .chip-active {
+  background: var(--color-primary-subtle);
+  color: var(--color-primary-subtle-contrast);
+}
+
+[data-theme="dark"] .chip-active:hover:not(:disabled) {
+  background: var(--color-primary-subtle-hover);
+  color: var(--color-primary-subtle-contrast);
+}
+
+[data-theme="dark"] .chip-active:focus:not(:disabled) {
+  background: var(--color-primary-subtle-hover);
+  color: var(--color-primary-subtle-contrast);
+}
+
+[data-theme="dark"] .chip-active:disabled {
+  background: rgba(var(--color-primary-subtle-rgb), 0.24);
+  color: var(--color-primary-subtle-contrast);
 }
 
 /* Progress Components */

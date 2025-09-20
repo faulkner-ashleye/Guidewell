@@ -789,12 +789,14 @@ export class ComponentStyles {
     const baseStyles = `
       .input {
         width: 100%;
-        padding: ${designTokens.spacing.sm} ${designTokens.spacing.md};
+        height: 56px;
+        padding: 0px 12px;
         border: 1px solid ${designTokens.colors.root.interactiveBorder};
-        border-radius: ${designTokens.radius.md};
+        border-radius: 4px;
         background: ${designTokens.colors.background.paper};
         color: ${designTokens.colors.text.primary};
-        font-size: ${designTokens.typography.fontSize.base};
+        font-size: 16px;
+        line-height: 24px;
         transition: all ${designTokens.transitions.normal};
       }
       

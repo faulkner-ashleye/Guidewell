@@ -94,6 +94,14 @@
   margin-left: 16px;
 }
 
+.activity-positive{
+    color: var(--color-success-main);
+}
+
+.activity-negative{
+    color:var( --color-error-main);
+}
+
 .activity-meta {
   display: flex;
   align-items: center;
@@ -143,11 +151,11 @@
   .home {
     padding: 16px;
   }
-  
+
   .summary-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .home-header h1 {
     font-size: 24px;
   }

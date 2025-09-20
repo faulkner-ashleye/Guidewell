@@ -93,10 +93,12 @@
 }
 
 .onboarding-input {
-  padding: 12px 16px;
+  height: 56px;
+  padding: 0px 12px;
   border: 1px solid #d1d5db;
-  border-radius: 8px;
+  border-radius: 4px;
   font-size: 16px;
+  line-height: 24px;
   color: #111827;
   background: white;
   transition: all 0.2s ease;
@@ -117,39 +119,107 @@
 /* Chip Styles */
 .onboarding-chip {
   padding: 12px 20px;
-  border: 2px solid #d1d5db;
+  border: 1px solid transparent;
   border-radius: 24px;
-  background: white;
-  color: #6b7280;
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--color-text-primary);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-normal);
   margin: 4px;
   display: inline-block;
   min-width: 120px;
   text-align: center;
+  outline: none;
+  position: relative;
 }
 
-.onboarding-chip:hover:not(.disabled) {
-  border-color: #9ca3af;
-  color: #374151;
+/* Light mode - UNSELECTED states */
+.onboarding-chip:not(.selected):not(.disabled) {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--color-text-primary);
 }
 
+.onboarding-chip:not(.selected):not(.disabled):hover {
+  background: rgba(0, 0, 0, 0.16);
+  color: var(--color-text-primary);
+}
+
+.onboarding-chip:not(.selected):not(.disabled):focus {
+  background: rgba(0, 0, 0, 0.16);
+  color: var(--color-text-primary);
+  box-shadow: 0 0 0 2px rgba(18, 32, 123, 0.3);
+}
+
+/* Light mode - SELECTED states */
 .onboarding-chip.selected {
-  background: #10b981;
-  border-color: #10b981;
-  color: white;
+  background: var(--color-primary-subtle);
+  color: var(--color-primary-dark);
 }
 
 .onboarding-chip.selected:hover {
-  background: #059669;
-  border-color: #059669;
+  background: var(--color-primary-subtle-hover);
+  color: var(--color-primary-dark);
+}
+
+.onboarding-chip.selected:focus {
+  background: var(--color-primary-subtle-hover);
+  color: var(--color-primary-dark);
+  box-shadow: 0 0 0 2px rgba(18, 32, 123, 0.3);
 }
 
 .onboarding-chip.disabled {
-  opacity: 0.5;
+  opacity: 0.6;
   cursor: not-allowed;
+}
+
+.onboarding-chip.selected.disabled {
+  background: rgba(194, 229, 200, 0.24);
+  color: var(--color-primary-dark);
+  opacity: 1;
+}
+
+/* Focus ring for all chips */
+.onboarding-chip:focus-visible {
+  outline: 2px solid var(--color-secondary-main);
+  outline-offset: 2px;
+}
+
+/* Dark mode styles */
+[data-theme="dark"] .onboarding-chip:not(.selected):not(.disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .onboarding-chip:not(.selected):not(.disabled):hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .onboarding-chip:not(.selected):not(.disabled):focus {
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .onboarding-chip.selected {
+  background: var(--color-primary-light);
+  color: var(--color-primary-contrast-text);
+}
+
+[data-theme="dark"] .onboarding-chip.selected:hover {
+  background: var(--color-primary-main);
+  color: var(--color-common-white);
+}
+
+[data-theme="dark"] .onboarding-chip.selected:focus {
+  background: var(--color-primary-main);
+  color: var(--color-primary-contrast-text);
+}
+
+[data-theme="dark"] .onboarding-chip.selected.disabled {
+  background: rgba(27, 94, 32, 0.24);
+  color: var(--color-primary-subtle-contrast);
 }
 
 .chip-container {
@@ -166,6 +236,7 @@
 
 .action-buttons {
   display: flex;
+  flex-direction:column;
   justify-content: space-between;
   gap: 12px;
 }
@@ -204,13 +275,6 @@
   background: #e5e7eb;
 }
 
-.disclaimer {
-  font-size: 14px;
-  color: #9ca3af;
-  line-height: 1.4;
-  margin: 24px 0 0 0;
-  font-style: italic;
-}
 
 .hint-box {
   background: #f0f9ff;
@@ -293,55 +357,57 @@
   .onboarding {
     padding: 16px 12px;
   }
-  
+
   .logo-placeholder {
     padding: 20px;
   }
-  
+
   .logo-icon {
     font-size: 40px;
   }
-  
+
   .logo-text {
     font-size: 20px;
   }
-  
+
   .onboarding-step h1 {
     font-size: 24px;
   }
-  
+
   .onboarding-step p {
     font-size: 15px;
   }
-  
+
   .action-buttons {
     flex-direction: column;
   }
-  
+
   .action-buttons.single-button {
     justify-content: center;
   }
-  
+
   .action-button {
     padding: 14px 20px;
     font-size: 15px;
   }
-  
+
   .name-fields {
     margin: 20px 0;
     gap: 12px;
   }
-  
+
   .onboarding-input {
-    padding: 14px 16px;
+    height: 56px;
+    padding: 0px 12px;
     font-size: 16px;
+    line-height: 24px;
   }
-  
+
   .chip-container {
     margin: 20px 0;
     gap: 6px;
   }
-  
+
   .onboarding-chip {
     padding: 14px 16px;
     font-size: 15px;

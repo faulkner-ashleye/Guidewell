@@ -21,10 +21,10 @@ export function Welcome({ data, update, onNext, onSkip }: WelcomeProps) {
           <div className="logo-text">Guidewell</div>
         </div>
       </div>
-      
+
       <h1>{onboardingCopy.header}</h1>
       <p>{onboardingCopy.subtext}</p>
-      
+
       {/* Name Fields */}
       <div className="name-fields">
         <div className="field-group">
@@ -50,20 +50,20 @@ export function Welcome({ data, update, onNext, onSkip }: WelcomeProps) {
           />
         </div>
       </div>
-      
+
       <div className="onboarding-actions">
         <div className="action-buttons single-button">
-          <Button 
+          <Button
             variant={ButtonVariants.contained}
             color={ButtonColors.secondary}
+            fullWidth={true}
             onClick={onNext}
           >
             Get started
           </Button>
         </div>
       </div>
-      
-      <p className="disclaimer">{onboardingCopy.disclaimer}</p>
+
     </div>
   );
 }

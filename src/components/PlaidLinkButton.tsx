@@ -37,37 +37,37 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
   useEffect(() => {
     let isMounted = true;
     let timeoutId: NodeJS.Timeout;
-    
+
     // Prevent multiple simultaneous initializations
     if (isInitializing.current) {
       return;
     }
-    
+
     isInitializing.current = true;
-    
+
     // Debounce the request to prevent multiple rapid calls
     timeoutId = setTimeout(async () => {
       try {
         console.log('Fetching link token from:', `${apiBase}/plaid/link/token/create`);
         console.log('Current window location:', window.location.href);
         console.log('Request body:', JSON.stringify({ userId }));
-        
+
         const r = await fetch(`${apiBase}/plaid/link/token/create`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId }),
         });
-        
+
         console.log('Response status:', r.status);
         console.log('Response headers:', Object.fromEntries(r.headers.entries()));
-        
+
         if (!r.ok) {
           throw new Error(`HTTP ${r.status}: ${r.statusText}`);
         }
-        
+
         const data = await r.json();
         console.log('Received link token:', data);
-        
+
         if (isMounted) {
           setLinkToken(data.link_token);
           setIsInitialized(true);
@@ -98,14 +98,15 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
 
   if (error) return <div>{error}</div>;
   if (plaidError) return <div>Plaid Error: {plaidError}</div>;
-  if (!isInitialized || !linkToken) return <Button variant={ButtonVariants.contained} color={ButtonColors.secondary} disabled>Plaid unavailable</Button>;
+  if (!isInitialized || !linkToken) return <Button variant={ButtonVariants.outline} color={ButtonColors.secondary} fullWidth={true} disabled>Plaid unavailable</Button>;
 
-  
+
   return (
-    <Button 
-      variant={ButtonVariants.contained}
+    <Button
+      variant={ButtonVariants.outline}
       color={ButtonColors.secondary}
-      onClick={() => open()} 
+      fullWidth={true}
+      onClick={() => open()}
       disabled={!ready}
     >
       <Icon name={IconNames.account_balance_wallet} size="lg" />

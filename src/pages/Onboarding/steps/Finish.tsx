@@ -59,7 +59,6 @@ export function Finish({ data, update, onFinish, onBack }: FinishProps) {
           Save & continue
         </Button>
       </div>
-      <p className="disclaimer">{onboardingCopy.disclaimer}</p>
     </div>
   );
 }

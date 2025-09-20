@@ -9,7 +9,7 @@
   --color-primary-subtle: #C2E5C8;
   --color-primary-subtle-hover: #9AD4A6;
   --color-primary-subtle-contrast: #00441A;
-  
+
   --color-secondary-main: #12207B;
   --color-secondary-dark: #0C1656;
   --color-secondary-light: #2A3DAA;
@@ -17,7 +17,7 @@
   --color-secondary-subtle: #E7E8F1;
   --color-secondary-subtle-hover: #C4C9E8;
   --color-secondary-subtle-contrast: #0C1656;
-  
+
   /* Semantic Colors */
   --color-error-main: #DA2727;
   --color-error-dark: #981818;
@@ -26,7 +26,7 @@
   --color-error-subtle: #FFEBEE;
   --color-error-subtle-hover: #FFCCD1;
   --color-error-subtle-contrast: #710801;
-  
+
   --color-warning-main: #FFCD06;
   --color-warning-dark: #FFB600;
   --color-warning-light: #FFD844;
@@ -34,7 +34,7 @@
   --color-warning-subtle: #FFF9E0;
   --color-warning-subtle-hover: #FFEDB0;
   --color-warning-subtle-contrast: #552C07;
-  
+
   --color-info-main: #247CB7;
   --color-info-dark: #195688;
   --color-info-light: #4F96C5;
@@ -42,7 +42,7 @@
   --color-info-subtle: #E2F6FD;
   --color-info-subtle-hover: #B6E7FA;
   --color-info-subtle-contrast: #653570;
-  
+
   --color-success-main: #AAD04E;
   --color-success-dark: #89B81F;
   --color-success-light: #CEE39B;
@@ -50,26 +50,26 @@
   --color-success-subtle: #F3F9E7;
   --color-success-subtle-hover: #E2EEC2;
   --color-success-subtle-contrast: #08400E;
-  
+
   /* Core Colors */
   --color-text-primary: #212121;
   --color-text-secondary: #656565;
   --color-text-disabled: #9e9e9e;
   --color-text-inverse: #FFFFFF;
-  
+
   --color-action-hover: rgba(0, 0, 0, 0.04);
   --color-action-focus: rgba(0, 0, 0, 0.12);
   --color-action-selected: rgba(0, 0, 0, 0.08);
   --color-action-active: rgba(0, 0, 0, 0.54);
   --color-action-disabled: rgba(0, 0, 0, 0.26);
   --color-action-disabled-background: rgba(0, 0, 0, 0.12);
-  
+
   --color-background-paper: #FFFFFF;
   --color-background-default: #FAFAFA;
-  
+
   --color-common-white: #FFFFFF;
   --color-common-black: #000000;
-  
+
   --color-grey-50: #FAFAFA;
   --color-grey-100: #F5F5F5;
   --color-grey-200: #EEEEEE;
@@ -80,24 +80,24 @@
   --color-grey-700: #616161;
   --color-grey-800: #424242;
   --color-grey-900: #212121;
-  
+
   --color-root-divider: #E0E0E0;
   --color-root-interactive-border: #919191;
-  
+
   /* Button State Colors */
   --color-secondary-states-hover: rgba(18, 32, 123, 0.04);
   --color-secondary-states-selected: rgba(18, 32, 123, 0.08);
   --color-secondary-states-focus: rgba(18, 32, 123, 0.12);
-  
+
   --color-error-states-hover: rgba(218, 39, 39, 0.04);
   --color-error-states-selected: rgba(218, 39, 39, 0.08);
   --color-error-states-focus: rgba(218, 39, 39, 0.12);
-  
+
   /* Financial Context Colors (for Guidewell) */
   --color-debt: #DA2727;
   --color-savings: #AAD04E;
   --color-investing: #247CB7;
-  
+
   /* Legacy color mappings for backward compatibility */
   --color-bg: var(--color-background-paper);
   --color-card: var(--color-background-paper);
@@ -185,7 +185,7 @@
   --color-primary-subtle: #C2E5C8;
   --color-primary-subtle-hover: #9AD4A6;
   --color-primary-subtle-contrast: #00441A;
-  
+
   --color-secondary-main: #12207B;
   --color-secondary-dark: #0C1656;
   --color-secondary-light: #2A3DAA;
@@ -193,7 +193,7 @@
   --color-secondary-subtle: #E7E8F1;
   --color-secondary-subtle-hover: #C4C9E8;
   --color-secondary-subtle-contrast: #0C1656;
-  
+
   /* Semantic Colors */
   --color-error-main: #DA2727;
   --color-error-dark: #981818;
@@ -202,7 +202,7 @@
   --color-error-subtle: #FFEBEE;
   --color-error-subtle-hover: #FFCCD1;
   --color-error-subtle-contrast: #710801;
-  
+
   --color-warning-main: #FFCD06;
   --color-warning-dark: #FFB600;
   --color-warning-light: #FFD844;
@@ -210,7 +210,7 @@
   --color-warning-subtle: #FFF9E0;
   --color-warning-subtle-hover: #FFEDB0;
   --color-warning-subtle-contrast: #552C07;
-  
+
   --color-info-main: #247CB7;
   --color-info-dark: #195688;
   --color-info-light: #4F96C5;
@@ -218,7 +218,7 @@
   --color-info-subtle: #E2F6FD;
   --color-info-subtle-hover: #B6E7FA;
   --color-info-subtle-contrast: #653570;
-  
+
   --color-success-main: #AAD04E;
   --color-success-dark: #89B81F;
   --color-success-light: #CEE39B;
@@ -226,26 +226,26 @@
   --color-success-subtle: #F3F9E7;
   --color-success-subtle-hover: #E2EEC2;
   --color-success-subtle-contrast: #08400E;
-  
+
   /* Core Colors */
   --color-text-primary: #212121;
   --color-text-secondary: #656565;
   --color-text-disabled: #9e9e9e;
   --color-text-inverse: #FFFFFF;
-  
+
   --color-action-hover: rgba(0, 0, 0, 0.04);
   --color-action-focus: rgba(0, 0, 0, 0.12);
   --color-action-selected: rgba(0, 0, 0, 0.08);
   --color-action-active: rgba(0, 0, 0, 0.54);
   --color-action-disabled: rgba(0, 0, 0, 0.26);
   --color-action-disabled-background: rgba(0, 0, 0, 0.12);
-  
+
   --color-background-paper: #FFFFFF;
   --color-background-default: #FAFAFA;
-  
+
   --color-common-white: #FFFFFF;
   --color-common-black: #000000;
-  
+
   --color-grey-50: #FAFAFA;
   --color-grey-100: #F5F5F5;
   --color-grey-200: #EEEEEE;
@@ -256,24 +256,24 @@
   --color-grey-700: #616161;
   --color-grey-800: #424242;
   --color-grey-900: #212121;
-  
+
   --color-root-divider: #E0E0E0;
   --color-root-interactive-border: #919191;
-  
+
   /* Button State Colors */
   --color-secondary-states-hover: rgba(18, 32, 123, 0.04);
   --color-secondary-states-selected: rgba(18, 32, 123, 0.08);
   --color-secondary-states-focus: rgba(18, 32, 123, 0.12);
-  
+
   --color-error-states-hover: rgba(218, 39, 39, 0.04);
   --color-error-states-selected: rgba(218, 39, 39, 0.08);
   --color-error-states-focus: rgba(218, 39, 39, 0.12);
-  
+
   /* Financial Context Colors */
   --color-debt: #DA2727;
   --color-savings: #AAD04E;
   --color-investing: #247CB7;
-  
+
   /* Legacy mappings */
   --color-bg: var(--color-background-paper);
   --color-card: var(--color-background-paper);
@@ -284,27 +284,31 @@
   --color-success: var(--color-success-main);
   --color-warning: var(--color-warning-main);
   --color-error: var(--color-error-main);
+
+  /* RGB color values for opacity calculations */
+  --color-secondary-main-rgb: 18, 32, 123;
+  --color-primary-subtle-rgb: 194, 229, 200;
 }
 
 /* Dark theme */
 [data-theme="dark"] {
   /* Brand Colors - Adjusted for dark mode */
-  --color-primary-main: #4CAF50;
-  --color-primary-dark: #2E7D32;
-  --color-primary-light: #66BB6A;
-  --color-primary-contrast-text: #000000;
-  --color-primary-subtle: #1B5E20;
-  --color-primary-subtle-hover: #2E7D32;
-  --color-primary-subtle-contrast: #FFFFFF;
-  
-  --color-secondary-main: #5C6BC0;
-  --color-secondary-dark: #3F51B5;
-  --color-secondary-light: #7986CB;
+  --color-primary-main: #339458;         /* main */
+    --color-primary-dark: #256940;         /* darker shade */
+    --color-primary-light: #4FBF77;        /* lighter shade */
+    --color-primary-contrast-text: #212121;/* on green */
+    --color-primary-subtle: #E6F3EC;       /* very light background tint */
+    --color-primary-subtle-hover: #C4E4D1; /* hover tint */
+    --color-primary-subtle-contrast: #256940; /* text/icon color on subtle */
+
+  --color-secondary-main: #5163E2;
+  --color-secondary-dark: #3F50C8;
+  --color-secondary-light: #7084FF;
   --color-secondary-contrast-text: #FFFFFF;
-  --color-secondary-subtle: #1A237E;
-  --color-secondary-subtle-hover: #283593;
-  --color-secondary-subtle-contrast: #FFFFFF;
-  
+  --color-secondary-subtle: #D9DDF9;
+  --color-secondary-subtle-hover: #B9C1F2;
+  --color-secondary-subtle-contrast: #212121;
+
   /* Semantic Colors - Adjusted for dark mode */
   --color-error-main: #F44336;
   --color-error-dark: #D32F2F;
@@ -313,7 +317,7 @@
   --color-error-subtle: #B71C1C;
   --color-error-subtle-hover: #C62828;
   --color-error-subtle-contrast: #FFFFFF;
-  
+
   --color-warning-main: #FF9800;
   --color-warning-dark: #F57C00;
   --color-warning-light: #FFB74D;
@@ -321,7 +325,7 @@
   --color-warning-subtle: #E65100;
   --color-warning-subtle-hover: #FF6F00;
   --color-warning-subtle-contrast: #FFFFFF;
-  
+
   --color-info-main: #2196F3;
   --color-info-dark: #1976D2;
   --color-info-light: #42A5F5;
@@ -329,34 +333,34 @@
   --color-info-subtle: #0D47A1;
   --color-info-subtle-hover: #1565C0;
   --color-info-subtle-contrast: #FFFFFF;
-  
-  --color-success-main: #4CAF50;
-  --color-success-dark: #388E3C;
-  --color-success-light: #66BB6A;
+
+  --color-success-main: #AAD04E;
+  --color-success-dark: #89B81F;
+  --color-success-light: #CEE39B;
   --color-success-contrast-text: #000000;
-  --color-success-subtle: #1B5E20;
-  --color-success-subtle-hover: #2E7D32;
-  --color-success-subtle-contrast: #FFFFFF;
-  
+  --color-success-subtle: #F3F9E7;
+  --color-success-subtle-hover: #E2EEC2;
+  --color-success-subtle-contrast: #08400E;
+
   /* Core Colors - Dark mode */
   --color-text-primary: #ffffff;
   --color-text-secondary: #b6b6b6;
   --color-text-disabled: #5e5e5e;
   --color-text-inverse: #000000;
-  
+
   --color-action-hover: rgba(255, 255, 255, 0.04);
   --color-action-focus: rgba(255, 255, 255, 0.12);
   --color-action-selected: rgba(255, 255, 255, 0.08);
   --color-action-active: rgba(255, 255, 255, 0.54);
   --color-action-disabled: rgba(255, 255, 255, 0.26);
   --color-action-disabled-background: rgba(255, 255, 255, 0.12);
-  
-  --color-background-paper: #121212;
-  --color-background-default: #0D0D0D;
-  
+
+  --color-background-paper: #1C1C1C;
+  --color-background-default: #171717;
+
   --color-common-white: #FFFFFF;
   --color-common-black: #000000;
-  
+
   --color-grey-50: #FAFAFA;
   --color-grey-100: #F5F5F5;
   --color-grey-200: #EEEEEE;
@@ -367,26 +371,26 @@
   --color-grey-700: #616161;
   --color-grey-800: #424242;
   --color-grey-900: #212121;
-  
+
   --color-root-divider: #333333;
   --color-root-interactive-border: #666666;
-  
+
   /* Button State Colors - Adjusted for dark mode */
   --color-secondary-states-hover: rgba(92, 107, 192, 0.08);
   --color-secondary-states-selected: rgba(92, 107, 192, 0.12);
   --color-secondary-states-focus: rgba(92, 107, 192, 0.16);
-  
+
   --color-error-states-hover: rgba(244, 67, 54, 0.08);
   --color-error-states-selected: rgba(244, 67, 54, 0.12);
   --color-error-states-focus: rgba(244, 67, 54, 0.16);
-  
+
   /* Financial Context Colors - Adjusted for dark mode */
   --color-debt: #F44336;
   --color-savings: #4CAF50;
   --color-investing: #2196F3;
-  
+
   /* Legacy mappings */
-  --color-bg: var(--color-background-paper);
+  --color-bg: var(--color-background-default);
   --color-card: var(--color-background-paper);
   --color-border: var(--color-grey-700);
   --color-text: var(--color-text-primary);
@@ -395,6 +399,11 @@
   --color-success: var(--color-success-main);
   --color-warning: var(--color-warning-main);
   --color-error: var(--color-error-main);
+
+  /* RGB color values for opacity calculations - Dark mode */
+  --color-secondary-main-rgb: 81,99,226;
+  --color-secondary-light-rgb: 112,132,255;
+  --color-primary-subtle-rgb: 27, 94, 32;
 }
 
 /* Base styles */
@@ -1278,9 +1287,3 @@ body {
 .hover\:opacity-80:hover {
   opacity: 0.8;
 }
-
-
-
-
-
-

@@ -26,7 +26,7 @@ export function Timeline({ data, update, onNext, onBack, onSkip }: TimelineProps
     <div className="onboarding-step">
       <h1>What's your timeline?</h1>
       <p>How long are you planning to work on these goals?</p>
-      
+
       <div className="chip-container">
         {timelineOptions.map(option => (
           <Chip
@@ -40,31 +40,33 @@ export function Timeline({ data, update, onNext, onBack, onSkip }: TimelineProps
 
       <div className="onboarding-actions">
         <div className="action-buttons">
-          <Button 
+        <Button
+          variant={ButtonVariants.contained}
+          color={ButtonColors.secondary}
+          fullWidth={true}
+          onClick={onNext}
+          disabled={!canProceed}
+        >
+          Next
+        </Button>
+          <Button
             variant={ButtonVariants.outline}
             color={ButtonColors.secondary}
+            fullWidth={true}
             onClick={onBack}
           >
             Back
           </Button>
-          <Button 
-            variant={ButtonVariants.outline}
+          <Button
+            variant={ButtonVariants.text}
             color={ButtonColors.secondary}
+            fullWidth={true}
             onClick={onSkip}
           >
             {onboardingCopy.skip}
           </Button>
-          <Button 
-            variant={ButtonVariants.contained}
-            color={ButtonColors.secondary}
-            onClick={onNext}
-            disabled={!canProceed}
-          >
-            Next
-          </Button>
         </div>
       </div>
-      <p className="disclaimer">{onboardingCopy.disclaimer}</p>
     </div>
   );
 }

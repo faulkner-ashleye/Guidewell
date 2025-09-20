@@ -27,7 +27,7 @@ export function Priority({ data, update, onNext, onBack, onSkip }: PriorityProps
     <div className="onboarding-step">
       <h1>Which is your top priority?</h1>
       <p>We'll focus on this goal first, but you can always adjust your strategy later.</p>
-      
+
       <div className="chip-container">
         {data.mainGoals.map(goal => (
           <Chip
@@ -41,32 +41,35 @@ export function Priority({ data, update, onNext, onBack, onSkip }: PriorityProps
 
       <div className="onboarding-actions">
         <div className="action-buttons">
-          <Button 
+        <Button
+          variant={ButtonVariants.contained}
+          color={ButtonColors.secondary}
+          fullWidth={true}
+          onClick={onNext}
+          disabled={!canProceed}
+        >
+          Next
+        </Button>
+          <Button
             variant={ButtonVariants.outline}
             color={ButtonColors.secondary}
+            fullWidth={true}
             onClick={onBack}
           >
             Back
           </Button>
-          <Button 
-            variant={ButtonVariants.outline}
+          <Button
+            variant={ButtonVariants.text}
             color={ButtonColors.secondary}
+            fullWidth={true}
             onClick={onSkip}
           >
             {onboardingCopy.skip}
           </Button>
-          <Button 
-            variant={ButtonVariants.contained}
-            color={ButtonColors.secondary}
-            onClick={onNext}
-            disabled={!canProceed}
-          >
-            Next
-          </Button>
+
         </div>
       </div>
-      
-      <p className="disclaimer">{onboardingCopy.disclaimer}</p>
+
     </div>
   );
 }

@@ -10,15 +10,16 @@ import '../../../components/Button.css';
 export default function Connect({ onNext, onBack, onSkip }: { onNext: () => void; onBack: () => void; onSkip: () => void }) {
   const [open, setOpen] = useState(false);
   const { clearSampleData, setAccounts } = useAppState();
-  
-  
+
+
   return (
     <section>
       <h2>Let's connect your accounts</h2>
       <p>Connecting is optional. Guidewell provides educational scenarios, not financial advice.</p>
-      
-      <ServerTest />
 
+      <ServerTest />
+      <div className="onboarding-actions">
+        <div className="action-buttons">
       <PlaidLinkButton
         key="plaid-link-singleton"
         userId="demo-user-123"
@@ -31,29 +32,33 @@ export default function Connect({ onNext, onBack, onSkip }: { onNext: () => void
       />
 
       {/* Add accounts another way button / sheet */}
-      <Button 
+      <Button
         variant={ButtonVariants.outline}
         color={ButtonColors.secondary}
+        fullWidth={true}
         onClick={() => setOpen(true)}
       >
         Add accounts another way
       </Button>
-      
-      <Button 
-        variant={ButtonVariants.outline}
+
+      <Button
+        variant={ButtonVariants.text}
         color={ButtonColors.secondary}
+        fullWidth={true}
         onClick={onSkip}
       >
         Skip
       </Button>
-      
+      </div>
+      </div>
+
       <Sheet open={open} onClose={() => setOpen(false)} title="Upload documents or enter manually">
-        <ConnectChoose 
-          onClose={() => setOpen(false)} 
-          onComplete={() => { 
-            setOpen(false); 
-            onNext(); 
-          }} 
+        <ConnectChoose
+          onClose={() => setOpen(false)}
+          onComplete={() => {
+            setOpen(false);
+            onNext();
+          }}
         />
       </Sheet>
     </section>

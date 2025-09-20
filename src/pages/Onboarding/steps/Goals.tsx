@@ -30,7 +30,7 @@ export function Goals({ data, update, onNext, onSkip, accounts }: GoalsProps) {
       ? currentGoals.filter(g => g !== goal)
       : [...currentGoals, goal];
     update('mainGoals', newGoals);
-    
+
     // Clear topPriority if it's no longer in mainGoals
     if (data.topPriority && !newGoals.includes(data.topPriority)) {
       update('topPriority', undefined);
@@ -38,11 +38,11 @@ export function Goals({ data, update, onNext, onSkip, accounts }: GoalsProps) {
   };
 
   const canProceed = data.mainGoals.length > 0;
-  
+
   // Check if we should show the hint
   const inferredGoals = inferGoalsFromAccounts(accounts);
   const shouldShowHint = data.mainGoals.length === 0 && inferredGoals.length > 0;
-  
+
   const handleAutoSelect = () => {
     update('mainGoals', inferredGoals as MainGoal[]);
   };
@@ -51,11 +51,11 @@ export function Goals({ data, update, onNext, onSkip, accounts }: GoalsProps) {
     <div className="onboarding-step">
       <h1>What are your main goals?</h1>
       <p>Select all that apply:</p>
-      
+
       {shouldShowHint && (
         <div className="hint-box">
           <p>We noticed you have {inferredGoals.includes('pay_down_debt') ? 'debt' : ''}{inferredGoals.includes('pay_down_debt') && inferredGoals.includes('save_big_goal') ? ' and ' : ''}{inferredGoals.includes('save_big_goal') ? 'savings' : ''}—want to include these goals?</p>
-          <Button 
+          <Button
             variant={ButtonVariants.text}
             color={ButtonColors.secondary}
             onClick={handleAutoSelect}
@@ -64,7 +64,7 @@ export function Goals({ data, update, onNext, onSkip, accounts }: GoalsProps) {
           </Button>
         </div>
       )}
-      
+
       <div className="chip-container">
         {goalOptions.map(option => (
           <Chip
@@ -78,25 +78,25 @@ export function Goals({ data, update, onNext, onSkip, accounts }: GoalsProps) {
 
       <div className="onboarding-actions">
         <div className="action-buttons">
-          <Button 
-            variant={ButtonVariants.outline}
+        <Button
+          variant={ButtonVariants.contained}
+          color={ButtonColors.secondary}
+          fullWidth={true}
+          onClick={onNext}
+          disabled={!canProceed}
+        >
+          Next
+        </Button>
+          <Button
+            variant={ButtonVariants.text}
             color={ButtonColors.secondary}
+            fullWidth={true}
             onClick={onSkip}
           >
             {onboardingCopy.skip}
           </Button>
-          <Button 
-            variant={ButtonVariants.contained}
-            color={ButtonColors.secondary}
-            onClick={onNext}
-            disabled={!canProceed}
-          >
-            Next
-          </Button>
         </div>
       </div>
-      
-      <p className="disclaimer">{onboardingCopy.disclaimer}</p>
     </div>
   );
 }

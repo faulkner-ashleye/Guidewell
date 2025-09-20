@@ -75,6 +75,9 @@
 .w-max { width: max-content; }
 .w-fit { width: fit-content; }
 
+/* Button Width Utilities */
+.btn-full-width { width: 100%; }
+
 /* Height Utilities */
 .h-auto { height: auto; }
 .h-full { height: 100%; }
