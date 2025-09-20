@@ -254,7 +254,6 @@ export function CustomStrategy() {
 
         {/* Footer */}
         <div className="custom-strategy-footer">
-          Educational scenarios only — not financial advice.
         </div>
       </div>
 

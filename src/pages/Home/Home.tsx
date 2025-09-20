@@ -13,10 +13,7 @@ import { ProgressBar } from '../../components/ProgressBar';
 import { NetWorthStackedArea } from '../../components/NetWorthStackedArea';
 import { GoalAccountLinker } from '../../components/GoalAccountLinker';
 import HomeHeader from '../../app/components/HomeHeader';
-import QuickActionsButton from '../../app/components/QuickActionsButton';
-import QuickActionsSheet from '../../app/components/QuickActionsSheet';
-import AddGoalModal from '../../app/plan/components/AddGoalModal';
-import LogContributionModal from '../../app/components/LogContributionModal';
+import { useInsightsCount } from '../../hooks/useInsightsCount';
 import PlaidLinkButton from '../../components/PlaidLinkButton';
 import Sheet from '../../app/components/Sheet';
 import { sampleScenarios } from '../../data/sampleScenarios';
@@ -36,12 +33,12 @@ export function Home() {
     loadSampleScenario
   } = useAppState();
 
-  // Quick Actions state
-  const [qaOpen, setQaOpen] = useState(false);
-  const [goalOpen, setGoalOpen] = useState(false);
-  const [logOpen, setLogOpen] = useState(false);
-  const [connectOpen, setConnectOpen] = useState(false);
+  // Get insights count for badge
+  const insightsCount = useInsightsCount();
+
+  // Sample scenario state
   const [sampleScenarioOpen, setSampleScenarioOpen] = useState(false);
+  const [connectOpen, setConnectOpen] = useState(false);
 
   // Get recent activity feed
   const recentActivity = getRecentActivity(transactions, contributions, accounts, 10);
@@ -52,9 +49,136 @@ export function Home() {
   const checkingTotal = sumByType(accounts, ['checking']);
   const creditCardTotal = sumByType(accounts, ['credit_card']);
   const studentLoanTotal = sumByType(accounts, ['loan']);
+  const savingsAccountTotal = sumByType(accounts, ['savings']);
+  const investmentTotal = sumByType(accounts, ['investment']);
 
   const goal = getPrimaryGoal(accounts, userProfile || undefined);
   const highestAPR = getHighestAPR(accounts);
+
+  // Get unique account types that exist in user's data
+  const existingAccountTypes = Array.from(new Set(accounts.map(acc => acc.type)));
+  
+  // Generate dynamic summary cards based on existing account types
+  const generateSummaryCards = () => {
+    const cards = [];
+    
+    // Always show checking if it exists
+    if (existingAccountTypes.includes('checking')) {
+      cards.push(
+        <SummaryCard
+          key="checking"
+          title="Checking"
+          value={formatCurrency(checkingTotal)}
+          subline={accounts.filter(a => a.type === 'checking').length > 1 ?
+            `${accounts.filter(a => a.type === 'checking').length} accounts` :
+            accounts.find(a => a.type === 'checking')?.name
+          }
+        />
+      );
+    }
+    
+    // Always show Primary Goal
+    cards.push(
+      <SummaryCard
+        key="primary-goal"
+        title="Primary Goal"
+        value={goal ? `${goal.percent}%` : 'No goal yet'}
+        subline={goal ? `${formatCurrency(goal.current)} of ${formatCurrency(goal.target)}` : 'Set a target in Goals'}
+      >
+        {goal && <ProgressBar percent={goal.percent} />}
+        {hasData && (
+          <GoalAccountLinker
+            accounts={accounts}
+            currentLinkedAccountId={userProfile?.primaryGoalAccountId}
+            onLinkAccount={(accountId) => {
+              if (userProfile) {
+                setUserProfile({
+                  ...userProfile,
+                  primaryGoalAccountId: accountId
+                });
+              }
+            }}
+            onUnlinkAccount={() => {
+              if (userProfile) {
+                setUserProfile({
+                  ...userProfile,
+                  primaryGoalAccountId: undefined
+                });
+              }
+            }}
+          />
+        )}
+      </SummaryCard>
+    );
+    
+    // Show savings if it exists
+    if (existingAccountTypes.includes('savings')) {
+      cards.push(
+        <SummaryCard
+          key="savings"
+          title="Savings"
+          value={formatCurrency(savingsAccountTotal)}
+          subline={accounts.filter(a => a.type === 'savings').length > 1 ?
+            `${accounts.filter(a => a.type === 'savings').length} accounts` :
+            accounts.find(a => a.type === 'savings')?.name
+          }
+        />
+      );
+    }
+    
+    // Show credit cards if they exist
+    if (existingAccountTypes.includes('credit_card')) {
+      cards.push(
+        <SummaryCard
+          key="credit-card"
+          title="Credit Card"
+          value={formatCurrency(creditCardTotal)}
+          subline={creditCardTotal > 0 ? (highestAPR ? `${highestAPR}% APR` : 'No APR data') : 'No credit cards'}
+        />
+      );
+    }
+    
+    // Show loans if they exist
+    if (existingAccountTypes.includes('loan')) {
+      cards.push(
+        <SummaryCard
+          key="loans"
+          title="Loans"
+          value={formatCurrency(studentLoanTotal)}
+          subline={accounts.filter(a => a.type === 'loan').length > 0 ?
+            `${accounts.filter(a => a.type === 'loan').length} loans` :
+            'No loans'
+          }
+        />
+      );
+    }
+    
+    // Show investments if they exist
+    if (existingAccountTypes.includes('investment')) {
+      cards.push(
+        <SummaryCard
+          key="investments"
+          title="Investments"
+          value={formatCurrency(investmentTotal)}
+          subline={accounts.filter(a => a.type === 'investment').length > 1 ?
+            `${accounts.filter(a => a.type === 'investment').length} accounts` :
+            accounts.find(a => a.type === 'investment')?.name
+          }
+        />
+      );
+    }
+    
+    return cards;
+  };
+
+  // Determine display name - use persona name when in sample data mode
+  const getDisplayName = () => {
+    if (userProfile?.hasSampleData) {
+      // When in sample data mode, use a generic greeting to avoid confusion
+      return 'there';
+    }
+    return userProfile?.firstName || 'there';
+  };
   
   // Build net worth series for stacked area chart
   const netWorthSeries = buildNetWorthSeries(accounts, [], 56);
@@ -65,9 +189,9 @@ export function Home() {
   return (
     <div className="home">
       <HomeHeader
-        greeting={`Hi ${userProfile?.firstName || 'there'} 👋`}
+        greeting={`Hi ${getDisplayName()} 👋`}
         subtitle="Your financial snapshot today"
-        rightAction={<QuickActionsButton onClick={() => setQaOpen(true)} />}
+        insightsCount={insightsCount}
       />
 
       {/* Sample Data Message */}
@@ -138,61 +262,9 @@ export function Home() {
             </div>
           )}
 
-          {/* 2x2 Summary Cards */}
+          {/* Dynamic Summary Cards */}
           <div className="summary-grid">
-            <SummaryCard
-              title="Checking"
-              value={formatCurrency(checkingTotal)}
-              subline={accounts.filter(a => a.type === 'checking').length > 1 ?
-                `${accounts.filter(a => a.type === 'checking').length} accounts` :
-                accounts.find(a => a.type === 'checking')?.name
-              }
-            />
-
-            <SummaryCard
-              title="Primary Goal"
-              value={goal ? `${goal.percent}%` : 'No goal yet'}
-              subline={goal ? `${formatCurrency(goal.current)} of ${formatCurrency(goal.target)}` : 'Set a target in Goals'}
-            >
-              {goal && <ProgressBar percent={goal.percent} />}
-              {hasData && (
-                <GoalAccountLinker
-                  accounts={accounts}
-                  currentLinkedAccountId={userProfile?.primaryGoalAccountId}
-                  onLinkAccount={(accountId) => {
-                    if (userProfile) {
-                      setUserProfile({
-                        ...userProfile,
-                        primaryGoalAccountId: accountId
-                      });
-                    }
-                  }}
-                  onUnlinkAccount={() => {
-                    if (userProfile) {
-                      setUserProfile({
-                        ...userProfile,
-                        primaryGoalAccountId: undefined
-                      });
-                    }
-                  }}
-                />
-              )}
-            </SummaryCard>
-
-            <SummaryCard
-              title="Credit Card"
-              value={formatCurrency(creditCardTotal)}
-              subline={highestAPR ? `${highestAPR}% APR` : 'No credit cards'}
-            />
-
-            <SummaryCard
-              title="Student Loans"
-              value={formatCurrency(studentLoanTotal)}
-              subline={accounts.filter(a => a.type === 'loan').length > 0 ?
-                `${accounts.filter(a => a.type === 'loan').length} loans` :
-                'No loans'
-              }
-            />
+            {generateSummaryCards()}
           </div>
 
           {/* Recent Activity */}
@@ -201,17 +273,49 @@ export function Home() {
             {recentActivity.length > 0 ? (
               <div className="activity-feed">
                 {recentActivity.map((item) => {
-                  // Determine activity type and styling based on transaction description
+                  // Get the account type for this transaction
+                  const account = accounts.find(acc => acc.id === item.accountId);
+                  const accountType = account?.type;
+                  
+                  // Determine activity type and styling based on transaction description and account type
                   const isInvestmentContribution = item.description.includes('401K') || 
                     item.description.includes('ROTH IRA') || 
                     item.description.includes('INVESTMENT');
-                  const isSavingsTransfer = item.description.includes('TRANSFER') && 
-                    item.description.includes('SAVINGS');
+                  const isSavingsTransfer = item.description.includes('TRANSFER') || 
+                    item.description.includes('SAVINGS') ||
+                    item.description.includes('EMERGENCY FUND') ||
+                    item.description.includes('DOWN PAYMENT') ||
+                    item.description.includes('HOUSE SAVINGS') ||
+                    item.description.includes('EQUIPMENT SAVINGS') ||
+                    item.description.includes('VACATION SAVINGS') ||
+                    item.description.includes('WEDDING SAVINGS') ||
+                    item.description.includes('COLLEGE FUND') ||
+                    item.description.includes('REAL ESTATE INVESTMENT FUND');
+                  
+                  // For credit card accounts, payments (negative amounts) are positive activity (reducing debt)
+                  const isCreditCardPayment = accountType === 'credit_card' && 
+                    item.description.includes('PAYMENT') && 
+                    item.amount < 0;
+                  
+                  // For loan accounts, payments (negative amounts) are positive activity (reducing debt)
+                  const isLoanPayment = accountType === 'loan' && 
+                    item.description.includes('PAYMENT') && 
+                    item.amount < 0;
+                  
+                  // For checking/savings accounts, payments to credit cards or loans are positive activity (reducing debt)
+                  const isDebtPaymentFromChecking = (accountType === 'checking' || accountType === 'savings') && 
+                    (item.description.includes('CREDIT CARD PAYMENT') || 
+                     item.description.includes('CARD PAYMENT') ||
+                     item.description.includes('LOAN PAYMENT') ||
+                     item.description.includes('STUDENT LOAN')) && 
+                    item.amount < 0;
+                  
                   const isIncome = item.amount > 0 && (
-                    item.description.includes('PAYROLL') || 
+                    item.description.includes('PAYROLL DEPOSIT') || 
                     item.description.includes('PAYMENT') ||
-                    item.description.includes('FREELANCE') ||
-                    item.description.includes('UPWORK')
+                    item.description.includes('FREELANCE PROJECT') ||
+                    item.description.includes('UPWORK PAYMENT') ||
+                    item.description.includes('CLIENT')
                   );
                   
                   let activityClass = '';
@@ -221,6 +325,11 @@ export function Home() {
                   if (isIncome) {
                     activityClass = 'activity-positive';
                     prefix = '+';
+                  } else if (isCreditCardPayment || isLoanPayment || isDebtPaymentFromChecking) {
+                    // Show debt payments as positive activity (green color) but keep negative amount
+                    activityClass = 'activity-positive';
+                    displayAmount = item.amount; // Keep original negative amount
+                    prefix = ''; // No prefix, let the amount show its natural sign
                   } else if (isInvestmentContribution || isSavingsTransfer) {
                     activityClass = 'activity-info';
                     // Show as positive amount for investment contributions and savings transfers
@@ -337,31 +446,6 @@ export function Home() {
         </>
       )}
 
-      {/* Quick Actions Sheet */}
-      <QuickActionsSheet
-        open={qaOpen}
-        onClose={() => setQaOpen(false)}
-        onAddGoal={() => setGoalOpen(true)}
-        onConnectAccount={() => setConnectOpen(true)}
-        onLogContribution={() => setLogOpen(true)}
-      />
-
-      {/* Add Goal modal */}
-      <AddGoalModal
-        open={goalOpen}
-        onClose={() => setGoalOpen(false)}
-        onCreate={(g: any) => {/* setGoals(prev=>[...prev, g]) handled inside modal caller */}}
-        accounts={accounts}
-      />
-
-      {/* Log Contribution modal */}
-      <LogContributionModal
-        open={logOpen}
-        onClose={() => setLogOpen(false)}
-        onSave={(c: any) => { /* apply to state in your handler */ }}
-        accounts={accounts}
-        goals={goals}
-      />
 
       {/* Connect account sheet (Plaid or other methods) */}
       <Sheet open={connectOpen} onClose={() => setConnectOpen(false)} title="Connect account">

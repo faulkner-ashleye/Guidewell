@@ -44,7 +44,6 @@ export function NarrativeCard({ title, narrative, onViewBreakdown, style, classN
           color: '#9ca3af',
           fontStyle: 'italic'
         }}>
-          Educational scenario only — not financial advice.
         </div>
         
         {onViewBreakdown && (

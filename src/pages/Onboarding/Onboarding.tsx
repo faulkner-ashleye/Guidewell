@@ -88,28 +88,8 @@ export function Onboarding() {
       type: account.type === 'debt' ? 'loan' : account.type
     })) as any;
     setAccounts(accounts);
-    setTransactions([]); // Sample scenarios don't include transactions yet
-    
-    // Add some sample manual contributions for testing (generic)
-    const sampleContributions = [
-      {
-        id: 'sample-contrib-1',
-        accountId: accounts[0]?.id || 'sample-account-1',
-        amount: Math.floor(Math.random() * 1000) + 200,
-        date: '2025-01-15',
-        description: 'Sample contribution',
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: 'sample-contrib-2',
-        accountId: accounts[1]?.id || 'sample-account-2',
-        amount: -(Math.floor(Math.random() * 200) + 50),
-        date: '2025-01-14',
-        description: 'Sample expense',
-        createdAt: new Date().toISOString()
-      }
-    ];
-    setContributions(sampleContributions);
+    setTransactions(selectedScenario.transactions); // Load full transaction data from scenario
+    setContributions([]); // Clear contributions since we have full transaction data
     
     // Convert goals from sample scenario to app format and link to accounts
     const convertedGoals = selectedScenario.goals.map(goal => {

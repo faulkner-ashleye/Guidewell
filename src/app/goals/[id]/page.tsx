@@ -389,7 +389,6 @@ export default function GoalDetailPage() {
           color: '#B6B6B6',
           fontSize: '14px'
         }}>
-          Educational scenarios only — not financial advice.
         </div>
       </div>
 

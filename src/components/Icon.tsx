@@ -126,7 +126,12 @@ export const IconNames = {
   security: 'security',
   lock: 'lock',
   lock_open: 'lock_open',
-  verified_user: 'verified_user'
+  verified_user: 'verified_user',
+  
+  // Insights & Ideas
+  lightbulb_outline: 'lightbulb_outline',
+  analytics: 'analytics',
+  flag: 'flag'
 } as const;
 
 export type IconName = typeof IconNames[keyof typeof IconNames];

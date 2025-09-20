@@ -72,7 +72,6 @@ export default function QuickActionsSheet({
         paddingLeft: '4px',
         paddingRight: '4px'
       }}>
-        Educational scenarios only — not financial advice.
       </div>
     </Sheet>
   );

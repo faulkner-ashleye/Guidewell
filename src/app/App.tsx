@@ -11,6 +11,8 @@ import { Goals } from '../pages/Goals';
 import { Plan } from '../pages/Plan/Plan';
 import { Settings } from '../pages/Settings/Settings';
 import { Onboarding } from '../pages/Onboarding/Onboarding';
+import { Opportunities } from '../pages/Opportunities/Opportunities';
+import { Terms } from '../pages/Terms/Terms';
 import AccountDetailPage from './accounts/[id]/page';
 import GoalDetailPage from './goals/[id]/page';
 import { initializeTheme } from '../ui/colors';
@@ -36,6 +38,8 @@ function AppContent() {
             <Route path="/goals" element={<Goals />} />
             <Route path="/plan" element={<Plan />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/opportunities" element={<Opportunities />} />
+            <Route path="/terms" element={<Terms />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/foundation" element={<FoundationFeatures />} />
             <Route path="/design-system" element={<DesignSystemDemo />} />

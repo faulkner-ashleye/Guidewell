@@ -350,7 +350,6 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
 
           {error && <div className="form-error">{error}</div>}
           <div className="text-xs text-muted">
-            Educational scenarios only — not financial, legal, or investment advice. Actual results may vary.
           </div>
         </div>
 

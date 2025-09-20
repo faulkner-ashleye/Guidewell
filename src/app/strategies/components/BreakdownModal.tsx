@@ -147,7 +147,6 @@ export function BreakdownModal({
 
         {/* Compliance Notice */}
         <div className="breakdown-modal-compliance-notice">
-          Educational scenario only — not financial, legal, or investment advice. Actual results vary.
           {extraDollars === undefined && (
             <div style={{ marginTop: '8px', fontSize: '11px' }}>
               💡 Using $500/month for educational calculations since no specific amount was provided.
@@ -175,7 +174,7 @@ export function BreakdownModal({
               <div className="breakdown-modal-debt-text">
                 Directing {formatCurrency(extraMonthlyToDebt)}/mo extra to debt for ~{humanizeMonths(months)} could reduce principal by ≈ {formatCurrency(extraPrincipalReduced(extraMonthlyToDebt, months))}
               </div>
-              <div className="breakdown-modal-debt-disclaimer">
+              <div>
                 Figures are estimates; interest timing and fees are not modeled.
               </div>
             </div>
@@ -222,7 +221,7 @@ export function BreakdownModal({
                 If invested, a comparable amount could have grown to ≈ {formatCurrency(futureValueMonthly(extraMonthlyTotal, assumedAnnualReturn, months))} over ~{humanizeMonths(months)} at an assumed {formatPercentage(assumedAnnualReturn)} annual rate (hypothetical).
               </div>
             )}
-            <div className="breakdown-modal-investing-disclaimer">
+            <div>
               Historical performance is not a guarantee of future returns.
             </div>
           </div>
@@ -346,8 +345,6 @@ async function generateAINarrative(
     
     narrative += ` This ${avatar.name} scenario focuses on ${scopeText} over ${timeframeText[timeframe]}.`;
 
-    // Add educational disclaimer
-    narrative += ` This is an educational scenario, not financial advice.`;
 
     return narrative;
   } catch (error) {
@@ -398,7 +395,6 @@ function generateFallbackNarrative(scope: Scope, strategy: Strat, timeframe: Tim
     narrative += `With an extra ${formatCurrency(extraDollars)}/mo directed primarily to ${primaryFocus}, you could accelerate progress while maintaining minimum payments elsewhere. `;
   }
 
-  narrative += `This is an educational scenario, not financial advice.`;
 
   return narrative;
 }

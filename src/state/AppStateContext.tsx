@@ -6,6 +6,7 @@ import { EnhancedUserProfile, UserProfileUtils } from '../data/enhancedUserProfi
 import { ValidationUtils } from '../utils/validation';
 import { OpportunityDetection } from '../data/marketData';
 import { sampleScenarios, SampleScenario } from '../data/sampleScenarios';
+import { resetInsightsDismissal } from '../hooks/useInsightsCount';
 
 export type AccountType = 'loan' | 'credit_card' | 'savings' | 'checking' | 'investment' | 'debt';
 
@@ -105,7 +106,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       name: account.name,
       type: account.type,
       balance: account.balance,
-      interestRate: account.interestRate,
+      apr: account.interestRate, // Map interestRate to apr field
       monthlyContribution: account.monthlyContribution
     }));
 
@@ -119,21 +120,30 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       createdAt: new Date().toISOString()
     }));
 
-    const convertedUserProfile: UserProfile = {
-      firstName: scenario.userProfile.firstName,
-      ageRange: scenario.userProfile.ageRange,
-      mainGoals: scenario.userProfile.mainGoals,
-      hasSampleData: true,
-      riskTolerance: scenario.userProfile.riskTolerance,
-      financialLiteracy: scenario.userProfile.financialLiteracy
-    };
+    // Preserve user's real profile data and only update sample data flag
+    setUserProfile(prevProfile => {
+      if (!prevProfile) {
+        // If no profile exists, create a minimal one with just the sample data flag
+        return {
+          mainGoals: [],
+          hasSampleData: true
+        };
+      }
+      return {
+        ...prevProfile, // Keep all existing user data
+        hasSampleData: true // Only update the sample data flag
+      };
+    });
 
-    // Load the scenario data
+    // Load the scenario data (accounts, goals, transactions)
     setAccounts(convertedAccounts);
     setGoals(convertedGoals);
     setTransactions(scenario.transactions);
     setContributions([]);
-    setUserProfile(convertedUserProfile);
+
+    // Reset insights dismissal state when switching personas
+    // This ensures the badge reappears for new insights in the new scenario
+    resetInsightsDismissal();
 
     // Show notification
     const notification = document.createElement('div');

@@ -346,7 +346,6 @@ export function BuildStrategy() {
 
         {/* Footer */}
         <div className="build-strategy-footer">
-          Educational scenarios only — not financial advice.
         </div>
       </div>
     </div>

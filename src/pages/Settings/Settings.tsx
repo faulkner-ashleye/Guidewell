@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card } from '../../components/Card';
-import { Disclaimer } from '../../components/Disclaimer';
 import { Select } from '../../components/Inputs';
 import SupabaseTest from '../../components/SupabaseTest';
 import { ThemeToggle } from '../../components/ThemeToggle';
@@ -40,6 +39,7 @@ const ageRangeOptions = [
 
 export function Settings() {
   const { userProfile, setUserProfile } = useAppState();
+  const navigate = useNavigate();
   const [profileData, setProfileData] = useState<OnboardingState>({
     mainGoals: [],
     ageRange: undefined,
@@ -101,7 +101,6 @@ export function Settings() {
         </Link>
       </div>
 
-      <Disclaimer />
 
       <div className="settings-content">
         {/* Financial Profile Section */}
@@ -224,7 +223,19 @@ export function Settings() {
             </div>
             <div className="info-item">
               <span className="info-label">Terms of Service</span>
-              <span className="info-value link">View Terms</span>
+              <button 
+                className="info-value link"
+                onClick={() => navigate('/terms')}
+                style={{ 
+                  background: 'none', 
+                  border: 'none', 
+                  color: 'var(--color-primary-main)', 
+                  cursor: 'pointer',
+                  textDecoration: 'underline'
+                }}
+              >
+                View Terms
+              </button>
             </div>
           </div>
         </Card>

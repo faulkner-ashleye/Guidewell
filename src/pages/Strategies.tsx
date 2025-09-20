@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '../components/Card';
-import { Disclaimer } from '../components/Disclaimer';
 import AppHeader from '../app/components/AppHeader';
 import { useAppState } from '../state/AppStateContext';
 import { sumByType } from '../state/selectors';
@@ -119,7 +118,6 @@ export function Strategies() {
 
         {/* Footer */}
         <div className="text-center text-muted text-xs">
-          Educational scenarios only — not financial advice.
         </div>
       </div>
     </div>

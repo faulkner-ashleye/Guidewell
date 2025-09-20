@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Card } from '../components/Card';
-import { Disclaimer } from '../components/Disclaimer';
 import { ProgressChart } from '../components/Charts';
 import { Modal } from '../components/Modal';
 import { Input, Select } from '../components/Inputs';
@@ -166,7 +165,6 @@ export function Goals() {
         </p>
       </div>
 
-      <Disclaimer />
 
       <div className="goals-summary">
         <Card className="summary-card">

@@ -4,14 +4,15 @@ import './OnboardingHeader.css';
 
 interface OnboardingHeaderProps {
   className?: string;
+  animated?: boolean;
 }
 
-export function OnboardingHeader({ className = '' }: OnboardingHeaderProps) {
+export function OnboardingHeader({ className = '', animated = false }: OnboardingHeaderProps) {
   return (
     <div className={`onboarding-header ${className}`}>
       {/* Top Section with Logo */}
       <div className="onboarding-header-top">
-        <div className="onboarding-header-logo-container">
+        <div className={`onboarding-header-logo-container ${animated ? 'animated' : ''}`}>
           <Logo size="lg" className="onboarding-header-logo" />
         </div>
       </div>

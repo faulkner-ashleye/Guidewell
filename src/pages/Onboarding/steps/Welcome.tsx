@@ -15,7 +15,7 @@ interface WelcomeProps {
 export function Welcome({ data, update, onNext, onSkip }: WelcomeProps) {
   return (
     <div className="welcome-screen">
-      <OnboardingHeader />
+      <OnboardingHeader animated={true} />
 
       {/* Bottom Section with Content */}
       <div className="welcome-bottom-section">

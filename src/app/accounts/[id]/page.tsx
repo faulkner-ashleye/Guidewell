@@ -32,7 +32,7 @@ export default function AccountDetailPage() {
 
   // Compute running balances
   const activityWithBalances = account
-    ? computeRunningBalances(accountActivity, account.balance)
+    ? computeRunningBalances(accountActivity, account.balance, account.type)
     : [];
 
   // Handle back navigation
@@ -256,14 +256,37 @@ export default function AccountDetailPage() {
                   </div>
                   
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ 
-                      fontSize: '14px', 
-                      fontWeight: '600',
-                      color: item.amount >= 0 ? '#10b981' : '#ef4444',
-                      marginBottom: '2px'
-                    }}>
-                      {item.amount >= 0 ? '+' : ''}{formatCurrency(item.amount)}
-                    </div>
+                    {(() => {
+                      // Determine if this is a payment for debt accounts (positive activity)
+                      const isPayment = item.description.includes('PAYMENT') || 
+                                       item.description.includes('CARD PAYMENT') ||
+                                       item.description.includes('LOAN PAYMENT') ||
+                                       item.description.includes('STUDENT LOAN');
+                      
+                      // For debt accounts (credit_card, loan), payments are positive activity
+                      const isDebtPayment = (account.type === 'credit_card' || account.type === 'loan') && 
+                                          isPayment && item.amount < 0;
+                      
+                      // For checking/savings accounts, payments to debt are positive activity
+                      const isDebtPaymentFromChecking = (account.type === 'checking' || account.type === 'savings') && 
+                                                       isPayment && item.amount < 0;
+                      
+                      const isPositiveActivity = item.amount >= 0 || isDebtPayment || isDebtPaymentFromChecking;
+                      const displayAmount = item.amount; // Always show original amount
+                      const prefix = item.amount >= 0 ? '+' : ''; // Only add + for truly positive amounts
+                      const color = isPositiveActivity ? '#10b981' : '#ef4444';
+                      
+                      return (
+                        <div style={{ 
+                          fontSize: '14px', 
+                          fontWeight: '600',
+                          color: color,
+                          marginBottom: '2px'
+                        }}>
+                          {prefix}{formatCurrency(displayAmount)}
+                        </div>
+                      );
+                    })()}
                     {item.runningBalance !== undefined && (
                       <div style={{ 
                         fontSize: '11px', 
@@ -335,7 +358,6 @@ export default function AccountDetailPage() {
           color: '#B6B6B6',
           fontSize: '14px'
         }}>
-          Educational scenarios only — not financial advice.
         </div>
       </div>
 

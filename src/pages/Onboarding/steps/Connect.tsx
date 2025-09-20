@@ -20,7 +20,7 @@ export default function Connect({ onNext, onBack, onSkip }: { onNext: () => void
       <div className="onboarding-content">
         <section>
           <h1 className="typography-h1">Let's connect your accounts</h1>
-          <p className="typography-body1">Connecting is optional. Guidewell provides educational scenarios, not financial advice.</p>
+          <p className="typography-body1">Connecting is optional. Guidewell provides educational scenarios to help you explore financial concepts.</p>
 
           <ServerTest />
           <div className="onboarding-actions">

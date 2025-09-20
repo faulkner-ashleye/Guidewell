@@ -24,9 +24,6 @@ import { Account } from '../../state/AppStateContext';
 import { Contribution } from '../../state/activitySelectors';
 import { Transaction } from '../../lib/supabase';
 import AppHeader from '../../app/components/AppHeader';
-import QuickActionsButton from '../../app/components/QuickActionsButton';
-import QuickActionsSheet from '../../app/components/QuickActionsSheet';
-import LogContributionModal from '../../app/components/LogContributionModal';
 import { Button, ButtonVariants, ButtonColors } from '../../components/Button';
 import { Icon, IconNames } from '../../components/Icon';
 import '../../components/Button.css';
@@ -47,9 +44,7 @@ export function Plan() {
   const [goalModalOpen, setGoalModalOpen] = useState(false);
   const [preselectedAccountId, setPreselectedAccountId] = useState<string | undefined>(undefined);
 
-  // Quick Actions state
-  const [qaOpen, setQaOpen] = useState(false);
-  const [logOpen, setLogOpen] = useState(false);
+  // Connect account state
   const [connectOpen, setConnectOpen] = useState(false);
 
   // Handle viewing a goal
@@ -113,7 +108,6 @@ export function Plan() {
       <AppHeader
         title="Plan"
         subtitle="Accounts & Goals"
-        rightAction={<QuickActionsButton onClick={() => setQaOpen(true)} />}
       />
 
 
@@ -350,23 +344,6 @@ export function Plan() {
         preselectedAccountId={preselectedAccountId}
       />
 
-      {/* Quick Actions Sheet */}
-      <QuickActionsSheet
-        open={qaOpen}
-        onClose={() => setQaOpen(false)}
-        onAddGoal={() => setGoalModalOpen(true)}
-        onConnectAccount={() => setConnectOpen(true)}
-        onLogContribution={() => setLogOpen(true)}
-      />
-
-      {/* Log Contribution modal */}
-      <LogContributionModal
-        open={logOpen}
-        onClose={() => setLogOpen(false)}
-        onSave={(c: any) => { /* apply to state in your handler */ }}
-        accounts={accounts}
-        goals={goals}
-      />
 
       {/* Connect account sheet (Plaid or other methods) */}
       <Sheet open={connectOpen} onClose={() => setConnectOpen(false)} title="Connect account">
