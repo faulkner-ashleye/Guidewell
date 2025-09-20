@@ -8,10 +8,10 @@ import { NetWorthStackedArea } from '../../components/NetWorthStackedArea';
 import { GoalList } from '../../components/GoalList';
 import { ProgressBar } from '../../components/ProgressBar';
 import {
-  sumBalances, 
-  groupAccountsByType, 
+  sumBalances,
+  groupAccountsByType,
   formatMoney,
-  buildNetWorthSeries, 
+  buildNetWorthSeries,
   accountHealth
 } from '../../state/financeSelectors';
 import { getGoalsFromAccounts } from '../../state/planSelectors';
@@ -87,24 +87,24 @@ export function Plan() {
   // Calculate debt goal progress from actual payment activity
   const calculateDebtGoalProgress = (goal: Goal): number => {
     if (goal.type !== 'debt') return 0;
-    
+
     let totalPayments = 0;
-    
+
     // Check contributions (manual payments)
-    const goalContributions = contributions.filter(contrib => 
-      contrib.accountId && 
+    const goalContributions = contributions.filter(contrib =>
+      contrib.accountId &&
       (goal.accountIds?.includes(contrib.accountId) || goal.accountId === contrib.accountId) &&
       contrib.amount < 0 // Negative amounts are payments
     );
     totalPayments += goalContributions.reduce((sum, contrib) => sum + Math.abs(contrib.amount), 0);
-    
+
     // Check transactions (linked account payments)
-    const goalTransactions = transactions.filter(txn => 
+    const goalTransactions = transactions.filter(txn =>
       goal.accountIds?.includes(txn.account_id) || goal.accountId === txn.account_id
     );
     // For debt accounts, positive amounts in transactions are typically payments
     totalPayments += goalTransactions.reduce((sum, txn) => sum + Math.abs(txn.amount), 0);
-    
+
     return totalPayments;
   };
 
@@ -126,7 +126,7 @@ export function Plan() {
           <p style={{ margin: '0 0 12px 0', fontSize: '14px' }}>
             You're viewing sample accounts and goals. Add your own accounts to see your real financial plan.
           </p>
-          <button 
+          <button
             onClick={() => setConnectOpen(true)}
             style={{
               background: 'var(--color-primary)',
@@ -149,10 +149,10 @@ export function Plan() {
         <div className="plan-summary-grid">
           <SummaryCard title="Assets" value={formatMoney(assets)} />
           <SummaryCard title="Debts"  value={formatMoney(debts)} />
-          <SummaryCard 
-            title="Net Worth" 
-            value={formatMoney(net)} 
-            subline={assets + debts > 0 ? `${Math.round((assets/(assets+debts))*100)}% assets` : ''} 
+          <SummaryCard
+            title="Net Worth"
+            value={formatMoney(net)}
+            subline={assets + debts > 0 ? `${Math.round((assets/(assets+debts))*100)}% assets` : ''}
           />
         </div>
         <NetWorthStackedArea data={series} />
@@ -189,7 +189,7 @@ export function Plan() {
                   {(['checking','savings','investment','credit_card','loan'] as const).map((type) => {
                     const list = groups[type] || [];
                     if (list.length === 0) return null;
-                    const title = type === 'credit_card' ? 'Credit Cards' : 
+                    const title = type === 'credit_card' ? 'Credit Cards' :
                                  type.charAt(0).toUpperCase() + type.slice(1) + (type.endsWith('s') ? '' : 's');
                     return (
                       <div key={type}>
@@ -230,17 +230,17 @@ export function Plan() {
                   })}
                 </div>
               )}
-              
+
               <div className="plan-actions-section">
-                <PlaidLinkButton 
+                <PlaidLinkButton
                   key="plaid-link-plan"
                   userId="demo-user-123"
-                  onSuccess={(linked) => { 
+                  onSuccess={(linked) => {
                     clearSampleData();
-                    setAccounts(linked); 
-                  }} 
+                    setAccounts(linked);
+                  }}
                 />
-                <Button 
+                <Button
                   variant={ButtonVariants.outline}
                   color={ButtonColors.secondary}
                   onClick={() => setOpen(true)}
@@ -261,11 +261,11 @@ export function Plan() {
                     // Calculate progress based on linked account(s) or target
                     let current = 0;
                     let linkedAccountNames: string[] = [];
-                    
+
                     if (goal.accountIds && goal.accountIds.length > 0) {
                       // Multiple accounts linked
                       const linkedAccounts = goal.accountIds.map(id => accounts.find(a => a.id === id)).filter((account): account is Account => account !== undefined);
-                      
+
                       if (goal.type === 'debt') {
                         // For debt goals, current represents actual payments made toward the goal
                         current = calculateDebtGoalProgress(goal);
@@ -277,7 +277,7 @@ export function Plan() {
                     } else if (goal.accountId) {
                       // Single account linked
                       const linkedAccount = accounts.find(a => a.id === goal.accountId);
-                      
+
                       if (goal.type === 'debt') {
                         // For debt goals, current represents actual payments made toward the goal
                         current = calculateDebtGoalProgress(goal);
@@ -287,12 +287,12 @@ export function Plan() {
                       }
                       linkedAccountNames = linkedAccount ? [linkedAccount.name] : [];
                     }
-                    
+
                     const progress = goal.target > 0 ? Math.min(100, Math.round((current / goal.target) * 100)) : 0;
-                    
+
                     return (
-                      <div 
-                        key={goal.id} 
+                      <div
+                        key={goal.id}
                         onClick={() => handleNavigateToGoal(goal.id)}
                         className="plan-goal-item"
                       >
@@ -325,7 +325,7 @@ export function Plan() {
                 </div>
               )}
               <div className="plan-actions-section">
-                <Button 
+                <Button
                   variant={ButtonVariants.contained}
                   color={ButtonColors.secondary}
                   onClick={handleAddGoal}
@@ -333,7 +333,7 @@ export function Plan() {
                   <Icon name={IconNames.add} size="lg" />
                   Add a Goal
                 </Button>
-                
+
               </div>
             </>
           )}
@@ -352,18 +352,15 @@ export function Plan() {
 
       {/* Add another way sheet */}
       <Sheet open={open} onClose={() => setOpen(false)} title="Add accounts another way">
-        <ConnectChoose 
-          onClose={() => setOpen(false)} 
-          onComplete={() => { 
-            setOpen(false); 
-          }} 
+        <ConnectChoose
+          onClose={() => setOpen(false)}
+          onComplete={() => {
+            setOpen(false);
+          }}
         />
       </Sheet>
 
-      {/* Compliance footer */}
-      <footer className="plan-footer">
-        Educational scenarios only — not financial, legal, or investment advice. Actual results may vary.
-      </footer>
+      
 
       {/* Add Goal Modal */}
       <AddGoalModal
@@ -398,7 +395,7 @@ export function Plan() {
       {/* Connect account sheet (Plaid or other methods) */}
       <Sheet open={connectOpen} onClose={() => setConnectOpen(false)} title="Connect account">
         <div className="plan-connect-sheet">
-          <PlaidLinkButton onSuccess={(linked: any) => { 
+          <PlaidLinkButton onSuccess={(linked: any) => {
             clearSampleData();
             setAccounts(linked);
           }} />

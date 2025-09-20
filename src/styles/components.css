@@ -328,10 +328,10 @@
 
 /* Navbar Components */
 .navbar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  position: sticky;
+  bottom:0;
+  transform: translateX(-24px);
+  width:calc(100% + 48px);
   background: var(--color-card);
   border-top: 1px solid var(--color-border);
   padding: var(--spacing-sm) 0;
@@ -339,6 +339,8 @@
   justify-content: space-around;
   z-index: 100;
 }
+
+/* Position navbar within mobile phone wrapper */
 
 .navbar-item {
   display: flex;

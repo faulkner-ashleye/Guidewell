@@ -21,8 +21,6 @@
 }
 
 .plan-tabbed-section {
-  background: var(--color-card);
-  border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
 }
 
@@ -34,7 +32,7 @@
 
 .plan-tab-button {
   flex: 1;
-  padding: var(--spacing-sm) var(--spacing-lg);
+  padding: var(--spacing-md) var(--spacing-lg);
   border: none;
   background: transparent;
   color: var(--color-text-muted);
@@ -42,20 +40,22 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   border-bottom: 2px solid transparent;
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   transition: all var(--transition-normal);
 }
 
 .plan-tab-button.active {
-  background: var(--color-card);
-  color: var(--color-text);
+  color: var(--color-primary);
   font-weight: var(--font-weight-semibold);
   border-bottom-color: var(--color-primary);
 }
 
+[data-theme="dark"] .plan-tab-button.active{
+    color: var(--color-primary-light);
+    border-bottom-color: var(--color-primary-light);
+}
+
 .plan-tab-button:hover {
-  background: var(--color-card);
-  color: var(--color-text);
+  color: var(--color-primary-light);
 }
 
 .plan-tab-content {
