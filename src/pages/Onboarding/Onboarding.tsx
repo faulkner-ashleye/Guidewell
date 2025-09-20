@@ -111,20 +111,50 @@ export function Onboarding() {
     ];
     setContributions(sampleContributions);
     
-    // Convert goals from sample scenario to app format
-    const convertedGoals = selectedScenario.goals.map(goal => ({
-      id: goal.id,
-      name: goal.name,
-      type: goal.type === 'debt_payoff' ? 'debt' as const : 
-            goal.type === 'emergency_fund' ? 'savings' as const :
-            goal.type === 'investment' ? 'investing' as const :
-            'savings' as const,
-      target: goal.targetAmount,
-      targetDate: goal.targetDate,
-      priority: goal.priority,
-      note: `Sample goal from ${selectedScenario.name} scenario`,
-      createdAt: new Date().toISOString()
-    }));
+    // Convert goals from sample scenario to app format and link to accounts
+    const convertedGoals = selectedScenario.goals.map(goal => {
+      // Find matching account(s) for this goal
+      let accountId: string | undefined;
+      let accountIds: string[] | undefined;
+      
+      if (goal.type === 'debt_payoff') {
+        // Link to credit card or loan accounts
+        const debtAccounts = accounts.filter((acc: any) => ['credit_card', 'loan'].includes(acc.type));
+        if (debtAccounts.length === 1) {
+          accountId = debtAccounts[0].id;
+        } else if (debtAccounts.length > 1) {
+          accountIds = debtAccounts.map((acc: any) => acc.id);
+        }
+      } else if (goal.type === 'emergency_fund') {
+        // Link to savings account
+        const savingsAccount = accounts.find((acc: any) => acc.type === 'savings');
+        if (savingsAccount) {
+          accountId = savingsAccount.id;
+        }
+      } else if (goal.type === 'investment') {
+        // Link to investment account
+        const investmentAccount = accounts.find((acc: any) => acc.type === 'investment');
+        if (investmentAccount) {
+          accountId = investmentAccount.id;
+        }
+      }
+      
+      return {
+        id: goal.id,
+        name: goal.name,
+        type: goal.type === 'debt_payoff' ? 'debt' as const : 
+              goal.type === 'emergency_fund' ? 'savings' as const :
+              goal.type === 'investment' ? 'investing' as const :
+              'savings' as const,
+        target: goal.targetAmount,
+        targetDate: goal.targetDate,
+        priority: goal.priority,
+        note: `Sample goal from ${selectedScenario.name} scenario`,
+        createdAt: new Date().toISOString(),
+        accountId,
+        accountIds
+      };
+    });
     setGoals(convertedGoals);
     
     // Set user profile with sample data flag and any completed onboarding data

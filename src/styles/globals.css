@@ -227,6 +227,10 @@
   --color-success-subtle-hover: #E2EEC2;
   --color-success-subtle-contrast: #08400E;
 
+  --color-invest-main: #8AD2D5;
+  --color-invest-subtle: #E3F4F5;
+  --color-invest-subtle-hover: #B8E3E5;
+
   /* Core Colors */
   --color-text-primary: #212121;
   --color-text-secondary: #656565;
@@ -342,6 +346,10 @@
   --color-success-subtle-hover: #E2EEC2;
   --color-success-subtle-contrast: #08400E;
 
+  --color-invest-main: #8AD2D5;
+  --color-invest-subtle: #125954;
+  --color-invest-subtle-hover: #1B6F6B;
+
   /* Core Colors - Dark mode */
   --color-text-primary: #ffffff;
   --color-text-secondary: #b6b6b6;
@@ -361,19 +369,19 @@
   --color-common-white: #FFFFFF;
   --color-common-black: #000000;
 
-  --color-grey-50: #FAFAFA;
-  --color-grey-100: #F5F5F5;
-  --color-grey-200: #EEEEEE;
-  --color-grey-300: #E0E0E0;
-  --color-grey-400: #BDBDBD;
-  --color-grey-500: #9e9e9e;
-  --color-grey-600: #757575;
-  --color-grey-700: #616161;
-  --color-grey-800: #424242;
-  --color-grey-900: #212121;
+  --color-grey-50:  #F8FAFC; /* very light, cool tint */
+  --color-grey-100: #F1F5F9;
+  --color-grey-200: #E2E8F0;
+  --color-grey-300: #CBD5E1;
+  --color-grey-400: #94A3B8;
+  --color-grey-500: #64748B;
+  --color-grey-600: #475569;
+  --color-grey-700: #334155;
+  --color-grey-800: #1E293B;
+  --color-grey-900: #0F172A;
 
-  --color-root-divider: #333333;
-  --color-root-interactive-border: #666666;
+  --color-root-divider: var(--color-grey-700);
+  --color-root-interactive-border: var(--color-grey-500);
 
   /* Button State Colors - Adjusted for dark mode */
   --color-secondary-states-hover: rgba(92, 107, 192, 0.08);
@@ -385,14 +393,14 @@
   --color-error-states-focus: rgba(244, 67, 54, 0.16);
 
   /* Financial Context Colors - Adjusted for dark mode */
-  --color-debt: #F44336;
-  --color-savings: #4CAF50;
-  --color-investing: #2196F3;
+  --color-debt: var(--color-error-main);
+  --color-savings: var(--color-success-main);
+  --color-investing: var(--color-invest-main);
 
   /* Legacy mappings */
   --color-bg: var(--color-background-default);
   --color-card: var(--color-background-paper);
-  --color-border: var(--color-grey-700);
+  --color-border: var(--color-root-divider);
   --color-text: var(--color-text-primary);
   --color-text-muted: var(--color-text-secondary);
   --color-primary: var(--color-primary-main);

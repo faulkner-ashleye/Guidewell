@@ -2,22 +2,26 @@
 .plan-page {
   background: var(--color-bg);
   color: var(--color-text);
-  padding: var(--spacing-lg);
+  padding: 0;
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--spacing-lg);
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .plan-overview {
-  display: grid;
-  gap: var(--spacing-sm);
+  display: block;
 }
 
 .plan-summary-grid {
+    background: var(--color-background-paper);
+    border-width: 1px 0;
+    border-style: solid;
+    border-color: var(--color-root-interactive-border);
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: var(--spacing-sm);
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
 }
 
 .plan-tabbed-section {
@@ -55,11 +59,11 @@
 }
 
 .plan-tab-button:hover {
-  color: var(--color-primary-light);
+  color: var(--color-text);
 }
 
 .plan-tab-content {
-  padding: var(--spacing-lg);
+  padding: var(--spacing-lg) 0;
 }
 
 .plan-empty-state {

@@ -53,14 +53,7 @@ html {
 }
 
 /* Header Styles */
-.app-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background-color: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
-  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
-}
+
 
 .app-header-content {
   display: flex;
@@ -96,7 +89,7 @@ html {
 }
 
 /* Home Header Styles */
-.home-header {
+.app-header {
   position: sticky;
   top: 0;
   z-index: 100;

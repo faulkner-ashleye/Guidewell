@@ -67,7 +67,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Pay off Credit Card',
         type: 'debt_payoff',
         targetAmount: 2800,
-        currentAmount: 2800,
+        currentAmount: 1800, // Made progress - $1000 paid off
         targetDate: '2024-12-31',
         priority: 'high'
       },
@@ -76,7 +76,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Emergency Fund',
         type: 'emergency_fund',
         targetAmount: 8400, // 3 months expenses
-        currentAmount: 0,
+        currentAmount: 1200, // Started building emergency fund
         targetDate: '2025-06-30',
         priority: 'high'
       },
@@ -85,7 +85,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Student Loan Payoff',
         type: 'debt_payoff',
         targetAmount: 32000,
-        currentAmount: 32000,
+        currentAmount: 30500, // Made some progress - $1500 paid off
         targetDate: '2030-12-31',
         priority: 'medium'
       }
@@ -158,7 +158,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Maximize 401k',
         type: 'investment',
         targetAmount: 23000, // Annual max
-        currentAmount: 8500,
+        currentAmount: 18500, // Good progress - on track to max out
         targetDate: '2024-12-31',
         priority: 'high'
       },
@@ -167,7 +167,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Save for House',
         type: 'custom',
         targetAmount: 50000,
-        currentAmount: 12000,
+        currentAmount: 18500, // Good progress - 37% of goal
         targetDate: '2026-12-31',
         priority: 'medium'
       },
@@ -176,7 +176,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Pay off Car',
         type: 'debt_payoff',
         targetAmount: 18000,
-        currentAmount: 18000,
+        currentAmount: 14200, // Made progress - $3800 paid off
         targetDate: '2025-12-31',
         priority: 'low'
       }
@@ -251,7 +251,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Pay off High-Interest Debt',
         type: 'debt_payoff',
         targetAmount: 27700, // Total debt
-        currentAmount: 27700,
+        currentAmount: 25200, // Made progress - $2500 paid off
         targetDate: '2027-12-31',
         priority: 'high'
       },
@@ -260,7 +260,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Build Emergency Fund',
         type: 'emergency_fund',
         targetAmount: 5000,
-        currentAmount: 0,
+        currentAmount: 800, // Started building emergency fund
         targetDate: '2025-12-31',
         priority: 'medium'
       }
@@ -343,7 +343,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Emergency Fund',
         type: 'emergency_fund',
         targetAmount: 12600, // 3 months expenses
-        currentAmount: 8500,
+        currentAmount: 10200, // Good progress - 81% of goal
         targetDate: '2025-12-31',
         priority: 'high'
       },
@@ -352,7 +352,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Pay off Credit Card',
         type: 'debt_payoff',
         targetAmount: 4200,
-        currentAmount: 4200,
+        currentAmount: 2100, // Made progress - $2100 paid off
         targetDate: '2025-06-30',
         priority: 'high'
       },
@@ -361,7 +361,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Start Investing',
         type: 'investment',
         targetAmount: 5000,
-        currentAmount: 0,
+        currentAmount: 1200, // Started investing
         targetDate: '2025-12-31',
         priority: 'medium'
       },
@@ -370,7 +370,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Save for House',
         type: 'custom',
         targetAmount: 25000,
-        currentAmount: 0,
+        currentAmount: 3200, // Started saving for house
         targetDate: '2027-12-31',
         priority: 'medium'
       }
@@ -453,7 +453,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Wedding Fund',
         type: 'custom',
         targetAmount: 25000,
-        currentAmount: 12000,
+        currentAmount: 18500, // Great progress - 74% of goal
         targetDate: '2025-10-31',
         priority: 'high'
       },
@@ -462,7 +462,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Emergency Fund',
         type: 'emergency_fund',
         targetAmount: 11400, // 3 months expenses
-        currentAmount: 0,
+        currentAmount: 2400, // Started building emergency fund
         targetDate: '2026-06-30',
         priority: 'medium'
       },
@@ -471,7 +471,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Pay off Credit Card',
         type: 'debt_payoff',
         targetAmount: 1800,
-        currentAmount: 1800,
+        currentAmount: 600, // Made progress - $1200 paid off
         targetDate: '2025-03-31',
         priority: 'high'
       }
@@ -546,7 +546,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: '6-Month Emergency Fund',
         type: 'emergency_fund',
         targetAmount: 19200, // 6 months expenses
-        currentAmount: 8000,
+        currentAmount: 11200, // Good progress - 58% of goal
         targetDate: '2025-12-31',
         priority: 'high'
       },
@@ -555,7 +555,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Maximize Roth IRA',
         type: 'investment',
         targetAmount: 7000, // Annual max
-        currentAmount: 12000,
+        currentAmount: 7000, // Already maxed out for the year!
         targetDate: '2024-12-31',
         priority: 'high'
       },
@@ -564,7 +564,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Save for Equipment',
         type: 'custom',
         targetAmount: 5000,
-        currentAmount: 0,
+        currentAmount: 1800, // Started saving for equipment
         targetDate: '2025-06-30',
         priority: 'medium'
       }
@@ -638,7 +638,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Child Emergency Fund',
         type: 'emergency_fund',
         targetAmount: 25200, // 6 months expenses
-        currentAmount: 15000,
+        currentAmount: 19200, // Great progress - 76% of goal
         targetDate: '2025-12-31',
         priority: 'high'
       },
@@ -647,7 +647,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'College Fund',
         type: 'custom',
         targetAmount: 50000,
-        currentAmount: 5000,
+        currentAmount: 8500, // Good progress - 17% of goal
         targetDate: '2040-12-31',
         priority: 'medium'
       },
@@ -656,7 +656,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Family Vacation',
         type: 'custom',
         targetAmount: 3000,
-        currentAmount: 0,
+        currentAmount: 1200, // Started saving for vacation
         targetDate: '2025-08-31',
         priority: 'low'
       }
@@ -737,7 +737,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Financial Independence',
         type: 'retirement',
         targetAmount: 2000000,
-        currentAmount: 275000,
+        currentAmount: 425000, // Excellent progress - 21% of goal
         targetDate: '2035-12-31',
         priority: 'high'
       },
@@ -746,7 +746,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Tax Optimization',
         type: 'custom',
         targetAmount: 0,
-        currentAmount: 0,
+        currentAmount: 0, // This is a process goal, not a monetary goal
         targetDate: '2024-12-31',
         priority: 'high'
       },
@@ -755,7 +755,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Real Estate Investment',
         type: 'custom',
         targetAmount: 100000,
-        currentAmount: 0,
+        currentAmount: 28000, // Started saving for real estate
         targetDate: '2026-12-31',
         priority: 'medium'
       }
@@ -829,7 +829,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Maximize 401k',
         type: 'investment',
         targetAmount: 23000, // Annual max
-        currentAmount: 25000,
+        currentAmount: 23000, // Already maxed out for the year!
         targetDate: '2024-12-31',
         priority: 'high'
       },
@@ -838,7 +838,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'House Down Payment',
         type: 'custom',
         targetAmount: 60000,
-        currentAmount: 0,
+        currentAmount: 18500, // Good progress - 31% of goal
         targetDate: '2027-12-31',
         priority: 'high'
       },
@@ -847,7 +847,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         name: 'Investment Portfolio',
         type: 'investment',
         targetAmount: 100000,
-        currentAmount: 37000,
+        currentAmount: 52000, // Great progress - 52% of goal
         targetDate: '2030-12-31',
         priority: 'medium'
       }

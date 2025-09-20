@@ -116,36 +116,10 @@ export function Plan() {
         rightAction={<QuickActionsButton onClick={() => setQaOpen(true)} />}
       />
 
-      {/* Sample Data Message */}
-      {userProfile?.hasSampleData && (
-        <div className="plan-sample-banner">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '8px' }}>
-            <span style={{ fontSize: '20px' }}>📊</span>
-            <strong>Sample Data Mode</strong>
-          </div>
-          <p style={{ margin: '0 0 12px 0', fontSize: '14px' }}>
-            You're viewing sample accounts and goals. Add your own accounts to see your real financial plan.
-          </p>
-          <button
-            onClick={() => setConnectOpen(true)}
-            style={{
-              background: 'var(--color-primary)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '6px',
-              padding: '8px 16px',
-              fontSize: '13px',
-              fontWeight: '500',
-              cursor: 'pointer'
-            }}
-          >
-            Add My Accounts
-          </button>
-        </div>
-      )}
 
       {/* Overview: Net worth cards + stacked area */}
       <section className="plan-overview">
+      <NetWorthStackedArea data={series} />
         <div className="plan-summary-grid">
           <SummaryCard title="Assets" value={formatMoney(assets)} />
           <SummaryCard title="Debts"  value={formatMoney(debts)} />
@@ -155,8 +129,18 @@ export function Plan() {
             subline={assets + debts > 0 ? `${Math.round((assets/(assets+debts))*100)}% assets` : ''}
           />
         </div>
-        <NetWorthStackedArea data={series} />
+
       </section>
+
+      {/* Nudges (simple, conditional, compliant) */}
+      {(assets > 0 && debts > 0) && (
+        <section className="plan-nudge-section">
+          <strong>Heads-up:</strong>{' '}
+          <span style={{ color: 'var(--color-text-muted)' }}>
+            If more cash flows to high-APR debt, your interest costs could decrease.
+          </span>
+        </section>
+      )}
 
       {/* Tabbed Interface for Accounts and Goals */}
       <section className="plan-tabbed-section">
@@ -340,15 +324,7 @@ export function Plan() {
         </div>
       </section>
 
-      {/* Nudges (simple, conditional, compliant) */}
-      {(assets > 0 && debts > 0) && (
-        <section className="plan-nudge-section">
-          <strong>Heads-up:</strong>{' '}
-          <span style={{ color: 'var(--color-text-muted)' }}>
-            If more cash flows to high-APR debt, your interest costs could decrease. Educational scenarios only — not financial advice.
-          </span>
-        </section>
-      )}
+
 
       {/* Add another way sheet */}
       <Sheet open={open} onClose={() => setOpen(false)} title="Add accounts another way">
@@ -360,7 +336,7 @@ export function Plan() {
         />
       </Sheet>
 
-      
+
 
       {/* Add Goal Modal */}
       <AddGoalModal

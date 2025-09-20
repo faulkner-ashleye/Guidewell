@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { useAppState } from '../../state/AppStateContext';
 import { getRecentActivity } from '../../state/activitySelectors';
-import { 
-  sumByType, 
-  getPrimaryGoal, 
+import {
+  sumByType,
+  getPrimaryGoal,
   getHighestAPR,
-  formatCurrency 
+  formatCurrency
 } from '../../state/selectors';
+import { buildNetWorthSeries } from '../../state/financeSelectors';
 import { SummaryCard } from '../../components/SummaryCard';
 import { ProgressBar } from '../../components/ProgressBar';
-import { DonutSavingsDebt } from '../../components/DonutSavingsDebt';
+import { NetWorthStackedArea } from '../../components/NetWorthStackedArea';
 import { GoalAccountLinker } from '../../components/GoalAccountLinker';
 import HomeHeader from '../../app/components/HomeHeader';
 import QuickActionsButton from '../../app/components/QuickActionsButton';
@@ -22,15 +23,15 @@ import Sheet from '../../app/components/Sheet';
 import './Home.css';
 
 export function Home() {
-  const { 
-    accounts = [], 
-    userProfile, 
-    setUserProfile, 
-    goals = [], 
+  const {
+    accounts = [],
+    userProfile,
+    setUserProfile,
+    goals = [],
     transactions = [],
     contributions = [],
-    setAccounts, 
-    clearSampleData 
+    setAccounts,
+    clearSampleData
   } = useAppState();
 
   // Quick Actions state
@@ -41,16 +42,19 @@ export function Home() {
 
   // Get recent activity feed
   const recentActivity = getRecentActivity(transactions, contributions, accounts, 10);
-  
+
   // Calculate totals using selectors
   const savingsTotal = sumByType(accounts, ['checking', 'savings']);
   const debtTotal = sumByType(accounts, ['credit_card', 'loan']);
   const checkingTotal = sumByType(accounts, ['checking']);
   const creditCardTotal = sumByType(accounts, ['credit_card']);
   const studentLoanTotal = sumByType(accounts, ['loan']);
-  
+
   const goal = getPrimaryGoal(accounts, userProfile || undefined);
   const highestAPR = getHighestAPR(accounts);
+  
+  // Build net worth series for stacked area chart
+  const netWorthSeries = buildNetWorthSeries(accounts, [], 56);
 
   const hasData = accounts.length > 0;
   const hasChartData = savingsTotal + debtTotal > 0;
@@ -70,11 +74,11 @@ export function Home() {
             <span style={{ fontSize: '20px' }}>📊</span>
             <strong>Sample Data Mode</strong>
           </div>
-          <p style={{ margin: '0 0 12px 0', fontSize: '14px' }}>
-            We've loaded sample financial data so you can explore Guidewell's features. 
+          <p className="typography-body2">
+            We've loaded sample financial data so you can explore Guidewell's features.
             Add your own accounts to see your real financial picture.
           </p>
-          <button 
+          <button
             onClick={() => setConnectOpen(true)}
             style={{
               background: 'var(--color-primary)',
@@ -95,37 +99,34 @@ export function Home() {
       {!hasData ? (
         // Empty state
         <div className="empty-state">
-          <SummaryCard 
-            title="No accounts yet" 
+          <SummaryCard
+            title="No accounts yet"
             value="Connect accounts in Settings"
             onClick={() => window.location.href = '/settings'}
           />
         </div>
       ) : (
         <>
-          {/* Hero Donut Chart */}
+          {/* Hero Stacked Area Chart */}
           {hasChartData && (
             <div className="hero-chart">
-              <DonutSavingsDebt 
-                savingsTotal={savingsTotal} 
-                debtTotal={debtTotal} 
-              />
+              <NetWorthStackedArea data={netWorthSeries} />
             </div>
           )}
 
           {/* 2x2 Summary Cards */}
           <div className="summary-grid">
-            <SummaryCard 
-              title="Checking" 
+            <SummaryCard
+              title="Checking"
               value={formatCurrency(checkingTotal)}
-              subline={accounts.filter(a => a.type === 'checking').length > 1 ? 
-                `${accounts.filter(a => a.type === 'checking').length} accounts` : 
+              subline={accounts.filter(a => a.type === 'checking').length > 1 ?
+                `${accounts.filter(a => a.type === 'checking').length} accounts` :
                 accounts.find(a => a.type === 'checking')?.name
               }
             />
-            
-            <SummaryCard 
-              title="Primary Goal" 
+
+            <SummaryCard
+              title="Primary Goal"
               value={goal ? `${goal.percent}%` : 'No goal yet'}
               subline={goal ? `${formatCurrency(goal.current)} of ${formatCurrency(goal.target)}` : 'Set a target in Goals'}
             >
@@ -153,18 +154,18 @@ export function Home() {
                 />
               )}
             </SummaryCard>
-            
-            <SummaryCard 
-              title="Credit Card" 
+
+            <SummaryCard
+              title="Credit Card"
               value={formatCurrency(creditCardTotal)}
               subline={highestAPR ? `${highestAPR}% APR` : 'No credit cards'}
             />
-            
-            <SummaryCard 
-              title="Student Loans" 
+
+            <SummaryCard
+              title="Student Loans"
               value={formatCurrency(studentLoanTotal)}
-              subline={accounts.filter(a => a.type === 'loan').length > 0 ? 
-                `${accounts.filter(a => a.type === 'loan').length} loans` : 
+              subline={accounts.filter(a => a.type === 'loan').length > 0 ?
+                `${accounts.filter(a => a.type === 'loan').length} loans` :
                 'No loans'
               }
             />
@@ -179,7 +180,7 @@ export function Home() {
                   <div key={item.id} className="activity-item">
                     <div className="activity-main">
                       <div className="activity-description">{item.description}</div>
-                      <div 
+                      <div
                         className={`activity-amount ${item.amount >= 0 ? 'activity-positive' : 'activity-negative'}`}
                       >
                         {item.amount >= 0 ? '+' : ''}{formatCurrency(item.amount)}
@@ -188,7 +189,7 @@ export function Home() {
                     <div className="activity-meta">
                       <span className="activity-date">{item.date}</span>
                       <span className="activity-account">{item.accountName}</span>
-                      <span 
+                      <span
                         className={`activity-source ${item.source === 'linked' ? 'source-linked' : 'source-manual'} px-xs py-xs rounded-sm text-xs font-medium`}
                       >
                         {item.source === 'linked' ? 'Linked' : 'Manual'}
@@ -242,7 +243,7 @@ export function Home() {
       {/* Connect account sheet (Plaid or other methods) */}
       <Sheet open={connectOpen} onClose={() => setConnectOpen(false)} title="Connect account">
         <div className="grid-auto">
-          <PlaidLinkButton onSuccess={(linked: any) => { 
+          <PlaidLinkButton onSuccess={(linked: any) => {
             clearSampleData();
             setAccounts(linked);
           }} />

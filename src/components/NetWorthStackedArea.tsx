@@ -8,22 +8,17 @@ interface NetWorthStackedAreaProps {
 
 export function NetWorthStackedArea({ data }: NetWorthStackedAreaProps) {
   if (!data || data.length === 0) return null;
-  
+
   return (
-    <div style={{ 
-      background: COLORS.card, 
-      border: `1px solid ${COLORS.border}`, 
-      borderRadius: 12, 
-      padding: 12 
-    }}>
+    <div className="chartFull">
       <div style={{ marginBottom: 8, color: COLORS.text }}>
         Assets vs Debts (last ~8 weeks)
       </div>
       <div style={{ width: '100%', height: 180 }}>
         <ResponsiveContainer>
-          <AreaChart 
-            data={data} 
-            stackOffset="none" 
+          <AreaChart
+            data={data}
+            stackOffset="none"
             margin={{ left: 0, right: 0, top: 8, bottom: 0 }}
           >
             <defs>
@@ -39,27 +34,27 @@ export function NetWorthStackedArea({ data }: NetWorthStackedAreaProps) {
             <XAxis dataKey="date" hide />
             <YAxis hide />
             <Tooltip
-              contentStyle={{ 
-                background: COLORS.card, 
-                border: `1px solid ${COLORS.border}`, 
-                color: COLORS.text 
+              contentStyle={{
+                background: COLORS.card,
+                border: `1px solid ${COLORS.border}`,
+                color: COLORS.text
               }}
               labelFormatter={(v) => `Date: ${v}`}
               formatter={(v: number, k) => [`$${Math.round(v).toLocaleString()}`, k]}
             />
-            <Area 
-              type="monotone" 
-              dataKey="assets" 
-              name="Assets" 
-              stroke={COLORS.savings} 
-              fill="url(#gAssets)" 
+            <Area
+              type="monotone"
+              dataKey="assets"
+              name="Assets"
+              stroke={COLORS.savings}
+              fill="url(#gAssets)"
             />
-            <Area 
-              type="monotone" 
-              dataKey="debts"  
-              name="Debts"  
-              stroke={COLORS.debt}    
-              fill="url(#gDebts)" 
+            <Area
+              type="monotone"
+              dataKey="debts"
+              name="Debts"
+              stroke={COLORS.debt}
+              fill="url(#gDebts)"
             />
           </AreaChart>
         </ResponsiveContainer>
@@ -67,10 +62,3 @@ export function NetWorthStackedArea({ data }: NetWorthStackedAreaProps) {
     </div>
   );
 }
-
-
-
-
-
-
-

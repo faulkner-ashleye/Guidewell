@@ -134,28 +134,17 @@
   .chart-container {
     padding: 12px;
   }
-  
+
   .chart-placeholder {
     height: 160px;
   }
-  
+
   .chart-bars {
     height: 120px;
   }
-  
+
   .pie-chart {
     width: 100px;
     height: 100px;
   }
 }
-
-
-
-
-
-
-
-
-
-
-

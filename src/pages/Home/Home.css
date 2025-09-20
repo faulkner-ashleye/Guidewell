@@ -1,18 +1,12 @@
 .home {
+  padding: 0 24px;
   max-width: 1200px;
   margin: 0 auto;
   min-height: 100vh;
 }
 
-.home-header {
-  margin-bottom: 32px;
-}
-
 .home-header h1 {
-  font-size: 28px;
-  font-weight: 600;
   margin: 0;
-  color: #FFFFFF;
 }
 
 .sample-data-banner {

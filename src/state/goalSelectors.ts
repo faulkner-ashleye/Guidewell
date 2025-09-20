@@ -25,19 +25,31 @@ export function computeGoalProgress(
   let current = 0;
 
   if (goal.type === 'debt') {
-    // For debt goals, calculate progress from actual payments made
-    let totalPayments = 0;
-    
-    // Check contributions (manual payments)
-    const goalContributions = contributions.filter(contrib => 
-      contrib.accountId && 
-      (goal.accountIds?.includes(contrib.accountId) || goal.accountId === contrib.accountId) &&
-      contrib.amount < 0 // Negative amounts are payments
-    );
-    totalPayments += goalContributions.reduce((sum, contrib) => sum + Math.abs(contrib.amount), 0);
-    
-    // For debt goals, current represents amount paid off
-    current = totalPayments;
+    // For debt goals, calculate progress from account balance (debt reduction)
+    if (goal.accountId) {
+      // Single account linked
+      const linkedAccount = accounts.find(acc => acc.id === goal.accountId);
+      if (linkedAccount) {
+        // For debt goals, progress is based on how much debt has been reduced
+        // We need to know the original debt amount to calculate progress
+        // For now, we'll use the current balance as a proxy for remaining debt
+        // and calculate progress as (target - current) / target
+        current = Math.max(0, goal.target - linkedAccount.balance);
+      }
+    } else if (goal.accountIds && goal.accountIds.length > 0) {
+      // Multiple accounts linked
+      const linkedAccounts = accounts.filter(acc => goal.accountIds!.includes(acc.id));
+      const totalDebtRemaining = linkedAccounts.reduce((sum, acc) => sum + acc.balance, 0);
+      current = Math.max(0, goal.target - totalDebtRemaining);
+    } else {
+      // No account linked - use contributions
+      const goalContributions = contributions.filter(contrib => 
+        contrib.accountId && 
+        (goal.accountIds?.includes(contrib.accountId) || goal.accountId === contrib.accountId) &&
+        contrib.amount < 0 // Negative amounts are payments
+      );
+      current = goalContributions.reduce((sum, contrib) => sum + Math.abs(contrib.amount), 0);
+    }
   } else if (goal.accountId) {
     // For savings/investing goals linked to an account - use account balance
     const linkedAccount = accounts.find(acc => acc.id === goal.accountId);

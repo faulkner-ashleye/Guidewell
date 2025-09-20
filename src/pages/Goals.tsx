@@ -6,6 +6,8 @@ import { Modal } from '../components/Modal';
 import { Input, Select } from '../components/Inputs';
 import { Chip } from '../components/Chips';
 import { formatCurrency } from '../utils/format';
+import { useAppState } from '../state/AppStateContext';
+import { sampleScenarios, SampleScenarioUtils } from '../data/sampleScenarios';
 import './Goals.css';
 
 interface Goal {
@@ -19,35 +21,91 @@ interface Goal {
 }
 
 export function Goals() {
-  const [goals] = useState<Goal[]>([
-    {
-      id: '1',
-      name: 'Pay off Credit Card Debt',
-      type: 'debt_payoff',
-      targetAmount: 15000,
-      currentAmount: 8500,
-      targetDate: '2024-12-31',
-      priority: 'high'
-    },
-    {
-      id: '2',
-      name: 'Emergency Fund',
-      type: 'emergency_fund',
-      targetAmount: 10000,
-      currentAmount: 2500,
-      targetDate: '2024-06-30',
-      priority: 'high'
-    },
-    {
-      id: '3',
-      name: 'Retirement Savings',
-      type: 'retirement',
-      targetAmount: 100000,
-      currentAmount: 15000,
-      targetDate: '2030-12-31',
-      priority: 'medium'
+  const { goals: appGoals, accounts, userProfile } = useAppState();
+  
+  // Convert app state goals to Goals page format
+  const convertAppGoalsToDisplayGoals = (): Goal[] => {
+    if (appGoals && appGoals.length > 0) {
+      return appGoals.map(appGoal => {
+        // Calculate current amount from linked accounts
+        let currentAmount = 0;
+        if (appGoal.accountId) {
+          const account = accounts.find(a => a.id === appGoal.accountId);
+          currentAmount = account ? account.balance : 0;
+        } else if (appGoal.accountIds && appGoal.accountIds.length > 0) {
+          currentAmount = appGoal.accountIds.reduce((sum, accountId) => {
+            const account = accounts.find(a => a.id === accountId);
+            return sum + (account ? account.balance : 0);
+          }, 0);
+        }
+        
+        // Convert app goal type to display goal type
+        let displayType: Goal['type'] = 'custom';
+        if (appGoal.type === 'debt') displayType = 'debt_payoff';
+        else if (appGoal.type === 'savings') displayType = 'emergency_fund';
+        else if (appGoal.type === 'investing') displayType = 'investment';
+        
+        return {
+          id: appGoal.id,
+          name: appGoal.name,
+          type: displayType,
+          targetAmount: appGoal.target,
+          currentAmount: currentAmount,
+          targetDate: appGoal.targetDate || '2024-12-31',
+          priority: appGoal.priority || 'medium'
+        };
+      });
     }
-  ]);
+    
+    // If no app goals, load from sample data
+    const scenarioId = userProfile?.hasSampleData ? 'recentGrad' : 'recentGrad';
+    const scenario = SampleScenarioUtils.getScenario(scenarioId);
+    
+    if (scenario && scenario.goals) {
+      return scenario.goals.map(goal => ({
+        id: goal.id,
+        name: goal.name,
+        type: goal.type as Goal['type'],
+        targetAmount: goal.targetAmount,
+        currentAmount: goal.currentAmount,
+        targetDate: goal.targetDate,
+        priority: goal.priority
+      }));
+    }
+    
+    // Fallback to default goals
+    return [
+      {
+        id: '1',
+        name: 'Pay off Credit Card Debt',
+        type: 'debt_payoff',
+        targetAmount: 15000,
+        currentAmount: 8500,
+        targetDate: '2024-12-31',
+        priority: 'high'
+      },
+      {
+        id: '2',
+        name: 'Emergency Fund',
+        type: 'emergency_fund',
+        targetAmount: 10000,
+        currentAmount: 2500,
+        targetDate: '2024-06-30',
+        priority: 'high'
+      },
+      {
+        id: '3',
+        name: 'Retirement Savings',
+        type: 'retirement',
+        targetAmount: 100000,
+        currentAmount: 15000,
+        targetDate: '2030-12-31',
+        priority: 'medium'
+      }
+    ];
+  };
+
+  const [goals] = useState<Goal[]>(convertAppGoalsToDisplayGoals());
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [newGoal, setNewGoal] = useState<Partial<Goal>>({

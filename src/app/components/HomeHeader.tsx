@@ -7,7 +7,7 @@ export default function HomeHeader({
   rightAction,
 }: { greeting: string; subtitle: string; rightAction?: ReactNode }) {
   return (
-    <header className="home-header">
+    <header className="app-header">
       <div className="home-header-content">
         <div className="home-header-left">
           <div className="home-header-logo">

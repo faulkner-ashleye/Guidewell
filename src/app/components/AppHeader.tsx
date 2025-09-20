@@ -8,13 +8,13 @@ export default function AppHeader({
   rightAction,
 }: { title: string; subtitle?: string; leftAction?: ReactNode; rightAction?: ReactNode }) {
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-sm">
+    <header className="app-header">
       <div className="flex items-center justify-between p-sm">
         <div className="flex items-center gap-sm">
           {leftAction && <div>{leftAction}</div>}
           <div>
-            <div className="font-bold text-lg">{title}</div>
-            {subtitle && <div className="text-sm opacity-75">{subtitle}</div>}
+            <div className="typography-display2">{title}</div>
+            {subtitle && <div className="typography-caption">{subtitle}</div>}
           </div>
         </div>
         <div>{rightAction}</div>
@@ -22,4 +22,3 @@ export default function AppHeader({
     </header>
   );
 }
-
