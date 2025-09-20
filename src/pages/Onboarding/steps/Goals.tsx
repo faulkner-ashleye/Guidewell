@@ -5,6 +5,7 @@ import { Account } from '../../../state/AppStateContext';
 import { inferGoalsFromAccounts } from '../../../state/selectors';
 import { Chip } from '../components/Chip';
 import { Button, ButtonVariants, ButtonColors } from '../../../components/Button';
+import { OnboardingHeader } from '../components/OnboardingHeader';
 import '../../../components/Button.css';
 
 interface GoalsProps {
@@ -48,53 +49,59 @@ export function Goals({ data, update, onNext, onSkip, accounts }: GoalsProps) {
   };
 
   return (
-    <div className="onboarding-step">
-      <h1>What are your main goals?</h1>
-      <p>Select all that apply:</p>
+    <div className="onboarding-screen">
+      <OnboardingHeader />
 
-      {shouldShowHint && (
-        <div className="hint-box">
-          <p>We noticed you have {inferredGoals.includes('pay_down_debt') ? 'debt' : ''}{inferredGoals.includes('pay_down_debt') && inferredGoals.includes('save_big_goal') ? ' and ' : ''}{inferredGoals.includes('save_big_goal') ? 'savings' : ''}—want to include these goals?</p>
-          <Button
-            variant={ButtonVariants.text}
-            color={ButtonColors.secondary}
-            onClick={handleAutoSelect}
-          >
-            Auto-select based on my accounts
-          </Button>
-        </div>
-      )}
+      <div className="onboarding-content">
+        <div className="onboarding-step">
+          <h1 className="typography-h1">What do you want to work towards?</h1>
+          <p>Select all that apply:</p>
 
-      <div className="chip-container">
-        {goalOptions.map(option => (
-          <Chip
-            key={option.value}
-            label={option.label}
-            selected={data.mainGoals.includes(option.value)}
-            onClick={() => handleGoalToggle(option.value)}
-          />
-        ))}
-      </div>
+          {shouldShowHint && (
+            <div className="hint-box">
+              <p>We noticed you have {inferredGoals.includes('pay_down_debt') ? 'debt' : ''}{inferredGoals.includes('pay_down_debt') && inferredGoals.includes('save_big_goal') ? ' and ' : ''}{inferredGoals.includes('save_big_goal') ? 'savings' : ''}—want to include these goals?</p>
+              <Button
+                variant={ButtonVariants.text}
+                color={ButtonColors.secondary}
+                onClick={handleAutoSelect}
+              >
+                Auto-select based on my accounts
+              </Button>
+            </div>
+          )}
 
-      <div className="onboarding-actions">
-        <div className="action-buttons">
-        <Button
-          variant={ButtonVariants.contained}
-          color={ButtonColors.secondary}
-          fullWidth={true}
-          onClick={onNext}
-          disabled={!canProceed}
-        >
-          Next
-        </Button>
-          <Button
-            variant={ButtonVariants.text}
-            color={ButtonColors.secondary}
-            fullWidth={true}
-            onClick={onSkip}
-          >
-            {onboardingCopy.skip}
-          </Button>
+          <div className="chip-container">
+            {goalOptions.map(option => (
+              <Chip
+                key={option.value}
+                label={option.label}
+                selected={data.mainGoals.includes(option.value)}
+                onClick={() => handleGoalToggle(option.value)}
+              />
+            ))}
+          </div>
+
+          <div className="onboarding-actions">
+            <div className="action-buttons">
+            <Button
+              variant={ButtonVariants.contained}
+              color={ButtonColors.secondary}
+              fullWidth={true}
+              onClick={onNext}
+              disabled={!canProceed}
+            >
+              Next
+            </Button>
+              <Button
+                variant={ButtonVariants.text}
+                color={ButtonColors.secondary}
+                fullWidth={true}
+                onClick={onSkip}
+              >
+                {onboardingCopy.skip}
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

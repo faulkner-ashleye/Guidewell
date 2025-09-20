@@ -2,6 +2,7 @@ import React from 'react';
 import { OnboardingState } from '../../../data/onboardingTypes';
 import { onboardingCopy } from '../copy';
 import { Button, ButtonVariants, ButtonColors } from '../../../components/Button';
+import { OnboardingHeader } from '../components/OnboardingHeader';
 import '../../../components/Button.css';
 
 interface WelcomeProps {
@@ -13,57 +14,30 @@ interface WelcomeProps {
 
 export function Welcome({ data, update, onNext, onSkip }: WelcomeProps) {
   return (
-    <div className="onboarding-step">
-      {/* Logo Placeholder */}
-      <div className="logo-container">
-        <div className="logo-placeholder">
-          <div className="logo-icon">🚀</div>
-          <div className="logo-text">Guidewell</div>
+    <div className="welcome-screen">
+      <OnboardingHeader />
+
+      {/* Bottom Section with Content */}
+      <div className="welcome-bottom-section">
+        <div className="welcome-content">
+          <h1 className="typography-display2">Your guide begins here</h1>
+          <h2 className="typography-h2">You've got goals. We'll help you see the options.</h2>
+          <p>Guidewell organizes your financial picture and points out opportunities to explore.</p>
+
+          <div className="onboarding-actions">
+            <div className="action-buttons single-button">
+              <Button
+                variant={ButtonVariants.contained}
+                color={ButtonColors.secondary}
+                fullWidth={true}
+                onClick={onNext}
+              >
+                Get started
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
-
-      <h1>{onboardingCopy.header}</h1>
-      <p>{onboardingCopy.subtext}</p>
-
-      {/* Name Fields */}
-      <div className="name-fields">
-        <div className="field-group">
-          <label htmlFor="firstName">First Name</label>
-          <input
-            id="firstName"
-            type="text"
-            value={data.firstName || ''}
-            onChange={(e) => update('firstName', e.target.value)}
-            placeholder="Enter your first name"
-            className="onboarding-input"
-          />
-        </div>
-        <div className="field-group">
-          <label htmlFor="lastName">Last Name</label>
-          <input
-            id="lastName"
-            type="text"
-            value={data.lastName || ''}
-            onChange={(e) => update('lastName', e.target.value)}
-            placeholder="Enter your last name"
-            className="onboarding-input"
-          />
-        </div>
-      </div>
-
-      <div className="onboarding-actions">
-        <div className="action-buttons single-button">
-          <Button
-            variant={ButtonVariants.contained}
-            color={ButtonColors.secondary}
-            fullWidth={true}
-            onClick={onNext}
-          >
-            Get started
-          </Button>
-        </div>
-      </div>
-
     </div>
   );
 }

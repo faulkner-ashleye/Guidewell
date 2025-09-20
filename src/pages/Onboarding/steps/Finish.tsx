@@ -2,6 +2,7 @@ import React from 'react';
 import { OnboardingState } from '../../../data/onboardingTypes';
 import { onboardingCopy } from '../copy';
 import { Button, ButtonVariants, ButtonColors } from '../../../components/Button';
+import { OnboardingHeader } from '../components/OnboardingHeader';
 import '../../../components/Button.css';
 
 interface FinishProps {
@@ -32,32 +33,38 @@ const comfortLabels: Record<string, string> = {
 
 export function Finish({ data, update, onFinish, onBack }: FinishProps) {
   return (
-    <div className="onboarding-step">
-      <h1>You're all set!</h1>
-      <p>Here's what we'll use to personalize your experience:</p>
+    <div className="onboarding-screen">
+      <OnboardingHeader />
       
-      <ul>
-        <li><strong>Main goals:</strong> {data.mainGoals.map(goal => goalLabels[goal]).join(', ')}</li>
-        <li><strong>Top priority:</strong> {data.topPriority ? goalLabels[data.topPriority] : 'Not set'}</li>
-        <li><strong>Timeline:</strong> {data.timeline ? timelineLabels[data.timeline] : 'Not set'}</li>
-        <li><strong>Comfort level:</strong> {data.comfort ? comfortLabels[data.comfort] : 'Not set'}</li>
-      </ul>
+      <div className="onboarding-content">
+        <div className="onboarding-step">
+          <h1>You're all set!</h1>
+          <p>Here's what we'll use to personalize your experience:</p>
+          
+          <ul>
+            <li><strong>Main goals:</strong> {data.mainGoals.map(goal => goalLabels[goal]).join(', ')}</li>
+            <li><strong>Top priority:</strong> {data.topPriority ? goalLabels[data.topPriority] : 'Not set'}</li>
+            <li><strong>Timeline:</strong> {data.timeline ? timelineLabels[data.timeline] : 'Not set'}</li>
+            <li><strong>Comfort level:</strong> {data.comfort ? comfortLabels[data.comfort] : 'Not set'}</li>
+          </ul>
 
-      <div>
-        <Button 
-          variant={ButtonVariants.outline}
-          color={ButtonColors.secondary}
-          onClick={onBack}
-        >
-          Back
-        </Button>
-        <Button 
-          variant={ButtonVariants.contained}
-          color={ButtonColors.secondary}
-          onClick={() => onFinish(data)}
-        >
-          Save & continue
-        </Button>
+          <div>
+            <Button 
+              variant={ButtonVariants.outline}
+              color={ButtonColors.secondary}
+              onClick={onBack}
+            >
+              Back
+            </Button>
+            <Button 
+              variant={ButtonVariants.contained}
+              color={ButtonColors.secondary}
+              onClick={() => onFinish(data)}
+            >
+              Save & continue
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

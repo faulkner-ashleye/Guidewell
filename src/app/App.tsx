@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AppStateProvider } from '../state/AppStateContext';
 import { NavBar } from '../components/NavBar';
+import { MobilePhoneWrapper } from '../components/MobilePhoneWrapper';
 import { Home } from '../pages/Home/Home';
 import { Strategies } from '../pages/Strategies';
 import { BuildStrategy } from '../pages/BuildStrategy';
@@ -21,28 +22,29 @@ function AppContent() {
   const location = useLocation();
   const isOnboarding = location.pathname === '/' || location.pathname === '/onboarding';
 
-
   return (
     <div className="app">
-      <main className="app-main">
-        <Routes>
-          <Route path="/" element={<Onboarding />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/strategies" element={<Strategies />} />
-          <Route path="/build-strategy" element={<BuildStrategy />} />
-          <Route path="/custom-strategy" element={<CustomStrategy />} />
-          <Route path="/strategies/breakdown" element={<div>Breakdown page coming soon...</div>} />
-          <Route path="/goals" element={<Goals />} />
-          <Route path="/plan" element={<Plan />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/onboarding" element={<Onboarding />} />
-          <Route path="/foundation" element={<FoundationFeatures />} />
-          <Route path="/design-system" element={<DesignSystemDemo />} />
-          <Route path="/accounts/:id" element={<AccountDetailPage />} />
-          <Route path="/goals/:id" element={<GoalDetailPage />} />
-        </Routes>
-      </main>
-      {!isOnboarding && <NavBar />}
+      <MobilePhoneWrapper>
+        <main className="app-main">
+          <Routes>
+            <Route path="/" element={<Onboarding />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/strategies" element={<Strategies />} />
+            <Route path="/build-strategy" element={<BuildStrategy />} />
+            <Route path="/custom-strategy" element={<CustomStrategy />} />
+            <Route path="/strategies/breakdown" element={<div>Breakdown page coming soon...</div>} />
+            <Route path="/goals" element={<Goals />} />
+            <Route path="/plan" element={<Plan />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/foundation" element={<FoundationFeatures />} />
+            <Route path="/design-system" element={<DesignSystemDemo />} />
+            <Route path="/accounts/:id" element={<AccountDetailPage />} />
+            <Route path="/goals/:id" element={<GoalDetailPage />} />
+          </Routes>
+        </main>
+        {!isOnboarding && <NavBar />}
+      </MobilePhoneWrapper>
     </div>
   );
 }

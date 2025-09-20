@@ -1,0 +1,137 @@
+/* Mobile Phone Wrapper Styles */
+.phone-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-attachment: fixed;
+}
+
+.phone-frame {
+  width: 375px;
+  height: 812px;
+  background: #000;
+  border-radius: 40px;
+  padding: 8px;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  position: relative;
+}
+
+.phone-screen {
+  width: 100%;
+  height: 100%;
+  background: var(--color-background-default);
+  border-radius: 32px;
+  overflow: hidden;
+  position: relative;
+}
+
+.phone-content {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.phone-home-indicator {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 134px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  z-index: 1000;
+}
+
+/* Dark mode phone frame */
+[data-theme="dark"] .phone-frame {
+  background: #1a1a1a;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+/* Responsive design - hide phone wrapper on mobile devices */
+@media (max-width: 480px) {
+  .phone-wrapper {
+    padding: 0;
+    background: var(--color-background-default);
+  }
+  
+  .phone-frame {
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+  
+  .phone-screen {
+    border-radius: 0;
+    background: var(--color-background-default);
+  }
+  
+  .phone-home-indicator {
+    display: none;
+  }
+}
+
+/* Tablet and desktop - show phone wrapper */
+@media (min-width: 481px) {
+  .phone-wrapper {
+    display: flex;
+  }
+}
+
+/* Large screens - center the phone */
+@media (min-width: 1024px) {
+  .phone-wrapper {
+    padding: 40px;
+  }
+}
+
+/* Custom scrollbar for phone content */
+.phone-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.phone-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.phone-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+.phone-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Dark mode scrollbar */
+[data-theme="dark"] .phone-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .phone-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Smooth transitions */
+.phone-frame {
+  transition: all 0.3s ease;
+}
+
+.phone-wrapper {
+  transition: background 0.3s ease;
+}

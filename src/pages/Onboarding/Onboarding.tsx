@@ -4,6 +4,7 @@ import { OnboardingState } from '../../data/onboardingTypes';
 import { useAppState } from '../../state/AppStateContext';
 import { sampleScenarios, SampleScenarioUtils } from '../../data/sampleScenarios';
 import { Welcome } from './steps/Welcome';
+import { NameStep } from './steps/NameStep';
 import { Goals } from './steps/Goals';
 import { Priority } from './steps/Priority';
 import { Timeline } from './steps/Timeline';
@@ -12,7 +13,7 @@ import Connect from './steps/Connect';
 import { Finish } from './steps/Finish';
 import './Onboarding.css';
 
-type OnboardingStep = 'welcome' | 'goals' | 'priority' | 'timeline' | 'comfort' | 'connect' | 'finish';
+type OnboardingStep = 'welcome' | 'name' | 'goals' | 'priority' | 'timeline' | 'comfort' | 'connect' | 'finish';
 
 export function Onboarding() {
   // Onboarding flow controller
@@ -34,7 +35,7 @@ export function Onboarding() {
 
   // Dynamic step order based on whether multiple goals are selected
   const getStepOrder = (): OnboardingStep[] => {
-    const baseSteps: OnboardingStep[] = ['welcome', 'goals'];
+    const baseSteps: OnboardingStep[] = ['welcome', 'name', 'goals'];
     
     // Add priority step if multiple goals are selected
     if (data.mainGoals.length > 1) {
@@ -62,6 +63,11 @@ export function Onboarding() {
   };
 
   const handleBack = () => {
+    // Prevent going back from the name step
+    if (currentStep === 'name') {
+      return;
+    }
+    
     if (!isFirstStep) {
       const prevStep = stepOrder[currentStepIndex - 1];
       setCurrentStep(prevStep);
@@ -149,6 +155,8 @@ export function Onboarding() {
     switch (currentStep) {
       case 'welcome':
         return <Welcome data={data} update={update} onNext={handleNext} onSkip={handleSkip} />;
+      case 'name':
+        return <NameStep data={data} update={update} onNext={handleNext} />;
       case 'goals':
         return <Goals data={data} update={update} onNext={handleNext} onSkip={handleSkip} accounts={accounts} />;
       case 'priority':

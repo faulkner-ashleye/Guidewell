@@ -1,23 +1,62 @@
-.onboarding {
-  min-height: 100vh;
+/* Onboarding Styles */
+.onboarding-screen {
   display: flex;
   flex-direction: column;
-  padding: 20px 16px;
-  max-width: 600px;
-  margin: 0 auto;
 }
 
 .onboarding-content {
   flex: 1;
+  background: white;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 0;
+}
+
+.onboarding-content .onboarding-content{
+    padding:40px 24px;
 }
 
 .onboarding-step {
-  text-align: center;
   max-width: 400px;
+  width: 100%;
+}
+
+.onboarding-step h1 {
+
+  font-weight: 700;
+
+  margin: 0 0 16px 0;
+  line-height: 1.2;
+}
+
+
+
+
+/* Welcome Screen Layout */
+.welcome-screen {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-bottom-section {
+  flex: 1;
+  background: white;
+  padding: 40px 24px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-content {
+  width: 100%;
+  max-width: 400px;
+}
+
+.welcome-content p {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0 0 32px 0;
+  line-height: 1.5;
 }
 
 /* Logo Styles */
@@ -56,42 +95,28 @@
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.onboarding-step h1 {
-  font-size: 28px;
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 16px 0;
-}
-
-.onboarding-step p {
-  font-size: 16px;
-  color: #6b7280;
-  line-height: 1.5;
-  margin: 0;
-}
-
-/* Name Fields Styles */
+/* Name Fields */
 .name-fields {
-  margin: 24px 0;
   display: flex;
-  flex-direction: column;
+  flex-direction:column;
   gap: 16px;
+  margin-bottom: 32px;
 }
 
 .field-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  flex: 1;
   text-align: left;
 }
 
 .field-group label {
+  display: block;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: #374151;
-  margin: 0;
+  margin-bottom: 8px;
 }
 
+/* Input Styles */
 .onboarding-input {
   height: 56px;
   padding: 0px 12px;
@@ -118,7 +143,7 @@
 
 /* Chip Styles */
 .onboarding-chip {
-  padding: 12px 20px;
+  padding: 12px 16px;
   border: 1px solid transparent;
   border-radius: 24px;
   background: rgba(0, 0, 0, 0.08);
@@ -136,17 +161,17 @@
 }
 
 /* Light mode - UNSELECTED states */
-.onboarding-chip:not(.selected):not(.disabled) {
+.onboarding-chip:not(.selected):not(:disabled) {
   background: rgba(0, 0, 0, 0.08);
   color: var(--color-text-primary);
 }
 
-.onboarding-chip:not(.selected):not(.disabled):hover {
+.onboarding-chip:not(.selected):not(:disabled):hover {
   background: rgba(0, 0, 0, 0.16);
   color: var(--color-text-primary);
 }
 
-.onboarding-chip:not(.selected):not(.disabled):focus {
+.onboarding-chip:not(.selected):not(:disabled):focus {
   background: rgba(0, 0, 0, 0.16);
   color: var(--color-text-primary);
   box-shadow: 0 0 0 2px rgba(18, 32, 123, 0.3);
@@ -182,22 +207,22 @@
 
 /* Focus ring for all chips */
 .onboarding-chip:focus-visible {
-  outline: 2px solid var(--color-secondary-main);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(18, 32, 123, 0.3);
 }
 
 /* Dark mode styles */
-[data-theme="dark"] .onboarding-chip:not(.selected):not(.disabled) {
+[data-theme="dark"] .onboarding-chip:not(.selected):not(:disabled) {
   background: rgba(255, 255, 255, 0.08);
   color: var(--color-text-primary);
 }
 
-[data-theme="dark"] .onboarding-chip:not(.selected):not(.disabled):hover {
+[data-theme="dark"] .onboarding-chip:not(.selected):not(:disabled):hover {
   background: rgba(255, 255, 255, 0.16);
   color: var(--color-text-primary);
 }
 
-[data-theme="dark"] .onboarding-chip:not(.selected):not(.disabled):focus {
+[data-theme="dark"] .onboarding-chip:not(.selected):not(:disabled):focus {
   background: rgba(255, 255, 255, 0.16);
   color: var(--color-text-primary);
 }
@@ -214,7 +239,7 @@
 
 [data-theme="dark"] .onboarding-chip.selected:focus {
   background: var(--color-primary-main);
-  color: var(--color-primary-contrast-text);
+  color: var(--color-primary-contrast);
 }
 
 [data-theme="dark"] .onboarding-chip.selected.disabled {
@@ -227,18 +252,19 @@
   flex-wrap: wrap;
   gap: 8px;
   justify-content: center;
-  margin: 24px 0;
+  margin: 48px 0;
 }
 
+/* Action Buttons */
 .onboarding-actions {
-  padding: 20px 0;
+  margin-top: 32px;
 }
 
 .action-buttons {
   display: flex;
-  flex-direction:column;
-  justify-content: space-between;
+  flex-direction: column;
   gap: 12px;
+  justify-content: center;
 }
 
 .action-buttons.single-button {
@@ -248,12 +274,12 @@
 .action-button {
   padding: 12px 24px;
   border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
-  flex: 1;
+  min-width: 120px;
 }
 
 .action-button.primary {
@@ -266,8 +292,8 @@
 }
 
 .action-button.secondary {
-  background: #f3f4f6;
-  color: #374151;
+  background: transparent;
+  color: #6b7280;
   border: 1px solid #d1d5db;
 }
 
@@ -275,7 +301,7 @@
   background: #e5e7eb;
 }
 
-
+/* Hint Box */
 .hint-box {
   background: #f0f9ff;
   border: 1px solid #0ea5e9;
@@ -287,75 +313,35 @@
 
 .hint-box p {
   margin: 0 0 12px 0;
+  font-size: 14px;
   color: #0c4a6e;
-  font-size: 14px;
 }
 
-.auto-select-button {
-  background: #0ea5e9;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.auto-select-button:hover {
-  background: #0284c7;
-}
-
-.connect-options {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin: 24px 0;
-}
-
-.connect-button {
-  padding: 16px 24px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-  text-align: center;
-}
-
-.connect-button.primary {
-  background: #3b82f6;
-  color: white;
-}
-
-.connect-button.primary:hover {
-  background: #2563eb;
-}
-
-.connect-button.secondary {
-  background: #f3f4f6;
-  color: #374151;
-  border: 1px solid #d1d5db;
-}
-
-.connect-button.secondary:hover {
-  background: #e5e7eb;
-}
-
-.connect-disclaimer {
-  font-size: 14px;
-  color: #6b7280;
-  line-height: 1.5;
-  margin: 16px 0;
-  text-align: center;
-  font-style: italic;
-}
-
+/* Responsive Design */
 @media (max-width: 480px) {
-  .onboarding {
-    padding: 16px 12px;
+  .onboarding-content {
+    padding: 30px 20px 40px;
+  }
+
+  .welcome-bottom-section {
+    padding: 30px 20px 40px;
+  }
+
+  .name-fields {
+    flex-direction: column;
+    gap: 16px;
   }
 
   .logo-placeholder {
@@ -370,47 +356,81 @@
     font-size: 20px;
   }
 
-  .onboarding-step h1 {
-    font-size: 24px;
-  }
-
-  .onboarding-step p {
-    font-size: 15px;
-  }
-
   .action-buttons {
     flex-direction: column;
   }
 
-  .action-buttons.single-button {
-    justify-content: center;
-  }
-
   .action-button {
-    padding: 14px 20px;
-    font-size: 15px;
-  }
-
-  .name-fields {
-    margin: 20px 0;
-    gap: 12px;
-  }
-
-  .onboarding-input {
-    height: 56px;
-    padding: 0px 12px;
-    font-size: 16px;
-    line-height: 24px;
+    width: 100%;
   }
 
   .chip-container {
-    margin: 20px 0;
     gap: 6px;
   }
 
   .onboarding-chip {
-    padding: 14px 16px;
-    font-size: 15px;
     min-width: 100px;
+    font-size: 13px;
+    padding: 10px 16px;
   }
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .onboarding {
+  background: var(--color-background-default);
+}
+
+[data-theme="dark"] .onboarding-content {
+  background: var(--color-background-default);
+}
+
+[data-theme="dark"] .welcome-bottom-section {
+  background: var(--color-background-default);
+}
+
+[data-theme="dark"] .onboarding-step h1 {
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .onboarding-step h2 {
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .onboarding-step p {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .welcome-content h1 {
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .welcome-content h2 {
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .welcome-content p {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .field-group label {
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .onboarding-input {
+  background: var(--color-background-paper);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .onboarding-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+[data-theme="dark"] .hint-box {
+  background: rgba(14, 165, 233, 0.1);
+  border-color: #0ea5e9;
+}
+
+[data-theme="dark"] .hint-box p {
+  color: #7dd3fc;
 }

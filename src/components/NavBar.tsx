@@ -25,19 +25,15 @@ export function NavBar() {
           key={item.path}
           to={item.path}
           className={`navbar-item ${
-            location.pathname === item.path 
-              ? 'navbar-item-active' 
+            location.pathname === item.path
+              ? 'navbar-item-active'
               : ''
           }`}
         >
-          <Icon 
-            name={item.icon} 
-            size="sm" 
-            className={`navbar-icon ${
-              location.pathname === item.path 
-                ? 'icon-primary' 
-                : 'icon-muted'
-            }`}
+          <Icon
+            name={item.icon}
+            size="sm"
+            className="navbar-icon"
           />
           <span className="navbar-label">{item.label}</span>
         </Link>
@@ -45,7 +41,3 @@ export function NavBar() {
     </nav>
   );
 }
-
-
-
-
