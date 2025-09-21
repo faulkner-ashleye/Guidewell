@@ -1,8 +1,5 @@
 .chart-container {
-  background: white;
-  border-radius: 8px;
-  padding: 16px;
-  border: 1px solid #e5e7eb;
+  border-bottom: 1px dashed var(--color-root-interactive-border);
 }
 
 .chart-title {

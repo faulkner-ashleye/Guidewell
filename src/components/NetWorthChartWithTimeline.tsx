@@ -68,30 +68,24 @@ export function NetWorthChartWithTimeline({ data, title = "Assets vs Debts" }: N
           {title}
         </div>
       </div>
-      
+
       <div className="chart-container">
         <ResponsiveContainer width="100%" height={300}>
           <LineChart
             data={filteredData}
             margin={{ left: 20, right: 20, top: 20, bottom: 20 }}
           >
-            <CartesianGrid 
-              strokeDasharray="3 3" 
-              stroke={COLORS.border} 
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke={COLORS.border}
               strokeOpacity={0.3}
             />
-            <XAxis 
-              dataKey="date" 
-              tickFormatter={formatXAxisDate}
-              tick={{ fontSize: 12, fill: COLORS.textMuted }}
-              axisLine={{ stroke: COLORS.border }}
-              tickLine={{ stroke: COLORS.border }}
+            <XAxis
+              dataKey="date"
+              hide
             />
-            <YAxis 
-              tick={{ fontSize: 12, fill: COLORS.textMuted }}
-              axisLine={{ stroke: COLORS.border }}
-              tickLine={{ stroke: COLORS.border }}
-              tickFormatter={(value) => `$${Math.round(value / 1000)}k`}
+            <YAxis
+              hide
             />
             <Tooltip
               contentStyle={{
@@ -103,14 +97,14 @@ export function NetWorthChartWithTimeline({ data, title = "Assets vs Debts" }: N
               }}
               labelFormatter={(value) => {
                 const date = new Date(value);
-                return date.toLocaleDateString('en-US', { 
-                  weekday: 'short', 
-                  month: 'short', 
-                  day: 'numeric' 
+                return date.toLocaleDateString('en-US', {
+                  weekday: 'short',
+                  month: 'short',
+                  day: 'numeric'
                 });
               }}
               formatter={(value: number, name) => [
-                `$${Math.round(value).toLocaleString()}`, 
+                `$${Math.round(value).toLocaleString()}`,
                 name === 'assets' ? 'Assets' : name === 'debts' ? 'Debts' : 'Net Worth'
               ]}
             />
@@ -140,7 +134,7 @@ export function NetWorthChartWithTimeline({ data, title = "Assets vs Debts" }: N
         {TIME_RANGES.map((range) => (
           <button
             key={range.key}
-            className={`time-range-button ${selectedTimeRange === range.key ? 'active' : ''}`}
+            className={`time-range-button timeline-chip ${selectedTimeRange === range.key ? 'active' : ''}`}
             onClick={() => setSelectedTimeRange(range.key)}
           >
             {range.label}

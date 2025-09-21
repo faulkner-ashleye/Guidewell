@@ -177,7 +177,7 @@ export default function AccountDetailPage() {
                         <Icon
                           name={iconName}
                           size="sm"
-                          style={{ fontSize: '16px' }}
+                          style={{ fontSize: '18px' }}
                         />
                       </div>
 

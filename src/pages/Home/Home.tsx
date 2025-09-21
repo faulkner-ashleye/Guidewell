@@ -359,14 +359,14 @@ export function Home() {
                       <div className="activity-meta">
                         <span className="activity-date">{item.date}</span>
                       </div>
-                      <div className="activity-main">
+                      <div className="activity-main shadow-xl">
                         <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
                           {/* Transaction Icon */}
                           <div className="activity-icon">
                             <Icon
                               name={iconName}
-                              size="xs"
-                              style={{ fontSize: '16px' }}
+                              size="sm"
+                              style={{ fontSize: '18px' }}
                             />
                           </div>
                           <div className="activity">

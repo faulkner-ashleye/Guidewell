@@ -227,6 +227,351 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         merchant_name: 'Netflix',
         category: ['Entertainment', 'Streaming'],
         created_at: '2025-01-04T00:01:00Z'
+      },
+      // Historical data - December 2024
+      {
+        id: 'tx-011',
+        account_id: 'checking-001',
+        plaid_transaction_id: 'plaid-tx-011',
+        amount: 2800.00,
+        date: '2024-12-31',
+        name: 'PAYROLL DEPOSIT',
+        merchant_name: 'Tech Startup Inc',
+        category: ['Payroll'],
+        created_at: '2024-12-31T08:00:00Z'
+      },
+      {
+        id: 'tx-012',
+        account_id: 'checking-001',
+        plaid_transaction_id: 'plaid-tx-012',
+        amount: -1200.00,
+        date: '2024-12-31',
+        name: 'RENT PAYMENT',
+        merchant_name: 'Apartment Complex',
+        category: ['Rent'],
+        created_at: '2024-12-31T09:00:00Z'
+      },
+      {
+        id: 'tx-013',
+        account_id: 'checking-001',
+        plaid_transaction_id: 'plaid-tx-013',
+        amount: -350.00,
+        date: '2024-12-31',
+        name: 'FEDERAL STUDENT LOAN',
+        merchant_name: 'Federal Student Aid',
+        category: ['Payment', 'Student Loan'],
+        created_at: '2024-12-31T10:00:00Z'
+      },
+      {
+        id: 'tx-014',
+        account_id: 'checking-001',
+        plaid_transaction_id: 'plaid-tx-014',
+        amount: -85.00,
+        date: '2024-12-31',
+        name: 'DISCOVER CARD PAYMENT',
+        merchant_name: 'Discover',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-12-31T14:30:00Z'
+      },
+      {
+        id: 'tx-015',
+        account_id: 'checking-001',
+        plaid_transaction_id: 'plaid-tx-015',
+        amount: -200.00,
+        date: '2024-12-31',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-31T15:00:00Z'
+      },
+      {
+        id: 'tx-015b',
+        account_id: 'savings-001',
+        plaid_transaction_id: 'plaid-tx-015b',
+        amount: 200.00,
+        date: '2024-12-31',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-31T15:00:00Z'
+      },
+      {
+        id: 'tx-016',
+        account_id: 'checking-001',
+        plaid_transaction_id: 'plaid-tx-016',
+        amount: -125.50,
+        date: '2024-12-28',
+        name: 'TARGET',
+        merchant_name: 'Target',
+        category: ['Shops', 'General'],
+        created_at: '2024-12-28T14:30:00Z'
+      },
+      {
+        id: 'tx-017',
+        account_id: 'credit-card-001',
+        plaid_transaction_id: 'plaid-tx-017',
+        amount: -67.50,
+        date: '2024-12-27',
+        name: 'WHOLE FOODS',
+        merchant_name: 'Whole Foods',
+        category: ['Food and Drink', 'Groceries'],
+        created_at: '2024-12-27T16:20:00Z'
+      },
+      {
+        id: 'tx-028',
+        account_id: 'credit-card-001',
+        plaid_transaction_id: 'plaid-tx-028',
+        amount: -45.67,
+        date: '2024-12-20',
+        name: 'STARBUCKS #12345',
+        merchant_name: 'Starbucks',
+        category: ['Food and Drink', 'Restaurants'],
+        created_at: '2024-12-20T10:30:00Z'
+      },
+      {
+        id: 'tx-029',
+        account_id: 'credit-card-001',
+        plaid_transaction_id: 'plaid-tx-029',
+        amount: -89.99,
+        date: '2024-12-15',
+        name: 'AMAZON',
+        merchant_name: 'Amazon',
+        category: ['Shops', 'General'],
+        created_at: '2024-12-15T19:45:00Z'
+      },
+      {
+        id: 'tx-030',
+        account_id: 'credit-card-001',
+        plaid_transaction_id: 'plaid-tx-030',
+        amount: -67.50,
+        date: '2024-12-10',
+        name: 'WHOLE FOODS',
+        merchant_name: 'Whole Foods',
+        category: ['Food and Drink', 'Groceries'],
+        created_at: '2024-12-10T16:20:00Z'
+      },
+      {
+        id: 'tx-031',
+        account_id: 'credit-card-001',
+        plaid_transaction_id: 'plaid-tx-031',
+        amount: -45.67,
+        date: '2024-12-05',
+        name: 'STARBUCKS #12345',
+        merchant_name: 'Starbucks',
+        category: ['Food and Drink', 'Restaurants'],
+        created_at: '2024-12-05T10:30:00Z'
+      },
+      // Student loan historical data
+      {
+        id: 'tx-032',
+        account_id: 'student-loan-001',
+        plaid_transaction_id: 'plaid-tx-032',
+        amount: -350.00,
+        date: '2024-12-31',
+        name: 'FEDERAL STUDENT LOAN',
+        merchant_name: 'Federal Student Aid',
+        category: ['Payment', 'Student Loan'],
+        created_at: '2024-12-31T10:00:00Z'
+      },
+      {
+        id: 'tx-033',
+        account_id: 'student-loan-001',
+        plaid_transaction_id: 'plaid-tx-033',
+        amount: -350.00,
+        date: '2024-12-15',
+        name: 'FEDERAL STUDENT LOAN',
+        merchant_name: 'Federal Student Aid',
+        category: ['Payment', 'Student Loan'],
+        created_at: '2024-12-15T10:00:00Z'
+      },
+      {
+        id: 'tx-034',
+        account_id: 'student-loan-001',
+        plaid_transaction_id: 'plaid-tx-034',
+        amount: -350.00,
+        date: '2024-11-30',
+        name: 'FEDERAL STUDENT LOAN',
+        merchant_name: 'Federal Student Aid',
+        category: ['Payment', 'Student Loan'],
+        created_at: '2024-11-30T10:00:00Z'
+      },
+      {
+        id: 'tx-035',
+        account_id: 'student-loan-001',
+        plaid_transaction_id: 'plaid-tx-035',
+        amount: -350.00,
+        date: '2024-11-15',
+        name: 'FEDERAL STUDENT LOAN',
+        merchant_name: 'Federal Student Aid',
+        category: ['Payment', 'Student Loan'],
+        created_at: '2024-11-15T10:00:00Z'
+      },
+      {
+        id: 'tx-018',
+        account_id: 'checking-001',
+        plaid_transaction_id: 'plaid-tx-018',
+        amount: -45.67,
+        date: '2024-12-26',
+        name: 'STARBUCKS #12345',
+        merchant_name: 'Starbucks',
+        category: ['Food and Drink', 'Restaurants'],
+        created_at: '2024-12-26T10:30:00Z'
+      },
+      {
+        id: 'tx-019',
+        account_id: 'checking-001',
+        plaid_transaction_id: 'plaid-tx-019',
+        amount: 2800.00,
+        date: '2024-12-15',
+        name: 'PAYROLL DEPOSIT',
+        merchant_name: 'Tech Startup Inc',
+        category: ['Payroll'],
+        created_at: '2024-12-15T08:00:00Z'
+      },
+      {
+        id: 'tx-020',
+        account_id: 'checking-001',
+        plaid_transaction_id: 'plaid-tx-020',
+        amount: -350.00,
+        date: '2024-12-15',
+        name: 'FEDERAL STUDENT LOAN',
+        merchant_name: 'Federal Student Aid',
+        category: ['Payment', 'Student Loan'],
+        created_at: '2024-12-15T10:00:00Z'
+      },
+      {
+        id: 'tx-021',
+        account_id: 'checking-001',
+        plaid_transaction_id: 'plaid-tx-021',
+        amount: -85.00,
+        date: '2024-12-15',
+        name: 'DISCOVER CARD PAYMENT',
+        merchant_name: 'Discover',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-12-15T14:30:00Z'
+      },
+      {
+        id: 'tx-022',
+        account_id: 'checking-001',
+        plaid_transaction_id: 'plaid-tx-022',
+        amount: -200.00,
+        date: '2024-12-15',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-15T15:00:00Z'
+      },
+      {
+        id: 'tx-022b',
+        account_id: 'savings-001',
+        plaid_transaction_id: 'plaid-tx-022b',
+        amount: 200.00,
+        date: '2024-12-15',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-15T15:00:00Z'
+      },
+      // Historical data - November 2024
+      {
+        id: 'tx-023',
+        account_id: 'checking-001',
+        plaid_transaction_id: 'plaid-tx-023',
+        amount: 2800.00,
+        date: '2024-11-30',
+        name: 'PAYROLL DEPOSIT',
+        merchant_name: 'Tech Startup Inc',
+        category: ['Payroll'],
+        created_at: '2024-11-30T08:00:00Z'
+      },
+      {
+        id: 'tx-024',
+        account_id: 'checking-001',
+        plaid_transaction_id: 'plaid-tx-024',
+        amount: -1200.00,
+        date: '2024-11-30',
+        name: 'RENT PAYMENT',
+        merchant_name: 'Apartment Complex',
+        category: ['Rent'],
+        created_at: '2024-11-30T09:00:00Z'
+      },
+      {
+        id: 'tx-025',
+        account_id: 'checking-001',
+        plaid_transaction_id: 'plaid-tx-025',
+        amount: -350.00,
+        date: '2024-11-30',
+        name: 'FEDERAL STUDENT LOAN',
+        merchant_name: 'Federal Student Aid',
+        category: ['Payment', 'Student Loan'],
+        created_at: '2024-11-30T10:00:00Z'
+      },
+      {
+        id: 'tx-026',
+        account_id: 'checking-001',
+        plaid_transaction_id: 'plaid-tx-026',
+        amount: -85.00,
+        date: '2024-11-30',
+        name: 'DISCOVER CARD PAYMENT',
+        merchant_name: 'Discover',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-11-30T14:30:00Z'
+      },
+      {
+        id: 'tx-027',
+        account_id: 'checking-001',
+        plaid_transaction_id: 'plaid-tx-027',
+        amount: -200.00,
+        date: '2024-11-30',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-11-30T15:00:00Z'
+      },
+      {
+        id: 'tx-027b',
+        account_id: 'savings-001',
+        plaid_transaction_id: 'plaid-tx-027b',
+        amount: 200.00,
+        date: '2024-11-30',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-11-30T15:00:00Z'
+      },
+      // Savings account historical data
+      {
+        id: 'tx-036',
+        account_id: 'savings-001',
+        plaid_transaction_id: 'plaid-tx-036',
+        amount: 200.00,
+        date: '2024-12-31',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-31T15:00:00Z'
+      },
+      {
+        id: 'tx-037',
+        account_id: 'savings-001',
+        plaid_transaction_id: 'plaid-tx-037',
+        amount: 200.00,
+        date: '2024-12-15',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-15T15:00:00Z'
+      },
+      {
+        id: 'tx-038',
+        account_id: 'savings-001',
+        plaid_transaction_id: 'plaid-tx-038',
+        amount: 200.00,
+        date: '2024-11-15',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-11-15T15:00:00Z'
       }
     ],
     expectedOpportunities: [
@@ -436,6 +781,341 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         merchant_name: 'Associated Bank Relationship Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2025-01-04T15:00:00Z'
+      },
+      // Historical data - December 2024
+      {
+        id: 'tx-021',
+        account_id: 'checking-002',
+        plaid_transaction_id: 'plaid-tx-021',
+        amount: 4500.00,
+        date: '2024-12-31',
+        name: 'PAYROLL DEPOSIT',
+        merchant_name: 'Marketing Agency LLC',
+        category: ['Payroll'],
+        created_at: '2024-12-31T08:00:00Z'
+      },
+      {
+        id: 'tx-022',
+        account_id: 'checking-002',
+        plaid_transaction_id: 'plaid-tx-022',
+        amount: -420.00,
+        date: '2024-12-31',
+        name: 'AUTO LOAN PAYMENT',
+        merchant_name: 'Chase Auto Finance',
+        category: ['Payment', 'Auto Loan'],
+        created_at: '2024-12-31T10:00:00Z'
+      },
+      {
+        id: 'tx-023',
+        account_id: 'savings-002',
+        plaid_transaction_id: 'plaid-tx-023',
+        amount: -500.00,
+        date: '2024-12-31',
+        name: 'MONTHLY SAVINGS TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-31T12:00:00Z'
+      },
+      {
+        id: 'tx-024',
+        account_id: 'investment-002',
+        plaid_transaction_id: 'plaid-tx-024',
+        amount: 600.00,
+        date: '2024-12-31',
+        name: '401K CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-31T09:00:00Z'
+      },
+      {
+        id: 'tx-025',
+        account_id: 'checking-002',
+        plaid_transaction_id: 'plaid-tx-025',
+        amount: -1200.00,
+        date: '2024-12-31',
+        name: 'RENT PAYMENT',
+        merchant_name: 'Apartment Management',
+        category: ['Rent'],
+        created_at: '2024-12-31T08:00:00Z'
+      },
+      {
+        id: 'tx-026',
+        account_id: 'checking-002',
+        plaid_transaction_id: 'plaid-tx-026',
+        amount: -200.00,
+        date: '2024-12-31',
+        name: 'HOUSE DOWN PAYMENT SAVINGS',
+        merchant_name: 'Associated Bank Relationship Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-31T15:00:00Z'
+      },
+      {
+        id: 'tx-027',
+        account_id: 'checking-002',
+        plaid_transaction_id: 'plaid-tx-027',
+        amount: 4500.00,
+        date: '2024-12-15',
+        name: 'PAYROLL DEPOSIT',
+        merchant_name: 'Marketing Agency LLC',
+        category: ['Payroll'],
+        created_at: '2024-12-15T08:00:00Z'
+      },
+      {
+        id: 'tx-028',
+        account_id: 'checking-002',
+        plaid_transaction_id: 'plaid-tx-028',
+        amount: -420.00,
+        date: '2024-12-15',
+        name: 'AUTO LOAN PAYMENT',
+        merchant_name: 'Chase Auto Finance',
+        category: ['Payment', 'Auto Loan'],
+        created_at: '2024-12-15T10:00:00Z'
+      },
+      {
+        id: 'tx-029',
+        account_id: 'savings-002',
+        plaid_transaction_id: 'plaid-tx-029',
+        amount: -500.00,
+        date: '2024-12-15',
+        name: 'MONTHLY SAVINGS TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-15T12:00:00Z'
+      },
+      {
+        id: 'tx-030',
+        account_id: 'investment-002',
+        plaid_transaction_id: 'plaid-tx-030',
+        amount: 600.00,
+        date: '2024-12-15',
+        name: '401K CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-15T09:00:00Z'
+      },
+      {
+        id: 'tx-031',
+        account_id: 'checking-002',
+        plaid_transaction_id: 'plaid-tx-031',
+        amount: -1200.00,
+        date: '2024-12-15',
+        name: 'RENT PAYMENT',
+        merchant_name: 'Apartment Management',
+        category: ['Rent'],
+        created_at: '2024-12-15T08:00:00Z'
+      },
+      {
+        id: 'tx-032',
+        account_id: 'checking-002',
+        plaid_transaction_id: 'plaid-tx-032',
+        amount: -200.00,
+        date: '2024-12-15',
+        name: 'HOUSE DOWN PAYMENT SAVINGS',
+        merchant_name: 'Associated Bank Relationship Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-15T15:00:00Z'
+      },
+      // Historical data - November 2024
+      {
+        id: 'tx-033',
+        account_id: 'checking-002',
+        plaid_transaction_id: 'plaid-tx-033',
+        amount: 4500.00,
+        date: '2024-11-30',
+        name: 'PAYROLL DEPOSIT',
+        merchant_name: 'Marketing Agency LLC',
+        category: ['Payroll'],
+        created_at: '2024-11-30T08:00:00Z'
+      },
+      {
+        id: 'tx-034',
+        account_id: 'checking-002',
+        plaid_transaction_id: 'plaid-tx-034',
+        amount: -420.00,
+        date: '2024-11-30',
+        name: 'AUTO LOAN PAYMENT',
+        merchant_name: 'Chase Auto Finance',
+        category: ['Payment', 'Auto Loan'],
+        created_at: '2024-11-30T10:00:00Z'
+      },
+      {
+        id: 'tx-035',
+        account_id: 'savings-002',
+        plaid_transaction_id: 'plaid-tx-035',
+        amount: -500.00,
+        date: '2024-11-30',
+        name: 'MONTHLY SAVINGS TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-11-30T12:00:00Z'
+      },
+      {
+        id: 'tx-036',
+        account_id: 'investment-002',
+        plaid_transaction_id: 'plaid-tx-036',
+        amount: 600.00,
+        date: '2024-11-30',
+        name: '401K CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-11-30T09:00:00Z'
+      },
+      {
+        id: 'tx-037',
+        account_id: 'checking-002',
+        plaid_transaction_id: 'plaid-tx-037',
+        amount: -1200.00,
+        date: '2024-11-30',
+        name: 'RENT PAYMENT',
+        merchant_name: 'Apartment Management',
+        category: ['Rent'],
+        created_at: '2024-11-30T08:00:00Z'
+      },
+      {
+        id: 'tx-038',
+        account_id: 'checking-002',
+        plaid_transaction_id: 'plaid-tx-038',
+        amount: -200.00,
+        date: '2024-11-30',
+        name: 'HOUSE DOWN PAYMENT SAVINGS',
+        merchant_name: 'Associated Bank Relationship Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-11-30T15:00:00Z'
+      },
+      // Savings account historical data
+      {
+        id: 'tx-039',
+        account_id: 'savings-002',
+        plaid_transaction_id: 'plaid-tx-039',
+        amount: -500.00,
+        date: '2024-12-31',
+        name: 'MONTHLY SAVINGS TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-31T12:00:00Z'
+      },
+      {
+        id: 'tx-040',
+        account_id: 'savings-002',
+        plaid_transaction_id: 'plaid-tx-040',
+        amount: -500.00,
+        date: '2024-12-15',
+        name: 'MONTHLY SAVINGS TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-15T12:00:00Z'
+      },
+      {
+        id: 'tx-041',
+        account_id: 'savings-002',
+        plaid_transaction_id: 'plaid-tx-041',
+        amount: -500.00,
+        date: '2024-11-30',
+        name: 'MONTHLY SAVINGS TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-11-30T12:00:00Z'
+      },
+      {
+        id: 'tx-042',
+        account_id: 'savings-002',
+        plaid_transaction_id: 'plaid-tx-042',
+        amount: -500.00,
+        date: '2024-11-15',
+        name: 'MONTHLY SAVINGS TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-11-15T12:00:00Z'
+      },
+      // Investment account historical data
+      {
+        id: 'tx-043',
+        account_id: 'investment-002',
+        plaid_transaction_id: 'plaid-tx-043',
+        amount: 600.00,
+        date: '2024-12-31',
+        name: '401K CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-31T09:00:00Z'
+      },
+      {
+        id: 'tx-044',
+        account_id: 'investment-002',
+        plaid_transaction_id: 'plaid-tx-044',
+        amount: 600.00,
+        date: '2024-12-15',
+        name: '401K CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-15T09:00:00Z'
+      },
+      {
+        id: 'tx-045',
+        account_id: 'investment-002',
+        plaid_transaction_id: 'plaid-tx-045',
+        amount: 600.00,
+        date: '2024-11-30',
+        name: '401K CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-11-30T09:00:00Z'
+      },
+      {
+        id: 'tx-046',
+        account_id: 'investment-002',
+        plaid_transaction_id: 'plaid-tx-046',
+        amount: 600.00,
+        date: '2024-11-15',
+        name: '401K CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-11-15T09:00:00Z'
+      },
+      // Auto loan historical data
+      {
+        id: 'tx-047',
+        account_id: 'auto-loan-002',
+        plaid_transaction_id: 'plaid-tx-047',
+        amount: -420.00,
+        date: '2024-12-31',
+        name: 'AUTO LOAN PAYMENT',
+        merchant_name: 'Chase Auto Finance',
+        category: ['Payment', 'Auto Loan'],
+        created_at: '2024-12-31T10:00:00Z'
+      },
+      {
+        id: 'tx-048',
+        account_id: 'auto-loan-002',
+        plaid_transaction_id: 'plaid-tx-048',
+        amount: -420.00,
+        date: '2024-12-15',
+        name: 'AUTO LOAN PAYMENT',
+        merchant_name: 'Chase Auto Finance',
+        category: ['Payment', 'Auto Loan'],
+        created_at: '2024-12-15T10:00:00Z'
+      },
+      {
+        id: 'tx-049',
+        account_id: 'auto-loan-002',
+        plaid_transaction_id: 'plaid-tx-049',
+        amount: -420.00,
+        date: '2024-11-30',
+        name: 'AUTO LOAN PAYMENT',
+        merchant_name: 'Chase Auto Finance',
+        category: ['Payment', 'Auto Loan'],
+        created_at: '2024-11-30T10:00:00Z'
+      },
+      {
+        id: 'tx-050',
+        account_id: 'auto-loan-002',
+        plaid_transaction_id: 'plaid-tx-050',
+        amount: -420.00,
+        date: '2024-11-15',
+        name: 'AUTO LOAN PAYMENT',
+        merchant_name: 'Chase Auto Finance',
+        category: ['Payment', 'Auto Loan'],
+        created_at: '2024-11-15T10:00:00Z'
       }
     ],
     expectedOpportunities: [
@@ -677,6 +1357,429 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         merchant_name: 'Associated Bank Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2025-01-04T16:00:00Z'
+      },
+      // Historical data - December 2024
+      {
+        id: 'tx-031',
+        account_id: 'checking-003',
+        plaid_transaction_id: 'plaid-tx-031',
+        amount: 3200.00,
+        date: '2024-12-31',
+        name: 'PAYROLL DEPOSIT',
+        merchant_name: 'Retail Store Chain',
+        category: ['Payroll'],
+        created_at: '2024-12-31T08:00:00Z'
+      },
+      {
+        id: 'tx-032',
+        account_id: 'credit-card-003a',
+        plaid_transaction_id: 'plaid-tx-032',
+        amount: -200.00,
+        date: '2024-12-31',
+        name: 'CHASE CARD PAYMENT',
+        merchant_name: 'Chase Bank',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-12-31T10:00:00Z'
+      },
+      {
+        id: 'tx-033',
+        account_id: 'credit-card-003b',
+        plaid_transaction_id: 'plaid-tx-033',
+        amount: -120.00,
+        date: '2024-12-31',
+        name: 'CAPITAL ONE PAYMENT',
+        merchant_name: 'Capital One',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-12-31T11:00:00Z'
+      },
+      {
+        id: 'tx-034',
+        account_id: 'personal-loan-003',
+        plaid_transaction_id: 'plaid-tx-034',
+        amount: -350.00,
+        date: '2024-12-31',
+        name: 'PERSONAL LOAN PAYMENT',
+        merchant_name: 'LendingClub',
+        category: ['Payment', 'Personal Loan'],
+        created_at: '2024-12-31T09:00:00Z'
+      },
+      {
+        id: 'tx-035',
+        account_id: 'checking-003',
+        plaid_transaction_id: 'plaid-tx-035',
+        amount: -1200.00,
+        date: '2024-12-31',
+        name: 'RENT PAYMENT',
+        merchant_name: 'Apartment Management',
+        category: ['Rent'],
+        created_at: '2024-12-31T08:00:00Z'
+      },
+      {
+        id: 'tx-036',
+        account_id: 'checking-003',
+        plaid_transaction_id: 'plaid-tx-036',
+        amount: -50.00,
+        date: '2024-12-31',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'Associated Bank Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-31T16:00:00Z'
+      },
+      {
+        id: 'tx-036b',
+        account_id: 'savings-003',
+        plaid_transaction_id: 'plaid-tx-036b',
+        amount: 50.00,
+        date: '2024-12-31',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'Associated Bank Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-31T16:00:00Z'
+      },
+      {
+        id: 'tx-037',
+        account_id: 'credit-card-003a',
+        plaid_transaction_id: 'plaid-tx-037',
+        amount: -89.99,
+        date: '2024-12-28',
+        name: 'WALMART',
+        merchant_name: 'Walmart',
+        category: ['Food and Drink', 'Groceries'],
+        created_at: '2024-12-28T14:30:00Z'
+      },
+      {
+        id: 'tx-038',
+        account_id: 'credit-card-003b',
+        plaid_transaction_id: 'plaid-tx-038',
+        amount: -45.67,
+        date: '2024-12-27',
+        name: 'MCDONALD\'S',
+        merchant_name: 'McDonald\'s',
+        category: ['Food and Drink', 'Restaurants'],
+        created_at: '2024-12-27T12:20:00Z'
+      },
+      {
+        id: 'tx-039',
+        account_id: 'checking-003',
+        plaid_transaction_id: 'plaid-tx-039',
+        amount: 3200.00,
+        date: '2024-12-15',
+        name: 'PAYROLL DEPOSIT',
+        merchant_name: 'Retail Store Chain',
+        category: ['Payroll'],
+        created_at: '2024-12-15T08:00:00Z'
+      },
+      {
+        id: 'tx-040',
+        account_id: 'credit-card-003a',
+        plaid_transaction_id: 'plaid-tx-040',
+        amount: -200.00,
+        date: '2024-12-15',
+        name: 'CHASE CARD PAYMENT',
+        merchant_name: 'Chase Bank',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-12-15T10:00:00Z'
+      },
+      {
+        id: 'tx-041',
+        account_id: 'credit-card-003b',
+        plaid_transaction_id: 'plaid-tx-041',
+        amount: -120.00,
+        date: '2024-12-15',
+        name: 'CAPITAL ONE PAYMENT',
+        merchant_name: 'Capital One',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-12-15T11:00:00Z'
+      },
+      {
+        id: 'tx-042',
+        account_id: 'personal-loan-003',
+        plaid_transaction_id: 'plaid-tx-042',
+        amount: -350.00,
+        date: '2024-12-15',
+        name: 'PERSONAL LOAN PAYMENT',
+        merchant_name: 'LendingClub',
+        category: ['Payment', 'Personal Loan'],
+        created_at: '2024-12-15T09:00:00Z'
+      },
+      {
+        id: 'tx-043',
+        account_id: 'checking-003',
+        plaid_transaction_id: 'plaid-tx-043',
+        amount: -1200.00,
+        date: '2024-12-15',
+        name: 'RENT PAYMENT',
+        merchant_name: 'Apartment Management',
+        category: ['Rent'],
+        created_at: '2024-12-15T08:00:00Z'
+      },
+      {
+        id: 'tx-044',
+        account_id: 'checking-003',
+        plaid_transaction_id: 'plaid-tx-044',
+        amount: -50.00,
+        date: '2024-12-15',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'Associated Bank Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-15T16:00:00Z'
+      },
+      {
+        id: 'tx-044b',
+        account_id: 'savings-003',
+        plaid_transaction_id: 'plaid-tx-044b',
+        amount: 50.00,
+        date: '2024-12-15',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'Associated Bank Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-15T16:00:00Z'
+      },
+      // Historical data - November 2024
+      {
+        id: 'tx-045',
+        account_id: 'checking-003',
+        plaid_transaction_id: 'plaid-tx-045',
+        amount: 3200.00,
+        date: '2024-11-30',
+        name: 'PAYROLL DEPOSIT',
+        merchant_name: 'Retail Store Chain',
+        category: ['Payroll'],
+        created_at: '2024-11-30T08:00:00Z'
+      },
+      {
+        id: 'tx-046',
+        account_id: 'credit-card-003a',
+        plaid_transaction_id: 'plaid-tx-046',
+        amount: -200.00,
+        date: '2024-11-30',
+        name: 'CHASE CARD PAYMENT',
+        merchant_name: 'Chase Bank',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-11-30T10:00:00Z'
+      },
+      {
+        id: 'tx-047',
+        account_id: 'credit-card-003b',
+        plaid_transaction_id: 'plaid-tx-047',
+        amount: -120.00,
+        date: '2024-11-30',
+        name: 'CAPITAL ONE PAYMENT',
+        merchant_name: 'Capital One',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-11-30T11:00:00Z'
+      },
+      {
+        id: 'tx-048',
+        account_id: 'personal-loan-003',
+        plaid_transaction_id: 'plaid-tx-048',
+        amount: -350.00,
+        date: '2024-11-30',
+        name: 'PERSONAL LOAN PAYMENT',
+        merchant_name: 'LendingClub',
+        category: ['Payment', 'Personal Loan'],
+        created_at: '2024-11-30T09:00:00Z'
+      },
+      {
+        id: 'tx-049',
+        account_id: 'checking-003',
+        plaid_transaction_id: 'plaid-tx-049',
+        amount: -1200.00,
+        date: '2024-11-30',
+        name: 'RENT PAYMENT',
+        merchant_name: 'Apartment Management',
+        category: ['Rent'],
+        created_at: '2024-11-30T08:00:00Z'
+      },
+      {
+        id: 'tx-050',
+        account_id: 'checking-003',
+        plaid_transaction_id: 'plaid-tx-050',
+        amount: -50.00,
+        date: '2024-11-30',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'Associated Bank Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-11-30T16:00:00Z'
+      },
+      {
+        id: 'tx-050b',
+        account_id: 'savings-003',
+        plaid_transaction_id: 'plaid-tx-050b',
+        amount: 50.00,
+        date: '2024-11-30',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'Associated Bank Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-11-30T16:00:00Z'
+      },
+      // Chase Credit Card historical data
+      {
+        id: 'tx-051',
+        account_id: 'credit-card-003a',
+        plaid_transaction_id: 'plaid-tx-051',
+        amount: -200.00,
+        date: '2024-12-31',
+        name: 'CHASE CARD PAYMENT',
+        merchant_name: 'Chase Bank',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-12-31T10:00:00Z'
+      },
+      {
+        id: 'tx-052',
+        account_id: 'credit-card-003a',
+        plaid_transaction_id: 'plaid-tx-052',
+        amount: -89.99,
+        date: '2024-12-28',
+        name: 'WALMART',
+        merchant_name: 'Walmart',
+        category: ['Food and Drink', 'Groceries'],
+        created_at: '2024-12-28T14:30:00Z'
+      },
+      {
+        id: 'tx-053',
+        account_id: 'credit-card-003a',
+        plaid_transaction_id: 'plaid-tx-053',
+        amount: -125.00,
+        date: '2024-12-20',
+        name: 'GAS STATION',
+        merchant_name: 'BP Gas Station',
+        category: ['Transportation', 'Gas'],
+        created_at: '2024-12-20T17:45:00Z'
+      },
+      {
+        id: 'tx-054',
+        account_id: 'credit-card-003a',
+        plaid_transaction_id: 'plaid-tx-054',
+        amount: -200.00,
+        date: '2024-12-15',
+        name: 'CHASE CARD PAYMENT',
+        merchant_name: 'Chase Bank',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-12-15T10:00:00Z'
+      },
+      {
+        id: 'tx-055',
+        account_id: 'credit-card-003a',
+        plaid_transaction_id: 'plaid-tx-055',
+        amount: -89.99,
+        date: '2024-12-10',
+        name: 'WALMART',
+        merchant_name: 'Walmart',
+        category: ['Food and Drink', 'Groceries'],
+        created_at: '2024-12-10T14:30:00Z'
+      },
+      {
+        id: 'tx-056',
+        account_id: 'credit-card-003a',
+        plaid_transaction_id: 'plaid-tx-056',
+        amount: -200.00,
+        date: '2024-11-30',
+        name: 'CHASE CARD PAYMENT',
+        merchant_name: 'Chase Bank',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-11-30T10:00:00Z'
+      },
+      // Capital One Credit Card historical data
+      {
+        id: 'tx-057',
+        account_id: 'credit-card-003b',
+        plaid_transaction_id: 'plaid-tx-057',
+        amount: -120.00,
+        date: '2024-12-31',
+        name: 'CAPITAL ONE PAYMENT',
+        merchant_name: 'Capital One',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-12-31T11:00:00Z'
+      },
+      {
+        id: 'tx-058',
+        account_id: 'credit-card-003b',
+        plaid_transaction_id: 'plaid-tx-058',
+        amount: -45.67,
+        date: '2024-12-27',
+        name: 'MCDONALD\'S',
+        merchant_name: 'McDonald\'s',
+        category: ['Food and Drink', 'Restaurants'],
+        created_at: '2024-12-27T12:20:00Z'
+      },
+      {
+        id: 'tx-059',
+        account_id: 'credit-card-003b',
+        plaid_transaction_id: 'plaid-tx-059',
+        amount: -120.00,
+        date: '2024-12-15',
+        name: 'CAPITAL ONE PAYMENT',
+        merchant_name: 'Capital One',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-12-15T11:00:00Z'
+      },
+      {
+        id: 'tx-060',
+        account_id: 'credit-card-003b',
+        plaid_transaction_id: 'plaid-tx-060',
+        amount: -45.67,
+        date: '2024-12-10',
+        name: 'MCDONALD\'S',
+        merchant_name: 'McDonald\'s',
+        category: ['Food and Drink', 'Restaurants'],
+        created_at: '2024-12-10T12:20:00Z'
+      },
+      {
+        id: 'tx-061',
+        account_id: 'credit-card-003b',
+        plaid_transaction_id: 'plaid-tx-061',
+        amount: -120.00,
+        date: '2024-11-30',
+        name: 'CAPITAL ONE PAYMENT',
+        merchant_name: 'Capital One',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-11-30T11:00:00Z'
+      },
+      // Personal Loan historical data
+      {
+        id: 'tx-062',
+        account_id: 'personal-loan-003',
+        plaid_transaction_id: 'plaid-tx-062',
+        amount: -350.00,
+        date: '2024-12-31',
+        name: 'PERSONAL LOAN PAYMENT',
+        merchant_name: 'LendingClub',
+        category: ['Payment', 'Personal Loan'],
+        created_at: '2024-12-31T09:00:00Z'
+      },
+      {
+        id: 'tx-063',
+        account_id: 'personal-loan-003',
+        plaid_transaction_id: 'plaid-tx-063',
+        amount: -350.00,
+        date: '2024-12-15',
+        name: 'PERSONAL LOAN PAYMENT',
+        merchant_name: 'LendingClub',
+        category: ['Payment', 'Personal Loan'],
+        created_at: '2024-12-15T09:00:00Z'
+      },
+      {
+        id: 'tx-064',
+        account_id: 'personal-loan-003',
+        plaid_transaction_id: 'plaid-tx-064',
+        amount: -350.00,
+        date: '2024-11-30',
+        name: 'PERSONAL LOAN PAYMENT',
+        merchant_name: 'LendingClub',
+        category: ['Payment', 'Personal Loan'],
+        created_at: '2024-11-30T09:00:00Z'
+      },
+      {
+        id: 'tx-065',
+        account_id: 'personal-loan-003',
+        plaid_transaction_id: 'plaid-tx-065',
+        amount: -350.00,
+        date: '2024-11-15',
+        name: 'PERSONAL LOAN PAYMENT',
+        merchant_name: 'LendingClub',
+        category: ['Payment', 'Personal Loan'],
+        created_at: '2024-11-15T09:00:00Z'
       }
     ],
     expectedOpportunities: [
@@ -918,6 +2021,183 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         merchant_name: 'Associated Bank Relationship Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2025-01-04T15:00:00Z'
+      },
+      // Historical data - December 2024
+      {
+        id: 'tx-041',
+        account_id: 'checking-004',
+        plaid_transaction_id: 'plaid-tx-041',
+        amount: 3800.00,
+        date: '2024-12-31',
+        name: 'PAYROLL DEPOSIT',
+        merchant_name: 'Software Company Inc',
+        category: ['Payroll'],
+        created_at: '2024-12-31T08:00:00Z'
+      },
+      {
+        id: 'tx-042',
+        account_id: 'checking-004',
+        plaid_transaction_id: 'plaid-tx-042',
+        amount: -300.00,
+        date: '2024-12-31',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-31T12:00:00Z'
+      },
+      {
+        id: 'tx-042b',
+        account_id: 'savings-004',
+        plaid_transaction_id: 'plaid-tx-042b',
+        amount: 300.00,
+        date: '2024-12-31',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-31T12:00:00Z'
+      },
+      {
+        id: 'tx-043',
+        account_id: 'checking-004',
+        plaid_transaction_id: 'plaid-tx-043',
+        amount: -320.00,
+        date: '2024-12-31',
+        name: 'FEDERAL STUDENT LOAN',
+        merchant_name: 'Federal Student Aid',
+        category: ['Payment', 'Student Loan'],
+        created_at: '2024-12-31T10:00:00Z'
+      },
+      {
+        id: 'tx-044',
+        account_id: 'credit-card-004',
+        plaid_transaction_id: 'plaid-tx-044',
+        amount: -150.00,
+        date: '2024-12-31',
+        name: 'CHASE SAPPHIRE PAYMENT',
+        merchant_name: 'Chase Bank',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-12-31T09:00:00Z'
+      },
+      {
+        id: 'tx-045',
+        account_id: 'investment-004',
+        plaid_transaction_id: 'plaid-tx-045',
+        amount: 400.00,
+        date: '2024-12-31',
+        name: '401K CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-31T08:00:00Z'
+      },
+      {
+        id: 'tx-046',
+        account_id: 'checking-004',
+        plaid_transaction_id: 'plaid-tx-046',
+        amount: -1400.00,
+        date: '2024-12-31',
+        name: 'RENT PAYMENT',
+        merchant_name: 'Apartment Complex',
+        category: ['Rent'],
+        created_at: '2024-12-31T08:00:00Z'
+      },
+      {
+        id: 'tx-047',
+        account_id: 'checking-004',
+        plaid_transaction_id: 'plaid-tx-047',
+        amount: -200.00,
+        date: '2024-12-31',
+        name: 'HOUSE SAVINGS TRANSFER',
+        merchant_name: 'Associated Bank Relationship Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-31T15:00:00Z'
+      },
+      {
+        id: 'tx-048',
+        account_id: 'checking-004',
+        plaid_transaction_id: 'plaid-tx-048',
+        amount: 3800.00,
+        date: '2024-12-15',
+        name: 'PAYROLL DEPOSIT',
+        merchant_name: 'Software Company Inc',
+        category: ['Payroll'],
+        created_at: '2024-12-15T08:00:00Z'
+      },
+      {
+        id: 'tx-049',
+        account_id: 'checking-004',
+        plaid_transaction_id: 'plaid-tx-049',
+        amount: -300.00,
+        date: '2024-12-15',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-15T12:00:00Z'
+      },
+      {
+        id: 'tx-049b',
+        account_id: 'savings-004',
+        plaid_transaction_id: 'plaid-tx-049b',
+        amount: 300.00,
+        date: '2024-12-15',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-15T12:00:00Z'
+      },
+      {
+        id: 'tx-050',
+        account_id: 'checking-004',
+        plaid_transaction_id: 'plaid-tx-050',
+        amount: -320.00,
+        date: '2024-12-15',
+        name: 'FEDERAL STUDENT LOAN',
+        merchant_name: 'Federal Student Aid',
+        category: ['Payment', 'Student Loan'],
+        created_at: '2024-12-15T10:00:00Z'
+      },
+      {
+        id: 'tx-051',
+        account_id: 'credit-card-004',
+        plaid_transaction_id: 'plaid-tx-051',
+        amount: -150.00,
+        date: '2024-12-15',
+        name: 'CHASE SAPPHIRE PAYMENT',
+        merchant_name: 'Chase Bank',
+        category: ['Payment', 'Credit Card'],
+        created_at: '2024-12-15T09:00:00Z'
+      },
+      {
+        id: 'tx-052',
+        account_id: 'investment-004',
+        plaid_transaction_id: 'plaid-tx-052',
+        amount: 400.00,
+        date: '2024-12-15',
+        name: '401K CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-15T08:00:00Z'
+      },
+      {
+        id: 'tx-053',
+        account_id: 'checking-004',
+        plaid_transaction_id: 'plaid-tx-053',
+        amount: -1400.00,
+        date: '2024-12-15',
+        name: 'RENT PAYMENT',
+        merchant_name: 'Apartment Complex',
+        category: ['Rent'],
+        created_at: '2024-12-15T08:00:00Z'
+      },
+      {
+        id: 'tx-054',
+        account_id: 'checking-004',
+        plaid_transaction_id: 'plaid-tx-054',
+        amount: -200.00,
+        date: '2024-12-15',
+        name: 'HOUSE SAVINGS TRANSFER',
+        merchant_name: 'Associated Bank Relationship Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-15T15:00:00Z'
       }
     ],
     expectedOpportunities: [
@@ -1819,6 +3099,205 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         merchant_name: 'Associated Bank Money Market',
         category: ['Transfer', 'Investment'],
         created_at: '2025-01-04T15:00:00Z'
+      },
+      // Historical data - December 2024
+      {
+        id: 'tx-081',
+        account_id: 'checking-008',
+        plaid_transaction_id: 'plaid-tx-081',
+        amount: 7500.00,
+        date: '2024-12-31',
+        name: 'PAYROLL DEPOSIT',
+        merchant_name: 'Tech Corporation',
+        category: ['Payroll'],
+        created_at: '2024-12-31T08:00:00Z'
+      },
+      {
+        id: 'tx-082',
+        account_id: 'savings-008',
+        plaid_transaction_id: 'plaid-tx-082',
+        amount: -2000.00,
+        date: '2024-12-31',
+        name: 'TAXABLE SAVINGS TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-31T12:00:00Z'
+      },
+      {
+        id: 'tx-083',
+        account_id: 'investment-008',
+        plaid_transaction_id: 'plaid-tx-083',
+        amount: 1917.00,
+        date: '2024-12-31',
+        name: '401K MAX CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-31T09:00:00Z'
+      },
+      {
+        id: 'tx-084',
+        account_id: 'checking-008',
+        plaid_transaction_id: 'plaid-tx-084',
+        amount: -583.00,
+        date: '2024-12-31',
+        name: 'ROTH IRA MAX CONTRIBUTION',
+        merchant_name: 'Roth IRA',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-31T10:00:00Z'
+      },
+      {
+        id: 'tx-084b',
+        account_id: 'investment-008b',
+        plaid_transaction_id: 'plaid-tx-084b',
+        amount: 583.00,
+        date: '2024-12-31',
+        name: 'ROTH IRA MAX CONTRIBUTION',
+        merchant_name: 'Roth IRA',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-31T10:00:00Z'
+      },
+      {
+        id: 'tx-085',
+        account_id: 'investment-008c',
+        plaid_transaction_id: 'plaid-tx-085',
+        amount: -3000.00,
+        date: '2024-12-31',
+        name: 'TAXABLE BROKERAGE INVESTMENT',
+        merchant_name: 'Schwab Brokerage',
+        category: ['Investment', 'Taxable'],
+        created_at: '2024-12-31T11:00:00Z'
+      },
+      {
+        id: 'tx-086',
+        account_id: 'checking-008',
+        plaid_transaction_id: 'plaid-tx-086',
+        amount: -2200.00,
+        date: '2024-12-31',
+        name: 'RENT PAYMENT',
+        merchant_name: 'Luxury Apartment Complex',
+        category: ['Rent'],
+        created_at: '2024-12-31T08:00:00Z'
+      },
+      {
+        id: 'tx-087',
+        account_id: 'checking-008',
+        plaid_transaction_id: 'plaid-tx-087',
+        amount: -500.00,
+        date: '2024-12-31',
+        name: 'REAL ESTATE INVESTMENT FUND',
+        merchant_name: 'Associated Bank Money Market',
+        category: ['Transfer', 'Investment'],
+        created_at: '2024-12-31T15:00:00Z'
+      },
+      {
+        id: 'tx-087b',
+        account_id: 'savings-008',
+        plaid_transaction_id: 'plaid-tx-087b',
+        amount: 500.00,
+        date: '2024-12-31',
+        name: 'REAL ESTATE INVESTMENT FUND',
+        merchant_name: 'Associated Bank Money Market',
+        category: ['Transfer', 'Investment'],
+        created_at: '2024-12-31T15:00:00Z'
+      },
+      {
+        id: 'tx-088',
+        account_id: 'checking-008',
+        plaid_transaction_id: 'plaid-tx-088',
+        amount: 7500.00,
+        date: '2024-12-15',
+        name: 'PAYROLL DEPOSIT',
+        merchant_name: 'Tech Corporation',
+        category: ['Payroll'],
+        created_at: '2024-12-15T08:00:00Z'
+      },
+      {
+        id: 'tx-089',
+        account_id: 'savings-008',
+        plaid_transaction_id: 'plaid-tx-089',
+        amount: -2000.00,
+        date: '2024-12-15',
+        name: 'TAXABLE SAVINGS TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-15T12:00:00Z'
+      },
+      {
+        id: 'tx-090',
+        account_id: 'investment-008',
+        plaid_transaction_id: 'plaid-tx-090',
+        amount: 1917.00,
+        date: '2024-12-15',
+        name: '401K MAX CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-15T09:00:00Z'
+      },
+      {
+        id: 'tx-091',
+        account_id: 'checking-008',
+        plaid_transaction_id: 'plaid-tx-091',
+        amount: -583.00,
+        date: '2024-12-15',
+        name: 'ROTH IRA MAX CONTRIBUTION',
+        merchant_name: 'Roth IRA',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-15T10:00:00Z'
+      },
+      {
+        id: 'tx-091b',
+        account_id: 'investment-008b',
+        plaid_transaction_id: 'plaid-tx-091b',
+        amount: 583.00,
+        date: '2024-12-15',
+        name: 'ROTH IRA MAX CONTRIBUTION',
+        merchant_name: 'Roth IRA',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-15T10:00:00Z'
+      },
+      {
+        id: 'tx-092',
+        account_id: 'investment-008c',
+        plaid_transaction_id: 'plaid-tx-092',
+        amount: -3000.00,
+        date: '2024-12-15',
+        name: 'TAXABLE BROKERAGE INVESTMENT',
+        merchant_name: 'Schwab Brokerage',
+        category: ['Investment', 'Taxable'],
+        created_at: '2024-12-15T11:00:00Z'
+      },
+      {
+        id: 'tx-093',
+        account_id: 'checking-008',
+        plaid_transaction_id: 'plaid-tx-093',
+        amount: -2200.00,
+        date: '2024-12-15',
+        name: 'RENT PAYMENT',
+        merchant_name: 'Luxury Apartment Complex',
+        category: ['Rent'],
+        created_at: '2024-12-15T08:00:00Z'
+      },
+      {
+        id: 'tx-094',
+        account_id: 'checking-008',
+        plaid_transaction_id: 'plaid-tx-094',
+        amount: -500.00,
+        date: '2024-12-15',
+        name: 'REAL ESTATE INVESTMENT FUND',
+        merchant_name: 'Associated Bank Money Market',
+        category: ['Transfer', 'Investment'],
+        created_at: '2024-12-15T15:00:00Z'
+      },
+      {
+        id: 'tx-094b',
+        account_id: 'savings-008',
+        plaid_transaction_id: 'plaid-tx-094b',
+        amount: 500.00,
+        date: '2024-12-15',
+        name: 'REAL ESTATE INVESTMENT FUND',
+        merchant_name: 'Associated Bank Money Market',
+        category: ['Transfer', 'Investment'],
+        created_at: '2024-12-15T15:00:00Z'
       }
     ],
     expectedOpportunities: [

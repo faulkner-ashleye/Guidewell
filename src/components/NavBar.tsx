@@ -24,7 +24,7 @@ const navItems: NavItem[] = [
 export function NavBar() {
   const location = useLocation();
   const { accounts = [], goals = [], setAccounts, clearSampleData } = useAppState();
-  
+
   // Quick Actions state
   const [qaOpen, setQaOpen] = useState(false);
   const [goalOpen, setGoalOpen] = useState(false);
@@ -51,7 +51,7 @@ export function NavBar() {
               />
               <span className="navbar-label">{item.label}</span>
             </Link>
-            
+
             {/* Insert Quick Actions FAB between strategies and plan */}
             {index === 1 && (
               <button
