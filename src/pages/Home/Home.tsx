@@ -18,6 +18,7 @@ import PlaidLinkButton from '../../components/PlaidLinkButton';
 import Sheet from '../../app/components/Sheet';
 import { sampleScenarios } from '../../data/sampleScenarios';
 import { getTransactionIcon } from '../../utils/transactionIcons';
+import { formatDate } from '../../utils/format';
 import { Icon } from '../../components/Icon';
 // Removed COLORS import - using design system utilities instead
 import './Home.css';
@@ -357,9 +358,9 @@ export function Home() {
                   return (
                     <div key={item.id} className="activity-item">
                       <div className="activity-meta">
-                        <span className="activity-date">{item.date}</span>
+                        <span className="activity-date">{formatDate(item.date)}</span>
                       </div>
-                      <div className="activity-main shadow-xl">
+                      <div className="activity-main shadow-sm">
                         <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
                           {/* Transaction Icon */}
                           <div className="activity-icon">

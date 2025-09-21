@@ -93,10 +93,39 @@ html {
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: var(--color-primary-main);
-  background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23212121' fill-opacity='0.16' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+  background-color: var(--color-background-paper);
   border-bottom: 1px solid var(--color-border);
-  padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-lg);
+  padding: var(--spacing-xl) var(--spacing-md) var(--spacing-md) var(--spacing-lg);
+}
+.app-header .grow{
+    flex-grow:1;
+}
+
+.app-header-left-spacer {
+    width: 44px; /* Same width as back button */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-button-placeholder {
+    width: 44px;
+    height: 44px;
+    /* Invisible placeholder to maintain spacing */
+}
+
+.app-title-container{
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.app-title{
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
 }
 
 .home-header-content {
@@ -124,12 +153,6 @@ html {
   flex-shrink: 0;
 }
 
-.logo-image {
-  width: 24px;
-  height: 24px;
-  filter: brightness(0) invert(1);
-}
-
 .home-header-text {
   display: flex;
   flex-direction: column;
@@ -145,14 +168,17 @@ html {
 
 .home-header-subtitle {
   margin: 0;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-  font-weight: var(--font-weight-normal);
 }
 
 .home-header-action {
   display: flex;
   align-items: center;
+}
+
+button.insights-button{
+    background: transparent;
+    width: 48px;
+    height: 48px;
 }
 
 /* Fallback for missing logo */

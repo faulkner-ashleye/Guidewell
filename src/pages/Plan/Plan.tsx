@@ -107,7 +107,6 @@ export function Plan() {
     <main className="plan-page">
       <AppHeader
         title="Plan"
-        subtitle="Accounts & Goals"
       />
 
 
@@ -298,7 +297,7 @@ export function Plan() {
                   color={ButtonColors.secondary}
                   onClick={handleAddGoal}
                 >
-                  <Icon name={IconNames.add} size="lg" />
+                  <Icon name={IconNames.add} size="md" />
                   Add a Goal
                 </Button>
 

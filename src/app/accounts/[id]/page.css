@@ -41,6 +41,28 @@
   margin-top: 4px;
 }
 
+.credit-limit-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.credit-limit-label {
+  color: #B6B6B6;
+}
+
+.credit-limit-value {
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.credit-utilization {
+  color: #B6B6B6;
+  font-size: 12px;
+}
+
 .account-sparkline {
   width: 120px;
   height: 40px;
@@ -55,6 +77,7 @@
 
 .quick-actions {
   margin-bottom: 24px;
+  padding:0 var(--spacing-lg);
 }
 
 .log-contribution-button {
@@ -79,16 +102,11 @@
   color: #FFFFFF;
 }
 
-
-
-
 .activity-main {
   display: flex;
   align-items: center;
   flex: 1;
 }
-
-
 
 .activity-content {
   flex: 1;
@@ -96,17 +114,9 @@
 
 .activity-description {
   font-size: 14px;
-  color: #FFFFFF;
+  color: var(--color-text-primary);
   font-weight: 500;
   margin-bottom: 4px;
-}
-
-.activity-meta {
-  font-size: 12px;
-  color: #B6B6B6;
-  display: flex;
-  align-items: center;
-  gap: 12px;
 }
 
 .activity-source {

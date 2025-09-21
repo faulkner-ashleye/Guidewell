@@ -6,6 +6,7 @@ import { ChipGroup, Chip } from '../components/ChipGroup';
 import { ContributionEditor } from './strategies/components/ContributionEditor';
 import { AvatarSelector } from '../components/AvatarSelector';
 import { NarrativeAvatar } from '../data/narrativeAvatars';
+import { Icon, IconNames } from '../components/Icon';
 import { useAppState } from '../state/AppStateContext';
 import './BuildStrategy.css';
 
@@ -134,7 +135,7 @@ export function BuildStrategy() {
             onClick={handleBack}
             className="back-button"
           >
-            ←
+            <Icon name={IconNames.arrow_back} size="lg" />
           </button>
         }
       />

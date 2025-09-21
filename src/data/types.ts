@@ -5,6 +5,7 @@ export interface Account {
   balance: number;
   interestRate?: number;
   monthlyContribution?: number;
+  creditLimit?: number; // For credit cards
 }
 
 export interface Goal {

@@ -20,22 +20,22 @@ export default function HomeHeader({
   const navigate = useNavigate();
 
   return (
-    <header className="app-header">
+    <header className="app-header shadow-lg">
       <div className="home-header-content">
         <div className="home-header-left">
           <div className="home-header-text">
-            <h1 className="home-header-greeting">{greeting}</h1>
-            <p className="home-header-subtitle">{subtitle}</p>
+            <div className="home-header-greeting">{greeting}</div>
+            <p className="typography-subtitle2 home-header-subtitle">{subtitle}</p>
           </div>
         </div>
         <div className="home-header-actions">
           <div className="insights-button-container">
             <Button
-              variant={ButtonVariants.text}
+              className="insights-button"
               onClick={() => navigate('/opportunities')}
               aria-label="View opportunities and insights"
             >
-              <Icon name={IconNames.lightbulb_outline} size="sm" />
+              <Icon name={IconNames.lightbulb_outline} size="md" />
             </Button>
             {insightsCount > 0 && (
               <span className="insights-badge">

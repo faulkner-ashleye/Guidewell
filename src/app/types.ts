@@ -26,5 +26,6 @@ export interface Account {
   goalTarget?: number;
   monthlyDirectDeposit?: number;
   linked?: boolean; // Whether account is digitally linked (vs manual)
+  creditLimit?: number; // For credit cards
 }
 

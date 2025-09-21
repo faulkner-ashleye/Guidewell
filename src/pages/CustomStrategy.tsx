@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AppHeader from '../app/components/AppHeader';
+import { Icon, IconNames } from '../components/Icon';
 import { useAppState } from '../state/AppStateContext';
 import { ChartPlaceholder } from './strategies/components/ChartPlaceholder';
 import { NarrativeCard } from './strategies/components/NarrativeCard';
@@ -130,7 +131,7 @@ export function CustomStrategy() {
               onClick={handleBack}
               className="back-button"
             >
-              ←
+              <Icon name={IconNames.arrow_back} size="lg" />
             </button>
           }
         />
@@ -162,7 +163,7 @@ export function CustomStrategy() {
             onClick={handleBack}
             className="back-button"
           >
-            ←
+            <Icon name={IconNames.arrow_back} size="lg" />
           </button>
         }
       />

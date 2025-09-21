@@ -12,7 +12,6 @@ export function Terms() {
     <div className="terms-page">
       <AppHeader
         title="Terms of Service"
-        subtitle="Legal information and disclaimers"
         leftAction={
           <Button
             variant={ButtonVariants.text}
@@ -25,14 +24,17 @@ export function Terms() {
       />
 
       <div className="terms-content">
-        <div className="terms-header">
-          <h1 className="terms-title">Guidewell Terms of Service & Disclaimer</h1>
-        </div>
+
 
         <div className="terms-body">
-          <p className="terms-intro">
+        <section className="terms-section">
+        <h2 className="terms-section-title">
+          <Icon name={IconNames.info} size="md" />
+          Guidewell Terms of Service & Disclaimer</h2>
+          <p>
             Guidewell is an educational tool designed to help you explore financial concepts and visualize potential outcomes. It is not a financial advisor and does not provide financial, investment, tax, or legal advice. Any information, scenarios, or recommendations displayed within Guidewell are for illustrative purposes only and may not reflect your actual circumstances. Decisions about your finances should be made based on your own situation, and you may wish to consult a qualified professional before taking action.
           </p>
+          </section>
 
           <section className="terms-section">
             <h2 className="terms-section-title">
@@ -64,11 +66,7 @@ export function Terms() {
             </p>
           </section>
 
-          <div className="terms-footer">
-            <p className="terms-agreement">
-              <strong>By continuing, you agree to these terms and acknowledge that Guidewell is an educational prototype only.</strong>
-            </p>
-          </div>
+          
         </div>
       </div>
     </div>

@@ -65,7 +65,7 @@
   --color-action-disabled-background: rgba(0, 0, 0, 0.12);
 
   --color-background-paper: #FFFFFF;
-  --color-background-default: #FAFAFA;
+  --color-background-default: #F2F2F2;
 
   --color-common-white: #FFFFFF;
   --color-common-black: #000000;
@@ -158,12 +158,6 @@
   --radius-2xl: 16px;
   --radius-full: 999px;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.24);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.24);
-  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.24);
-
   /* Transitions */
   --transition-fast: 0.15s ease;
   --transition-normal: 0.2s ease;
@@ -245,12 +239,12 @@
   --color-action-disabled-background: rgba(0, 0, 0, 0.12);
 
   --color-background-paper: #FFFFFF;
-  --color-background-default: #FAFAFA;
+  --color-background-default: var(--color-grey-100);
 
   --color-common-white: #FFFFFF;
   --color-common-black: #000000;
 
-  --color-grey-50: #FAFAFA;
+  --color-grey-50: #F2f2f2;
   --color-grey-100: #F5F5F5;
   --color-grey-200: #EEEEEE;
   --color-grey-300: #E0E0E0;
@@ -260,6 +254,12 @@
   --color-grey-700: #616161;
   --color-grey-800: #424242;
   --color-grey-900: #212121;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.12);
 
   --color-root-divider: #E0E0E0;
   --color-root-interactive-border: #919191;
@@ -379,6 +379,12 @@
   --color-grey-700: #334155;
   --color-grey-800: #1E293B;
   --color-grey-900: #0F172A;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.64);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.64);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.64);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.64);
 
   --color-root-divider: var(--color-grey-700);
   --color-root-interactive-border: var(--color-grey-500);

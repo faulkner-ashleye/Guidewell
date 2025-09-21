@@ -35,7 +35,7 @@ export function NavBar() {
     <>
       <nav className="navbar">
         {navItems.map((item, index) => (
-          <React.Fragment key={item.path}>
+          <div key={item.path}>
             <Link
               to={item.path}
               className={`navbar-item ${
@@ -54,15 +54,18 @@ export function NavBar() {
 
             {/* Insert Quick Actions FAB between strategies and plan */}
             {index === 1 && (
-              <button
-                className="navbar-fab"
-                onClick={() => setQaOpen(true)}
-                aria-label="Quick actions"
-              >
-                <Icon name={IconNames.add} size="lg" />
-              </button>
+              <div className="navbar-item">
+                <button
+                  className="navbar-fab"
+                  onClick={() => setQaOpen(true)}
+                  aria-label="Quick actions"
+                >
+                  <Icon name={IconNames.add} size="md" />
+                </button>
+                <span className="navbar-label">Quick Access</span>
+              </div>
             )}
-          </React.Fragment>
+          </div>
         ))}
       </nav>
 

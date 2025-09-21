@@ -4,12 +4,14 @@ import { useAppState } from '../../../state/AppStateContext';
 import { mergeAccountActivity } from '../../../state/contributionSelectors';
 import { computeRunningBalances, formatRunningBalance, calculateAccountBalance } from '../../../state/balanceMath';
 import { formatCurrency } from '../../../state/selectors';
+import { formatDate } from '../../../utils/format';
 import AppHeader from '../../components/AppHeader';
 import LogContributionModal from '../../components/LogContributionModal';
 import { COLORS } from '../../../ui/colors';
 import { getTransactionIcon } from '../../../utils/transactionIcons';
-import { Icon } from '../../../components/Icon';
+import { Icon, IconNames } from '../../../components/Icon';
 import './page.css';
+
 
 export default function AccountDetailPage() {
   const params = useParams();
@@ -87,7 +89,6 @@ export default function AccountDetailPage() {
       <main>
         <AppHeader
           title="Account Not Found"
-          subtitle="The requested account could not be found"
         />
         <div className="error-container">
           <p>Account not found. Please check the URL and try again.</p>
@@ -106,14 +107,13 @@ export default function AccountDetailPage() {
     <main>
       <AppHeader
         title="Account Details"
-        subtitle={account.name}
         leftAction={
           <button
             onClick={handleBack}
             className="back-button"
             aria-label="Go back"
           >
-            ←
+            <Icon name={IconNames.arrow_back} size="lg" />
           </button>
         }
       />
@@ -129,6 +129,15 @@ export default function AccountDetailPage() {
               <div className={`account-balance ${dynamicBalance < 0 ? 'negative' : ''}`}>
                 {formatCurrency(dynamicBalance)}
               </div>
+              {account.type === 'credit_card' && account.creditLimit && (
+                <div className="credit-limit-info">
+                  <span className="credit-limit-label">Credit Limit:</span>
+                  <span className="credit-limit-value">{formatCurrency(account.creditLimit)}</span>
+                  <span className="credit-utilization">
+                    ({Math.round((Math.abs(dynamicBalance) / account.creditLimit) * 100)}% utilized)
+                  </span>
+                </div>
+              )}
               <div className="account-meta">
                 {account.type.charAt(0).toUpperCase() + account.type.slice(1)} Account
                 {account.linked && ' • Digitally Linked'}
@@ -169,9 +178,9 @@ export default function AccountDetailPage() {
                 return (
                   <div key={item.id} className="activity-item">
                   <div className="activity-meta">
-                    <span>{item.date}</span>
+                    <span>{formatDate(item.date)}</span>
                   </div>
-                    <div className="activity-main">
+                    <div className="activity-main shadow-sm">
                       {/* Transaction Icon */}
                       <div className="activity-icon">
                         <Icon

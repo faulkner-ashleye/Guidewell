@@ -322,7 +322,6 @@ export function Opportunities() {
     <div className="opportunities-page">
       <AppHeader
         title="Opportunities"
-        subtitle={`${insights.length} insights • ${nudges.length} actionable nudges`}
         leftAction={
           <Button
             variant={ButtonVariants.text}

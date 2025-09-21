@@ -6,7 +6,6 @@
 
 .onboarding-content {
   flex: 1;
-  background: white;
   display: flex;
 }
 
@@ -40,7 +39,6 @@
 
 .welcome-bottom-section {
   flex: 1;
-  background: white;
   padding: 40px 24px 60px;
   display: flex;
   align-items: center;
@@ -64,22 +62,6 @@
   margin-bottom: 32px;
 }
 
-.logo-placeholder {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  padding: 24px;
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
-  transition: all 0.3s ease;
-}
-
-.logo-placeholder:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4);
-}
 
 .logo-icon {
   font-size: 48px;
@@ -410,4 +392,3 @@
 [data-theme="dark"] .onboarding-input::placeholder {
   color: var(--color-text-muted);
 }
-

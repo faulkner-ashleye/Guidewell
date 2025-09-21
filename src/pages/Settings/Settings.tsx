@@ -3,8 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Card } from '../../components/Card';
 import { Select } from '../../components/Inputs';
 import SupabaseTest from '../../components/SupabaseTest';
-import { ThemeToggle } from '../../components/ThemeToggle';
+import { ThemeSwitcher } from '../../components/ThemeSwitcher';
 import { Button, ButtonVariants, ButtonColors } from '../../components/Button';
+import { Icon, IconNames } from '../../components/Icon';
+import AppHeader from '../../app/components/AppHeader';
 import '../../components/Button.css';
 import { useAppState } from '../../state/AppStateContext';
 import { OnboardingState, MainGoal, Timeline as TimelineType, Comfort as ComfortType } from '../../data/onboardingTypes';
@@ -30,17 +32,50 @@ const comfortOptions: { value: ComfortType; label: string }[] = [
 ];
 
 const ageRangeOptions = [
+  { value: '', label: 'Select age range' },
+  { value: 'under_20', label: 'Under 20' },
   { value: '20-25', label: '20-25' },
   { value: '26-30', label: '26-30' },
   { value: '31-35', label: '31-35' },
   { value: '36-40', label: '36-40' },
+  { value: '41-45', label: '41-45' },
+  { value: '45+', label: '45+' },
   { value: 'prefer_not_to_say', label: 'Prefer not to say' }
 ];
 
+// AI Coaching Preferences Options
+const aiPersonalityOptions = [
+  { value: 'encouraging', label: 'Encouraging' },
+  { value: 'analytical', label: 'Analytical' },
+  { value: 'casual', label: 'Casual' },
+  { value: 'professional', label: 'Professional' }
+];
+
+const communicationStyleOptions = [
+  { value: 'detailed', label: 'Detailed' },
+  { value: 'concise', label: 'Concise' },
+  { value: 'visual', label: 'Visual' }
+];
+
+const detailLevelOptions = [
+  { value: 'high', label: 'High' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'low', label: 'Low' }
+];
+
+const preferredLanguageOptions = [
+  { value: 'simple', label: 'Simple' },
+  { value: 'technical', label: 'Technical' },
+  { value: 'mixed', label: 'Mixed' }
+];
+
 export function Settings() {
-  const { userProfile, setUserProfile } = useAppState();
+  const { userProfile, setUserProfile, logout } = useAppState();
   const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState<OnboardingState>({
+    firstName: '',
+    lastName: '',
     mainGoals: [],
     ageRange: undefined,
     topPriority: undefined,
@@ -52,6 +87,8 @@ export function Settings() {
   useEffect(() => {
     if (userProfile) {
       setProfileData({
+        firstName: userProfile.firstName || '',
+        lastName: userProfile.lastName || '',
         ageRange: userProfile.ageRange as any,
         mainGoals: userProfile.mainGoals as any,
         topPriority: userProfile.topPriority as any,
@@ -76,44 +113,92 @@ export function Settings() {
 
   const handleSave = () => {
     setUserProfile({
+      ...userProfile, // Preserve existing profile data
+      firstName: profileData.firstName,
+      lastName: profileData.lastName,
       ageRange: profileData.ageRange,
       mainGoals: profileData.mainGoals,
       topPriority: profileData.topPriority,
       timeline: profileData.timeline,
       comfortLevel: profileData.comfort
     });
+    setIsEditing(false); // Exit edit mode after saving
+  };
+
+  const handleLogout = () => {
+    if (window.confirm('Are you sure you want to logout? This will clear all your data and return you to the welcome screen.')) {
+      logout();
+      navigate('/');
+    }
+  };
+
+  const handleCancel = () => {
+    // Reset form data to current user profile
+    if (userProfile) {
+      setProfileData({
+        firstName: userProfile.firstName || '',
+        lastName: userProfile.lastName || '',
+        ageRange: userProfile.ageRange as any,
+        mainGoals: userProfile.mainGoals as any,
+        topPriority: userProfile.topPriority as any,
+        timeline: userProfile.timeline as any,
+        comfort: userProfile.comfortLevel as any
+      });
+    }
+    setIsEditing(false); // Exit edit mode
   };
 
   return (
     <div className="settings">
-      <div className="settings-header">
-        <div className="settings-header-content">
-          <div>
-            <h1 className="settings-title">Settings</h1>
-            <p className="settings-subtitle">
-              Customize your Guidewell experience
-            </p>
-          </div>
-          <ThemeToggle />
-        </div>
-        <Link to="/onboarding" className="onboarding-link">
-          Run onboarding again
-        </Link>
-      </div>
-
-
+      <AppHeader
+        title="Settings"
+      />
       <div className="settings-content">
         {/* Financial Profile Section */}
         <Card className="settings-section">
-          <h3 className="section-title">Your Financial Profile</h3>
+          <div className="section-header">
+            <h3 className="section-title">Your Financial Profile</h3>
+            <button
+              className="edit-button"
+              onClick={() => setIsEditing(!isEditing)}
+              aria-label={isEditing ? "Cancel editing" : "Edit profile"}
+            >
+              <Icon name={IconNames.edit} size="sm" />
+            </button>
+          </div>
 
           <div className="profile-form">
+            {/* Name Fields */}
+            <div className="form-group">
+              <label className="form-label">First Name</label>
+              <input
+                type="text"
+                value={profileData.firstName || ''}
+                onChange={(e) => setProfileData(prev => ({ ...prev, firstName: e.target.value }))}
+                placeholder="Enter your first name"
+                className="form-input"
+                disabled={!isEditing}
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Last Name</label>
+              <input
+                type="text"
+                value={profileData.lastName || ''}
+                onChange={(e) => setProfileData(prev => ({ ...prev, lastName: e.target.value }))}
+                placeholder="Enter your last name"
+                className="form-input"
+                disabled={!isEditing}
+              />
+            </div>
+
             {/* Age Range */}
             <Select
               label="Age Range"
               value={profileData.ageRange || ''}
               onChange={(e) => setProfileData(prev => ({ ...prev, ageRange: e.target.value as any }))}
               options={ageRangeOptions}
+              disabled={!isEditing}
             />
 
             {/* Main Goals */}
@@ -126,6 +211,7 @@ export function Settings() {
                       type="checkbox"
                       checked={profileData.mainGoals.includes(option.value)}
                       onChange={() => handleGoalToggle(option.value)}
+                      disabled={!isEditing}
                     />
                     {option.label}
                   </label>
@@ -146,6 +232,7 @@ export function Settings() {
                         value={goal}
                         checked={profileData.topPriority === goal}
                         onChange={() => setProfileData(prev => ({ ...prev, topPriority: goal }))}
+                        disabled={!isEditing}
                       />
                       {goalOptions.find(opt => opt.value === goal)?.label}
                     </label>
@@ -166,6 +253,7 @@ export function Settings() {
                       value={option.value}
                       checked={profileData.timeline === option.value}
                       onChange={() => setProfileData(prev => ({ ...prev, timeline: option.value }))}
+                      disabled={!isEditing}
                     />
                     {option.label}
                   </label>
@@ -185,6 +273,7 @@ export function Settings() {
                       value={option.value}
                       checked={profileData.comfort === option.value}
                       onChange={() => setProfileData(prev => ({ ...prev, comfort: option.value }))}
+                      disabled={!isEditing}
                     />
                     {option.label}
                   </label>
@@ -192,13 +281,82 @@ export function Settings() {
               </div>
             </div>
 
-            <Button
-              variant={ButtonVariants.contained}
-              color={ButtonColors.secondary}
-              onClick={handleSave}
-            >
-              Save Profile
-            </Button>
+            {isEditing && (
+              <div className="form-actions">
+                <Button
+                  variant={ButtonVariants.outline}
+                  color={ButtonColors.secondary}
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant={ButtonVariants.contained}
+                  color={ButtonColors.secondary}
+                  onClick={handleSave}
+                >
+                  Save Changes
+                </Button>
+              </div>
+            )}
+          </div>
+        </Card>
+
+        {/* AI Coaching Preferences Section */}
+        <Card className="settings-section">
+          <h3 className="section-title">AI Coaching Preferences</h3>
+          <div className="profile-form">
+          <div className="form">
+            <label className="form-label">AI Personality</label>
+            <Select
+              value={userProfile?.aiPersonality || 'encouraging'}
+              onChange={(value) => setUserProfile({ ...userProfile!, aiPersonality: value as any })}
+              options={aiPersonalityOptions}
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Communication Style</label>
+            <Select
+              value={userProfile?.communicationStyle || 'concise'}
+              onChange={(value) => setUserProfile({ ...userProfile!, communicationStyle: value as any })}
+              options={communicationStyleOptions}
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Detail Level</label>
+            <Select
+              value={userProfile?.detailLevel || 'medium'}
+              onChange={(value) => setUserProfile({ ...userProfile!, detailLevel: value as any })}
+              options={detailLevelOptions}
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Preferred Language</label>
+            <Select
+              value={userProfile?.preferredLanguage || 'simple'}
+              onChange={(value) => setUserProfile({ ...userProfile!, preferredLanguage: value as any })}
+              options={preferredLanguageOptions}
+            />
+          </div>
+          </div>
+        </Card>
+
+        {/* Appearance Section */}
+        <Card className="settings-section">
+          <h3 className="section-title">Appearance</h3>
+          <div className="appearance-setting">
+            <div className="setting-item">
+              <label className="setting-label">Dark Mode</label>
+              <ThemeSwitcher
+                variant="toggle"
+                size="md"
+                showLabel={false}
+                className="theme-switcher--settings"
+              />
+            </div>
           </div>
         </Card>
 
@@ -222,15 +380,17 @@ export function Settings() {
               <button
                 className="info-value link"
                 onClick={() => navigate('/terms')}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'var(--color-primary-main)',
-                  cursor: 'pointer',
-                  textDecoration: 'underline'
-                }}
               >
                 View Terms
+              </button>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Account</span>
+              <button
+                className="info-value link logout-button"
+                onClick={handleLogout}
+              >
+                Logout
               </button>
             </div>
           </div>

@@ -13,7 +13,7 @@ export default function QuickActionsButton({ onClick }:{ onClick:()=>void }) {
     <Button 
       variant={ButtonVariants.outline}
       color={ButtonColors.secondary}
-      size="large"
+      size="medium"
       onClick={handleClick}
       aria-label="Quick actions"
     >

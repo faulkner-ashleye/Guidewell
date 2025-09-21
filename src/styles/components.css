@@ -1,11 +1,11 @@
 /* Form Components */
 .form-group {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
 }
 
 .form-label {
   display: block;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   color: var(--color-text-primary);
@@ -332,10 +332,15 @@
   bottom:0;
   background: var(--color-card);
   border-top: 1px solid var(--color-border);
-  padding: var(--spacing-sm) 0 var(--spacing-2xl);
+  padding: var(--spacing-sm) 0 var(--spacing-md);
   display: flex;
   justify-content: center;
   z-index: 100;
+  box-shadow: 0 -1px -2px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="dark"] .navbar{
+box-shadow: 0 -1px -2px rgba(0, 0, 0, 0.64);
 }
 
 /* Position navbar within mobile phone wrapper */
@@ -344,12 +349,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-end;
   text-decoration: none;
-  color: var(--color-common-white);
+  color: var(--color-text-secondary);
   padding: var(--spacing-sm);
   transition: all var(--transition-normal);
   border-radius: var(--radius-md);
-  min-width:72px;
+  min-width:64px;
 }
 
 .navbar-item:hover {
@@ -384,12 +390,12 @@
 
 .navbar-label {
   font-size:10px;
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-bold);
 }
 
 /* Quick Actions FAB Button */
 .navbar-fab {
-  position: relative;
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -404,24 +410,21 @@
   transition: all var(--transition-normal);
   z-index: 10;
   margin:var(--spacing-xs);
-  transform: translateY(-40px);
+  transform: translateY(-24px);
   font-family:inherit;
 }
-.navbar-fab:after{
-    content:"Quick Access";
-    position: absolute;
-    display:block;
-    font-size: 10px;
-    font-weight: var(--font-weight-medium);
-    bottom:-26px;
-    width:calc(100% + 8px);
-    transform:none;
+/* Removed :after pseudo-element - now using real navbar-label element */
+
+/* Navbar wrapper divs should not interfere with flex layout */
+.navbar > div {
+  display: contents;
 }
-.navbar-fab:hover {
+.navbar-item:hover .navbar-fab {
   background-color: var(--color-secondary-dark);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-  transform: translateY(-24px);
+  transform: translateY(-32px);
 }
+/* Removed hover effect for :after pseudo-element */
 
 .navbar-fab:active {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);

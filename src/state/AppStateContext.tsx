@@ -25,6 +25,11 @@ export interface UserProfile {
   hasSampleData?: boolean; // Flag to indicate if sample data was loaded
   riskTolerance?: 'conservative' | 'moderate' | 'aggressive';
   financialLiteracy?: 'beginner' | 'intermediate' | 'advanced';
+  // AI Coaching Preferences
+  aiPersonality?: 'encouraging' | 'analytical' | 'casual' | 'professional';
+  communicationStyle?: 'detailed' | 'concise' | 'visual';
+  detailLevel?: 'high' | 'medium' | 'low';
+  preferredLanguage?: 'simple' | 'technical' | 'mixed';
 }
 
 export interface StrategyAllocation {
@@ -60,6 +65,7 @@ interface AppStateContextType {
   setUserProfile: (userProfile: UserProfile | null) => void;
   setStrategyConfig: (strategyConfig: StrategyConfig) => void;
   clearSampleData: () => void;
+  logout: () => void;
   loadSampleScenario: (scenarioId: string) => void;
   // New foundation methods
   validateData: () => boolean;
@@ -279,6 +285,33 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const logout = () => {
+    // Clear all user data and reset to initial state
+    setAccounts([]);
+    setGoals([]);
+    setTransactions([]);
+    setContributions([]);
+    setUserProfile(null);
+    setStrategyConfig({
+      scope: 'all',
+      targetTimeline: 'mid',
+      extraContribution: 0,
+      allocation: {
+        debtPct: 0,
+        savingsPct: 0,
+        investPct: 0
+      }
+    });
+    
+    // Clear any stored data from localStorage
+    localStorage.removeItem('guidewell-user-profile');
+    localStorage.removeItem('guidewell-accounts');
+    localStorage.removeItem('guidewell-goals');
+    localStorage.removeItem('guidewell-transactions');
+    localStorage.removeItem('guidewell-contributions');
+    localStorage.removeItem('guidewell-strategy-config');
+  };
+
   // Foundation methods (non-breaking additions)
   const validateData = (): boolean => {
     try {
@@ -371,6 +404,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     setUserProfile,
     setStrategyConfig,
     clearSampleData,
+    logout,
     loadSampleScenario,
     // Foundation methods
     validateData,

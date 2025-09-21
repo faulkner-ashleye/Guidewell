@@ -1,5 +1,4 @@
 .strategies {
-  padding: 20px 16px 100px 16px;
   max-width: 600px;
   margin: 0 auto;
 }
@@ -414,36 +413,31 @@
   .strategies {
     padding: 16px 12px 100px 12px;
   }
-  
-  
+
+
   .strategy-card-icon {
     font-size: 40px;
   }
-  
+
   .stepper-steps {
     gap: 8px;
   }
-  
+
   .stepper-step-number {
     width: 28px;
     height: 28px;
     font-size: 12px;
   }
-  
+
   .stepper-step-label {
     font-size: 11px;
   }
-  
+
   .stepper-actions {
     flex-direction: column;
   }
-  
+
   .stepper-button {
     width: 100%;
   }
 }
-
-
-
-
-

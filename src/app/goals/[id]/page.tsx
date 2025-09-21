@@ -8,6 +8,8 @@ import {
   formatPercentage, 
   formatCurrency 
 } from '../../../state/goalSelectors';
+import { formatDate } from '../../../utils/format';
+import { Icon, IconNames } from '../../../components/Icon';
 import AppHeader from '../../components/AppHeader';
 import LogContributionModal from '../../components/LogContributionModal';
 import { Goal } from '../../../app/types';
@@ -88,8 +90,7 @@ export default function GoalDetailPage() {
     return (
       <main>
         <AppHeader 
-          title="Goal Not Found" 
-          subtitle="The requested goal could not be found"
+          title="Goal Not Found"
         />
         <div style={{ padding: '24px', textAlign: 'center' }}>
           <p>Goal not found. Please check the URL and try again.</p>
@@ -116,9 +117,8 @@ export default function GoalDetailPage() {
     <main>
       <AppHeader 
         title="Goal"
-        subtitle={goal.name}
         leftAction={
-          <button 
+          <button
             onClick={handleBack}
             style={{
               background: 'transparent',
@@ -130,7 +130,7 @@ export default function GoalDetailPage() {
             }}
             aria-label="Go back"
           >
-            ←
+            <Icon name={IconNames.arrow_back} size="lg" />
           </button>
         }
         rightAction={
@@ -332,7 +332,7 @@ export default function GoalDetailPage() {
                           alignItems: 'center',
                           gap: '12px'
                         }}>
-                          <span>{contrib.date}</span>
+                          <span>{formatDate(contrib.date)}</span>
                           <span>{contribAccount?.name || 'Unknown Account'}</span>
                           <span 
                             style={{
