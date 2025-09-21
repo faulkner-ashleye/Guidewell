@@ -7,6 +7,7 @@ import { Chip } from '../components/Chips';
 import { formatCurrency } from '../utils/format';
 import { useAppState } from '../state/AppStateContext';
 import { sampleScenarios, SampleScenarioUtils } from '../data/sampleScenarios';
+import Sheet from '../app/components/Sheet';
 import './Goals.css';
 
 interface Goal {
@@ -238,8 +239,8 @@ export function Goals() {
       </div>
 
       {/* Add Goal Modal */}
-      <Modal
-        isOpen={showAddModal}
+      <Sheet
+        open={showAddModal}
         onClose={() => setShowAddModal(false)}
         title="Add New Goal"
       >
@@ -279,7 +280,14 @@ export function Goals() {
             options={priorityOptions}
           />
 
-          <div className="modal-actions">
+          <div className="modal-actions" style={{ 
+            display: 'flex', 
+            gap: '12px', 
+            justifyContent: 'flex-end',
+            marginTop: '24px',
+            paddingTop: '16px',
+            borderTop: '1px solid #e5e7eb'
+          }}>
             <button 
               className="modal-button secondary"
               onClick={() => setShowAddModal(false)}
@@ -298,7 +306,7 @@ export function Goals() {
             </button>
           </div>
         </div>
-      </Modal>
+      </Sheet>
     </div>
   );
 }

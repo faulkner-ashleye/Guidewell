@@ -1,5 +1,6 @@
 import { Transaction } from '../lib/supabase';
 import { Contribution } from './activitySelectors';
+import * as ActivityUtils from './activitySelectors';
 
 // Account-specific activity item (extends ActivityItem with running balance)
 export interface AccountActivityItem {
@@ -10,6 +11,7 @@ export interface AccountActivityItem {
   accountId: string;
   accountName: string;
   source: 'linked' | 'manual';
+  category?: string; // Simplified single transaction category
   runningBalance?: number; // Running balance after this entry
 }
 
@@ -71,28 +73,56 @@ export function mergeAccountActivity(
   // Add transactions (linked accounts)
   const accountTransactions = getTransactionsByAccount(transactions, accountId);
   accountTransactions.forEach(transaction => {
+    const category = ActivityUtils.simplifyCategory(transaction.category || []);
+
+    // For 401K and Roth IRA contributions, use the account name instead of generic transaction name
+    let description;
+    if (transaction.name && (transaction.name.toLowerCase().includes('401k') || transaction.name.toLowerCase().includes('roth ira'))) {
+      description = ActivityUtils.toTitleCase(transaction.name);
+    } else {
+      // Check if this is a goal-related transaction that should use title case
+      const goalKeywords = ['emergency fund', 'college fund', 'house', 'wedding', 'vacation', '529', 'deposit'];
+      const transactionName = (transaction.name || '').toLowerCase();
+      const isGoalRelated = goalKeywords.some(keyword => transactionName.includes(keyword));
+
+      if (isGoalRelated) {
+        description = ActivityUtils.toTitleCase(transaction.name || transaction.merchant_name || 'Transaction');
+      } else {
+        description = ActivityUtils.toSentenceCase(transaction.name || transaction.merchant_name || 'Transaction');
+      }
+    }
+
+    // Remove redundant terms that match the category
+    description = ActivityUtils.removeRedundantCategoryTerms(description, category);
+
     activityItems.push({
       id: `transaction-${transaction.id}`,
       date: transaction.date,
-      description: transaction.name || transaction.merchant_name || 'Transaction',
+      description: description,
       amount: transaction.amount,
       accountId: transaction.account_id,
       accountName: accountName,
-      source: 'linked'
+      source: 'linked',
+      category: category
     });
   });
 
   // Add contributions (manual entries)
   const accountContributions = getContributionsByAccount(contributions, accountId);
   accountContributions.forEach(contribution => {
+    // For manual contributions, we'll use a default category of "Transfer" since they're typically savings/investment related
+    const category = 'Transfer';
+    const description = ActivityUtils.toSentenceCase(contribution.description);
+
     activityItems.push({
       id: `contribution-${contribution.id}`,
       date: contribution.date,
-      description: contribution.description,
+      description: description,
       amount: contribution.amount,
       accountId: contribution.accountId,
       accountName: accountName,
-      source: 'manual'
+      source: 'manual',
+      category: category
     });
   });
 

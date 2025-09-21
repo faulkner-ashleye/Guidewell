@@ -23,9 +23,6 @@ export default function HomeHeader({
     <header className="app-header">
       <div className="home-header-content">
         <div className="home-header-left">
-          <div className="home-header-logo">
-            <img src="/logo.svg" alt="Guidewell" className="logo-image" />
-          </div>
           <div className="home-header-text">
             <h1 className="home-header-greeting">{greeting}</h1>
             <p className="home-header-subtitle">{subtitle}</p>

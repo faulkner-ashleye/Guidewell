@@ -301,21 +301,6 @@
   background: #e5e7eb;
 }
 
-/* Hint Box */
-.hint-box {
-  background: #f0f9ff;
-  border: 1px solid #0ea5e9;
-  border-radius: 8px;
-  padding: 16px;
-  margin: 16px 0;
-  text-align: left;
-}
-
-.hint-box p {
-  margin: 0 0 12px 0;
-  font-size: 14px;
-  color: #0c4a6e;
-}
 
 /* Animations */
 @keyframes fadeInUp {
@@ -426,11 +411,3 @@
   color: var(--color-text-muted);
 }
 
-[data-theme="dark"] .hint-box {
-  background: rgba(14, 165, 233, 0.1);
-  border-color: #0ea5e9;
-}
-
-[data-theme="dark"] .hint-box p {
-  color: #7dd3fc;
-}

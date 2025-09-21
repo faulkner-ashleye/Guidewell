@@ -10,7 +10,7 @@ import {
 import { buildNetWorthSeries } from '../../state/financeSelectors';
 import { SummaryCard } from '../../components/SummaryCard';
 import { ProgressBar } from '../../components/ProgressBar';
-import { NetWorthStackedArea } from '../../components/NetWorthStackedArea';
+import { NetWorthChartWithTimeline } from '../../components/NetWorthChartWithTimeline';
 import { GoalAccountLinker } from '../../components/GoalAccountLinker';
 import HomeHeader from '../../app/components/HomeHeader';
 import { useInsightsCount } from '../../hooks/useInsightsCount';
@@ -182,7 +182,7 @@ export function Home() {
     return userProfile?.firstName || 'there';
   };
 
-  // Build net worth series for stacked area chart
+  // Build net worth series for line chart
   const netWorthSeries = buildNetWorthSeries(accounts, [], 56);
 
   const hasData = accounts.length > 0;
@@ -257,10 +257,10 @@ export function Home() {
         </div>
       ) : (
         <>
-          {/* Hero Stacked Area Chart */}
+          {/* Hero Line Chart */}
           {hasChartData && (
             <div className="hero-chart">
-              <NetWorthStackedArea data={netWorthSeries} />
+              <NetWorthChartWithTimeline data={netWorthSeries} title="Net Worth Overview" />
             </div>
           )}
 
@@ -281,43 +281,49 @@ export function Home() {
 
                   // Determine activity type and styling based on transaction description and account type
                   const isInvestmentContribution = item.description.includes('401K') ||
-                    item.description.includes('ROTH IRA') ||
-                    item.description.includes('INVESTMENT');
-                  const isSavingsTransfer = item.description.includes('TRANSFER') ||
-                    item.description.includes('SAVINGS') ||
-                    item.description.includes('EMERGENCY FUND') ||
-                    item.description.includes('DOWN PAYMENT') ||
-                    item.description.includes('HOUSE SAVINGS') ||
-                    item.description.includes('EQUIPMENT SAVINGS') ||
-                    item.description.includes('VACATION SAVINGS') ||
-                    item.description.includes('WEDDING SAVINGS') ||
-                    item.description.includes('COLLEGE FUND') ||
-                    item.description.includes('REAL ESTATE INVESTMENT FUND');
+                    item.description.toLowerCase().includes('roth ira') ||
+                    item.description.toLowerCase().includes('investment') ||
+                    item.description.toLowerCase().includes('college fund') ||
+                    item.description.includes('529');
+                  const isSavingsTransfer = item.description.toLowerCase().includes('transfer') ||
+                    item.description.toLowerCase().includes('savings') ||
+                    item.description.toLowerCase().includes('emergency fund') ||
+                    item.description.toLowerCase().includes('down payment') ||
+                    item.description.toLowerCase().includes('house savings') ||
+                    item.description.toLowerCase().includes('equipment savings') ||
+                    item.description.toLowerCase().includes('vacation savings') ||
+                    item.description.toLowerCase().includes('wedding savings') ||
+                    item.description.toLowerCase().includes('college fund') ||
+                    item.description.toLowerCase().includes('real estate investment fund');
 
                   // For credit card accounts, payments (negative amounts) are positive activity (reducing debt)
                   const isCreditCardPayment = accountType === 'credit_card' &&
-                    item.description.includes('PAYMENT') &&
+                    item.description.toLowerCase().includes('payment') &&
                     item.amount < 0;
 
                   // For loan accounts, payments (negative amounts) are positive activity (reducing debt)
                   const isLoanPayment = accountType === 'loan' &&
-                    item.description.includes('PAYMENT') &&
+                    item.description.toLowerCase().includes('payment') &&
                     item.amount < 0;
 
                   // For checking/savings accounts, payments to credit cards or loans are positive activity (reducing debt)
                   const isDebtPaymentFromChecking = (accountType === 'checking' || accountType === 'savings') &&
-                    (item.description.includes('CREDIT CARD PAYMENT') ||
-                     item.description.includes('CARD PAYMENT') ||
-                     item.description.includes('LOAN PAYMENT') ||
-                     item.description.includes('STUDENT LOAN')) &&
+                    (item.description.toLowerCase().includes('credit card payment') ||
+                     item.description.toLowerCase().includes('card payment') ||
+                     item.description.toLowerCase().includes('loan payment') ||
+                     item.description.toLowerCase().includes('student loan') ||
+                     item.description.toLowerCase().includes('auto loan') ||
+                     item.description.toLowerCase().includes('personal loan') ||
+                     item.description.toLowerCase().includes('federal student loan') ||
+                     item.description.toLowerCase().includes('private student loan') ||
+                     item.description.toLowerCase().includes('business credit card payment')) &&
                     item.amount < 0;
 
                   const isIncome = item.amount > 0 && (
-                    item.description.includes('PAYROLL DEPOSIT') ||
-                    item.description.includes('PAYMENT') ||
-                    item.description.includes('FREELANCE PROJECT') ||
-                    item.description.includes('UPWORK PAYMENT') ||
-                    item.description.includes('CLIENT')
+                    item.description.toLowerCase().includes('payroll deposit') ||
+                    item.description.toLowerCase().includes('freelance project') ||
+                    item.description.toLowerCase().includes('upwork payment') ||
+                    item.description.toLowerCase().includes('client')
                   );
 
                   let activityClass = '';
@@ -333,10 +339,10 @@ export function Home() {
                     displayAmount = item.amount; // Keep original negative amount
                     prefix = ''; // No prefix, let the amount show its natural sign
                   } else if (isInvestmentContribution || isSavingsTransfer) {
-                    activityClass = 'activity-info';
+                    activityClass = 'activity-positive';
                     // Show as positive amount for investment contributions and savings transfers
                     displayAmount = Math.abs(item.amount);
-                    prefix = '';
+                    prefix = '+';
                   } else if (item.amount >= 0) {
                     activityClass = 'activity-positive';
                     prefix = '+';
@@ -347,45 +353,36 @@ export function Home() {
 
                   // Get the icon for this transaction
                   const iconName = getTransactionIcon(item.description);
-                  
+
                   return (
                     <div key={item.id} className="activity-item">
+                      <div className="activity-meta">
+                        <span className="activity-date">{item.date}</span>
+                      </div>
                       <div className="activity-main">
                         <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
                           {/* Transaction Icon */}
-                          <div style={{
-                            width: '32px',
-                            height: '32px',
-                            borderRadius: '50%',
-                            backgroundColor: '#2C2C2C',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginRight: '12px',
-                            flexShrink: 0
-                          }}>
-                            <Icon 
-                              name={iconName} 
-                              size="xs" 
-                              color="white"
+                          <div className="activity-icon">
+                            <Icon
+                              name={iconName}
+                              size="xs"
                               style={{ fontSize: '16px' }}
                             />
                           </div>
-                          <div className="activity-description">{item.description}</div>
+                          <div className="activity">
+                              <div className="activity-description">{item.description}</div>
+                              {item.category && (
+                                <span className="activity-category">
+                                  {item.category}
+                                </span>
+                              )}
+                        </div>
                         </div>
                         <div className={`activity-amount ${activityClass}`}>
                           {prefix}{formatCurrency(displayAmount)}
                         </div>
                       </div>
-                      <div className="activity-meta">
-                        <span className="activity-date">{item.date}</span>
-                        <span className="activity-account">{item.accountName}</span>
-                        <span
-                          className={`activity-source ${item.source === 'linked' ? 'source-linked' : 'source-manual'} px-xs py-xs rounded-sm text-xs font-medium`}
-                        >
-                          {item.source === 'linked' ? 'Linked' : 'Manual'}
-                        </span>
-                      </div>
+
                     </div>
                   );
                 })}

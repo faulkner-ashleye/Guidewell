@@ -2,7 +2,6 @@ import React from 'react';
 import { OnboardingState, MainGoal } from '../../../data/onboardingTypes';
 import { onboardingCopy } from '../copy';
 import { Account } from '../../../state/AppStateContext';
-import { inferGoalsFromAccounts } from '../../../state/selectors';
 import { Chip } from '../components/Chip';
 import { Button, ButtonVariants, ButtonColors } from '../../../components/Button';
 import { OnboardingHeader } from '../components/OnboardingHeader';
@@ -40,14 +39,6 @@ export function Goals({ data, update, onNext, onSkip, accounts }: GoalsProps) {
 
   const canProceed = data.mainGoals.length > 0;
 
-  // Check if we should show the hint
-  const inferredGoals = inferGoalsFromAccounts(accounts);
-  const shouldShowHint = data.mainGoals.length === 0 && inferredGoals.length > 0;
-
-  const handleAutoSelect = () => {
-    update('mainGoals', inferredGoals as MainGoal[]);
-  };
-
   return (
     <div className="onboarding-screen">
       <OnboardingHeader />
@@ -56,19 +47,6 @@ export function Goals({ data, update, onNext, onSkip, accounts }: GoalsProps) {
         <div className="onboarding-step">
           <h1 className="typography-h1">What do you want to work towards?</h1>
           <p>Select all that apply:</p>
-
-          {shouldShowHint && (
-            <div className="hint-box">
-              <p>We noticed you have {inferredGoals.includes('pay_down_debt') ? 'debt' : ''}{inferredGoals.includes('pay_down_debt') && inferredGoals.includes('save_big_goal') ? ' and ' : ''}{inferredGoals.includes('save_big_goal') ? 'savings' : ''}—want to include these goals?</p>
-              <Button
-                variant={ButtonVariants.text}
-                color={ButtonColors.secondary}
-                onClick={handleAutoSelect}
-              >
-                Auto-select based on my accounts
-              </Button>
-            </div>
-          )}
 
           <div className="chip-container">
             {goalOptions.map(option => (

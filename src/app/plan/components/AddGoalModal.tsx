@@ -2,6 +2,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Account, Goal, GoalType } from '../../types';
 import { Button, ButtonVariants, ButtonColors } from '../../../components/Button';
+import Sheet from '../../components/Sheet';
 import '../../../components/Button.css';
 
 type Props = {
@@ -164,14 +165,8 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
   };
 
   return (
-    <div role="dialog" aria-modal="true" className="modal-backdrop" onClick={onClose}>
-      <div className="modal-panel" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <h3 className="text-lg font-semibold m-0">Add a Goal</h3>
-          <button aria-label="Close" onClick={onClose} className="modal-close">×</button>
-        </div>
-
-        <div className="modal-body">
+    <Sheet open={open} onClose={onClose} title="Add a Goal">
+      <div className="modal-body">
           {!preselectedAccountId && (
             <div className="form-field">
               <label className="form-label">Goal type</label>
@@ -353,7 +348,14 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
           </div>
         </div>
 
-        <div className="modal-footer">
+        <div className="modal-footer" style={{ 
+          display: 'flex', 
+          gap: '12px', 
+          justifyContent: 'flex-end',
+          marginTop: '24px',
+          paddingTop: '16px',
+          borderTop: '1px solid #e5e7eb'
+        }}>
           <Button 
             variant={ButtonVariants.outline}
             color={ButtonColors.secondary}
@@ -369,8 +371,7 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
             Save goal
           </Button>
         </div>
-      </div>
-    </div>
+    </Sheet>
   );
 }
 

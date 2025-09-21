@@ -4,7 +4,7 @@ import { useAppState } from '../../state/AppStateContext';
 import { COLORS } from '../../ui/colors';
 import { SummaryCard } from '../../components/SummaryCard';
 import { AccountRow } from '../../components/AccountRow';
-import { NetWorthStackedArea } from '../../components/NetWorthStackedArea';
+import { NetWorthChartWithTimeline } from '../../components/NetWorthChartWithTimeline';
 import { GoalList } from '../../components/GoalList';
 import { ProgressBar } from '../../components/ProgressBar';
 import {
@@ -111,9 +111,9 @@ export function Plan() {
       />
 
 
-      {/* Overview: Net worth cards + stacked area */}
+      {/* Overview: Net worth cards + line chart */}
       <section className="plan-overview">
-      <NetWorthStackedArea data={series} />
+      <NetWorthChartWithTimeline data={series} title="Net Worth Trend" />
         <div className="plan-summary-grid">
           <SummaryCard title="Assets" value={formatMoney(assets)} />
           <SummaryCard title="Debts"  value={formatMoney(debts)} />

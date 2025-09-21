@@ -14,6 +14,13 @@ export function getTransactionIcon(
   const merchant = merchantName?.toLowerCase() || '';
   const cats = categories?.join(' ').toLowerCase() || '';
 
+  // Business expenses
+  if (desc.includes('adobe') || desc.includes('business') || desc.includes('office') ||
+      desc.includes('software') || desc.includes('subscription') || desc.includes('freelance') ||
+      cats.includes('business')) {
+    return 'work';
+  }
+
   // Housing & Rent
   if (desc.includes('rent') || desc.includes('mortgage') || desc.includes('apartment') || 
       desc.includes('housing') || desc.includes('property')) {
@@ -22,12 +29,13 @@ export function getTransactionIcon(
 
   // Grocery stores and shopping
   if (desc.includes('grocery') || desc.includes('whole foods') || desc.includes('safeway') ||
-      desc.includes('kroger') || desc.includes('publix') || cats.includes('groceries')) {
+      desc.includes('kroger') || desc.includes('publix') || desc.includes('trader joe') ||
+      desc.includes('costco') || cats.includes('groceries')) {
     return 'shopping_cart';
   }
 
   // Big box retailers (Walmart, Target, etc.)
-  if (desc.includes('walmart') || desc.includes('target') || desc.includes('costco') ||
+  if (desc.includes('walmart') || desc.includes('target') ||
       desc.includes('best buy') || desc.includes('home depot') || desc.includes('lowes')) {
     return 'shopping_bag';
   }
@@ -50,7 +58,7 @@ export function getTransactionIcon(
   if (desc.includes('gas') || desc.includes('fuel') || desc.includes('shell') ||
       desc.includes('exxon') || desc.includes('chevron') || desc.includes('bp') ||
       desc.includes('mobil') || cats.includes('gas')) {
-    return 'local_gas_station';
+    return 'directions_car';
   }
 
   // Streaming services (Spotify, Netflix, etc.)
@@ -63,21 +71,22 @@ export function getTransactionIcon(
   // Restaurants and food
   if (desc.includes('restaurant') || desc.includes('starbucks') || desc.includes('mcdonald') ||
       desc.includes('subway') || desc.includes('pizza') || desc.includes('burger') ||
-      cats.includes('restaurants') || cats.includes('food and drink')) {
+      desc.includes('uber eats') || cats.includes('restaurants') || cats.includes('food and drink')) {
     return 'restaurant';
   }
 
   // Transportation
-  if (desc.includes('uber') || desc.includes('lyft') || desc.includes('taxi') ||
+  if ((desc.includes('uber') && !desc.includes('uber eats')) || desc.includes('lyft') || desc.includes('taxi') ||
       desc.includes('metro') || desc.includes('bus') || desc.includes('train') ||
       cats.includes('transportation')) {
     return 'directions_car';
   }
 
-  // Investment contributions
+  // Investment contributions and college funds
   if (desc.includes('401k') || desc.includes('roth ira') || desc.includes('ira') ||
       desc.includes('investment') || desc.includes('contribution') || 
-      desc.includes('charles schwab') || desc.includes('vanguard') || desc.includes('fidelity')) {
+      desc.includes('charles schwab') || desc.includes('vanguard') || desc.includes('fidelity') ||
+      desc.includes('college fund') || desc.includes('529')) {
     return 'trending_up';
   }
 
