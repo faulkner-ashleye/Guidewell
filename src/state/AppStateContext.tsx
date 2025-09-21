@@ -114,10 +114,13 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       id: goal.id,
       name: goal.name,
       type: goal.type,
-      target: goal.targetAmount,
+      target: goal.target,
+      accountId: goal.accountId,
+      accountIds: goal.accountIds,
       targetDate: goal.targetDate,
       priority: goal.priority,
-      createdAt: new Date().toISOString()
+      note: goal.note,
+      createdAt: goal.createdAt
     }));
 
     // Preserve user's real profile data and only update sample data flag
@@ -333,10 +336,13 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
           id: goal.id,
           name: goal.name,
           type: goal.type as any,
-          targetAmount: goal.target,
-          currentAmount: 0, // We don't track current amount in the existing system
+          target: goal.target,
+          accountId: goal.accountId,
+          accountIds: goal.accountIds,
           targetDate: goal.targetDate || new Date().toISOString().split('T')[0],
-          priority: goal.priority || 'medium'
+          priority: goal.priority || 'medium',
+          note: goal.note,
+          createdAt: goal.createdAt
         }));
         
         const enhanced = UserProfileUtils.enrichProfile(enriched, accounts, convertedGoals);

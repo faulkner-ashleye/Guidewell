@@ -126,7 +126,7 @@ export function Onboarding() {
               goal.type === 'emergency_fund' ? 'savings' as const :
               goal.type === 'investment' ? 'investing' as const :
               'savings' as const,
-        target: goal.targetAmount,
+        target: goal.target,
         targetDate: goal.targetDate,
         priority: goal.priority,
         note: `Sample goal from ${selectedScenario.name} scenario`,

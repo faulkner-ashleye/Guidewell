@@ -21,8 +21,7 @@ export const GoalSchema = z.object({
     ['debt_payoff', 'emergency_fund', 'retirement', 'investment', 'custom'].includes(val),
     { message: 'Invalid goal type' }
   ),
-  targetAmount: z.number().positive('Target amount must be positive'),
-  currentAmount: z.number().min(0, 'Current amount cannot be negative'),
+  target: z.number().positive('Target amount must be positive'),
   targetDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format (YYYY-MM-DD)'),
   priority: z.string().refine((val) => 
     ['high', 'medium', 'low'].includes(val),
@@ -48,7 +47,7 @@ export const StrategyConfigSchema = z.object({
     data => Math.abs(data.debt + data.savings + data.investing - 100) < 0.01,
     { message: 'Allocation percentages must sum to 100%' }
   ),
-  targetAmount: z.number().positive().optional(),
+  target: z.number().positive().optional(),
   riskLevel: z.string().refine((val) => 
     ['low', 'medium', 'high'].includes(val),
     { message: 'Invalid risk level' }

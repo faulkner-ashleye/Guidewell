@@ -146,8 +146,8 @@
 
 .info-value {
   font-size: 14px;
-  color: #111827;
   font-weight: 500;
+  color:var(--color-secondary-light);
 }
 
 .info-value.link {
@@ -163,26 +163,17 @@
   .settings {
     padding: 16px 12px 100px 12px;
   }
-  
+
   .settings-title {
     font-size: 24px;
   }
-  
+
   .settings-section {
     padding: 16px;
   }
-  
+
   .onboarding-link {
     font-size: 13px;
     padding: 6px 12px;
   }
 }
-
-
-
-
-
-
-
-
-

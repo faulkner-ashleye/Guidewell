@@ -41,7 +41,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
     accounts: [
       {
         id: 'checking-001',
-        name: 'Chase Checking',
+        name: 'Associated Bank Access Checking',
         type: 'checking',
         balance: 2500,
         monthlyContribution: 0
@@ -61,6 +61,14 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         balance: 2800,
         interestRate: 18.9,
         monthlyContribution: 85
+      },
+      {
+        id: 'savings-001',
+        name: 'SoFi High-Yield Savings',
+        type: 'savings',
+        balance: 200,
+        interestRate: 4.2,
+        monthlyContribution: 200
       }
     ],
     goals: [
@@ -68,28 +76,34 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         id: 'goal-001',
         name: 'Pay off Credit Card',
         type: 'debt_payoff',
-        targetAmount: 2800,
-        currentAmount: 1800, // Made progress - $1000 paid off
+        accountId: 'credit-card-001',
+        target: 0, // Pay off completely
         targetDate: '2024-12-31',
-        priority: 'high'
+        priority: 'high',
+        note: 'High-interest debt costing 18.9% APR',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-002',
-        name: 'Emergency Fund',
+        name: 'Build Emergency Fund',
         type: 'emergency_fund',
-        targetAmount: 8400, // 3 months expenses
-        currentAmount: 1200, // Started building emergency fund
+        accountId: 'savings-001',
+        target: 8400, // 3 months expenses
         targetDate: '2025-06-30',
-        priority: 'high'
+        priority: 'high',
+        note: 'Build 3-month emergency fund for financial security',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-003',
         name: 'Student Loan Payoff',
         type: 'debt_payoff',
-        targetAmount: 32000,
-        currentAmount: 30500, // Made some progress - $1500 paid off
+        accountId: 'student-loan-001',
+        target: 0, // Pay off completely
         targetDate: '2030-12-31',
-        priority: 'medium'
+        priority: 'medium',
+        note: 'Federal student loan at 6.8% APR',
+        createdAt: '2024-01-01T00:00:00Z'
       }
     ],
     transactions: [
@@ -139,7 +153,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
       },
       {
         id: 'tx-005',
-        account_id: 'credit-card-001',
+        account_id: 'checking-001',
         plaid_transaction_id: 'plaid-tx-005',
         amount: -350.00,
         date: '2024-12-11',
@@ -188,7 +202,18 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         amount: -200.00,
         date: '2024-12-07',
         name: 'EMERGENCY FUND TRANSFER',
-        merchant_name: 'High-Yield Savings',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-07T11:00:00Z'
+      },
+      {
+        id: 'tx-009b',
+        account_id: 'savings-001',
+        plaid_transaction_id: 'plaid-tx-009b',
+        amount: 200.00,
+        date: '2024-12-07',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2024-12-07T11:00:00Z'
       },
@@ -237,14 +262,14 @@ export const sampleScenarios: Record<string, SampleScenario> = {
     accounts: [
       {
         id: 'checking-002',
-        name: 'Wells Fargo Checking',
+        name: 'Associated Bank Choice Checking',
         type: 'checking',
         balance: 8500,
         monthlyContribution: 0
       },
       {
         id: 'savings-002',
-        name: 'High-Yield Savings',
+        name: 'SoFi High-Yield Savings',
         type: 'savings',
         balance: 12000,
         interestRate: 4.2,
@@ -260,7 +285,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
       },
       {
         id: 'investment-002',
-        name: '401k',
+        name: 'Charles Schwab Roth 401k',
         type: 'investment',
         balance: 8500,
         monthlyContribution: 600
@@ -269,30 +294,36 @@ export const sampleScenarios: Record<string, SampleScenario> = {
     goals: [
       {
         id: 'goal-004',
-        name: 'Maximize 401k',
+        name: 'Maximize Charles Schwab Roth 401k',
         type: 'investment',
-        targetAmount: 23000, // Annual max
-        currentAmount: 18500, // Good progress - on track to max out
+        accountId: 'investment-002',
+        target: 23000, // Annual max
         targetDate: '2024-12-31',
-        priority: 'high'
+        priority: 'high',
+        note: 'Max out annual 401k contribution limit',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-005',
         name: 'Save for House',
         type: 'custom',
-        targetAmount: 50000,
-        currentAmount: 18500, // Good progress - 37% of goal
+        accountId: 'savings-002',
+        target: 50000,
         targetDate: '2026-12-31',
-        priority: 'medium'
+        priority: 'medium',
+        note: 'Building down payment for first home',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-006',
         name: 'Pay off Car',
         type: 'debt_payoff',
-        targetAmount: 18000,
-        currentAmount: 14200, // Made progress - $3800 paid off
+        accountId: 'auto-loan-002',
+        target: 0, // Pay off completely
         targetDate: '2025-12-31',
-        priority: 'low'
+        priority: 'low',
+        note: 'Auto loan at 4.2% APR',
+        createdAt: '2024-01-01T00:00:00Z'
       }
     ],
     transactions: [
@@ -325,18 +356,29 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         amount: -500.00,
         date: '2024-12-13',
         name: 'MONTHLY SAVINGS TRANSFER',
-        merchant_name: 'High-Yield Savings',
+        merchant_name: 'SoFi High-Yield Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2024-12-13T12:00:00Z'
       },
       {
         id: 'tx-014',
-        account_id: 'investment-002',
+        account_id: 'checking-002',
         plaid_transaction_id: 'plaid-tx-014',
         amount: -600.00,
         date: '2024-12-12',
         name: '401K CONTRIBUTION',
-        merchant_name: 'Fidelity Investments',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-12T09:00:00Z'
+      },
+      {
+        id: 'tx-014b',
+        account_id: 'investment-002',
+        plaid_transaction_id: 'plaid-tx-014b',
+        amount: 600.00,
+        date: '2024-12-12',
+        name: '401K CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
         category: ['Investment', 'Retirement'],
         created_at: '2024-12-12T09:00:00Z'
       },
@@ -402,7 +444,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         amount: -200.00,
         date: '2024-12-06',
         name: 'HOUSE DOWN PAYMENT SAVINGS',
-        merchant_name: 'House Savings Account',
+        merchant_name: 'Associated Bank Relationship Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2024-12-06T15:00:00Z'
       }
@@ -441,7 +483,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
     accounts: [
       {
         id: 'checking-003',
-        name: 'Bank of America Checking',
+        name: 'Associated Bank Access Checking',
         type: 'checking',
         balance: 1200,
         monthlyContribution: 0
@@ -469,26 +511,60 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         balance: 15000,
         interestRate: 12.5,
         monthlyContribution: 350
+      },
+      {
+        id: 'savings-003',
+        name: 'Associated Bank Savings',
+        type: 'savings',
+        balance: 50,
+        interestRate: 4.2,
+        monthlyContribution: 50
       }
     ],
     goals: [
       {
         id: 'goal-007',
-        name: 'Pay off High-Interest Debt',
+        name: 'Pay off Capital One Credit Card',
         type: 'debt_payoff',
-        targetAmount: 27700, // Total debt
-        currentAmount: 25200, // Made progress - $2500 paid off
+        accountId: 'credit-card-003b',
+        target: 0, // Pay off completely
+        targetDate: '2025-12-31',
+        priority: 'high',
+        note: 'Highest interest debt at 24.9% APR',
+        createdAt: '2024-01-01T00:00:00Z'
+      },
+      {
+        id: 'goal-007b',
+        name: 'Pay off Chase Credit Card',
+        type: 'debt_payoff',
+        accountId: 'credit-card-003a',
+        target: 0, // Pay off completely
+        targetDate: '2026-12-31',
+        priority: 'high',
+        note: 'High interest debt at 22.5% APR',
+        createdAt: '2024-01-01T00:00:00Z'
+      },
+      {
+        id: 'goal-007c',
+        name: 'Pay off Personal Loan',
+        type: 'debt_payoff',
+        accountId: 'personal-loan-003',
+        target: 0, // Pay off completely
         targetDate: '2027-12-31',
-        priority: 'high'
+        priority: 'medium',
+        note: 'Personal loan at 12.5% APR',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-008',
         name: 'Build Emergency Fund',
         type: 'emergency_fund',
-        targetAmount: 5000,
-        currentAmount: 800, // Started building emergency fund
+        accountId: 'savings-003',
+        target: 5000,
         targetDate: '2025-12-31',
-        priority: 'medium'
+        priority: 'medium',
+        note: 'Build emergency fund for financial stability',
+        createdAt: '2024-01-01T00:00:00Z'
       }
     ],
     transactions: [
@@ -598,7 +674,18 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         amount: -50.00,
         date: '2024-12-06',
         name: 'EMERGENCY FUND TRANSFER',
-        merchant_name: 'Emergency Savings',
+        merchant_name: 'Associated Bank Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-06T16:00:00Z'
+      },
+      {
+        id: 'tx-030b',
+        account_id: 'savings-003',
+        plaid_transaction_id: 'plaid-tx-030b',
+        amount: 50.00,
+        date: '2024-12-06',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'Associated Bank Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2024-12-06T16:00:00Z'
       }
@@ -638,14 +725,14 @@ export const sampleScenarios: Record<string, SampleScenario> = {
     accounts: [
       {
         id: 'checking-004',
-        name: 'Chase Checking',
+        name: 'Associated Bank Balanced Checking',
         type: 'checking',
         balance: 3200,
         monthlyContribution: 0
       },
       {
         id: 'savings-004',
-        name: 'High-Yield Savings',
+        name: 'SoFi High-Yield Savings',
         type: 'savings',
         balance: 8500,
         interestRate: 4.2,
@@ -669,7 +756,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
       },
       {
         id: 'investment-004',
-        name: '401k',
+        name: 'Charles Schwab Traditional 401k',
         type: 'investment',
         balance: 12000,
         monthlyContribution: 400
@@ -678,39 +765,47 @@ export const sampleScenarios: Record<string, SampleScenario> = {
     goals: [
       {
         id: 'goal-009',
-        name: 'Emergency Fund',
+        name: 'SoFi High-Yield Savings',
         type: 'emergency_fund',
-        targetAmount: 12600, // 3 months expenses
-        currentAmount: 10200, // Good progress - 81% of goal
+        accountId: 'savings-004',
+        target: 12600, // 3 months expenses
         targetDate: '2025-12-31',
-        priority: 'high'
+        priority: 'high',
+        note: 'Build 3-month emergency fund for financial security',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-010',
         name: 'Pay off Credit Card',
         type: 'debt_payoff',
-        targetAmount: 4200,
-        currentAmount: 2100, // Made progress - $2100 paid off
+        accountId: 'credit-card-004',
+        target: 0, // Pay off completely
         targetDate: '2025-06-30',
-        priority: 'high'
+        priority: 'high',
+        note: 'High-interest credit card debt at 19.9% APR',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-011',
-        name: 'Start Investing',
+        name: 'Grow Charles Schwab Traditional 401k',
         type: 'investment',
-        targetAmount: 5000,
-        currentAmount: 1200, // Started investing
+        accountId: 'investment-004',
+        target: 25000, // Increase investment balance
         targetDate: '2025-12-31',
-        priority: 'medium'
+        priority: 'medium',
+        note: 'Continue building retirement savings',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-012',
         name: 'Save for House',
         type: 'custom',
-        targetAmount: 25000,
-        currentAmount: 3200, // Started saving for house
+        accountId: 'savings-004',
+        target: 25000,
         targetDate: '2027-12-31',
-        priority: 'medium'
+        priority: 'medium',
+        note: 'Building down payment for first home',
+        createdAt: '2024-01-01T00:00:00Z'
       }
     ],
     transactions: [
@@ -727,18 +822,29 @@ export const sampleScenarios: Record<string, SampleScenario> = {
       },
       {
         id: 'tx-032',
-        account_id: 'savings-004',
+        account_id: 'checking-004',
         plaid_transaction_id: 'plaid-tx-032',
         amount: -300.00,
         date: '2024-12-14',
         name: 'EMERGENCY FUND TRANSFER',
-        merchant_name: 'High-Yield Savings',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-14T12:00:00Z'
+      },
+      {
+        id: 'tx-032b',
+        account_id: 'savings-004',
+        plaid_transaction_id: 'plaid-tx-032b',
+        amount: 300.00,
+        date: '2024-12-14',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2024-12-14T12:00:00Z'
       },
       {
         id: 'tx-033',
-        account_id: 'student-loan-004',
+        account_id: 'checking-004',
         plaid_transaction_id: 'plaid-tx-033',
         amount: -320.00,
         date: '2024-12-13',
@@ -760,12 +866,23 @@ export const sampleScenarios: Record<string, SampleScenario> = {
       },
       {
         id: 'tx-035',
-        account_id: 'investment-004',
+        account_id: 'checking-004',
         plaid_transaction_id: 'plaid-tx-035',
         amount: -400.00,
         date: '2024-12-11',
         name: '401K CONTRIBUTION',
-        merchant_name: 'Vanguard',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-11T08:00:00Z'
+      },
+      {
+        id: 'tx-035b',
+        account_id: 'investment-004',
+        plaid_transaction_id: 'plaid-tx-035b',
+        amount: 400.00,
+        date: '2024-12-11',
+        name: '401K CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
         category: ['Investment', 'Retirement'],
         created_at: '2024-12-11T08:00:00Z'
       },
@@ -820,7 +937,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         amount: -200.00,
         date: '2024-12-06',
         name: 'HOUSE SAVINGS TRANSFER',
-        merchant_name: 'House Down Payment Fund',
+        merchant_name: 'Associated Bank Relationship Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2024-12-06T15:00:00Z'
       }
@@ -860,14 +977,14 @@ export const sampleScenarios: Record<string, SampleScenario> = {
     accounts: [
       {
         id: 'checking-005',
-        name: 'Wells Fargo Checking',
+        name: 'Associated Bank Choice Checking',
         type: 'checking',
         balance: 2800,
         monthlyContribution: 0
       },
       {
         id: 'savings-005',
-        name: 'Wedding Savings',
+        name: 'Associated Bank Relationship Savings',
         type: 'savings',
         balance: 12000,
         interestRate: 4.0,
@@ -891,7 +1008,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
       },
       {
         id: 'investment-005',
-        name: '401k',
+        name: 'Charles Schwab Roth 401k',
         type: 'investment',
         balance: 8500,
         monthlyContribution: 300
@@ -902,28 +1019,34 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         id: 'goal-011',
         name: 'Wedding Fund',
         type: 'custom',
-        targetAmount: 25000,
-        currentAmount: 18500, // Great progress - 74% of goal
+        accountId: 'savings-005',
+        target: 25000,
         targetDate: '2025-10-31',
-        priority: 'high'
+        priority: 'high',
+        note: 'Saving for dream wedding celebration',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-012',
-        name: 'Emergency Fund',
+        name: 'Build Emergency Fund',
         type: 'emergency_fund',
-        targetAmount: 11400, // 3 months expenses
-        currentAmount: 2400, // Started building emergency fund
+        accountId: 'savings-005',
+        target: 11400, // 3 months expenses
         targetDate: '2026-06-30',
-        priority: 'medium'
+        priority: 'medium',
+        note: 'Build emergency fund after wedding expenses',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-013',
         name: 'Pay off Credit Card',
         type: 'debt_payoff',
-        targetAmount: 1800,
-        currentAmount: 600, // Made progress - $1200 paid off
+        accountId: 'credit-card-005',
+        target: 0, // Pay off completely
         targetDate: '2025-03-31',
-        priority: 'high'
+        priority: 'high',
+        note: 'High-interest credit card debt at 22.4% APR',
+        createdAt: '2024-01-01T00:00:00Z'
       }
     ],
     transactions: [
@@ -945,7 +1068,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         amount: -800.00,
         date: '2024-12-14',
         name: 'WEDDING SAVINGS TRANSFER',
-        merchant_name: 'Wedding Fund',
+        merchant_name: 'Associated Bank Relationship Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2024-12-14T12:00:00Z'
       },
@@ -973,9 +1096,20 @@ export const sampleScenarios: Record<string, SampleScenario> = {
       },
       {
         id: 'tx-045',
-        account_id: 'investment-005',
+        account_id: 'checking-005',
         plaid_transaction_id: 'plaid-tx-045',
         amount: -300.00,
+        date: '2024-12-11',
+        name: '401K CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-11T08:00:00Z'
+      },
+      {
+        id: 'tx-045b',
+        account_id: 'investment-005',
+        plaid_transaction_id: 'plaid-tx-045b',
+        amount: 300.00,
         date: '2024-12-11',
         name: '401K CONTRIBUTION',
         merchant_name: 'Charles Schwab',
@@ -1033,7 +1167,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         amount: -200.00,
         date: '2024-12-06',
         name: 'EMERGENCY FUND TRANSFER',
-        merchant_name: 'Emergency Savings',
+        merchant_name: 'Associated Bank Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2024-12-06T16:00:00Z'
       }
@@ -1080,7 +1214,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
       },
       {
         id: 'savings-006',
-        name: 'Emergency Fund',
+        name: 'Associated Bank Savings',
         type: 'savings',
         balance: 8000,
         interestRate: 4.2,
@@ -1105,30 +1239,36 @@ export const sampleScenarios: Record<string, SampleScenario> = {
     goals: [
       {
         id: 'goal-014',
-        name: '6-Month Emergency Fund',
+        name: 'Associated Bank Savings',
         type: 'emergency_fund',
-        targetAmount: 19200, // 6 months expenses
-        currentAmount: 11200, // Good progress - 58% of goal
+        accountId: 'savings-006',
+        target: 19200, // 6 months expenses
         targetDate: '2025-12-31',
-        priority: 'high'
+        priority: 'high',
+        note: 'Build 6-month emergency fund for gig work income volatility',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-015',
         name: 'Maximize Roth IRA',
         type: 'investment',
-        targetAmount: 7000, // Annual max
-        currentAmount: 7000, // Already maxed out for the year!
+        accountId: 'investment-006',
+        target: 7000, // Annual max
         targetDate: '2024-12-31',
-        priority: 'high'
+        priority: 'high',
+        note: 'Max out annual Roth IRA contribution',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-016',
         name: 'Save for Equipment',
         type: 'custom',
-        targetAmount: 5000,
-        currentAmount: 1800, // Started saving for equipment
+        accountId: 'savings-006',
+        target: 5000,
         targetDate: '2025-06-30',
-        priority: 'medium'
+        priority: 'medium',
+        note: 'Save for professional equipment upgrades',
+        createdAt: '2024-01-01T00:00:00Z'
       }
     ],
     transactions: [
@@ -1145,23 +1285,45 @@ export const sampleScenarios: Record<string, SampleScenario> = {
       },
       {
         id: 'tx-052',
-        account_id: 'savings-006',
+        account_id: 'checking-006',
         plaid_transaction_id: 'plaid-tx-052',
         amount: -500.00,
         date: '2024-12-14',
         name: 'EMERGENCY FUND TRANSFER',
-        merchant_name: 'Emergency Fund',
+        merchant_name: 'Associated Bank Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-14T12:00:00Z'
+      },
+      {
+        id: 'tx-052b',
+        account_id: 'savings-006',
+        plaid_transaction_id: 'plaid-tx-052b',
+        amount: 500.00,
+        date: '2024-12-14',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'Associated Bank Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2024-12-14T12:00:00Z'
       },
       {
         id: 'tx-053',
-        account_id: 'investment-006',
+        account_id: 'checking-006',
         plaid_transaction_id: 'plaid-tx-053',
         amount: -400.00,
         date: '2024-12-13',
         name: 'ROTH IRA CONTRIBUTION',
-        merchant_name: 'Vanguard',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-13T09:00:00Z'
+      },
+      {
+        id: 'tx-053b',
+        account_id: 'investment-006',
+        plaid_transaction_id: 'plaid-tx-053b',
+        amount: 400.00,
+        date: '2024-12-13',
+        name: 'ROTH IRA CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
         category: ['Investment', 'Retirement'],
         created_at: '2024-12-13T09:00:00Z'
       },
@@ -1238,7 +1400,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         amount: -200.00,
         date: '2024-12-06',
         name: 'EQUIPMENT SAVINGS TRANSFER',
-        merchant_name: 'Equipment Fund',
+        merchant_name: 'Associated Bank Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2024-12-06T15:00:00Z'
       }
@@ -1278,14 +1440,14 @@ export const sampleScenarios: Record<string, SampleScenario> = {
     accounts: [
       {
         id: 'checking-007',
-        name: 'Family Checking',
+        name: 'Associated Bank Balanced Checking',
         type: 'checking',
         balance: 3200,
         monthlyContribution: 0
       },
       {
         id: 'savings-007',
-        name: 'Family Emergency Fund',
+        name: 'Associated Bank Relationship Savings',
         type: 'savings',
         balance: 15000,
         interestRate: 4.0,
@@ -1300,7 +1462,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
       },
       {
         id: 'investment-007b',
-        name: '401k',
+        name: 'Charles Schwab Traditional 401k',
         type: 'investment',
         balance: 18000,
         monthlyContribution: 300
@@ -1311,28 +1473,34 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         id: 'goal-017',
         name: 'Child Emergency Fund',
         type: 'emergency_fund',
-        targetAmount: 25200, // 6 months expenses
-        currentAmount: 19200, // Great progress - 76% of goal
+        accountId: 'savings-007',
+        target: 25200, // 6 months expenses
         targetDate: '2025-12-31',
-        priority: 'high'
+        priority: 'high',
+        note: 'Build 6-month emergency fund for family with child',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-018',
         name: 'College Fund',
         type: 'custom',
-        targetAmount: 50000,
-        currentAmount: 8500, // Good progress - 17% of goal
+        accountId: 'investment-007',
+        target: 50000,
         targetDate: '2040-12-31',
-        priority: 'medium'
+        priority: 'medium',
+        note: '529 college savings plan for child\'s education',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-019',
         name: 'Family Vacation',
         type: 'custom',
-        targetAmount: 3000,
-        currentAmount: 1200, // Started saving for vacation
+        accountId: 'savings-007',
+        target: 3000,
         targetDate: '2025-08-31',
-        priority: 'low'
+        priority: 'low',
+        note: 'Save for family vacation with young child',
+        createdAt: '2024-01-01T00:00:00Z'
       }
     ],
     transactions: [
@@ -1354,13 +1522,13 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         amount: -300.00,
         date: '2024-12-14',
         name: 'FAMILY EMERGENCY FUND',
-        merchant_name: 'Emergency Savings',
+        merchant_name: 'Associated Bank Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2024-12-14T12:00:00Z'
       },
       {
         id: 'tx-063',
-        account_id: 'investment-007',
+        account_id: 'checking-007',
         plaid_transaction_id: 'plaid-tx-063',
         amount: -200.00,
         date: '2024-12-13',
@@ -1370,13 +1538,35 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         created_at: '2024-12-13T10:00:00Z'
       },
       {
+        id: 'tx-063b',
+        account_id: 'investment-007',
+        plaid_transaction_id: 'plaid-tx-063b',
+        amount: 200.00,
+        date: '2024-12-13',
+        name: '529 COLLEGE FUND',
+        merchant_name: 'College Savings Plan',
+        category: ['Investment', 'Education'],
+        created_at: '2024-12-13T10:00:00Z'
+      },
+      {
         id: 'tx-064',
-        account_id: 'investment-007b',
+        account_id: 'checking-007',
         plaid_transaction_id: 'plaid-tx-064',
         amount: -300.00,
         date: '2024-12-12',
         name: '401K CONTRIBUTION',
-        merchant_name: 'Fidelity',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-12T09:00:00Z'
+      },
+      {
+        id: 'tx-064b',
+        account_id: 'investment-007b',
+        plaid_transaction_id: 'plaid-tx-064b',
+        amount: 300.00,
+        date: '2024-12-12',
+        name: '401K CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
         category: ['Investment', 'Retirement'],
         created_at: '2024-12-12T09:00:00Z'
       },
@@ -1442,7 +1632,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         amount: -150.00,
         date: '2024-12-06',
         name: 'FAMILY VACATION SAVINGS',
-        merchant_name: 'Vacation Fund',
+        merchant_name: 'Associated Bank Relationship Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2024-12-06T16:00:00Z'
       }
@@ -1482,14 +1672,14 @@ export const sampleScenarios: Record<string, SampleScenario> = {
     accounts: [
       {
         id: 'checking-008',
-        name: 'High-Yield Checking',
+        name: 'Associated Bank Choice Checking',
         type: 'checking',
         balance: 12000,
         monthlyContribution: 0
       },
       {
         id: 'savings-008',
-        name: 'Taxable Savings',
+        name: 'Associated Bank Money Market',
         type: 'savings',
         balance: 25000,
         interestRate: 4.5,
@@ -1497,7 +1687,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
       },
       {
         id: 'investment-008',
-        name: '401k Max',
+        name: 'Charles Schwab Traditional 401k Max',
         type: 'investment',
         balance: 85000,
         monthlyContribution: 1917 // Max annual contribution
@@ -1522,28 +1712,34 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         id: 'goal-020',
         name: 'Financial Independence',
         type: 'retirement',
-        targetAmount: 2000000,
-        currentAmount: 425000, // Excellent progress - 21% of goal
+        accountIds: ['investment-008', 'investment-008b', 'investment-008c'], // Multiple investment accounts
+        target: 2000000,
         targetDate: '2035-12-31',
-        priority: 'high'
+        priority: 'high',
+        note: 'Achieve financial independence through aggressive investing',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-021',
         name: 'Tax Optimization',
         type: 'custom',
-        targetAmount: 0,
-        currentAmount: 0, // This is a process goal, not a monetary goal
+        accountId: 'savings-008',
+        target: 0, // Process goal, not monetary
         targetDate: '2024-12-31',
-        priority: 'high'
+        priority: 'high',
+        note: 'Optimize tax strategy for early retirement',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-022',
         name: 'Real Estate Investment',
         type: 'custom',
-        targetAmount: 100000,
-        currentAmount: 28000, // Started saving for real estate
+        accountId: 'savings-008',
+        target: 100000,
         targetDate: '2026-12-31',
-        priority: 'medium'
+        priority: 'medium',
+        note: 'Build real estate investment fund for diversification',
+        createdAt: '2024-01-01T00:00:00Z'
       }
     ],
     transactions: [
@@ -1565,29 +1761,51 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         amount: -2000.00,
         date: '2024-12-14',
         name: 'TAXABLE SAVINGS TRANSFER',
-        merchant_name: 'High-Yield Savings',
+        merchant_name: 'SoFi High-Yield Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2024-12-14T12:00:00Z'
       },
       {
         id: 'tx-073',
-        account_id: 'investment-008',
+        account_id: 'checking-008',
         plaid_transaction_id: 'plaid-tx-073',
         amount: -1917.00,
         date: '2024-12-13',
         name: '401K MAX CONTRIBUTION',
-        merchant_name: 'Fidelity 401k',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-13T09:00:00Z'
+      },
+      {
+        id: 'tx-073b',
+        account_id: 'investment-008',
+        plaid_transaction_id: 'plaid-tx-073b',
+        amount: 1917.00,
+        date: '2024-12-13',
+        name: '401K MAX CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
         category: ['Investment', 'Retirement'],
         created_at: '2024-12-13T09:00:00Z'
       },
       {
         id: 'tx-074',
-        account_id: 'investment-008b',
+        account_id: 'checking-008',
         plaid_transaction_id: 'plaid-tx-074',
         amount: -583.00,
         date: '2024-12-12',
         name: 'ROTH IRA MAX CONTRIBUTION',
-        merchant_name: 'Vanguard Roth IRA',
+        merchant_name: 'Roth IRA',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-12T10:00:00Z'
+      },
+      {
+        id: 'tx-074b',
+        account_id: 'investment-008b',
+        plaid_transaction_id: 'plaid-tx-074b',
+        amount: 583.00,
+        date: '2024-12-12',
+        name: 'ROTH IRA MAX CONTRIBUTION',
+        merchant_name: 'Roth IRA',
         category: ['Investment', 'Retirement'],
         created_at: '2024-12-12T10:00:00Z'
       },
@@ -1653,7 +1871,18 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         amount: -500.00,
         date: '2024-12-06',
         name: 'REAL ESTATE INVESTMENT FUND',
-        merchant_name: 'Real Estate Fund',
+        merchant_name: 'Associated Bank Money Market',
+        category: ['Transfer', 'Investment'],
+        created_at: '2024-12-06T15:00:00Z'
+      },
+      {
+        id: 'tx-080b',
+        account_id: 'savings-008',
+        plaid_transaction_id: 'plaid-tx-080b',
+        amount: 500.00,
+        date: '2024-12-06',
+        name: 'REAL ESTATE INVESTMENT FUND',
+        merchant_name: 'Associated Bank Money Market',
         category: ['Transfer', 'Investment'],
         created_at: '2024-12-06T15:00:00Z'
       }
@@ -1693,14 +1922,14 @@ export const sampleScenarios: Record<string, SampleScenario> = {
     accounts: [
       {
         id: 'checking-009',
-        name: 'Main Checking',
+        name: 'Associated Bank Choice Checking',
         type: 'checking',
         balance: 8500,
         monthlyContribution: 0
       },
       {
         id: 'savings-009',
-        name: 'Emergency Fund',
+        name: 'Associated Bank Savings',
         type: 'savings',
         balance: 15000,
         interestRate: 4.2,
@@ -1708,7 +1937,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
       },
       {
         id: 'investment-009',
-        name: '401k',
+        name: 'Charles Schwab Traditional 401k',
         type: 'investment',
         balance: 25000,
         monthlyContribution: 600
@@ -1724,30 +1953,36 @@ export const sampleScenarios: Record<string, SampleScenario> = {
     goals: [
       {
         id: 'goal-023',
-        name: 'Maximize 401k',
+        name: 'Maximize Charles Schwab Traditional 401k',
         type: 'investment',
-        targetAmount: 23000, // Annual max
-        currentAmount: 23000, // Already maxed out for the year!
+        accountId: 'investment-009',
+        target: 23000, // Annual max
         targetDate: '2024-12-31',
-        priority: 'high'
+        priority: 'high',
+        note: 'Max out annual 401k contribution limit',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-024',
         name: 'House Down Payment',
         type: 'custom',
-        targetAmount: 60000,
-        currentAmount: 18500, // Good progress - 31% of goal
+        accountId: 'savings-009',
+        target: 60000,
         targetDate: '2027-12-31',
-        priority: 'high'
+        priority: 'high',
+        note: 'Building down payment for first home purchase',
+        createdAt: '2024-01-01T00:00:00Z'
       },
       {
         id: 'goal-025',
         name: 'Investment Portfolio',
         type: 'investment',
-        targetAmount: 100000,
-        currentAmount: 52000, // Great progress - 52% of goal
+        accountIds: ['investment-009', 'investment-009b'], // Multiple investment accounts
+        target: 100000,
         targetDate: '2030-12-31',
-        priority: 'medium'
+        priority: 'medium',
+        note: 'Grow diversified investment portfolio for long-term wealth',
+        createdAt: '2024-01-01T00:00:00Z'
       }
     ],
     transactions: [
@@ -1764,34 +1999,67 @@ export const sampleScenarios: Record<string, SampleScenario> = {
       },
       {
         id: 'tx-082',
-        account_id: 'savings-009',
+        account_id: 'checking-009',
         plaid_transaction_id: 'plaid-tx-082',
         amount: -800.00,
         date: '2024-12-14',
         name: 'EMERGENCY FUND TRANSFER',
-        merchant_name: 'High-Yield Savings',
+        merchant_name: 'SoFi High-Yield Savings',
+        category: ['Transfer', 'Savings'],
+        created_at: '2024-12-14T12:00:00Z'
+      },
+      {
+        id: 'tx-082b',
+        account_id: 'savings-009',
+        plaid_transaction_id: 'plaid-tx-082b',
+        amount: 800.00,
+        date: '2024-12-14',
+        name: 'EMERGENCY FUND TRANSFER',
+        merchant_name: 'SoFi High-Yield Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2024-12-14T12:00:00Z'
       },
       {
         id: 'tx-083',
-        account_id: 'investment-009',
+        account_id: 'checking-009',
         plaid_transaction_id: 'plaid-tx-083',
         amount: -600.00,
         date: '2024-12-13',
         name: '401K CONTRIBUTION',
-        merchant_name: 'Fidelity 401k',
+        merchant_name: 'Charles Schwab',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-13T09:00:00Z'
+      },
+      {
+        id: 'tx-083b',
+        account_id: 'investment-009',
+        plaid_transaction_id: 'plaid-tx-083b',
+        amount: 600.00,
+        date: '2024-12-13',
+        name: '401K CONTRIBUTION',
+        merchant_name: 'Charles Schwab',
         category: ['Investment', 'Retirement'],
         created_at: '2024-12-13T09:00:00Z'
       },
       {
         id: 'tx-084',
-        account_id: 'investment-009b',
+        account_id: 'checking-009',
         plaid_transaction_id: 'plaid-tx-084',
         amount: -500.00,
         date: '2024-12-12',
         name: 'ROTH IRA CONTRIBUTION',
-        merchant_name: 'Vanguard Roth IRA',
+        merchant_name: 'Roth IRA',
+        category: ['Investment', 'Retirement'],
+        created_at: '2024-12-12T10:00:00Z'
+      },
+      {
+        id: 'tx-084b',
+        account_id: 'investment-009b',
+        plaid_transaction_id: 'plaid-tx-084b',
+        amount: 500.00,
+        date: '2024-12-12',
+        name: 'ROTH IRA CONTRIBUTION',
+        merchant_name: 'Roth IRA',
         category: ['Investment', 'Retirement'],
         created_at: '2024-12-12T10:00:00Z'
       },
@@ -1857,7 +2125,7 @@ export const sampleScenarios: Record<string, SampleScenario> = {
         amount: -400.00,
         date: '2024-12-06',
         name: 'HOUSE DOWN PAYMENT SAVINGS',
-        merchant_name: 'House Savings Account',
+        merchant_name: 'Associated Bank Relationship Savings',
         category: ['Transfer', 'Savings'],
         created_at: '2024-12-06T15:00:00Z'
       }

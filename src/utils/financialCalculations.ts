@@ -20,7 +20,7 @@ export interface InvestmentResult {
 }
 
 export interface EmergencyFundResult {
-  targetAmount: number;
+  target: number;
   remainingAmount: number;
   monthsToComplete: number;
   isComplete: boolean;
@@ -143,8 +143,8 @@ export class FinancialCalculations {
     currentSavings: number,
     monthlyContribution?: number
   ): EmergencyFundResult {
-    const targetAmount = monthlyExpenses * targetMonths;
-    const remainingAmount = Math.max(0, targetAmount - currentSavings);
+    const target = monthlyExpenses * targetMonths;
+    const remainingAmount = Math.max(0, target - currentSavings);
     const isComplete = remainingAmount === 0;
     
     let monthsToComplete = 0;
@@ -160,7 +160,7 @@ export class FinancialCalculations {
     }
     
     return {
-      targetAmount,
+      target,
       remainingAmount,
       monthsToComplete,
       isComplete,
@@ -272,16 +272,28 @@ export class FinancialCalculations {
     isOnTrack: boolean;
     accelerationNeeded: number; // Additional monthly contribution needed
   } {
-    const progressPercentage = Math.min(100, (goal.currentAmount / goal.targetAmount) * 100);
+    // Calculate current amount from linked accounts
+    let currentAmount = 0;
+    if (goal.accountId) {
+      const account = accounts.find(a => a.id === goal.accountId);
+      currentAmount = account ? account.balance : 0;
+    } else if (goal.accountIds && goal.accountIds.length > 0) {
+      currentAmount = goal.accountIds.reduce((sum, accountId) => {
+        const account = accounts.find(a => a.id === accountId);
+        return sum + (account ? account.balance : 0);
+      }, 0);
+    }
+
+    const progressPercentage = Math.min(100, (currentAmount / goal.target) * 100);
     
-    const targetDate = new Date(goal.targetDate);
+    const targetDate = new Date(goal.targetDate || new Date().toISOString());
     const currentDate = new Date();
     const monthsRemaining = Math.max(0, 
       (targetDate.getFullYear() - currentDate.getFullYear()) * 12 + 
       (targetDate.getMonth() - currentDate.getMonth())
     );
     
-    const remainingAmount = goal.targetAmount - goal.currentAmount;
+    const remainingAmount = goal.target - currentAmount;
     const recommendedMonthlyContribution = monthsRemaining > 0 
       ? remainingAmount / monthsRemaining 
       : 0;

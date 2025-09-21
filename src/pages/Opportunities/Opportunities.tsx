@@ -24,6 +24,17 @@ interface Insight {
   icon: string;
 }
 
+interface Nudge {
+  id: string;
+  category: 'debt' | 'savings' | 'investing' | 'spending' | 'general';
+  title: string;
+  description: string;
+  action: string;
+  actionType: 'button' | 'link' | 'info';
+  priority: 'high' | 'medium' | 'low';
+  icon: string;
+}
+
 export function Opportunities() {
   const navigate = useNavigate();
   const {
@@ -171,7 +182,125 @@ export function Opportunities() {
     });
   };
 
+  // Generate actionable nudges
+  const generateNudges = (): Nudge[] => {
+    const nudges: Nudge[] = [];
+
+    // High-interest debt nudges
+    const highInterestDebt = accounts.find(acc => 
+      acc.type === 'credit_card' && acc.apr && acc.apr > 20
+    );
+    
+    if (highInterestDebt && savingsTotal > 1000) {
+      nudges.push({
+        id: 'pay-credit-card-now',
+        category: 'debt',
+        title: 'Pay Down High-Interest Credit Card',
+        description: `You have $${savingsTotal.toLocaleString()} in savings and a ${highInterestDebt.apr}% APR credit card balance of $${highInterestDebt.balance.toLocaleString()}.`,
+        action: 'Make Extra Payment',
+        actionType: 'button',
+        priority: 'high',
+        icon: IconNames.payment
+      });
+    }
+
+    // Emergency fund nudges
+    const monthlyExpenses = 3000;
+    const emergencyFundRatio = savingsTotal / monthlyExpenses;
+    
+    if (emergencyFundRatio < 3 && savingsTotal > 0) {
+      const targetEmergencyFund = monthlyExpenses * 3;
+      const shortfall = targetEmergencyFund - savingsTotal;
+      nudges.push({
+        id: 'boost-emergency-fund',
+        category: 'savings',
+        title: 'Build Your Emergency Fund',
+        description: `You need $${shortfall.toLocaleString()} more to reach a 3-month emergency fund.`,
+        action: 'Set Up Auto-Transfer',
+        actionType: 'button',
+        priority: emergencyFundRatio < 1 ? 'high' : 'medium',
+        icon: IconNames.savings
+      });
+    }
+
+    // Investment nudges
+    const hasDebt = debtTotal > 0;
+    const hasInvestments = accounts.some(acc => acc.type === 'investment');
+    
+    if (!hasDebt && savingsTotal > 5000 && !hasInvestments) {
+      nudges.push({
+        id: 'start-investing-401k',
+        category: 'investing',
+        title: 'Start Retirement Investing',
+        description: 'You have no debt and extra savings. Consider opening a 401(k) or IRA to build long-term wealth.',
+        action: 'Explore 401(k) Options',
+        actionType: 'button',
+        priority: 'medium',
+        icon: IconNames.trending_up
+      });
+    }
+
+    // Goal acceleration nudges
+    if (goal && goal.percent < 25) {
+      nudges.push({
+        id: 'accelerate-goal',
+        category: 'savings',
+        title: 'Speed Up Goal Progress',
+        description: `Your "${goal.name}" goal is only ${goal.percent}% complete. Small increases can make a big difference.`,
+        action: 'Increase Monthly Contribution',
+        actionType: 'button',
+        priority: 'medium',
+        icon: IconNames.trending_up
+      });
+    }
+
+    // Spending optimization nudges
+    const recentSpending = recentActivity
+      .filter(item => item.amount < 0 && !item.description.includes('TRANSFER'))
+      .slice(0, 5);
+    
+    if (recentSpending.length > 0) {
+      const avgSpending = Math.abs(recentSpending.reduce((sum, item) => sum + item.amount, 0) / recentSpending.length);
+      if (avgSpending > 100) {
+        nudges.push({
+          id: 'optimize-spending',
+          category: 'spending',
+          title: 'Optimize Your Spending',
+          description: `Your recent transactions average $${avgSpending.toFixed(0)}. Small changes could free up cash for goals.`,
+          action: 'Review Spending Patterns',
+          actionType: 'button',
+          priority: 'low',
+          icon: IconNames.account_balance_wallet
+        });
+      }
+    }
+
+    // Account optimization nudges
+    const lowYieldSavings = accounts.find(acc => 
+      acc.type === 'savings' && acc.balance > 1000 && (!acc.apr || acc.apr < 4)
+    );
+    
+    if (lowYieldSavings) {
+      nudges.push({
+        id: 'high-yield-savings',
+        category: 'savings',
+        title: 'Switch to High-Yield Savings',
+        description: `Your savings account earns minimal interest. A high-yield account could earn 4%+ on your balance.`,
+        action: 'Find Better Rates',
+        actionType: 'button',
+        priority: 'low',
+        icon: IconNames.savings
+      });
+    }
+
+    return nudges.sort((a, b) => {
+      const priorityOrder = { high: 3, medium: 2, low: 1 };
+      return priorityOrder[b.priority] - priorityOrder[a.priority];
+    });
+  };
+
   const insights = generateInsights();
+  const nudges = generateNudges();
 
   // Dismiss insights badge when user visits the opportunities page
   useEffect(() => {
@@ -193,7 +322,7 @@ export function Opportunities() {
     <div className="opportunities-page">
       <AppHeader
         title="Opportunities"
-        subtitle={`${insights.length} insights for your financial growth`}
+        subtitle={`${insights.length} insights • ${nudges.length} actionable nudges`}
         leftAction={
           <Button
             variant={ButtonVariants.text}
@@ -208,12 +337,58 @@ export function Opportunities() {
       <div className="opportunities-content">
         <div className="opportunities-intro">
           <p className="opportunities-description">
-            Personalized insights based on your financial data to help you make informed decisions.
+            Personalized insights and actionable nudges based on your financial data to help you make informed decisions.
             <br />
           </p>
         </div>
 
-        <div className="insights-list">
+        {/* Nudges Section */}
+        {nudges.length > 0 && (
+          <div className="nudges-section">
+            <h2 className="section-title">🎯 Take Action</h2>
+            <p className="section-subtitle">Quick wins you can implement today</p>
+            <div className="nudges-list">
+              {nudges.map((nudge) => (
+                <div key={nudge.id} className="nudge-card">
+                  <div className="nudge-header">
+                    <div className="nudge-icon">
+                      <Icon 
+                        name={nudge.icon} 
+                        size="lg"
+                        style={{ color: getCategoryColor(nudge.category) }}
+                      />
+                    </div>
+                    <div className="nudge-title-section">
+                      <h3 className="nudge-title">{nudge.title}</h3>
+                    </div>
+                  </div>
+                  
+                  <div className="nudge-content">
+                    <p className="nudge-description">{nudge.description}</p>
+                    
+                    <div className="nudge-action">
+                      <Button
+                        variant={ButtonVariants.contained}
+                        onClick={() => {
+                          // Handle nudge action - for now just show an alert
+                          alert(`Action: ${nudge.action}`);
+                        }}
+                      >
+                        {nudge.action}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Insights Section */}
+        <div className="insights-section">
+          <h2 className="section-title">💡 Insights</h2>
+          <p className="section-subtitle">Analysis of your financial patterns</p>
+          <div className="insights-list">
           {insights.map((insight) => (
             <div key={insight.id} className="insight-card">
               <div className="insight-header">
@@ -242,6 +417,7 @@ export function Opportunities() {
 
             </div>
           ))}
+          </div>
         </div>
 
       </div>

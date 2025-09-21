@@ -160,7 +160,7 @@ export function FoundationDemo() {
               <Card className="calculation-card">
                 <h4>Emergency Fund Analysis</h4>
                 <div className="emergency-fund">
-                  <div>Target Amount: {FinancialUtils.formatCurrency(calculations.emergencyFund.targetAmount)}</div>
+                  <div>Target Amount: {FinancialUtils.formatCurrency(calculations.emergencyFund.target)}</div>
                   <div>Remaining: {FinancialUtils.formatCurrency(calculations.emergencyFund.remainingAmount)}</div>
                   <div>Months to Complete: {calculations.emergencyFund.monthsToComplete}</div>
                   <div>Recommended Monthly: {FinancialUtils.formatCurrency(calculations.emergencyFund.recommendedMonthlyContribution)}</div>

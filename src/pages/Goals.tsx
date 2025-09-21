@@ -13,8 +13,8 @@ interface Goal {
   id: string;
   name: string;
   type: 'debt_payoff' | 'emergency_fund' | 'retirement' | 'investment' | 'custom';
-  targetAmount: number;
-  currentAmount: number;
+  target: number;
+  currentAmount: number; // Calculated from linked accounts
   targetDate: string;
   priority: 'high' | 'medium' | 'low';
 }
@@ -48,7 +48,7 @@ export function Goals() {
           id: appGoal.id,
           name: appGoal.name,
           type: displayType,
-          targetAmount: appGoal.target,
+          target: appGoal.target,
           currentAmount: currentAmount,
           targetDate: appGoal.targetDate || '2024-12-31',
           priority: appGoal.priority || 'medium'
@@ -65,10 +65,10 @@ export function Goals() {
         id: goal.id,
         name: goal.name,
         type: goal.type as Goal['type'],
-        targetAmount: goal.targetAmount,
-        currentAmount: goal.currentAmount,
-        targetDate: goal.targetDate,
-        priority: goal.priority
+        target: goal.target,
+        currentAmount: 0, // Will be calculated from linked accounts
+        targetDate: goal.targetDate || '2024-12-31',
+        priority: goal.priority || 'medium'
       }));
     }
     
@@ -78,7 +78,7 @@ export function Goals() {
         id: '1',
         name: 'Pay off Credit Card Debt',
         type: 'debt_payoff',
-        targetAmount: 15000,
+        target: 15000,
         currentAmount: 8500,
         targetDate: '2024-12-31',
         priority: 'high'
@@ -87,7 +87,7 @@ export function Goals() {
         id: '2',
         name: 'Emergency Fund',
         type: 'emergency_fund',
-        targetAmount: 10000,
+        target: 10000,
         currentAmount: 2500,
         targetDate: '2024-06-30',
         priority: 'high'
@@ -96,7 +96,7 @@ export function Goals() {
         id: '3',
         name: 'Retirement Savings',
         type: 'retirement',
-        targetAmount: 100000,
+        target: 100000,
         currentAmount: 15000,
         targetDate: '2030-12-31',
         priority: 'medium'
@@ -110,7 +110,7 @@ export function Goals() {
   const [newGoal, setNewGoal] = useState<Partial<Goal>>({
     name: '',
     type: 'custom',
-    targetAmount: 0,
+    target: 0,
     currentAmount: 0,
     priority: 'medium'
   });
@@ -218,19 +218,19 @@ export function Goals() {
             <div className="goal-progress">
               <ProgressChart
                 value={goal.currentAmount}
-                max={goal.targetAmount}
-                label={`${formatCurrency(goal.currentAmount)} of ${formatCurrency(goal.targetAmount)}`}
+                max={goal.target}
+                label={`${formatCurrency(goal.currentAmount)} of ${formatCurrency(goal.target)}`}
               />
             </div>
 
             <div className="goal-details">
               <div className="goal-detail">
                 <span className="detail-label">Progress</span>
-                <span className="detail-value">{calculateProgress(goal.currentAmount, goal.targetAmount).toFixed(1)}%</span>
+                <span className="detail-value">{calculateProgress(goal.currentAmount, goal.target).toFixed(1)}%</span>
               </div>
               <div className="goal-detail">
                 <span className="detail-label">Remaining</span>
-                <span className="detail-value">{formatCurrency(getRemainingAmount(goal.currentAmount, goal.targetAmount))}</span>
+                <span className="detail-value">{formatCurrency(getRemainingAmount(goal.currentAmount, goal.target))}</span>
               </div>
             </div>
           </Card>
@@ -261,8 +261,8 @@ export function Goals() {
           <Input
             label="Target Amount"
             type="number"
-            value={newGoal.targetAmount || 0}
-            onChange={(e) => setNewGoal({ ...newGoal, targetAmount: parseInt(e.target.value) || 0 })}
+            value={newGoal.target || 0}
+            onChange={(e) => setNewGoal({ ...newGoal, target: parseInt(e.target.value) || 0 })}
           />
 
           <Input
@@ -291,7 +291,7 @@ export function Goals() {
               onClick={() => {
                 // In a real app, this would save the goal
                 setShowAddModal(false);
-                setNewGoal({ name: '', type: 'custom', targetAmount: 0, currentAmount: 0, priority: 'medium' });
+                setNewGoal({ name: '', type: 'custom', target: 0, currentAmount: 0, priority: 'medium' });
               }}
             >
               Add Goal

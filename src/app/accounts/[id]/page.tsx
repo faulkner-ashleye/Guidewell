@@ -7,6 +7,8 @@ import { formatCurrency } from '../../../state/selectors';
 import AppHeader from '../../components/AppHeader';
 import LogContributionModal from '../../components/LogContributionModal';
 import { COLORS } from '../../../ui/colors';
+import { getTransactionIcon } from '../../../utils/transactionIcons';
+import { Icon } from '../../../components/Icon';
 
 export default function AccountDetailPage() {
   const params = useParams();
@@ -213,47 +215,73 @@ export default function AccountDetailPage() {
               borderRadius: '12px',
               padding: '20px'
             }}>
-              {activityWithBalances.map((item) => (
-                <div key={item.id} style={{
-                  padding: '12px 0',
-                  borderBottom: '1px solid #3C3C3C',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center'
-                }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ 
-                      fontSize: '14px', 
-                      color: '#FFFFFF',
-                      fontWeight: '500',
-                      marginBottom: '4px'
-                    }}>
-                      {item.description}
-                    </div>
-                    <div style={{ 
-                      fontSize: '12px', 
-                      color: '#B6B6B6',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '12px'
-                    }}>
-                      <span>{item.date}</span>
-                      <span 
-                        style={{
-                          backgroundColor: item.source === 'linked' ? '#e0f2fe' : '#f0fdf4',
-                          color: item.source === 'linked' ? '#0369a1' : '#166534',
-                          padding: '2px 6px',
-                          borderRadius: '4px',
-                          fontSize: '10px',
+              {activityWithBalances.map((item) => {
+                // Get the icon for this transaction
+                const iconName = getTransactionIcon(item.description);
+                
+                return (
+                  <div key={item.id} style={{
+                    padding: '12px 0',
+                    borderBottom: '1px solid #3C3C3C',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+                      {/* Transaction Icon */}
+                      <div style={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '50%',
+                        backgroundColor: '#2C2C2C',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: '12px',
+                        flexShrink: 0
+                      }}>
+                        <Icon 
+                          name={iconName} 
+                          size="sm" 
+                          color="white"
+                          style={{ fontSize: '18px' }}
+                        />
+                      </div>
+                      
+                      <div style={{ flex: 1 }}>
+                        <div style={{ 
+                          fontSize: '14px', 
+                          color: '#FFFFFF',
                           fontWeight: '500',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.5px'
-                        }}
-                      >
-                        {item.source}
-                      </span>
+                          marginBottom: '4px'
+                        }}>
+                          {item.description}
+                        </div>
+                        <div style={{ 
+                          fontSize: '12px', 
+                          color: '#B6B6B6',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '12px'
+                        }}>
+                          <span>{item.date}</span>
+                          <span 
+                            style={{
+                              backgroundColor: item.source === 'linked' ? '#e0f2fe' : '#f0fdf4',
+                              color: item.source === 'linked' ? '#0369a1' : '#166534',
+                              padding: '2px 6px',
+                              borderRadius: '4px',
+                              fontSize: '10px',
+                              fontWeight: '500',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.5px'
+                            }}
+                          >
+                            {item.source}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
                   
                   <div style={{ textAlign: 'right' }}>
                     {(() => {
@@ -330,8 +358,9 @@ export default function AccountDetailPage() {
                       </button>
                     </div>
                   )}
-                </div>
-              ))}
+                  </div>
+                );
+              })}
             </div>
           ) : (
             <div style={{

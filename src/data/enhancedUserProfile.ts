@@ -122,7 +122,20 @@ export class UserProfileUtils {
       },
       goalsSummary: {
         totalGoals: goals.length,
-        completedGoals: goals.filter(g => g.currentAmount >= g.targetAmount).length,
+        completedGoals: goals.filter(g => {
+          // Calculate current amount from linked accounts
+          let currentAmount = 0;
+          if (g.accountId) {
+            const account = accounts.find(a => a.id === g.accountId);
+            currentAmount = account ? account.balance : 0;
+          } else if (g.accountIds && g.accountIds.length > 0) {
+            currentAmount = g.accountIds.reduce((sum, accountId) => {
+              const account = accounts.find(a => a.id === accountId);
+              return sum + (account ? account.balance : 0);
+            }, 0);
+          }
+          return currentAmount >= g.target;
+        }).length,
         highPriorityGoals: goals.filter(g => g.priority === 'high').length
       }
     };

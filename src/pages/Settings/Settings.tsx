@@ -67,7 +67,7 @@ export function Settings() {
       ? currentGoals.filter(g => g !== goal)
       : [...currentGoals, goal];
     setProfileData(prev => ({ ...prev, mainGoals: newGoals }));
-    
+
     // Clear topPriority if it's no longer in mainGoals
     if (profileData.topPriority && !newGoals.includes(profileData.topPriority)) {
       setProfileData(prev => ({ ...prev, topPriority: undefined }));
@@ -106,7 +106,7 @@ export function Settings() {
         {/* Financial Profile Section */}
         <Card className="settings-section">
           <h3 className="section-title">Your Financial Profile</h3>
-          
+
           <div className="profile-form">
             {/* Age Range */}
             <Select
@@ -192,7 +192,7 @@ export function Settings() {
               </div>
             </div>
 
-            <Button 
+            <Button
               variant={ButtonVariants.contained}
               color={ButtonColors.secondary}
               onClick={handleSave}
@@ -215,21 +215,17 @@ export function Settings() {
             </div>
             <div className="info-item">
               <span className="info-label">Last Updated</span>
-              <span className="info-value">January 2024</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Privacy Policy</span>
-              <span className="info-value link">View Policy</span>
+              <span className="info-value">September 2025</span>
             </div>
             <div className="info-item">
               <span className="info-label">Terms of Service</span>
-              <button 
+              <button
                 className="info-value link"
                 onClick={() => navigate('/terms')}
-                style={{ 
-                  background: 'none', 
-                  border: 'none', 
-                  color: 'var(--color-primary-main)', 
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--color-primary-main)',
                   cursor: 'pointer',
                   textDecoration: 'underline'
                 }}

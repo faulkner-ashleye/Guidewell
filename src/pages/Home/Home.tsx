@@ -17,6 +17,8 @@ import { useInsightsCount } from '../../hooks/useInsightsCount';
 import PlaidLinkButton from '../../components/PlaidLinkButton';
 import Sheet from '../../app/components/Sheet';
 import { sampleScenarios } from '../../data/sampleScenarios';
+import { getTransactionIcon } from '../../utils/transactionIcons';
+import { Icon } from '../../components/Icon';
 // Removed COLORS import - using design system utilities instead
 import './Home.css';
 
@@ -57,11 +59,11 @@ export function Home() {
 
   // Get unique account types that exist in user's data
   const existingAccountTypes = Array.from(new Set(accounts.map(acc => acc.type)));
-  
+
   // Generate dynamic summary cards based on existing account types
   const generateSummaryCards = () => {
     const cards = [];
-    
+
     // Always show checking if it exists
     if (existingAccountTypes.includes('checking')) {
       cards.push(
@@ -76,7 +78,7 @@ export function Home() {
         />
       );
     }
-    
+
     // Always show Primary Goal
     cards.push(
       <SummaryCard
@@ -110,7 +112,7 @@ export function Home() {
         )}
       </SummaryCard>
     );
-    
+
     // Show savings if it exists
     if (existingAccountTypes.includes('savings')) {
       cards.push(
@@ -125,7 +127,7 @@ export function Home() {
         />
       );
     }
-    
+
     // Show credit cards if they exist
     if (existingAccountTypes.includes('credit_card')) {
       cards.push(
@@ -137,7 +139,7 @@ export function Home() {
         />
       );
     }
-    
+
     // Show loans if they exist
     if (existingAccountTypes.includes('loan')) {
       cards.push(
@@ -152,7 +154,7 @@ export function Home() {
         />
       );
     }
-    
+
     // Show investments if they exist
     if (existingAccountTypes.includes('investment')) {
       cards.push(
@@ -167,7 +169,7 @@ export function Home() {
         />
       );
     }
-    
+
     return cards;
   };
 
@@ -179,7 +181,7 @@ export function Home() {
     }
     return userProfile?.firstName || 'there';
   };
-  
+
   // Build net worth series for stacked area chart
   const netWorthSeries = buildNetWorthSeries(accounts, [], 56);
 
@@ -276,12 +278,12 @@ export function Home() {
                   // Get the account type for this transaction
                   const account = accounts.find(acc => acc.id === item.accountId);
                   const accountType = account?.type;
-                  
+
                   // Determine activity type and styling based on transaction description and account type
-                  const isInvestmentContribution = item.description.includes('401K') || 
-                    item.description.includes('ROTH IRA') || 
+                  const isInvestmentContribution = item.description.includes('401K') ||
+                    item.description.includes('ROTH IRA') ||
                     item.description.includes('INVESTMENT');
-                  const isSavingsTransfer = item.description.includes('TRANSFER') || 
+                  const isSavingsTransfer = item.description.includes('TRANSFER') ||
                     item.description.includes('SAVINGS') ||
                     item.description.includes('EMERGENCY FUND') ||
                     item.description.includes('DOWN PAYMENT') ||
@@ -291,37 +293,37 @@ export function Home() {
                     item.description.includes('WEDDING SAVINGS') ||
                     item.description.includes('COLLEGE FUND') ||
                     item.description.includes('REAL ESTATE INVESTMENT FUND');
-                  
+
                   // For credit card accounts, payments (negative amounts) are positive activity (reducing debt)
-                  const isCreditCardPayment = accountType === 'credit_card' && 
-                    item.description.includes('PAYMENT') && 
+                  const isCreditCardPayment = accountType === 'credit_card' &&
+                    item.description.includes('PAYMENT') &&
                     item.amount < 0;
-                  
+
                   // For loan accounts, payments (negative amounts) are positive activity (reducing debt)
-                  const isLoanPayment = accountType === 'loan' && 
-                    item.description.includes('PAYMENT') && 
+                  const isLoanPayment = accountType === 'loan' &&
+                    item.description.includes('PAYMENT') &&
                     item.amount < 0;
-                  
+
                   // For checking/savings accounts, payments to credit cards or loans are positive activity (reducing debt)
-                  const isDebtPaymentFromChecking = (accountType === 'checking' || accountType === 'savings') && 
-                    (item.description.includes('CREDIT CARD PAYMENT') || 
+                  const isDebtPaymentFromChecking = (accountType === 'checking' || accountType === 'savings') &&
+                    (item.description.includes('CREDIT CARD PAYMENT') ||
                      item.description.includes('CARD PAYMENT') ||
                      item.description.includes('LOAN PAYMENT') ||
-                     item.description.includes('STUDENT LOAN')) && 
+                     item.description.includes('STUDENT LOAN')) &&
                     item.amount < 0;
-                  
+
                   const isIncome = item.amount > 0 && (
-                    item.description.includes('PAYROLL DEPOSIT') || 
+                    item.description.includes('PAYROLL DEPOSIT') ||
                     item.description.includes('PAYMENT') ||
                     item.description.includes('FREELANCE PROJECT') ||
                     item.description.includes('UPWORK PAYMENT') ||
                     item.description.includes('CLIENT')
                   );
-                  
+
                   let activityClass = '';
                   let displayAmount = item.amount;
                   let prefix = '';
-                  
+
                   if (isIncome) {
                     activityClass = 'activity-positive';
                     prefix = '+';
@@ -342,11 +344,35 @@ export function Home() {
                     activityClass = 'activity-negative';
                     prefix = '';
                   }
+
+                  // Get the icon for this transaction
+                  const iconName = getTransactionIcon(item.description);
                   
                   return (
                     <div key={item.id} className="activity-item">
                       <div className="activity-main">
-                        <div className="activity-description">{item.description}</div>
+                        <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+                          {/* Transaction Icon */}
+                          <div style={{
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            backgroundColor: '#2C2C2C',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginRight: '12px',
+                            flexShrink: 0
+                          }}>
+                            <Icon 
+                              name={iconName} 
+                              size="xs" 
+                              color="white"
+                              style={{ fontSize: '16px' }}
+                            />
+                          </div>
+                          <div className="activity-description">{item.description}</div>
+                        </div>
                         <div className={`activity-amount ${activityClass}`}>
                           {prefix}{formatCurrency(displayAmount)}
                         </div>
@@ -374,34 +400,34 @@ export function Home() {
             // Generate dynamic insights based on user's financial data
             const generateInsight = () => {
               const insights = [];
-              
+
               // Check for high-interest debt
-              const highInterestDebt = accounts.find(acc => 
+              const highInterestDebt = accounts.find(acc =>
                 acc.type === 'credit_card' && acc.apr && acc.apr > 20
               );
-              
+
               // Check for low emergency fund - estimate based on savings patterns
               const monthlyExpenses = 3000; // Default estimate for emergency fund calculation
               const emergencyFundRatio = savingsTotal / monthlyExpenses;
-              
+
               // Check for missed investment opportunities
               const hasDebt = debtTotal > 0;
               const hasInvestments = accounts.some(acc => acc.type === 'investment');
-              
+
               // Check for recent activity patterns
               const recentSpending = recentActivity
                 .filter(item => item.amount < 0 && !item.description.includes('TRANSFER'))
                 .slice(0, 5);
-              
+
               const recentInvestments = recentActivity
                 .filter(item => item.description.includes('401K') || item.description.includes('INVESTMENT'))
                 .length;
-              
+
               // Generate insights based on financial situation
               if (highInterestDebt && savingsTotal > 1000) {
                 insights.push(`💳 Consider using $${Math.min(1000, savingsTotal * 0.2).toFixed(0)} from savings to pay down your ${highInterestDebt.apr}% APR credit card.`);
               }
-              
+
               if (emergencyFundRatio < 3 && savingsTotal > 0) {
                 const targetEmergencyFund = monthlyExpenses * 3;
                 const shortfall = targetEmergencyFund - savingsTotal;
@@ -409,39 +435,28 @@ export function Home() {
                   insights.push(`🛡️ Build your emergency fund: you're $${shortfall.toLocaleString()} away from 3 months of expenses.`);
                 }
               }
-              
+
               if (hasDebt && debtTotal > 5000 && !hasInvestments) {
                 insights.push(`🎯 Focus on debt payoff before investing. Your debt is costing more than potential investment returns.`);
               }
-              
+
               if (recentInvestments === 0 && savingsTotal > 5000 && !hasDebt) {
                 insights.push(`📈 Consider starting retirement contributions - you have extra cash flow to invest.`);
               }
-              
+
               if (recentSpending.length > 0) {
                 const avgSpending = Math.abs(recentSpending.reduce((sum, item) => sum + item.amount, 0) / recentSpending.length);
                 if (avgSpending > 100) {
                   insights.push(`💰 Your recent spending averages $${avgSpending.toFixed(0)} per transaction. Small reductions could free up cash for goals.`);
                 }
               }
-              
+
               // Default insight if no specific insights generated
               if (insights.length === 0) {
                 insights.push(`📊 Keep tracking your finances! Regular monitoring helps you stay on top of your goals.`);
               }
-              
-              return insights[0]; // Return the first (most relevant) insight
+
             };
-            
-            const insight = generateInsight();
-            
-            return (
-              <div className="insights">
-                <div className="insight-text">
-                  {insight}
-                </div>
-              </div>
-            );
           })()}
         </>
       )}
@@ -498,7 +513,7 @@ export function Home() {
                   {scenario.description}
                 </div>
                 <div style={{ fontSize: '12px', color: 'var(--color-text-tertiary)' }}>
-                  Age: {scenario.userProfile.age} • Income: ${scenario.userProfile.income?.toLocaleString()} • 
+                  Age: {scenario.userProfile.age} • Income: ${scenario.userProfile.income?.toLocaleString()} •
                   Risk: {scenario.userProfile.riskTolerance}
                 </div>
               </button>

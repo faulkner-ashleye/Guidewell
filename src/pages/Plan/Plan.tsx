@@ -126,16 +126,6 @@ export function Plan() {
 
       </section>
 
-      {/* Nudges (simple, conditional, compliant) */}
-      {(assets > 0 && debts > 0) && (
-        <section className="plan-nudge-section">
-          <strong>Heads-up:</strong>{' '}
-          <span style={{ color: 'var(--color-text-muted)' }}>
-            If more cash flows to high-APR debt, your interest costs could decrease.
-          </span>
-        </section>
-      )}
-
       {/* Tabbed Interface for Accounts and Goals */}
       <section className="plan-tabbed-section">
         {/* Tab Headers */}
