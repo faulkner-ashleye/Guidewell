@@ -105,6 +105,9 @@ export const IconNames = {
   chat: 'chat',
   notification: 'notifications',
   
+  // People
+  person: 'person',
+  
   // Data
   bar_chart: 'bar_chart',
   pie_chart: 'pie_chart',

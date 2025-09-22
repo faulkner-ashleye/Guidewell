@@ -74,8 +74,9 @@ export function Settings() {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState<OnboardingState>({
-    firstName: '',
-    lastName: '',
+    name: '',
+    firstName: '', // Keep for backward compatibility
+    lastName: '',  // Keep for backward compatibility
     mainGoals: [],
     ageRange: undefined,
     topPriority: undefined,
@@ -87,8 +88,9 @@ export function Settings() {
   useEffect(() => {
     if (userProfile) {
       setProfileData({
-        firstName: userProfile.firstName || '',
-        lastName: userProfile.lastName || '',
+        name: userProfile.name || '',
+        firstName: userProfile.firstName || '', // Keep for backward compatibility
+        lastName: userProfile.lastName || '',   // Keep for backward compatibility
         ageRange: userProfile.ageRange as any,
         mainGoals: userProfile.mainGoals as any,
         topPriority: userProfile.topPriority as any,
@@ -114,8 +116,9 @@ export function Settings() {
   const handleSave = () => {
     setUserProfile({
       ...userProfile, // Preserve existing profile data
-      firstName: profileData.firstName,
-      lastName: profileData.lastName,
+      name: profileData.name,
+      firstName: profileData.firstName, // Keep for backward compatibility
+      lastName: profileData.lastName,   // Keep for backward compatibility
       ageRange: profileData.ageRange,
       mainGoals: profileData.mainGoals,
       topPriority: profileData.topPriority,
@@ -126,18 +129,17 @@ export function Settings() {
   };
 
   const handleLogout = () => {
-    if (window.confirm('Are you sure you want to logout? This will clear all your data and return you to the welcome screen.')) {
-      logout();
-      navigate('/');
-    }
+    logout();
+    navigate('/');
   };
 
   const handleCancel = () => {
     // Reset form data to current user profile
     if (userProfile) {
       setProfileData({
-        firstName: userProfile.firstName || '',
-        lastName: userProfile.lastName || '',
+        name: userProfile.name || '',
+        firstName: userProfile.firstName || '', // Keep for backward compatibility
+        lastName: userProfile.lastName || '',   // Keep for backward compatibility
         ageRange: userProfile.ageRange as any,
         mainGoals: userProfile.mainGoals as any,
         topPriority: userProfile.topPriority as any,
@@ -168,25 +170,14 @@ export function Settings() {
           </div>
 
           <div className="profile-form">
-            {/* Name Fields */}
+            {/* Name Field */}
             <div className="form-group">
-              <label className="form-label">First Name</label>
+              <label className="form-label">Name</label>
               <input
                 type="text"
-                value={profileData.firstName || ''}
-                onChange={(e) => setProfileData(prev => ({ ...prev, firstName: e.target.value }))}
-                placeholder="Enter your first name"
-                className="form-input"
-                disabled={!isEditing}
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Last Name</label>
-              <input
-                type="text"
-                value={profileData.lastName || ''}
-                onChange={(e) => setProfileData(prev => ({ ...prev, lastName: e.target.value }))}
-                placeholder="Enter your last name"
+                value={profileData.name || ''}
+                onChange={(e) => setProfileData(prev => ({ ...prev, name: e.target.value }))}
+                placeholder="Enter your full name"
                 className="form-input"
                 disabled={!isEditing}
               />

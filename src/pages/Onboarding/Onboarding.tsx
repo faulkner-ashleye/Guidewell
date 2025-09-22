@@ -10,10 +10,12 @@ import { Priority } from './steps/Priority';
 import { Timeline } from './steps/Timeline';
 import { Comfort } from './steps/Comfort';
 import Connect from './steps/Connect';
+import SampleData from './steps/SampleData';
+import ManualEntry from './steps/ManualEntry';
 import { Finish } from './steps/Finish';
 import './Onboarding.css';
 
-type OnboardingStep = 'welcome' | 'name' | 'goals' | 'priority' | 'timeline' | 'comfort' | 'connect' | 'finish';
+type OnboardingStep = 'welcome' | 'name' | 'goals' | 'priority' | 'timeline' | 'comfort' | 'connect' | 'sample-data' | 'manual-entry' | 'finish';
 
 export function Onboarding() {
   // Onboarding flow controller
@@ -42,7 +44,7 @@ export function Onboarding() {
       baseSteps.push('priority');
     }
     
-    // Add remaining steps
+    // Add remaining steps - connect and finish are always included
     baseSteps.push('timeline', 'comfort', 'connect', 'finish');
     
     return baseSteps;
@@ -56,6 +58,9 @@ export function Onboarding() {
   const handleNext = () => {
     if (isLastStep) {
       navigate('/home');
+    } else if (currentStep === 'sample-data' || currentStep === 'manual-entry') {
+      // Special handling for sample-data and manual-entry steps - go directly to finish
+      setCurrentStep('finish');
     } else {
       const nextStep = stepOrder[currentStepIndex + 1];
       setCurrentStep(nextStep);
@@ -65,6 +70,12 @@ export function Onboarding() {
   const handleBack = () => {
     // Prevent going back from the name step
     if (currentStep === 'name') {
+      return;
+    }
+    
+    // Special handling for sample-data and manual-entry steps
+    if (currentStep === 'sample-data' || currentStep === 'manual-entry') {
+      setCurrentStep('connect');
       return;
     }
     
@@ -176,7 +187,17 @@ export function Onboarding() {
       case 'comfort':
         return <Comfort data={data} update={update} onNext={handleNext} onBack={handleBack} onSkip={handleSkip} />;
       case 'connect':
-        return <Connect onNext={handleNext} onBack={handleBack} onSkip={handleSkip} />;
+        return <Connect 
+          onNext={handleNext} 
+          onBack={handleBack} 
+          onSkip={handleSkip}
+          onNavigateToSampleData={() => setCurrentStep('sample-data')}
+          onNavigateToManualEntry={() => setCurrentStep('manual-entry')}
+        />;
+      case 'sample-data':
+        return <SampleData onNext={handleNext} onBack={handleBack} />;
+      case 'manual-entry':
+        return <ManualEntry onNext={handleNext} onBack={handleBack} />;
       case 'finish':
         return <Finish data={data} update={update} onFinish={handleFinish} onBack={handleBack} />;
       default:

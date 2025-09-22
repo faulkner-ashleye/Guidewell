@@ -59,27 +59,28 @@ export function Goals({ data, update, onNext, onSkip, accounts }: GoalsProps) {
             ))}
           </div>
 
-          <div className="onboarding-actions">
-            <div className="action-buttons">
-            <Button
-              variant={ButtonVariants.contained}
-              color={ButtonColors.secondary}
-              fullWidth={true}
-              onClick={onNext}
-              disabled={!canProceed}
-            >
-              Next
-            </Button>
-              <Button
-                variant={ButtonVariants.text}
-                color={ButtonColors.secondary}
-                fullWidth={true}
-                onClick={onSkip}
-              >
-                {onboardingCopy.skip}
-              </Button>
-            </div>
-          </div>
+
+        </div>
+      </div>
+      <div className="onboarding-actions">
+        <div className="action-buttons">
+        <Button
+          variant={ButtonVariants.contained}
+          color={ButtonColors.secondary}
+          fullWidth={true}
+          onClick={onNext}
+          disabled={!canProceed}
+        >
+          Next
+        </Button>
+          <Button
+            variant={ButtonVariants.text}
+            color={ButtonColors.secondary}
+            fullWidth={true}
+            onClick={onSkip}
+          >
+            {onboardingCopy.skip}
+          </Button>
         </div>
       </div>
     </div>

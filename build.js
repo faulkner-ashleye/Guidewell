@@ -50,7 +50,7 @@ const buildMethods = [
       shell: true,
       env: {
         ...process.env,
-        CI: 'false',
+        CI: 'false',over                                                                                                        
         NODE_ENV: 'production'
       }
     });

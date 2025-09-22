@@ -3,15 +3,12 @@ import { useAppState } from '../../state/AppStateContext';
 import { getRecentActivity } from '../../state/activitySelectors';
 import {
   sumByType,
-  getPrimaryGoal,
-  getHighestAPR,
   formatCurrency
 } from '../../state/selectors';
 import { buildNetWorthSeries } from '../../state/financeSelectors';
-import { SummaryCard } from '../../components/SummaryCard';
-import { ProgressBar } from '../../components/ProgressBar';
 import { NetWorthChartWithTimeline } from '../../components/NetWorthChartWithTimeline';
-import { GoalAccountLinker } from '../../components/GoalAccountLinker';
+import { AccountBalanceCard } from '../../components/AccountBalanceCard';
+import { SpendingCard } from '../../components/SpendingCard';
 import HomeHeader from '../../app/components/HomeHeader';
 import { useInsightsCount } from '../../hooks/useInsightsCount';
 import PlaidLinkButton from '../../components/PlaidLinkButton';
@@ -49,130 +46,7 @@ export function Home() {
   // Calculate totals using selectors
   const savingsTotal = sumByType(accounts, ['checking', 'savings']);
   const debtTotal = sumByType(accounts, ['credit_card', 'loan']);
-  const checkingTotal = sumByType(accounts, ['checking']);
-  const creditCardTotal = sumByType(accounts, ['credit_card']);
-  const studentLoanTotal = sumByType(accounts, ['loan']);
-  const savingsAccountTotal = sumByType(accounts, ['savings']);
-  const investmentTotal = sumByType(accounts, ['investment']);
 
-  const goal = getPrimaryGoal(accounts, userProfile || undefined);
-  const highestAPR = getHighestAPR(accounts);
-
-  // Get unique account types that exist in user's data
-  const existingAccountTypes = Array.from(new Set(accounts.map(acc => acc.type)));
-
-  // Generate dynamic summary cards based on existing account types
-  const generateSummaryCards = () => {
-    const cards = [];
-
-    // Always show checking if it exists
-    if (existingAccountTypes.includes('checking')) {
-      cards.push(
-        <SummaryCard
-          key="checking"
-          title="Checking"
-          value={formatCurrency(checkingTotal)}
-          subline={accounts.filter(a => a.type === 'checking').length > 1 ?
-            `${accounts.filter(a => a.type === 'checking').length} accounts` :
-            accounts.find(a => a.type === 'checking')?.name
-          }
-        />
-      );
-    }
-
-    // Always show Primary Goal
-    cards.push(
-      <SummaryCard
-        key="primary-goal"
-        title="Primary Goal"
-        value={goal ? `${goal.percent}%` : 'No goal yet'}
-        subline={goal ? `${formatCurrency(goal.current)} of ${formatCurrency(goal.target)}` : 'Set a target in Goals'}
-      >
-        {goal && <ProgressBar percent={goal.percent} />}
-        {hasData && (
-          <GoalAccountLinker
-            accounts={accounts}
-            currentLinkedAccountId={userProfile?.primaryGoalAccountId}
-            onLinkAccount={(accountId) => {
-              if (userProfile) {
-                setUserProfile({
-                  ...userProfile,
-                  primaryGoalAccountId: accountId
-                });
-              }
-            }}
-            onUnlinkAccount={() => {
-              if (userProfile) {
-                setUserProfile({
-                  ...userProfile,
-                  primaryGoalAccountId: undefined
-                });
-              }
-            }}
-          />
-        )}
-      </SummaryCard>
-    );
-
-    // Show savings if it exists
-    if (existingAccountTypes.includes('savings')) {
-      cards.push(
-        <SummaryCard
-          key="savings"
-          title="Savings"
-          value={formatCurrency(savingsAccountTotal)}
-          subline={accounts.filter(a => a.type === 'savings').length > 1 ?
-            `${accounts.filter(a => a.type === 'savings').length} accounts` :
-            accounts.find(a => a.type === 'savings')?.name
-          }
-        />
-      );
-    }
-
-    // Show credit cards if they exist
-    if (existingAccountTypes.includes('credit_card')) {
-      cards.push(
-        <SummaryCard
-          key="credit-card"
-          title="Credit Card"
-          value={formatCurrency(creditCardTotal)}
-          subline={creditCardTotal > 0 ? (highestAPR ? `${highestAPR}% APR` : 'No APR data') : 'No credit cards'}
-        />
-      );
-    }
-
-    // Show loans if they exist
-    if (existingAccountTypes.includes('loan')) {
-      cards.push(
-        <SummaryCard
-          key="loans"
-          title="Loans"
-          value={formatCurrency(studentLoanTotal)}
-          subline={accounts.filter(a => a.type === 'loan').length > 0 ?
-            `${accounts.filter(a => a.type === 'loan').length} loans` :
-            'No loans'
-          }
-        />
-      );
-    }
-
-    // Show investments if they exist
-    if (existingAccountTypes.includes('investment')) {
-      cards.push(
-        <SummaryCard
-          key="investments"
-          title="Investments"
-          value={formatCurrency(investmentTotal)}
-          subline={accounts.filter(a => a.type === 'investment').length > 1 ?
-            `${accounts.filter(a => a.type === 'investment').length} accounts` :
-            accounts.find(a => a.type === 'investment')?.name
-          }
-        />
-      );
-    }
-
-    return cards;
-  };
 
   // Determine display name - use persona name when in sample data mode
   const getDisplayName = () => {
@@ -197,64 +71,20 @@ export function Home() {
         insightsCount={insightsCount}
       />
 
-      {/* Sample Data Message */}
-      {userProfile?.hasSampleData && (
-        <div className="sample-data-banner">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '8px' }}>
-            <span style={{ fontSize: '20px' }}>📊</span>
-            <strong>Sample Data Mode</strong>
-          </div>
-          <p className="typography-body2">
-            We've loaded sample financial data so you can explore Guidewell's features.
-            Add your own accounts to see your real financial picture.
-          </p>
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            <button
-              onClick={() => setConnectOpen(true)}
-              style={{
-                background: 'var(--color-primary)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '6px',
-                padding: '8px 16px',
-                fontSize: '13px',
-                fontWeight: '500',
-                cursor: 'pointer',
-                flex: '1',
-                minWidth: '120px'
-              }}
-            >
-              Add My Accounts
-            </button>
-            <button
-              onClick={() => setSampleScenarioOpen(true)}
-              style={{
-                background: 'var(--color-secondary)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '6px',
-                padding: '8px 16px',
-                fontSize: '13px',
-                fontWeight: '500',
-                cursor: 'pointer',
-                flex: '1',
-                minWidth: '120px'
-              }}
-            >
-              Try Different Scenario
-            </button>
-          </div>
-        </div>
-      )}
 
       {!hasData ? (
         // Empty state
         <div className="empty-state">
-          <SummaryCard
-            title="No accounts yet"
-            value="Connect accounts in Settings"
-            onClick={() => window.location.href = '/settings'}
-          />
+          <div className="empty-state-card">
+            <h3>No accounts yet</h3>
+            <p>Connect accounts in Settings to get started</p>
+            <button 
+              className="connect-button"
+              onClick={() => window.location.href = '/settings'}
+            >
+              Go to Settings
+            </button>
+          </div>
         </div>
       ) : (
         <>
@@ -265,9 +95,10 @@ export function Home() {
             </div>
           )}
 
-          {/* Dynamic Summary Cards */}
-          <div className="summary-grid">
-            {generateSummaryCards()}
+          {/* Dashboard Cards */}
+          <div className="dashboard-grid">
+            <AccountBalanceCard accounts={accounts} />
+            <SpendingCard transactions={transactions} />
           </div>
 
           {/* Recent Activity */}

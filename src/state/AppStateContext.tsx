@@ -14,8 +14,9 @@ export type AccountType = 'loan' | 'credit_card' | 'savings' | 'checking' | 'inv
 export type { Account } from '../app/types';
 
 export interface UserProfile {
-  firstName?: string;
-  lastName?: string;
+  name?: string;
+  firstName?: string;  // Keep for backward compatibility
+  lastName?: string;   // Keep for backward compatibility
   ageRange?: string;
   mainGoals: string[];
   topPriority?: string;
@@ -58,6 +59,7 @@ interface AppStateContextType {
   enhancedUserProfile: EnhancedUserProfile | null;
   opportunities: any[] | null;
   validationErrors: string[] | null;
+  currentScenario: SampleScenario | null;
   setAccounts: React.Dispatch<React.SetStateAction<Account[]>>;
   setGoals: React.Dispatch<React.SetStateAction<Goal[]>>;
   setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>;
@@ -98,6 +100,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   const [enhancedUserProfile, setEnhancedUserProfile] = useState<EnhancedUserProfile | null>(null);
   const [opportunities, setOpportunities] = useState<any[] | null>(null);
   const [validationErrors, setValidationErrors] = useState<string[] | null>(null);
+  const [currentScenario, setCurrentScenario] = useState<SampleScenario | null>(null);
 
   const loadSampleScenario = (scenarioId: string) => {
     const scenario = sampleScenarios[scenarioId];
@@ -105,6 +108,9 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       console.error(`Sample scenario '${scenarioId}' not found`);
       return;
     }
+
+    // Set the current scenario
+    setCurrentScenario(scenario);
 
     // Convert scenario data to app state format
     const convertedAccounts: Account[] = scenario.accounts.map(account => ({
@@ -153,59 +159,6 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     // Reset insights dismissal state when switching personas
     // This ensures the badge reappears for new insights in the new scenario
     resetInsightsDismissal();
-
-    // Show notification
-    const notification = document.createElement('div');
-    notification.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-      color: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-      z-index: 10000;
-      max-width: 400px;
-      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      font-size: 14px;
-      line-height: 1.5;
-      animation: slideIn 0.3s ease-out;
-    `;
-    
-    notification.innerHTML = `
-      <div style="display: flex; align-items: center; margin-bottom: 12px;">
-        <span style="font-size: 24px; margin-right: 12px;">📊</span>
-        <strong style="font-size: 16px;">Sample Data Loaded!</strong>
-      </div>
-      <p style="margin: 0 0 12px 0;">Loaded "${scenario.name}" scenario with realistic financial data and recent activity.</p>
-      <p style="margin: 0; font-size: 13px; opacity: 0.9;">Explore Guidewell's features with this sample data, or connect your own accounts anytime.</p>
-    `;
-    
-    // Add CSS animation
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes slideIn {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-      }
-    `;
-    document.head.appendChild(style);
-    
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 5 seconds
-    setTimeout(() => {
-      notification.style.animation = 'slideIn 0.3s ease-out reverse';
-      setTimeout(() => {
-        if (notification.parentNode) {
-          notification.parentNode.removeChild(notification);
-        }
-        if (style.parentNode) {
-          style.parentNode.removeChild(style);
-        }
-      }, 300);
-    }, 5000);
   };
 
   // Load default sample scenario on app start
@@ -276,6 +229,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     setGoals([]);
     setTransactions([]);
     setContributions([]);
+    setCurrentScenario(null);
     // Clear the hasSampleData flag but preserve other user profile data
     if (userProfile) {
       setUserProfile({
@@ -397,6 +351,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     enhancedUserProfile,
     opportunities,
     validationErrors,
+    currentScenario,
     setAccounts,
     setGoals,
     setTransactions,

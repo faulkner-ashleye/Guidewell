@@ -11,7 +11,7 @@ interface NameStepProps {
 }
 
 export function NameStep({ data, update, onNext }: NameStepProps) {
-  const canProceed = !!(data.firstName && data.lastName);
+  const canProceed = !!(data.name && data.email && data.password);
 
   return (
     <div className="onboarding-screen">
@@ -19,48 +19,61 @@ export function NameStep({ data, update, onNext }: NameStepProps) {
 
       <div className="onboarding-content">
         <div className="onboarding-step">
-          <h1 className="typography-h1">Let's start with your name</h1>
-          <p>This helps Guidewell keep things personal and organized.</p>
+          <h1 className="typography-h1">Create your account</h1>
+          <p>Let's get you set up with Guidewell.</p>
+          <p className="typography-caption">This step is just for demo purposes. Enter any info to continue — no validation required</p>
 
-          {/* Name Fields */}
-          <div className="name-fields">
+          {/* Account Creation Fields */}
+          <div className="account-fields">
             <div className="field-group">
-              <label htmlFor="firstName">First Name</label>
+              <label htmlFor="name">Name</label>
               <input
-                id="firstName"
+                id="name"
                 type="text"
-                value={data.firstName || ''}
-                onChange={(e) => update('firstName', e.target.value)}
-                placeholder="Enter your first name"
+                value={data.name || ''}
+                onChange={(e) => update('name', e.target.value)}
+                placeholder="Enter your full name"
                 className="onboarding-input"
               />
             </div>
             <div className="field-group">
-              <label htmlFor="lastName">Last Name</label>
+              <label htmlFor="email">Email</label>
               <input
-                id="lastName"
-                type="text"
-                value={data.lastName || ''}
-                onChange={(e) => update('lastName', e.target.value)}
-                placeholder="Enter your last name"
+                id="email"
+                type="email"
+                value={data.email || ''}
+                onChange={(e) => update('email', e.target.value)}
+                placeholder="Enter your email"
+                className="onboarding-input"
+              />
+            </div>
+            <div className="field-group">
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                value={data.password || ''}
+                onChange={(e) => update('password', e.target.value)}
+                placeholder="Create a password"
                 className="onboarding-input"
               />
             </div>
           </div>
 
-          <div className="onboarding-actions">
-            <div className="action-buttons single-button">
-              <Button
-                variant={ButtonVariants.contained}
-                color={ButtonColors.secondary}
-                fullWidth={true}
-                onClick={onNext}
-                disabled={!canProceed}
-              >
-                Continue
-              </Button>
-            </div>
-          </div>
+
+        </div>
+      </div>
+      <div className="onboarding-actions">
+        <div className="action-buttons single-button">
+          <Button
+            variant={ButtonVariants.contained}
+            color={ButtonColors.secondary}
+            fullWidth={true}
+            onClick={onNext}
+            disabled={!canProceed}
+          >
+            Next
+          </Button>
         </div>
       </div>
     </div>

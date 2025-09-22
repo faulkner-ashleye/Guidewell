@@ -4,8 +4,11 @@ export type Timeline = 'short' | 'mid' | 'long'; // 1–2y, 3–5y, 5+y
 export type Comfort = 'beginner' | 'intermediate' | 'confident';
 
 export interface OnboardingState {
-  firstName?: string;
-  lastName?: string;
+  name?: string;
+  email?: string;
+  password?: string;
+  firstName?: string;  // Keep for backward compatibility
+  lastName?: string;   // Keep for backward compatibility
   ageRange?: AgeRange;
   mainGoals: MainGoal[];          // multi-select
   topPriority?: MainGoal;         // single

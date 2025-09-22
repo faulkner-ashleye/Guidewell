@@ -24,18 +24,18 @@ export function Welcome({ data, update, onNext, onSkip }: WelcomeProps) {
           <h2 className="typography-h2">You've got goals. We'll help you see the options.</h2>
           <p>Guidewell organizes your financial picture and points out opportunities to explore.</p>
 
-          <div className="onboarding-actions">
-            <div className="action-buttons single-button">
-              <Button
-                variant={ButtonVariants.contained}
-                color={ButtonColors.secondary}
-                fullWidth={true}
-                onClick={onNext}
-              >
-                Get started
-              </Button>
-            </div>
-          </div>
+        </div>
+      </div>
+      <div className="onboarding-actions">
+        <div className="action-buttons single-button">
+          <Button
+            variant={ButtonVariants.contained}
+            color={ButtonColors.secondary}
+            fullWidth={true}
+            onClick={onNext}
+          >
+            Get started
+          </Button>
         </div>
       </div>
     </div>

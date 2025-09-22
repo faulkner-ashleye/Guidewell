@@ -3,6 +3,7 @@ import { OnboardingState } from '../../../data/onboardingTypes';
 import { onboardingCopy } from '../copy';
 import { Button, ButtonVariants, ButtonColors } from '../../../components/Button';
 import { OnboardingHeader } from '../components/OnboardingHeader';
+import { useAppState } from '../../../state/AppStateContext';
 import '../../../components/Button.css';
 
 interface FinishProps {
@@ -32,15 +33,17 @@ const comfortLabels: Record<string, string> = {
 };
 
 export function Finish({ data, update, onFinish, onBack }: FinishProps) {
+  const { currentScenario } = useAppState();
+
   return (
     <div className="onboarding-screen">
       <OnboardingHeader />
-      
+
       <div className="onboarding-content">
         <div className="onboarding-step">
           <h1>You're all set!</h1>
           <p>Here's what we'll use to personalize your experience:</p>
-          
+
           <ul>
             <li><strong>Main goals:</strong> {data.mainGoals.map(goal => goalLabels[goal]).join(', ')}</li>
             <li><strong>Top priority:</strong> {data.topPriority ? goalLabels[data.topPriority] : 'Not set'}</li>
@@ -48,23 +51,32 @@ export function Finish({ data, update, onFinish, onBack }: FinishProps) {
             <li><strong>Comfort level:</strong> {data.comfort ? comfortLabels[data.comfort] : 'Not set'}</li>
           </ul>
 
-          <div>
-            <Button 
-              variant={ButtonVariants.outline}
-              color={ButtonColors.secondary}
-              onClick={onBack}
-            >
-              Back
-            </Button>
-            <Button 
-              variant={ButtonVariants.contained}
-              color={ButtonColors.secondary}
-              onClick={() => onFinish(data)}
-            >
-              Save & continue
-            </Button>
-          </div>
+          {currentScenario && (
+            <p className="typography-caption">
+              You've chosen to explore with <strong>{currentScenario.userProfile.firstName}</strong> to start. When you start adding your own data, this {currentScenario.userProfile.firstName}'s data will be cleared and replaced with your own.
+            </p>
+          )}
+
+
         </div>
+      </div>
+      <div className="onboarding-actions">
+        <div className="action-buttons">
+        <Button
+          variant={ButtonVariants.contained}
+          color={ButtonColors.secondary}
+          onClick={() => onFinish(data)}
+        >
+          Create account
+        </Button>
+        <Button
+          variant={ButtonVariants.outline}
+          color={ButtonColors.secondary}
+          onClick={onBack}
+        >
+          Back
+        </Button>
+      </div>
       </div>
     </div>
   );

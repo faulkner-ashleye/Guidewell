@@ -477,3 +477,99 @@ box-shadow: 0 -1px -2px rgba(0, 0, 0, 0.64);
     font-size: 20px;
   }
 }
+
+/* Dialog-specific styling */
+.manual-entry-sheet {
+  /* Custom styling for manual entry dialog */
+}
+
+.sheet{
+    position: absolute;
+    top:24px;
+    bottom:24px;
+    transform:translateX(-12px);
+    background:var(--color-background-paper);
+    border-radius:8px;
+    border:1px solid var(--color-root-divider);
+    box-shadow: var(--shadow-md);
+    overflow:auto;
+}
+
+.sheet-header{
+    position: sticky;
+    top:-12px;
+    width:100%;
+    background: var(--color-background-paper);
+    padding:var(--spacing-lg);
+    display:flex;
+    justify-content: space-between;
+    border-bottom:1px solid var(--color-root-divider);
+}
+
+/* Prevent body scroll when sheet is open */
+body.sheet-open {
+  overflow: hidden;
+}
+
+.sample-profiles{
+    overflow:scroll;
+}
+.sample-profiles-sheet {
+  /* Custom styling for sample profiles dialog */
+}
+
+.sample-profiles-sheet .sheet {
+  max-width: 500px;
+}
+
+.sample-profiles-sheet .sheet-actions {
+  display: flex;
+  position: sticky;
+  bottom: 0px;
+  gap: 12px;
+  margin-top: 24px;
+  padding:var(--spacing-lg);
+  background:var(--color-background-paper);
+  border-top: 1px solid var(--color-root-divider);
+}
+
+.sample-profiles-sheet .sample-profile-card.selected {
+  border-color: var(--color-secondary-contrast);
+  background-color: var(--color-secondary-dark);
+}
+
+.sample-profiles-sheet .sample-profile-card.selected::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sample-profiles-sheet .sample-profile-card.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sheet-close{
+    background:transparent;
+    border:none;
+    font-size: 24px;
+    color:var(--color-text-primary);
+}
