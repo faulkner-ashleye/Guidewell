@@ -22,7 +22,7 @@ export default function AppHeader({
   const shouldShowOpportunities = showOpportunities && location.pathname !== '/opportunities';
 
   return (
-    <header className="app-header shadow-lg">
+    <header className="app-header shadow-sm">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-sm grow">
           <div className="app-header-left-spacer">

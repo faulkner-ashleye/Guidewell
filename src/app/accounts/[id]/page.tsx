@@ -10,6 +10,7 @@ import LogContributionModal from '../../components/LogContributionModal';
 import { COLORS } from '../../../ui/colors';
 import { getTransactionIcon } from '../../../utils/transactionIcons';
 import { Icon, IconNames } from '../../../components/Icon';
+import { getAccountActivityCategoryName, getAccountActivityCategoryIcon } from '../../../utils/transactionCategories';
 import './page.css';
 
 
@@ -172,8 +173,9 @@ export default function AccountDetailPage() {
           {activityWithBalances.length > 0 ? (
             <div className="activity-feed">
               {activityWithBalances.map((item) => {
-                // Get the icon for this transaction
-                const iconName = getTransactionIcon(item.description);
+                // Get the category name and icon for this transaction
+                const categoryName = getAccountActivityCategoryName(item);
+                const categoryIcon = getAccountActivityCategoryIcon(item);
 
                 return (
                   <div key={item.id} className="activity-item">
@@ -184,7 +186,7 @@ export default function AccountDetailPage() {
                       {/* Transaction Icon */}
                       <div className="activity-icon">
                         <Icon
-                          name={iconName}
+                          name={categoryIcon}
                           size="sm"
                           style={{ fontSize: '18px' }}
                         />
@@ -194,11 +196,9 @@ export default function AccountDetailPage() {
                         <div className="activity-description">
                           {item.description}
                         </div>
-                        {item.category && (
-                          <span className="activity-category">
-                            {item.category}
-                          </span>
-                        )}
+                        <span className="activity-category">
+                          {categoryName}
+                        </span>
                       </div>
 
                     <div className="activity-amount">

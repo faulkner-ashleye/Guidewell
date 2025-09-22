@@ -20,7 +20,7 @@ export default function HomeHeader({
   const navigate = useNavigate();
 
   return (
-    <header className="app-header shadow-lg">
+    <header className="app-header shadow-sm">
       <div className="home-header-content">
         <div className="home-header-left">
           <div className="home-header-text">

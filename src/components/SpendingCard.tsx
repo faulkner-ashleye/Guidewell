@@ -1,15 +1,21 @@
 import React, { useMemo } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { formatCurrency } from '../state/selectors';
+import { COLORS } from '../ui/colors';
+import { Icon } from './Icon';
+import { getCategoryName, getCategoryIcon } from '../utils/transactionCategories';
 import './SpendingCard.css';
 
 interface Transaction {
   id: string;
-  description: string;
+  account_id: string;
+  plaid_transaction_id: string;
   amount: number;
-  category?: string;
   date: string;
-  accountId: string;
+  name: string;
+  merchant_name?: string;
+  category?: string[];
+  created_at: string;
 }
 
 interface SpendingCardProps {
@@ -24,15 +30,16 @@ interface SpendingCategory {
 }
 
 const SPENDING_COLORS = [
-  '#8B5CF6', // Purple
-  '#06B6D4', // Cyan
-  '#10B981', // Green
-  '#F59E0B', // Orange
-  '#EF4444', // Red
-  '#6366F1', // Indigo
-  '#EC4899', // Pink
-  '#84CC16', // Lime
+  COLORS.primary,   // Primary blue
+  COLORS.savings,   // Green for savings-related spending
+  COLORS.investing, // Teal for investing-related spending
+  COLORS.debt,      // Red for debt-related spending
+  COLORS.textMuted, // Muted text color
+  '#F59E0B',        // Orange (keeping one additional color)
+  '#8B5CF6',        // Purple (keeping one additional color)
+  '#EC4899',        // Pink (keeping one additional color)
 ];
+
 
 export function SpendingCard({ transactions }: SpendingCardProps) {
   // Process transactions to get spending categories
@@ -40,10 +47,10 @@ export function SpendingCard({ transactions }: SpendingCardProps) {
     // Filter for spending transactions (negative amounts, exclude transfers and payments)
     const spendingTransactions = transactions.filter(transaction => {
       const isSpending = transaction.amount < 0;
-      const isTransfer = transaction.description.toLowerCase().includes('transfer');
-      const isPayment = transaction.description.toLowerCase().includes('payment');
-      const isInvestment = transaction.description.toLowerCase().includes('401k') || 
-                          transaction.description.toLowerCase().includes('investment');
+      const isTransfer = transaction.name.toLowerCase().includes('transfer');
+      const isPayment = transaction.name.toLowerCase().includes('payment');
+      const isInvestment = transaction.name.toLowerCase().includes('401k') || 
+                          transaction.name.toLowerCase().includes('investment');
       
       return isSpending && !isTransfer && !isPayment && !isInvestment;
     });
@@ -52,42 +59,9 @@ export function SpendingCard({ transactions }: SpendingCardProps) {
     const categoryMap = new Map<string, number>();
     
     spendingTransactions.forEach(transaction => {
-      // Use category if available, otherwise extract from description
-      let category = transaction.category || 'Other';
-      
-      // If category is an array, use the first one
-      if (Array.isArray(category)) {
-        category = category[0] || 'Other';
-      }
-      
-      // Clean up category names
-      category = category.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
-      
-      // Map to more user-friendly names
-      const categoryMapping: Record<string, string> = {
-        'food and drink': 'Eating Out',
-        'restaurants': 'Eating Out',
-        'groceries': 'Groceries',
-        'shopping': 'Shopping',
-        'entertainment': 'Entertainment',
-        'transportation': 'Transportation',
-        'gas': 'Gas',
-        'utilities': 'Utilities',
-        'rent': 'Rent',
-        'housing': 'Housing',
-        'healthcare': 'Healthcare',
-        'fitness': 'Fitness',
-        'education': 'Education',
-        'travel': 'Travel',
-        'subscriptions': 'Subscriptions',
-        'insurance': 'Insurance',
-        'other': 'Other'
-      };
-      
-      const mappedCategory = categoryMapping[category] || category.split(' ')[0] || 'Other';
-      
+      const categoryName = getCategoryName(transaction);
       const amount = Math.abs(transaction.amount); // Convert to positive for spending
-      categoryMap.set(mappedCategory, (categoryMap.get(mappedCategory) || 0) + amount);
+      categoryMap.set(categoryName, (categoryMap.get(categoryName) || 0) + amount);
     });
 
     // Convert to array and sort by amount
@@ -155,6 +129,11 @@ export function SpendingCard({ transactions }: SpendingCardProps) {
                 <div 
                   className="spending-color-bar" 
                   style={{ backgroundColor: category.color }}
+                />
+                <Icon 
+                  name={getCategoryIcon(category.name)} 
+                  size="sm"
+                  style={{ fontSize: '16px', marginRight: '8px' }}
                 />
                 <span className="spending-category">{category.name}</span>
               </div>

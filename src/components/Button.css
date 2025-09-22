@@ -33,22 +33,22 @@
 /* Button Sizes */
 .btn--small {
   padding: 5px 9px;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 12px;
+  line-height: 20px;
   min-height: 36px;
 }
 
 .btn--medium {
   padding: 10px;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 14px;
+  line-height: 22px;
   min-height: 40px;
 }
 
 .btn--large {
   padding: 12px;
-  font-size: 18px;
-  line-height: 22px;
+  font-size: 16px;
+  line-height: 24px;
   min-height: 48px;
 }
 

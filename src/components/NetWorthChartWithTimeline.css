@@ -1,6 +1,12 @@
 /* Net Worth Chart with Timeline Controls */
 .networth-chart-with-timeline {
   margin-bottom: 24px;
+  background:var(--color-background-paper);
+  padding:var(--spacing-lg);
+  border:1px solid var(--color-root-divider);
+  border-radius:8px;
+  box-shadow:var(--shadow-sm);
+  margin:0 var(--spacing-lg) var(--spacing-2xl);
 }
 
 .chart-header {

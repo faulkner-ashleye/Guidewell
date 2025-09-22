@@ -17,6 +17,7 @@ import { sampleScenarios } from '../../data/sampleScenarios';
 import { getTransactionIcon } from '../../utils/transactionIcons';
 import { formatDate } from '../../utils/format';
 import { Icon } from '../../components/Icon';
+import { getActivityItemCategoryName, getActivityItemCategoryIcon } from '../../utils/transactionCategories';
 // Removed COLORS import - using design system utilities instead
 import './Home.css';
 
@@ -183,8 +184,9 @@ export function Home() {
                     prefix = '';
                   }
 
-                  // Get the icon for this transaction
-                  const iconName = getTransactionIcon(item.description);
+                  // Get the category name and icon for this transaction
+                  const categoryName = getActivityItemCategoryName(item);
+                  const categoryIcon = getActivityItemCategoryIcon(item);
 
                   return (
                     <div key={item.id} className="activity-item">
@@ -196,18 +198,16 @@ export function Home() {
                           {/* Transaction Icon */}
                           <div className="activity-icon">
                             <Icon
-                              name={iconName}
+                              name={categoryIcon}
                               size="sm"
                               style={{ fontSize: '18px' }}
                             />
                           </div>
                           <div className="activity">
                               <div className="activity-description">{item.description}</div>
-                              {item.category && (
-                                <span className="activity-category">
-                                  {item.category}
-                                </span>
-                              )}
+                              <span className="activity-category">
+                                {categoryName}
+                              </span>
                         </div>
                         </div>
                         <div className={`activity-amount ${activityClass}`}>
