@@ -5,18 +5,20 @@ interface ProgressBarProps {
   target: number;
   current: number;
   goalType: 'debt' | 'savings' | 'investment' | 'emergency' | 'other';
+  remaining?: number; // For debt goals, this is the current debt balance
   className?: string;
 }
 
-export function ProgressBar({ target, current, goalType, className = '' }: ProgressBarProps) {
-  // For debt goals: target = original debt amount, current = remaining balance
-  // For other goals: target = goal amount, current = amount saved/invested
-  const achieved = goalType === 'debt' ? Math.max(0, target - current) : current;
-  const remaining = goalType === 'debt' ? current : Math.max(0, target - current);
+export function ProgressBar({ target, current, goalType, remaining, className = '' }: ProgressBarProps) {
+  // The current and target values are already calculated correctly by computeGoalProgress
+  // For debt goals: current = payments made, target = original debt, remaining = current debt balance
+  // For other goals: current = amount saved/invested, target = goal amount, remaining = target - current
+  const achieved = current;
+  const remainingAmount = remaining !== undefined ? remaining : Math.max(0, target - current);
 
   // Calculate percentages
   const achievedPercent = target > 0 ? (achieved / target) * 100 : 0;
-  const remainingPercent = target > 0 ? (remaining / target) * 100 : 0;
+  const remainingPercent = target > 0 ? (remainingAmount / target) * 100 : 0;
 
   // Handle edge case where no target is set
   if (target === 0) {

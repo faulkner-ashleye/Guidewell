@@ -1,23 +1,37 @@
 import React, { ReactNode, useEffect } from 'react';
+import { Icon, IconNames } from './Icon';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
   children: ReactNode;
+  footer?: ReactNode;
   size?: 'small' | 'medium' | 'large';
 }
 
-export function Modal({ isOpen, onClose, title, children, size = 'medium' }: ModalProps) {
+export function Modal({ isOpen, onClose, title, children, footer, size = 'medium' }: ModalProps) {
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      // Prevent scrolling on the phone content area
+      const phoneContent = document.querySelector('.phone-content');
+      if (phoneContent) {
+        phoneContent.classList.add('modal-open');
+      }
     } else {
-      document.body.style.overflow = 'unset';
+      // Re-enable scrolling
+      const phoneContent = document.querySelector('.phone-content');
+      if (phoneContent) {
+        phoneContent.classList.remove('modal-open');
+      }
     }
     
     return () => {
-      document.body.style.overflow = 'unset';
+      // Cleanup: re-enable scrolling when component unmounts
+      const phoneContent = document.querySelector('.phone-content');
+      if (phoneContent) {
+        phoneContent.classList.remove('modal-open');
+      }
     };
   }, [isOpen]);
 
@@ -30,22 +44,27 @@ export function Modal({ isOpen, onClose, title, children, size = 'medium' }: Mod
   };
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className="modal-overlay-phone" onClick={onClose}>
       <div 
-        className={`modal-panel ${sizeClasses[size]}`} 
+        className={`modal-phone ${sizeClasses[size]}`} 
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
           <div className="modal-header">
             <h2 className="modal-title">{title}</h2>
             <button className="modal-close" onClick={onClose}>
-              ×
+              <Icon name={IconNames.close} size="sm" />
             </button>
           </div>
         )}
         <div className="modal-body">
           {children}
         </div>
+        {footer && (
+          <div className="modal-footer">
+            {footer}
+          </div>
+        )}
       </div>
     </div>
   );

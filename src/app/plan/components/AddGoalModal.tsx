@@ -30,13 +30,13 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
   // Eligible accounts by type
   const eligibleAccounts = useMemo(() => {
     switch (type) {
-      case 'savings':   
+      case 'savings':
       case 'emergency_fund':
         return accounts; // Savings goals can be assigned to any account
-      case 'debt':      
+      case 'debt':
       case 'debt_payoff':
         return accounts.filter(a => a.type === 'loan' || a.type === 'credit_card' || a.type === 'debt'); // Debt goals only for debt accounts
-      case 'investing': 
+      case 'investing':
       case 'investment':
       case 'retirement':
         return accounts; // Investing goals can be assigned to any account
@@ -49,18 +49,18 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
 
   // Get selected account for debt goals
   const selectedAccount = accountId ? accounts.find(a => a.id === accountId) : null;
-  
+
   // Get selected accounts for multi-select
   const selectedAccounts = accountIds.map(id => accounts.find(a => a.id === id)).filter(Boolean) as Account[];
-  
+
   // Calculate total debt for multi-select debt goals
   const totalDebtAmount = selectedAccounts.reduce((sum, account) => sum + account.balance, 0);
-  
+
   // Auto-populate account and goal type when preselected
   useEffect(() => {
     if (preselectedAccountId && !accountId) {
       setAccountId(preselectedAccountId);
-      
+
       // Auto-select goal type based on account type
       const preselectedAccount = accounts.find(a => a.id === preselectedAccountId);
       if (preselectedAccount) {
@@ -171,26 +171,26 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
             <div className="form-field">
               <label className="form-label">Goal type</label>
               <div className="form-row">
-                <TypeChip 
-                  label="Savings" 
-                  active={type==='savings'} 
-                  onClick={() => setType('savings')} 
+                <TypeChip
+                  label="Savings"
+                  active={type==='savings'}
+                  onClick={() => setType('savings')}
                 />
-                <TypeChip 
-                  label="Debt" 
-                  active={type==='debt'} 
-                  onClick={() => setType('debt')} 
+                <TypeChip
+                  label="Debt"
+                  active={type==='debt'}
+                  onClick={() => setType('debt')}
                 />
-                <TypeChip 
-                  label="Investing" 
-                  active={type==='investing'} 
-                  onClick={() => setType('investing')} 
+                <TypeChip
+                  label="Investing"
+                  active={type==='investing'}
+                  onClick={() => setType('investing')}
                 />
               </div>
               <small className="form-help">{headingByType[type]}</small>
             </div>
           )}
-          
+
           {preselectedAccountId && (
             <div className="form-field">
               <label className="form-label">Goal type</label>
@@ -205,11 +205,11 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
 
           <div className="form-field">
             <label className="form-label">Goal name</label>
-            <input 
-              className="input" 
-              placeholder="e.g., Wedding Fund" 
-              value={name} 
-              onChange={e=>setName(e.target.value)} 
+            <input
+              className="input"
+              placeholder="e.g., Wedding Fund"
+              value={name}
+              onChange={e=>setName(e.target.value)}
               maxLength={NAME_MAX}
             />
           </div>
@@ -245,9 +245,9 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
                 )}
               </div>
             ) : (
-              <select 
+              <select
                 className="select"
-                value={accountId || ''} 
+                value={accountId || ''}
                 onChange={e=>setAccountId(e.target.value || undefined)}
               >
                 <option value="">Not linked yet</option>
@@ -257,8 +257,8 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
               </select>
             )}
             <small className="form-help">
-              {preselectedAccountId 
-                ? `Goal will be linked to ${selectedAccount?.name}` 
+              {preselectedAccountId
+                ? `Goal will be linked to ${selectedAccount?.name}`
                 : type === 'debt' && eligibleAccounts && eligibleAccounts.length > 1
                 ? 'Select multiple accounts to create a combined payoff goal.'
                 : 'Linking helps track progress automatically.'
@@ -269,11 +269,10 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
           <div className="form-row">
             <div className="form-field">
               <label className="form-label">{type === 'debt' ? 'Current payoff amount' : 'Target amount'}</label>
-              <input 
+              <input
                 className={`input ${type === 'debt' && (selectedAccount || selectedAccounts.length > 0) ? 'opacity-60 cursor-not-allowed' : ''}`}
-                type="number" 
-                inputMode="decimal" 
-                placeholder="15000" 
+                type="text"
+                placeholder="15000"
                 value={target}
                 onChange={e=>setTarget(e.target.value === '' ? '' : Number(e.target.value))}
                 readOnly={type === 'debt' && (!!selectedAccount || selectedAccounts.length > 0)}
@@ -296,10 +295,10 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
             </div>
             <div className="form-field">
               <label className="form-label">Target date (optional)</label>
-              <input 
-                className="input" 
-                type="date" 
-                value={targetDate || ''} 
+              <input
+                className="input"
+                type="date"
+                value={targetDate || ''}
                 onChange={e=>setTargetDate(e.target.value || undefined)}
               />
             </div>
@@ -307,11 +306,10 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
 
           <div className="form-field">
             <label className="form-label">Monthly contribution (optional)</label>
-            <input 
-              className="input" 
-              type="number" 
-              inputMode="decimal" 
-              placeholder="200" 
+            <input
+              className="input"
+              type="text"
+              placeholder="200"
               value={monthlyContribution}
               onChange={e=>setMonthlyContribution(e.target.value === '' ? '' : Number(e.target.value))}
             />
@@ -321,9 +319,9 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
           <div className="form-row">
             <div className="form-field">
               <label className="form-label">Priority (optional)</label>
-              <select 
-                className="select" 
-                value={priority || ''} 
+              <select
+                className="select"
+                value={priority || ''}
                 onChange={e => setPriority((e.target.value || undefined) as any)}
               >
                 <option value="">None</option>
@@ -334,10 +332,10 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
             </div>
             <div className="form-field">
               <label className="form-label">Motivation note (optional)</label>
-              <input 
-                className="input" 
-                placeholder="Why this matters to you" 
-                value={note} 
+              <input
+                className="input"
+                placeholder="Why this matters to you"
+                value={note}
                 onChange={e=>setNote(e.target.value)}
               />
             </div>
@@ -348,22 +346,15 @@ export default function AddGoalModal({ open, onClose, onCreate, accounts, presel
           </div>
         </div>
 
-        <div className="modal-footer" style={{ 
-          display: 'flex', 
-          gap: '12px', 
-          justifyContent: 'flex-end',
-          marginTop: '24px',
-          paddingTop: '16px',
-          borderTop: '1px solid #e5e7eb'
-        }}>
-          <Button 
+        <div className="modal-footer">
+          <Button
             variant={ButtonVariants.outline}
             color={ButtonColors.secondary}
             onClick={onClose}
           >
             Cancel
           </Button>
-          <Button 
+          <Button
             variant={ButtonVariants.contained}
             color={ButtonColors.secondary}
             onClick={handleSave}

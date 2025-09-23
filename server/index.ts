@@ -116,6 +116,8 @@ app.post('/plaid/link/token/create', async (req: Request, res: Response) => {
     balance: a.balances.current || 0,
     apr: undefined as number | undefined,
     minPayment: undefined as number | undefined,
+    institutionId: a.institution_id,
+    institutionName: a.institution_name,
   }));
 
   const cc = liab.data.liabilities?.credit || [];
@@ -140,6 +142,32 @@ app.post('/plaid/link/token/create', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Error fetching accounts:', error);
     res.status(500).json({ error: 'Failed to fetch accounts' });
+  }
+});
+
+// 4) Fetch institution logo
+app.post('/plaid/institution/logo', async (req: Request, res: Response) => {
+  try {
+    const { institutionId } = req.body;
+    
+    if (!institutionId) {
+      return res.status(400).json({ error: 'Institution ID is required' });
+    }
+
+    const institution = await plaid.institutionsGetById({
+      institution_id: institutionId,
+      country_codes: ['US']
+    });
+
+    res.json({ 
+      logo: institution.data.institution.logo,
+      name: institution.data.institution.name,
+      primaryColor: institution.data.institution.primary_color,
+      url: institution.data.institution.url
+    });
+  } catch (error) {
+    console.error('Error fetching institution logo:', error);
+    res.status(500).json({ error: 'Failed to fetch institution logo' });
   }
 });
 

@@ -26,10 +26,11 @@ interface GoalCardProps {
   showHeader?: boolean;
   isLinkedAccount?: boolean;
   onLogContribution?: () => void;
+  onEditGoal?: () => void;
   className?: string;
 }
 
-export function GoalCard({ goal, accounts, showActionButton = true, showLogButton = false, showHeader = true, isLinkedAccount = false, onLogContribution, className = '' }: GoalCardProps) {
+export function GoalCard({ goal, accounts, showActionButton = true, showLogButton = false, showHeader = true, isLinkedAccount = false, onLogContribution, onEditGoal, className = '' }: GoalCardProps) {
   const navigate = useNavigate();
 
   // Determine goal type for styling and labels
@@ -174,19 +175,32 @@ export function GoalCard({ goal, accounts, showActionButton = true, showLogButto
           )}
         </div>
 
-        {/* Action button for incomplete goals */}
-        {showActionButton && goal.progress < 100 && (
-          <div className="goal-card-action">
+        {/* Card Actions */}
+        <div className="goal-card-action">
+          {isLinkedAccount && onEditGoal ? (
+            /* Edit button for linked accounts */
             <Button
               variant={ButtonVariants.text}
               color={ButtonColors.secondary}
-              onClick={handleActionClick}
+              onClick={onEditGoal}
               className="goal-action-button"
             >
-              {goalType === 'debt' ? 'Start paying down' : 'Start saving now'}
+              Edit Goal
             </Button>
-          </div>
-        )}
+          ) : (
+            /* Action button for incomplete non-linked goals */
+            showActionButton && goal.progress < 100 && (
+              <Button
+                variant={ButtonVariants.text}
+                color={ButtonColors.secondary}
+                onClick={handleActionClick}
+                className="goal-action-button"
+              >
+                {goalType === 'debt' ? 'Start paying down' : 'Start saving now'}
+              </Button>
+            )
+          )}
+        </div>
       </div>
 
       {/* Card Footer with Log Button */}

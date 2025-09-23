@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { COLORS } from '../ui/colors';
 import { Button, ButtonVariants, ButtonColors, ButtonSizes } from './Button';
 import { Icon, IconNames } from './Icon';
+import { InstitutionLogoService } from '../services/institutionLogoService';
 import './Button.css';
+import './AccountRow.css';
 
 interface AccountRowProps {
   name: string;
@@ -14,6 +16,8 @@ interface AccountRowProps {
   hasGoal?: boolean;
   goalName?: string;
   goalId?: string;
+  institutionId?: string;
+  institutionName?: string;
   onCreateGoal?: (accountId: string) => void;
   onViewGoal?: (goalId: string) => void;
   onNavigateToAccount?: (accountId: string) => void;
@@ -29,12 +33,59 @@ export function AccountRow({
   hasGoal = false,
   goalName,
   goalId,
+  institutionId,
+  institutionName,
   onCreateGoal,
   onViewGoal,
   onNavigateToAccount
 }: AccountRowProps) {
   const badge = health === 'ok' ? '✅' : health === 'warn' ? '⚠️' : '❗';
   const canHaveGoal = true; // All account types can now have goals
+
+  // State for institution logo
+  const [institutionLogo, setInstitutionLogo] = useState<string | null>(null);
+  const [fallbackIcon, setFallbackIcon] = useState<string>(IconNames.account_balance_wallet);
+  const [logoLoading, setLogoLoading] = useState(false);
+
+  // Load institution logo on mount
+  useEffect(() => {
+    const loadLogo = async () => {
+      if (institutionId || institutionName) {
+        setLogoLoading(true);
+        try {
+          const result = await InstitutionLogoService.getInstitutionLogo(
+            institutionId,
+            institutionName,
+            accountType
+          );
+          setInstitutionLogo(result.logo || null);
+          setFallbackIcon(result.fallbackIcon);
+        } catch (error) {
+          console.warn('Failed to load institution logo:', error);
+          setInstitutionLogo(null);
+          setFallbackIcon(getAccountIcon(accountType));
+        } finally {
+          setLogoLoading(false);
+        }
+      } else {
+        setFallbackIcon(getAccountIcon(accountType));
+      }
+    };
+
+    loadLogo();
+  }, [institutionId, institutionName, accountType]);
+
+  const getAccountIcon = (type: AccountRowProps['accountType']): string => {
+    const icons: Record<NonNullable<AccountRowProps['accountType']>, string> = {
+      'checking': IconNames.account_balance_wallet,
+      'savings': IconNames.savings,
+      'credit_card': IconNames.credit_card,
+      'loan': IconNames.account_balance,
+      'investment': IconNames.trending_up,
+      'debt': IconNames.account_balance
+    };
+    return icons[type || 'checking'] || IconNames.account_balance_wallet;
+  };
   
   const getGoalButtonText = () => {
     switch (accountType) {
@@ -69,38 +120,72 @@ export function AccountRow({
   };
   
   return (
-    <div className="flex flex-col gap-xs">
+    <div className="account-row-container">
       <div 
-        className={`grid grid-cols-[1fr_auto] items-center p-xs rounded-md transition-colors ${
-          onNavigateToAccount && accountId ? 'cursor-pointer hover:bg-gray-50' : 'cursor-default'
-        }`}
+        className={`account-row-card ${onNavigateToAccount && accountId ? 'account-row-clickable' : ''}`}
         onClick={() => onNavigateToAccount && accountId && onNavigateToAccount(accountId)}
       >
-        <div>
-          <div className="text-gray-900">{badge} {name}</div>
-          {meta && <div className="text-gray-500 text-xs">{meta}</div>}
+        <div className="account-row-content">
+          {/* Institution Logo or Fallback Icon */}
+          <div className="account-row-icon">
+            {logoLoading ? (
+              <div className="account-row-logo-loading">
+                <Icon name={IconNames.refresh} size="sm" />
+              </div>
+            ) : institutionLogo ? (
+              <img 
+                src={institutionLogo} 
+                alt={`${institutionName || name} logo`}
+                className="account-row-bank-logo"
+                onError={() => {
+                  // Fallback to icon if image fails to load
+                  setInstitutionLogo(null);
+                }}
+              />
+            ) : (
+              <Icon name={fallbackIcon} size="sm" />
+            )}
+          </div>
+
+          {/* Account Info */}
+          <div className="account-row-info">
+            <div className="account-row-name">
+              {name}
+            </div>
+          </div>
+
+          {/* Balance */}
+          <div className="account-row-balance">
+            <div className="account-row-balance-amount">
+              {value}
+            </div>
+            {meta && (
+              <div className="account-row-balance-meta">
+                {meta}
+              </div>
+            )}
+          </div>
         </div>
-        <div className="text-gray-900">{value}</div>
       </div>
       
       {/* Goal Section - Now available for all account types */}
       {accountId && (
-        <div className="flex justify-between items-center px-sm py-xs bg-gray-50 border border-gray-200 rounded-md text-xs">
+        <div className="account-row-goal-section">
           {hasGoal ? (
             <>
-              <div className="text-gray-500">
-                🎯 Linked to: <span className="text-blue-600">{goalName}</span>
+              <div className="account-row-goal-info">
+                🎯 Linked to: <span className="account-row-goal-name">{goalName}</span>
               </div>
               <button
                 onClick={() => goalId && onViewGoal?.(goalId)}
-                className="bg-transparent border-none text-blue-600 cursor-pointer text-xs underline hover:text-blue-700"
+                className="account-row-goal-button"
               >
                 View Goal
               </button>
             </>
           ) : (
             <>
-              <div className="text-gray-500">
+              <div className="account-row-goal-info">
                 {accountType === 'credit_card' ? 'No payoff goal set' :
                  accountType === 'loan' ? 'No payoff goal set' :
                  accountType === 'investment' ? 'No investment goal set' :

@@ -1,12 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '../components/Card';
+import { Button, ButtonVariants, ButtonColors } from '../components/Button';
 import AppHeader from '../app/components/AppHeader';
 import { useAppState } from '../state/AppStateContext';
-import { sumByType } from '../state/selectors';
+import { sumByType, getHighestAPR } from '../state/selectors';
 import { ProgressMilestoneTracker } from '../components/ProgressMilestoneTracker';
 import { PersonalSnapshot } from '../components/PersonalSnapshot';
 import { TradeoffHighlight } from '../components/TradeoffHighlight';
+import '../components/Button.css';
 import './Strategies.css';
 
 export function Strategies() {
@@ -19,6 +21,7 @@ export function Strategies() {
   const savingsTotal = sumByType(accounts, ['checking', 'savings']);
   const debtTotal = sumByType(accounts, ['credit_card', 'loan']);
   const investmentTotal = sumByType(accounts, ['investment']);
+  const highestAPR = getHighestAPR(accounts);
   
   const hasData = accounts.length > 0;
   const hasDebt = debtTotal > 0;
@@ -89,50 +92,62 @@ export function Strategies() {
         <div className="grid-auto mb-lg">
           {/* Recommended Strategy Card */}
           <Card className="strategy-card recommended">
-            <div className="strategy-card-header">
+            <div className="card-header">
               <div className="strategy-card-icon">⭐</div>
-              <h3 className="strategy-card-title">
+              <h3 className="card-title">
                 Recommended Strategy
               </h3>
             </div>
-            <p className="strategy-card-description">
-              {hasData ? (
-                hasDebt && debtTotal > savingsTotal ? 
-                  "Based on your current debt situation, we recommend focusing on debt reduction strategies to improve your financial foundation." :
-                !hasSavings || savingsTotal < 5000 ?
-                  "Based on your current savings, we recommend building your emergency fund and savings goals first." :
-                hasSavings && !hasInvestments ?
-                  "Based on your savings progress, we recommend starting to invest for long-term wealth building." :
-                  "Based on your balanced financial profile, we recommend a diversified approach across debt, savings, and investments."
-              ) : (
-                "Connect your accounts to get a personalized strategy recommendation based on your financial situation."
-              )}
-            </p>
-            <button 
-              onClick={handleViewStrategy}
-              className="strategy-button strategy-button--primary"
-            >
-              View strategy
-            </button>
+            <div className="card-body">
+              <p className="strategy-card-description">
+                {hasData ? (
+                  hasDebt && debtTotal > savingsTotal ? 
+                    "Based on your current debt situation, we recommend focusing on debt reduction strategies to improve your financial foundation." :
+                  !hasSavings || savingsTotal < 5000 ?
+                    "Based on your current savings, we recommend building your emergency fund and savings goals first." :
+                  hasSavings && !hasInvestments ?
+                    "Based on your savings progress, we recommend starting to invest for long-term wealth building." :
+                    "Based on your balanced financial profile, we recommend a diversified approach across debt, savings, and investments."
+                ) : (
+                  "Connect your accounts to get a personalized strategy recommendation based on your financial situation."
+                )}
+              </p>
+            </div>
+            <div className="card-footer">
+              <Button 
+                variant={ButtonVariants.contained}
+                color={ButtonColors.secondary}
+                fullWidth={true}
+                onClick={handleViewStrategy}
+              >
+                View strategy
+              </Button>
+            </div>
           </Card>
 
           {/* Build Your Own Strategy Card */}
           <Card className="strategy-card build-your-own">
-            <div className="strategy-card-header">
+            <div className="card-header">
               <div className="strategy-card-icon">🛠️</div>
-              <h3 className="strategy-card-title">
+              <h3 className="card-title">
                 Build Your Own Strategy
               </h3>
             </div>
-            <p className="strategy-card-description">
-              Create a custom financial strategy tailored to your specific goals and risk tolerance.
-            </p>
-            <button 
-              onClick={handleBuildStrategy}
-              className="strategy-button strategy-button--secondary"
-            >
-              Start building
-            </button>
+            <div className="card-body">
+              <p className="strategy-card-description">
+                Create a custom financial strategy tailored to your specific goals and risk tolerance.
+              </p>
+            </div>
+            <div className="card-footer">
+              <Button 
+                variant={ButtonVariants.outline}
+                color={ButtonColors.secondary}
+                fullWidth={true}
+                onClick={handleBuildStrategy}
+              >
+                Start building
+              </Button>
+            </div>
           </Card>
         </div>
 
@@ -143,7 +158,10 @@ export function Strategies() {
             hasSavings,
             hasInvestments,
             debtTotal,
-            savingsTotal
+            savingsTotal,
+            investmentTotal,
+            highestAPR,
+            monthlyExpenses: 3000 // Default estimate, could be made dynamic
           }}
         />
 

@@ -27,5 +27,7 @@ export interface Account {
   monthlyDirectDeposit?: number;
   linked?: boolean; // Whether account is digitally linked (vs manual)
   creditLimit?: number; // For credit cards
+  institutionId?: string; // Plaid institution ID
+  institutionName?: string; // Institution name from Plaid
 }
 

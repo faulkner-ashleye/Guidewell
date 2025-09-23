@@ -18,6 +18,7 @@
   border-radius: var(--radius-md);
   background: var(--color-card);
   color: var(--color-text-primary);
+  font-family: var(--font-family-sans);
   font-size: var(--font-size-sm);
   transition: all var(--transition-normal);
 }
@@ -249,7 +250,7 @@
 /* Card Components */
 .card {
   background: var(--color-card);
-  border: 1px solid var(--color-root-interactive-border);
+  border: 1px solid var(--color-root-divider);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
   box-shadow: var(--shadow-sm);
@@ -342,13 +343,19 @@
   max-height: 90vh;
   overflow: auto;
   box-shadow: var(--shadow-xl);
+  border:1px solid var(--color-root-divider);
 }
 
 .modal-header {
   display: flex;
+  position: sticky;
+  top:0;
   align-items: center;
   justify-content: space-between;
   margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background: var(--color-background-paper);
+  border-bottom:1px solid var(--color-root-divider);
 }
 
 .modal-title {
@@ -368,13 +375,61 @@
 }
 
 .modal-body {
+    padding:var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
 }
 
 .modal-footer {
   display: flex;
-  gap: var(--spacing-md);
+  position: sticky;
+  bottom:0;
+  padding:var(--spacing-lg);
+  gap: var(--spacing-lg);
   justify-content: flex-end;
+  border-top:1px solid var(--color-root-divider);
+  background:var(--color-background-paper)
+}
+
+/* Modal Sizes */
+.modal-small {
+  max-width: 400px;
+}
+
+.modal-medium {
+  max-width: 600px;
+}
+
+.modal-large {
+  max-width: 800px;
+}
+
+/* Phone-specific Modal (contained within phone screen) */
+.modal-overlay-phone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-phone {
+  background: var(--color-card);
+  border-radius: var(--radius-lg);
+  max-width: 90%;
+  max-height: 90%;
+  overflow: auto;
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+}
+
+/* Prevent scrolling when modal is open */
+.phone-content.modal-open {
+  overflow: hidden;
 }
 
 /* Input Components */
@@ -386,6 +441,7 @@
   border-radius: 4px;
   background: var(--color-card);
   color: var(--color-text-primary);
+  font-family: var(--font-family-sans);
   font-size: 16px;
   line-height: 24px;
   transition: all var(--transition-normal);
@@ -415,6 +471,7 @@
   border-radius: 4px;
   background: var(--color-card);
   color: var(--color-text-primary);
+  font-family: var(--font-family-sans);
   font-size: 16px;
   line-height: 24px;
   cursor: pointer;
@@ -501,7 +558,7 @@ box-shadow: 0 -1px -2px rgba(0, 0, 0, 0.64);
 }
 
 .navbar-label {
-  font-size:10px;
+  font-size:11px;
   font-weight: var(--font-weight-bold);
 }
 

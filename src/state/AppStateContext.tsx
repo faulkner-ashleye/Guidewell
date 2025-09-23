@@ -101,6 +101,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   const [opportunities, setOpportunities] = useState<any[] | null>(null);
   const [validationErrors, setValidationErrors] = useState<string[] | null>(null);
   const [currentScenario, setCurrentScenario] = useState<SampleScenario | null>(null);
+  const [hasLoadedDefaultScenario, setHasLoadedDefaultScenario] = useState(false);
 
   const loadSampleScenario = (scenarioId: string) => {
     const scenario = sampleScenarios[scenarioId];
@@ -108,6 +109,12 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       console.error(`Sample scenario '${scenarioId}' not found`);
       return;
     }
+
+    // Clear existing data first to prevent mixing scenarios
+    setAccounts([]);
+    setGoals([]);
+    setTransactions([]);
+    setContributions([]);
 
     // Set the current scenario
     setCurrentScenario(scenario);
@@ -163,10 +170,11 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
 
   // Load default sample scenario on app start
   useEffect(() => {
-    // Only load sample data if no accounts are present and no user profile exists
-    if (accounts.length === 0 && !userProfile) {
+    // Only load sample data if no accounts are present, no user profile exists, and we haven't loaded a default scenario yet
+    if (accounts.length === 0 && !userProfile && !hasLoadedDefaultScenario) {
       // Load the "recentGrad" scenario by default to show realistic activity
       loadSampleScenario('recentGrad');
+      setHasLoadedDefaultScenario(true);
     }
   }, []); // Empty dependency array means this runs once on mount
 
@@ -230,6 +238,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     setTransactions([]);
     setContributions([]);
     setCurrentScenario(null);
+    setHasLoadedDefaultScenario(false); // Reset the default scenario flag
     // Clear the hasSampleData flag but preserve other user profile data
     if (userProfile) {
       setUserProfile({
@@ -256,6 +265,10 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
         investPct: 0
       }
     });
+    
+    // Reset scenario flags
+    setCurrentScenario(null);
+    setHasLoadedDefaultScenario(false);
     
     // Clear any stored data from localStorage
     localStorage.removeItem('guidewell-user-profile');

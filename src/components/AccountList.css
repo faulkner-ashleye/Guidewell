@@ -1,0 +1,161 @@
+/* Account List Styles */
+.accounts-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.account-type-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.account-type-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.account-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.accounts-empty-state {
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.empty-message {
+  font-size: var(--font-size-base);
+  font-style: italic;
+  color: var(--color-text-secondary);
+}
+
+.account-card {
+  background: var(--color-background-paper);
+  border: 1px solid var(--color-root-divider);
+  border-radius: var(--radius-lg);
+  transition: all 0.2s ease;
+}
+
+.account-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.account-card-content {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-lg);
+  gap: var(--spacing-md);
+}
+
+/* Bank Logo / Icon */
+.account-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--color-background-secondary);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bank-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+/* Account Info */
+.account-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.account-name {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
+  line-height: 1.2;
+}
+
+.account-type {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Balance */
+.account-balance {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.balance-amount {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
+  line-height: 1.2;
+}
+
+.balance-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.apr-info,
+.min-payment-info {
+  white-space: nowrap;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .account-card-content {
+    padding: var(--spacing-md);
+    gap: var(--spacing-sm);
+  }
+
+  .account-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .bank-logo {
+    width: 20px;
+    height: 20px;
+  }
+
+  .account-name {
+    font-size: var(--font-size-sm);
+  }
+
+  .account-type {
+    font-size: var(--font-size-xs);
+  }
+
+  .balance-amount {
+    font-size: var(--font-size-sm);
+  }
+
+  .balance-meta {
+    font-size: 10px;
+  }
+}

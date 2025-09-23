@@ -14,9 +14,11 @@ import { GoalCard } from '../../../components/GoalCard';
 import { Button, ButtonVariants, ButtonColors } from '../../../components/Button';
 import AppHeader from '../../components/AppHeader';
 import LogContributionModal from '../../components/LogContributionModal';
+import { Modal } from '../../../components/Modal';
 import { Goal } from '../../../app/types';
 import { COLORS } from '../../../ui/colors';
 import './GoalDetailPage.css';
+import '../../../pages/Settings/Settings.css';
 
 export default function GoalDetailPage() {
   const params = useParams();
@@ -40,37 +42,31 @@ export default function GoalDetailPage() {
   const goal = goals.find(g => g.id === goalId);
 
   // Get goal progress
-  const progress = goal ? computeGoalProgress(goal, accounts, contributions) : null;
+  const progress = goal ? computeGoalProgress(goal, accounts, contributions, transactions) : null;
 
   // Get linked account
   const linkedAccount = goal ? getGoalLinkedAccount(goal, accounts) : null;
 
   // Get contributions for this goal, filtered by goal type
   const goalContributions = goal ? getContributionsByGoal(contributions, goalId).filter(contrib => {
-    // For debt goals, only show payments (negative amounts that reduce debt)
+    // For debt goals, filter based on account type
     if (goal.type === 'debt' || goal.type === 'debt_payoff') {
-      // Only show actual debt payments, not all negative contributions
-      const isDebtPayment = contrib.description.toLowerCase().includes('payment') ||
-                           contrib.description.toLowerCase().includes('loan') ||
-                           contrib.description.toLowerCase().includes('credit') ||
-                           contrib.description.toLowerCase().includes('student') ||
-                           contrib.description.toLowerCase().includes('debt');
-      return contrib.amount < 0 && isDebtPayment;
+      // For credit cards: positive amounts are payments, negative amounts are charges
+      // For loans: negative amounts are payments, positive amounts are advances
+      const linkedAccount = accounts.find(acc => acc.id === goal.accountId);
+      if (linkedAccount?.type === 'credit_card') {
+        return contrib.amount > 0; // Only show payments for credit cards
+      } else {
+        return contrib.amount < 0; // Only show payments for loans
+      }
     }
-    
+
     // For savings/investment goals, only show positive contributions
     if (goal.type === 'emergency_fund' || goal.type === 'savings' || goal.type === 'investment') {
-      // Only show actual savings contributions, not all positive contributions
-      const isSavingsContribution = contrib.description.toLowerCase().includes('deposit') ||
-                                   contrib.description.toLowerCase().includes('contribution') ||
-                                   contrib.description.toLowerCase().includes('transfer') ||
-                                   contrib.description.toLowerCase().includes('savings') ||
-                                   contrib.description.toLowerCase().includes('emergency') ||
-                                   contrib.description.toLowerCase().includes('fund') ||
-                                   contrib.description.toLowerCase().includes('investment');
-      return contrib.amount > 0 && isSavingsContribution;
+      // Show all positive contributions for savings goals (they're all deposits)
+      return contrib.amount > 0;
     }
-    
+
     // For other goal types, show all contributions
     return true;
   }) : [];
@@ -81,39 +77,36 @@ export default function GoalDetailPage() {
   console.log('All contributions for this goal:', getContributionsByGoal(contributions, goalId));
   console.log('Filtered contributions:', goalContributions);
   console.log('Total filtered contributions:', goalContributions.reduce((sum, c) => sum + c.amount, 0));
+  console.log('All transactions:', transactions.length);
+  console.log('Transactions for this goal account:', transactions.filter(tx => tx.account_id === goal?.accountId));
 
-  // Get account activity for linked goals, filtered by goal type
+  // Get account activity for linked goals, filtered by goal type and limited to recent activity
   const accountActivity = linkedAccount ? mergeAccountActivity(
     transactions,
     contributions,
     linkedAccount.id,
     linkedAccount.name
   ).filter(item => {
-    // For debt goals, only show payments (negative amounts that reduce debt)
+    // For debt goals, filter based on account type
     if (goal?.type === 'debt' || goal?.type === 'debt_payoff') {
-      // Only show actual debt payments, not all negative transactions
-      const isDebtPayment = item.description.toLowerCase().includes('payment') ||
-                           item.description.toLowerCase().includes('loan') ||
-                           item.description.toLowerCase().includes('credit') ||
-                           item.description.toLowerCase().includes('student');
-      return item.amount < 0 && isDebtPayment;
+      // For credit cards: positive amounts are payments, negative amounts are charges
+      // For loans: negative amounts are payments, positive amounts are advances
+      if (linkedAccount?.type === 'credit_card') {
+        return item.amount > 0; // Only show payments for credit cards
+      } else {
+        return item.amount < 0; // Only show payments for loans
+      }
     }
-    
+
     // For savings/investment goals, only show positive contributions
     if (goal?.type === 'emergency_fund' || goal?.type === 'savings' || goal?.type === 'investment') {
-      // Only show actual savings contributions, not all positive transactions
-      const isSavingsContribution = item.description.toLowerCase().includes('deposit') ||
-                                   item.description.toLowerCase().includes('contribution') ||
-                                   item.description.toLowerCase().includes('transfer') ||
-                                   item.description.toLowerCase().includes('savings') ||
-                                   item.description.toLowerCase().includes('emergency') ||
-                                   item.description.toLowerCase().includes('fund');
-      return item.amount > 0 && isSavingsContribution;
+      // Show all positive transactions for savings goals (they're all deposits)
+      return item.amount > 0;
     }
-    
+
     // For other goal types, show all activity
     return true;
-  }) : [];
+  }).slice(0, 5) : []; // Show 5 most recent transactions
 
   // Debug logging for account activity
   if (linkedAccount) {
@@ -121,6 +114,19 @@ export default function GoalDetailPage() {
     console.log('All account activity:', mergeAccountActivity(transactions, contributions, linkedAccount.id, linkedAccount.name));
     console.log('Filtered account activity:', accountActivity);
     console.log('Total filtered account activity:', accountActivity.reduce((sum, a) => sum + a.amount, 0));
+    console.log('Account balance:', linkedAccount.balance);
+    console.log('Progress current:', progress?.current);
+
+    // Log each filtered transaction individually
+    accountActivity.forEach((item, index) => {
+      console.log(`Transaction ${index + 1}:`, {
+        description: item.description,
+        amount: item.amount,
+        date: item.date,
+        category: item.category,
+        source: item.source
+      });
+    });
   }
 
   // Handle back navigation
@@ -146,8 +152,11 @@ export default function GoalDetailPage() {
 
   // Handle goal editing
   const handleEditGoal = () => {
-    if (goal) {
-      setEditedGoal({ ...goal });
+    if (goal && progress) {
+      setEditedGoal({
+        ...goal,
+        target: progress.target // Use computed target instead of raw goal.target
+      });
       setEditOpen(true);
     }
   };
@@ -210,24 +219,11 @@ export default function GoalDetailPage() {
             <Icon name={IconNames.arrow_back} size="lg" />
           </button>
         }
-        rightAction={
-          <button
-            onClick={handleEditGoal}
-            className="header-edit-button"
-            aria-label="Edit goal"
-          >
-            Edit
-          </button>
-        }
       />
 
       <div className="goal-detail-page">
         {/* Goal Header */}
         <div className="goal-header">
-          <Icon
-            name={getGoalIcon(goal.name)}
-            size="xl"
-          />
           <h1 className="goal-title">{goal.name}</h1>
         </div>
 
@@ -250,15 +246,16 @@ export default function GoalDetailPage() {
           showHeader={false}
           isLinkedAccount={!!linkedAccount}
           onLogContribution={() => setLogOpen(true)}
+          onEditGoal={handleEditGoal}
           className="goal-detail-card"
         />
 
         {/* Linked Account Note */}
-        {linkedAccount?.linked && (
+          {linkedAccount?.linked && (
           <div className="linked-account-note">
-            Linked accounts usually update automatically; manual entries are recorded as personal notes.
-          </div>
-        )}
+              Linked accounts usually update automatically; manual entries are recorded as personal notes.
+            </div>
+          )}
 
         {/* Recent Activity */}
         <div className="recent-activity">
@@ -309,11 +306,6 @@ export default function GoalDetailPage() {
                           <div className={`amount-value ${item.amount >= 0 ? 'amount-positive' : 'amount-negative'}`}>
                             {item.amount >= 0 ? '+' : ''}{formatCurrency(item.amount)}
                           </div>
-                          {linkedAccount && (
-                            <div className="running-balance">
-                              {formatCurrency(linkedAccount.balance)}
-                            </div>
-                          )}
                         </div>
                       </div>
                     </div>
@@ -323,7 +315,7 @@ export default function GoalDetailPage() {
           ) : (
             <div className="no-activity shadow-sm">
               {linkedAccount ? (
-                `No activity yet. This goal is linked to your ${linkedAccount.name} account. Transactions will appear here when they sync.`
+                `No recent activity yet. This goal is linked to your ${linkedAccount.name} account (current balance: ${formatCurrency(linkedAccount.balance)}). Recent transactions will appear here.`
               ) : (
                 'No contributions logged yet. Log a contribution to get started.'
               )}
@@ -346,148 +338,82 @@ export default function GoalDetailPage() {
       />
 
       {/* Edit Goal Modal */}
-      {editOpen && editedGoal && (
-        <div
-          role="dialog"
-          aria-modal="true"
+      <Modal
+        isOpen={editOpen}
+        onClose={handleCancelEdit}
+        title="Edit Goal"
+        size="large"
+        footer={editedGoal ? (
+          <>
+            <Button
+              variant={ButtonVariants.text}
+              color={ButtonColors.secondary}
           onClick={handleCancelEdit}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0,0,0,0.4)',
-            zIndex: 1000,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '20px'
-          }}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              background: '#1C1C1C',
-              border: '1px solid #3C3C3C',
-              borderRadius: '12px',
-              padding: '24px',
-              minWidth: '400px',
-              maxWidth: '500px',
-              width: '100%'
-            }}
-          >
-            <h2 style={{
-              margin: '0 0 20px 0',
-              fontSize: '20px',
-              fontWeight: '600',
-              color: '#FFFFFF'
-            }}>
-              Edit Goal
-            </h2>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            >
+              Cancel
+            </Button>
+            <Button
+              variant={ButtonVariants.contained}
+              color={ButtonColors.secondary}
+              onClick={handleSaveGoal}
+              disabled={!editedGoal.name || editedGoal.target <= 0}
+            >
+              Update
+            </Button>
+          </>
+        ) : null}
+      >
+        {editedGoal && (
+          <div>
               {/* Goal Name */}
-              <div>
-                <label style={{
-                  display: 'block',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  color: '#FFFFFF',
-                  marginBottom: '6px'
-                }}>
+            <div className="form-group">
+              <label className="form-label">
                   Goal Name
                 </label>
                 <input
                   type="text"
                   value={editedGoal.name}
                   onChange={(e) => setEditedGoal({ ...editedGoal, name: e.target.value })}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    background: '#2C2C2C',
-                    border: '1px solid #3C3C3C',
-                    borderRadius: '6px',
-                    color: '#FFFFFF',
-                    fontSize: '14px'
-                  }}
+                className="form-input"
                 />
               </div>
 
               {/* Target Amount */}
-              <div>
-                <label style={{
-                  display: 'block',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  color: '#FFFFFF',
-                  marginBottom: '6px'
-                }}>
+            <div className="form-group">
+              <label className="form-label">
                   Target Amount
                 </label>
                 <input
-                  type="number"
+                type="text"
                   value={editedGoal.target}
                   onChange={(e) => setEditedGoal({ ...editedGoal, target: parseFloat(e.target.value) || 0 })}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    background: '#2C2C2C',
-                    border: '1px solid #3C3C3C',
-                    borderRadius: '6px',
-                    color: '#FFFFFF',
-                    fontSize: '14px'
-                  }}
+                className="form-input"
+                placeholder="Enter target amount"
                 />
               </div>
 
               {/* Target Date */}
-              <div>
-                <label style={{
-                  display: 'block',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  color: '#FFFFFF',
-                  marginBottom: '6px'
-                }}>
+            <div className="form-group">
+              <label className="form-label">
                   Target Date
                 </label>
                 <input
                   type="date"
                   value={editedGoal.targetDate || ''}
                   onChange={(e) => setEditedGoal({ ...editedGoal, targetDate: e.target.value })}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    background: '#2C2C2C',
-                    border: '1px solid #3C3C3C',
-                    borderRadius: '6px',
-                    color: '#FFFFFF',
-                    fontSize: '14px'
-                  }}
+                className="form-input"
                 />
               </div>
 
               {/* Priority */}
-              <div>
-                <label style={{
-                  display: 'block',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  color: '#FFFFFF',
-                  marginBottom: '6px'
-                }}>
+            <div className="form-group">
+              <label className="form-label">
                   Priority
                 </label>
                 <select
                   value={editedGoal.priority}
                   onChange={(e) => setEditedGoal({ ...editedGoal, priority: e.target.value as 'high' | 'medium' | 'low' })}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    background: '#2C2C2C',
-                    border: '1px solid #3C3C3C',
-                    borderRadius: '6px',
-                    color: '#FFFFFF',
-                    fontSize: '14px'
-                  }}
+                className="form-input"
                 >
                   <option value="high">High Priority</option>
                   <option value="medium">Medium Priority</option>
@@ -495,105 +421,26 @@ export default function GoalDetailPage() {
                 </select>
               </div>
 
-              {/* Monthly Contribution */}
-              <div>
-                <label style={{
-                  display: 'block',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  color: '#FFFFFF',
-                  marginBottom: '6px'
-                }}>
-                  Monthly Contribution
-                </label>
-                <input
-                  type="number"
-                  value={editedGoal.monthlyContribution || ''}
-                  onChange={(e) => setEditedGoal({ ...editedGoal, monthlyContribution: parseFloat(e.target.value) || 0 })}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    background: '#2C2C2C',
-                    border: '1px solid #3C3C3C',
-                    borderRadius: '6px',
-                    color: '#FFFFFF',
-                    fontSize: '14px'
-                  }}
-                />
-              </div>
 
               {/* Note */}
-              <div>
-                <label style={{
-                  display: 'block',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  color: '#FFFFFF',
-                  marginBottom: '6px'
-                }}>
+            <div className="form-group">
+              <label className="form-label">
                   Note (Optional)
                 </label>
                 <textarea
                   value={editedGoal.note || ''}
                   onChange={(e) => setEditedGoal({ ...editedGoal, note: e.target.value })}
-                  rows={3}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    background: '#2C2C2C',
-                    border: '1px solid #3C3C3C',
-                    borderRadius: '6px',
-                    color: '#FFFFFF',
-                    fontSize: '14px',
-                    resize: 'vertical'
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Modal Actions */}
-            <div style={{
-              display: 'flex',
-              gap: '12px',
-              marginTop: '24px',
-              justifyContent: 'flex-end'
-            }}>
-              <button
-                onClick={handleCancelEdit}
+                className="form-input"
                 style={{
-                  padding: '10px 20px',
-                  background: 'transparent',
-                  border: '1px solid #3C3C3C',
-                  borderRadius: '6px',
-                  color: '#FFFFFF',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  cursor: 'pointer'
+                  resize: 'vertical',
+                  height: '112px',
+                  minHeight: '112px'
                 }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSaveGoal}
-                disabled={!editedGoal.name || editedGoal.target <= 0}
-                style={{
-                  padding: '10px 20px',
-                  background: editedGoal.name && editedGoal.target > 0 ? COLORS.primary : '#3C3C3C',
-                  border: 'none',
-                  borderRadius: '6px',
-                  color: '#FFFFFF',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  cursor: editedGoal.name && editedGoal.target > 0 ? 'pointer' : 'not-allowed',
-                  opacity: editedGoal.name && editedGoal.target > 0 ? 1 : 0.5
-                }}
-              >
-                Save Changes
-              </button>
-            </div>
+              />
           </div>
         </div>
       )}
+      </Modal>
     </main>
   );
 }

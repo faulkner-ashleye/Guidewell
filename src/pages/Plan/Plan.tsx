@@ -181,11 +181,8 @@ export function Plan() {
                       <div key={type}>
                         <div className="plan-account-type-header">
                           <h3 className="plan-account-type-title">
-                            {title} ({list.length})
+                            {title}
                           </h3>
-                          <span className="plan-account-type-balance">
-                            {formatMoney(sumBalances(list, [type as any]))}
-                          </span>
                         </div>
                         <div className="plan-account-list">
                           {list.map((a) => (
@@ -201,6 +198,8 @@ export function Plan() {
                                 health={accountHealth(a)}
                                 accountId={a.id}
                                 accountType={a.type}
+                                institutionId={a.institutionId}
+                                institutionName={a.institutionName}
                                 hasGoal={goals.some(g => g.accountId === a.id || (g.accountIds && g.accountIds.includes(a.id)))}
                                 goalName={goals.find(g => g.accountId === a.id || (g.accountIds && g.accountIds.includes(a.id)))?.name}
                                 goalId={goals.find(g => g.accountId === a.id || (g.accountIds && g.accountIds.includes(a.id)))?.id}
@@ -254,7 +253,7 @@ export function Plan() {
                 </Button>
 
               </div>
-              <GoalList accounts={accounts} goals={goals} />
+              <GoalList accounts={accounts} goals={goals} contributions={contributions} transactions={transactions} />
 
             </>
           )}

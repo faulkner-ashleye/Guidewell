@@ -21,7 +21,8 @@
   font-size: var(--font-size-base);
 }
 
-.strategy-card-header {
+/* Strategy Card Header */
+.strategy-card .card-header {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
@@ -30,48 +31,14 @@
 
 .strategy-card-icon {
   font-size: var(--font-size-xl);
-}
-
-.strategy-card-title {
-  margin: 0;
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
+  margin-right: var(--spacing-sm);
 }
 
 .strategy-card-description {
-  margin: 0 0 var(--spacing-xl) 0;
+  margin: 0;
   color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
   line-height: var(--line-height-normal);
-}
-
-.strategy-button {
-  padding: var(--spacing-md) var(--spacing-2xl);
-  border: none;
-  border-radius: var(--radius-lg);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  cursor: pointer;
-  transition: all var(--transition-normal);
-}
-
-.strategy-button--primary {
-  background: var(--color-secondary-main);
-  color: var(--color-secondary-contrast-text);
-}
-
-.strategy-button--primary:hover {
-  background: var(--color-secondary-dark);
-}
-
-.strategy-button--secondary {
-  background: var(--color-success-main);
-  color: var(--color-success-contrast-text);
-}
-
-.strategy-button--secondary:hover {
-  background: var(--color-success-dark);
 }
 
 

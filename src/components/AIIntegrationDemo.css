@@ -79,6 +79,7 @@
   padding: 8px 12px;
   border: 1px solid #D1D5DB;
   border-radius: 6px;
+  font-family: var(--font-family-sans);
   font-size: 14px;
   background: white;
   min-width: 200px;

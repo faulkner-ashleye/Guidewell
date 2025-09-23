@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
-  margin-bottom: var(--spacing-2xl);
+  padding:var(--spacing-2xl) var(--spacing-lg) var(--spacing-lg);
 }
 
 .goal-title {
@@ -245,6 +245,7 @@
   border: 1px solid var(--color-root-divider);
   border-radius: 6px;
   color: var(--color-text-primary);
+  font-family: var(--font-family-sans);
   font-size: 14px;
   resize: vertical;
   min-height: 80px;
@@ -262,6 +263,7 @@
   border: 1px solid var(--color-root-divider);
   border-radius: 6px;
   color: var(--color-text-primary);
+  font-family: var(--font-family-sans);
   font-size: 14px;
 }
 
@@ -444,7 +446,7 @@
 }
 
 .amount-positive {
-  color: var(--color-success-main);
+  color: var(--color-success-dark);
 }
 
 .amount-negative {

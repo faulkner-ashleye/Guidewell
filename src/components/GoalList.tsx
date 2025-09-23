@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getGoalsFromAccounts, formatMoney } from '../state/planSelectors';
+import { computeGoalProgress } from '../state/goalSelectors';
 import { ProgressBar } from './ProgressBar';
 import { COLORS } from '../ui/colors';
 import { Goal } from '../app/types';
@@ -12,6 +13,8 @@ import './GoalList.css';
 interface GoalListProps {
   accounts: Account[];
   goals?: Goal[]; // Optional goals from app state
+  contributions?: any[]; // Contributions for progress calculation
+  transactions?: any[]; // Transactions for progress calculation
 }
 
 const getGoalType = (goalName: string) => {
@@ -107,12 +110,13 @@ const getGoalColor = (goalName: string) => {
   return '#10B981'; // Default green
 };
 
-export function GoalList({ accounts, goals: appGoals }: GoalListProps) {
+export function GoalList({ accounts, goals: appGoals, contributions = [], transactions = [] }: GoalListProps) {
   const navigate = useNavigate();
 
   // Get goals from accounts (legacy method)
   const accountGoals = getGoalsFromAccounts(accounts).map(goal => ({
     ...goal,
+    remaining: Math.max(0, goal.target - goal.current),
     accountId: undefined,
     accountIds: undefined,
     targetDate: undefined,
@@ -138,6 +142,7 @@ export function GoalList({ accounts, goals: appGoals }: GoalListProps) {
         current: account.balance, // Current remaining balance
         target: originalAmount, // Original debt amount
         progress: originalAmount > 0 ? Math.round(((originalAmount - account.balance) / originalAmount) * 100) : 0,
+        remaining: account.balance, // Current debt balance
         accountId: account.id,
         accountIds: undefined,
         targetDate: undefined,
@@ -145,45 +150,17 @@ export function GoalList({ accounts, goals: appGoals }: GoalListProps) {
       };
     });
 
-  // Convert app goals to display format
+  // Convert app goals to display format using computeGoalProgress
   const convertedAppGoals = appGoals?.map(goal => {
-    // Calculate current amount from linked account(s)
-    let current = 0;
-    let target = goal.target;
-
-    if (goal.accountId) {
-      const account = accounts.find(a => a.id === goal.accountId);
-      if (account) {
-        current = account.balance;
-
-        // For debt goals with target: 0, use account balance as original amount
-        if (goal.type === 'debt' || goal.type === 'debt_payoff') {
-          if (goal.target === 0) {
-            target = account.balance; // Original debt amount
-          }
-        }
-      }
-    } else if (goal.accountIds && goal.accountIds.length > 0) {
-      current = goal.accountIds.reduce((sum, accountId) => {
-        const account = accounts.find(a => a.id === accountId);
-        return sum + (account ? account.balance : 0);
-      }, 0);
-    }
-
-    // For debt goals, calculate progress as amount paid off
-    let progress = 0;
-    if (goal.type === 'debt' || goal.type === 'debt_payoff') {
-      progress = target > 0 ? Math.min(100, Math.round(((target - current) / target) * 100)) : 0;
-    } else {
-      progress = target > 0 ? Math.min(100, Math.round((current / target) * 100)) : 0;
-    }
-
+    const progress = computeGoalProgress(goal, accounts, contributions, transactions);
+    
     return {
       id: goal.id,
       name: goal.name,
-      current,
-      target,
-      progress,
+      current: progress.current,
+      target: progress.target,
+      progress: progress.percentage,
+      remaining: progress.remaining,
       accountId: goal.accountId,
       accountIds: goal.accountIds,
       targetDate: goal.targetDate,
@@ -321,6 +298,7 @@ export function GoalList({ accounts, goals: appGoals }: GoalListProps) {
               <ProgressBar
                 target={goal.target || 0}
                 current={goal.current || 0}
+                remaining={goal.remaining}
                 goalType={goalType as 'debt' | 'savings' | 'investment' | 'emergency' | 'other'}
               />
             </div>

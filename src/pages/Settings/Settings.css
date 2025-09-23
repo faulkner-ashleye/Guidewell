@@ -131,6 +131,19 @@
   cursor: not-allowed;
 }
 
+/* Fix date input calendar icon color */
+.form-input[type="date"] {
+  color-scheme: light dark;
+}
+
+.form-input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+[data-theme="light"] .form-input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0);
+}
+
 .form-actions {
   display: flex;
   gap: 12px;

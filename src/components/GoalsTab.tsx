@@ -4,7 +4,7 @@ import { GoalList } from './GoalList';
 import { COLORS } from '../ui/colors';
 
 export function GoalsTab() {
-  const { accounts = [], goals = [] } = useAppState();
+  const { accounts = [], goals = [], contributions = [], transactions = [] } = useAppState();
   
   const hasAccounts = accounts.length > 0;
   const hasGoals = accounts.some(account => 
@@ -38,7 +38,7 @@ export function GoalsTab() {
         </p>
       </div>
 
-      <GoalList accounts={accounts} goals={goals} />
+      <GoalList accounts={accounts} goals={goals} contributions={contributions} transactions={transactions} />
 
       {/* Coach Note for Goals */}
       {hasAccounts && !hasGoals && (
