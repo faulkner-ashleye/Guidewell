@@ -67,7 +67,7 @@ export interface LetterSpacingTokens {
 }
 
 export interface FontFamilyTokens {
-  sans: string;      // Manrope font family
+  sans: string;      // FigTree font family
   mono: string;      // Monospace fallback
   icons: string;     // Material Icons font family
 }
@@ -320,7 +320,7 @@ export const designTokens: DesignTokens = {
       widest: '0.1em'
     },
     fontFamily: {
-      sans: '"Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
+      sans: '"FigTree", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
       mono: '"SF Mono", "Monaco", "Inconsolata", "Roboto Mono", "Courier New", monospace',
       icons: '"Material Symbols Outlined"'
     }

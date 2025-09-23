@@ -35,7 +35,7 @@ export default function AppHeader({
         <div className="flex items-center gap-sm">
           {shouldShowOpportunities && (
             <Button
-              className="insights-button"
+            variant={ButtonVariants.text}
               onClick={() => navigate('/opportunities')}
               aria-label="View opportunities and insights"
             >

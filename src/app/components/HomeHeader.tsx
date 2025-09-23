@@ -31,6 +31,7 @@ export default function HomeHeader({
         <div className="home-header-actions">
           <div className="insights-button-container">
             <Button
+            variant={ButtonVariants.text}
               className="insights-button"
               onClick={() => navigate('/opportunities')}
               aria-label="View opportunities and insights"

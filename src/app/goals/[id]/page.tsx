@@ -1,31 +1,35 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppState } from '../../../state/AppStateContext';
-import { getContributionsByGoal } from '../../../state/contributionSelectors';
-import { 
-  computeGoalProgress, 
-  getGoalLinkedAccount, 
-  formatPercentage, 
-  formatCurrency 
+import { getContributionsByGoal, mergeAccountActivity } from '../../../state/contributionSelectors';
+import {
+  computeGoalProgress,
+  getGoalLinkedAccount,
+  formatPercentage,
+  formatCurrency
 } from '../../../state/goalSelectors';
 import { formatDate } from '../../../utils/format';
-import { Icon, IconNames } from '../../../components/Icon';
+import { Icon, IconNames, IconName } from '../../../components/Icon';
+import { GoalCard } from '../../../components/GoalCard';
+import { Button, ButtonVariants, ButtonColors } from '../../../components/Button';
 import AppHeader from '../../components/AppHeader';
 import LogContributionModal from '../../components/LogContributionModal';
 import { Goal } from '../../../app/types';
 import { COLORS } from '../../../ui/colors';
+import './GoalDetailPage.css';
 
 export default function GoalDetailPage() {
   const params = useParams();
   const navigate = useNavigate();
   const goalId = params.id as string;
-  
-  const { 
-    goals = [], 
-    accounts = [], 
-    contributions = [], 
+
+  const {
+    goals = [],
+    accounts = [],
+    contributions = [],
+    transactions = [],
     setContributions,
-    setGoals 
+    setGoals
   } = useAppState();
 
   const [logOpen, setLogOpen] = useState(false);
@@ -41,8 +45,83 @@ export default function GoalDetailPage() {
   // Get linked account
   const linkedAccount = goal ? getGoalLinkedAccount(goal, accounts) : null;
 
-  // Get contributions for this goal
-  const goalContributions = goal ? getContributionsByGoal(contributions, goalId) : [];
+  // Get contributions for this goal, filtered by goal type
+  const goalContributions = goal ? getContributionsByGoal(contributions, goalId).filter(contrib => {
+    // For debt goals, only show payments (negative amounts that reduce debt)
+    if (goal.type === 'debt' || goal.type === 'debt_payoff') {
+      // Only show actual debt payments, not all negative contributions
+      const isDebtPayment = contrib.description.toLowerCase().includes('payment') ||
+                           contrib.description.toLowerCase().includes('loan') ||
+                           contrib.description.toLowerCase().includes('credit') ||
+                           contrib.description.toLowerCase().includes('student') ||
+                           contrib.description.toLowerCase().includes('debt');
+      return contrib.amount < 0 && isDebtPayment;
+    }
+    
+    // For savings/investment goals, only show positive contributions
+    if (goal.type === 'emergency_fund' || goal.type === 'savings' || goal.type === 'investment') {
+      // Only show actual savings contributions, not all positive contributions
+      const isSavingsContribution = contrib.description.toLowerCase().includes('deposit') ||
+                                   contrib.description.toLowerCase().includes('contribution') ||
+                                   contrib.description.toLowerCase().includes('transfer') ||
+                                   contrib.description.toLowerCase().includes('savings') ||
+                                   contrib.description.toLowerCase().includes('emergency') ||
+                                   contrib.description.toLowerCase().includes('fund') ||
+                                   contrib.description.toLowerCase().includes('investment');
+      return contrib.amount > 0 && isSavingsContribution;
+    }
+    
+    // For other goal types, show all contributions
+    return true;
+  }) : [];
+
+  // Debug logging
+  console.log('Goal:', goal?.name, 'Type:', goal?.type);
+  console.log('Progress:', progress);
+  console.log('All contributions for this goal:', getContributionsByGoal(contributions, goalId));
+  console.log('Filtered contributions:', goalContributions);
+  console.log('Total filtered contributions:', goalContributions.reduce((sum, c) => sum + c.amount, 0));
+
+  // Get account activity for linked goals, filtered by goal type
+  const accountActivity = linkedAccount ? mergeAccountActivity(
+    transactions,
+    contributions,
+    linkedAccount.id,
+    linkedAccount.name
+  ).filter(item => {
+    // For debt goals, only show payments (negative amounts that reduce debt)
+    if (goal?.type === 'debt' || goal?.type === 'debt_payoff') {
+      // Only show actual debt payments, not all negative transactions
+      const isDebtPayment = item.description.toLowerCase().includes('payment') ||
+                           item.description.toLowerCase().includes('loan') ||
+                           item.description.toLowerCase().includes('credit') ||
+                           item.description.toLowerCase().includes('student');
+      return item.amount < 0 && isDebtPayment;
+    }
+    
+    // For savings/investment goals, only show positive contributions
+    if (goal?.type === 'emergency_fund' || goal?.type === 'savings' || goal?.type === 'investment') {
+      // Only show actual savings contributions, not all positive transactions
+      const isSavingsContribution = item.description.toLowerCase().includes('deposit') ||
+                                   item.description.toLowerCase().includes('contribution') ||
+                                   item.description.toLowerCase().includes('transfer') ||
+                                   item.description.toLowerCase().includes('savings') ||
+                                   item.description.toLowerCase().includes('emergency') ||
+                                   item.description.toLowerCase().includes('fund');
+      return item.amount > 0 && isSavingsContribution;
+    }
+    
+    // For other goal types, show all activity
+    return true;
+  }) : [];
+
+  // Debug logging for account activity
+  if (linkedAccount) {
+    console.log('Linked account:', linkedAccount.name);
+    console.log('All account activity:', mergeAccountActivity(transactions, contributions, linkedAccount.id, linkedAccount.name));
+    console.log('Filtered account activity:', accountActivity);
+    console.log('Total filtered account activity:', accountActivity.reduce((sum, a) => sum + a.amount, 0));
+  }
 
   // Handle back navigation
   const handleBack = () => {
@@ -60,7 +139,7 @@ export default function GoalDetailPage() {
       goalId: goalId,
       createdAt: new Date().toISOString()
     };
-    
+
     setContributions(prev => [...prev, newContribution]);
     setLogOpen(false);
   };
@@ -86,25 +165,30 @@ export default function GoalDetailPage() {
     setEditedGoal(null);
   };
 
+  // Get goal icon
+  const getGoalIcon = (goalName: string): IconName => {
+    const name = goalName.toLowerCase();
+    if (name.includes('debt') || name.includes('loan') || name.includes('credit')) return IconNames.credit_card;
+    if (name.includes('emergency')) return IconNames.security;
+    if (name.includes('investment') || name.includes('retirement')) return IconNames.trending_up;
+    if (name.includes('house') || name.includes('home')) return IconNames.home;
+    if (name.includes('car') || name.includes('vehicle')) return IconNames.directions_car;
+    if (name.includes('wedding')) return IconNames.favorite;
+    if (name.includes('education') || name.includes('school')) return IconNames.school;
+    return IconNames.savings;
+  };
+
   if (!goal || !progress) {
     return (
       <main>
-        <AppHeader 
+        <AppHeader
           title="Goal Not Found"
         />
-        <div style={{ padding: '24px', textAlign: 'center' }}>
+        <div className="goal-not-found">
           <p>Goal not found. Please check the URL and try again.</p>
-          <button 
+          <button
             onClick={handleBack}
-            style={{
-              marginTop: '16px',
-              padding: '8px 16px',
-              backgroundColor: COLORS.primary,
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer'
-            }}
+            className="modal-button modal-button-save"
           >
             Go Back
           </button>
@@ -115,19 +199,12 @@ export default function GoalDetailPage() {
 
   return (
     <main>
-      <AppHeader 
+      <AppHeader
         title="Goal"
         leftAction={
           <button
             onClick={handleBack}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: 'inherit',
-              cursor: 'pointer',
-              fontSize: '18px',
-              padding: '4px'
-            }}
+            className="header-back-button"
             aria-label="Go back"
           >
             <Icon name={IconNames.arrow_back} size="lg" />
@@ -136,16 +213,7 @@ export default function GoalDetailPage() {
         rightAction={
           <button
             onClick={handleEditGoal}
-            style={{
-              background: 'transparent',
-              border: '1px solid rgba(255,255,255,0.3)',
-              color: 'inherit',
-              cursor: 'pointer',
-              fontSize: '14px',
-              padding: '6px 12px',
-              borderRadius: '6px',
-              fontWeight: '500'
-            }}
+            className="header-edit-button"
             aria-label="Edit goal"
           >
             Edit
@@ -153,211 +221,99 @@ export default function GoalDetailPage() {
         }
       />
 
-      <div style={{ padding: '24px', maxWidth: '800px', margin: '0 auto' }}>
-        {/* Progress Snapshot Card */}
-        <div style={{
-          background: '#1C1C1C',
-          border: '1px solid #3C3C3C',
-          borderRadius: '12px',
-          padding: '24px',
-          marginBottom: '24px'
-        }}>
-          <div style={{ marginBottom: '16px' }}>
-            <h1 style={{ 
-              margin: '0 0 8px 0', 
-              fontSize: '24px', 
-              fontWeight: '600',
-              color: '#FFFFFF'
-            }}>
-              {goal.name}
-            </h1>
-            {linkedAccount && (
-              <div style={{ 
-                fontSize: '14px', 
-                color: '#B6B6B6',
-                marginBottom: '8px'
-              }}>
-                Linked to: {linkedAccount.name}
-              </div>
-            )}
-            {goal.targetDate && (
-              <div style={{ 
-                fontSize: '14px', 
-                color: '#B6B6B6'
-              }}>
-                Target Date: {goal.targetDate}
-              </div>
-            )}
-          </div>
-
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <div style={{ 
-                fontSize: '32px', 
-                fontWeight: '700',
-                color: progress.isComplete ? '#10b981' : '#FFFFFF'
-              }}>
-                {formatCurrency(progress.current)}
-              </div>
-              <div style={{ 
-                fontSize: '14px', 
-                color: '#B6B6B6',
-                marginTop: '4px'
-              }}>
-                of {formatCurrency(progress.target)}
-              </div>
-            </div>
-            
-            <div style={{ textAlign: 'right' }}>
-              <div style={{ 
-                fontSize: '24px', 
-                fontWeight: '700',
-                color: progress.isComplete ? '#10b981' : COLORS.primary
-              }}>
-                {formatPercentage(progress.percentage)}
-              </div>
-              <div style={{ 
-                fontSize: '12px', 
-                color: '#B6B6B6',
-                marginTop: '4px'
-              }}>
-                Complete
-              </div>
-            </div>
-          </div>
-
-          {/* Progress Bar */}
-          <div style={{
-            marginTop: '16px',
-            height: '8px',
-            background: '#3C3C3C',
-            borderRadius: '4px',
-            overflow: 'hidden'
-          }}>
-            <div style={{
-              height: '100%',
-              width: `${Math.min(progress.percentage, 100)}%`,
-              background: progress.isComplete ? '#10b981' : COLORS.primary,
-              transition: 'width 0.3s ease'
-            }} />
-          </div>
-
-          {progress.remaining > 0 && (
-            <div style={{ 
-              fontSize: '12px', 
-              color: '#B6B6B6',
-              marginTop: '8px',
-              textAlign: 'center'
-            }}>
-              {formatCurrency(progress.remaining)} remaining
-            </div>
-          )}
+      <div className="goal-detail-page">
+        {/* Goal Header */}
+        <div className="goal-header">
+          <Icon
+            name={getGoalIcon(goal.name)}
+            size="xl"
+          />
+          <h1 className="goal-title">{goal.name}</h1>
         </div>
 
-        {/* Log Contribution CTA */}
-        <div style={{ marginBottom: '24px' }}>
-          <button
-            onClick={() => setLogOpen(true)}
-            style={{
-              backgroundColor: COLORS.primary,
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              padding: '12px 24px',
-              fontSize: '14px',
-              fontWeight: '500',
-              cursor: 'pointer',
-              width: '100%'
-            }}
-          >
-            Log Contribution
-          </button>
-          
-          {linkedAccount?.linked && (
-            <div style={{
-              fontSize: '12px',
-              color: '#B6B6B6',
-              textAlign: 'center',
-              marginTop: '8px',
-              fontStyle: 'italic'
-            }}>
-              Linked accounts usually update automatically; manual entries are recorded as personal notes.
-            </div>
-          )}
-        </div>
+        {/* Goal Card */}
+        <GoalCard
+          goal={{
+            id: goal.id,
+            name: goal.name,
+            current: progress.current,
+            target: progress.target,
+            progress: progress.percentage,
+            accountId: goal.accountId,
+            accountIds: goal.accountIds,
+            targetDate: goal.targetDate,
+            type: goal.type
+          }}
+          accounts={accounts}
+          showActionButton={false}
+          showLogButton={true}
+          showHeader={false}
+          isLinkedAccount={!!linkedAccount}
+          onLogContribution={() => setLogOpen(true)}
+          className="goal-detail-card"
+        />
 
-        {/* Contributions toward this goal */}
-        <div style={{ marginBottom: '24px' }}>
-          <h2 style={{ 
-            fontSize: '20px', 
-            fontWeight: '600', 
-            margin: '0 0 16px 0',
-            color: '#FFFFFF'
-          }}>
-            Contributions toward this goal
-          </h2>
-          
-          {goalContributions.length > 0 ? (
-            <div style={{
-              background: '#1C1C1C',
-              border: '1px solid #3C3C3C',
-              borderRadius: '12px',
-              padding: '20px'
-            }}>
-              {goalContributions
+        {/* Linked Account Note */}
+        {linkedAccount?.linked && (
+          <div className="linked-account-note">
+            Linked accounts usually update automatically; manual entries are recorded as personal notes.
+          </div>
+        )}
+
+        {/* Recent Activity */}
+        <div className="recent-activity">
+          <h3>
+             Contributions
+          </h3>
+
+          {(linkedAccount ? accountActivity : goalContributions).length > 0 ? (
+            <div className="activity-feed">
+              {(linkedAccount ? accountActivity : goalContributions)
                 .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-                .map((contrib) => {
-                  const contribAccount = accounts.find(acc => acc.id === contrib.accountId);
+                .map((item) => {
+                  const isAccountActivity = linkedAccount && 'source' in item;
+                  const contribAccount = accounts.find(acc => acc.id === item.accountId);
+
+                  // Get category name and icon for account activity
+                  const categoryName = isAccountActivity ?
+                    (item.category || 'Transfer') : 'Manual';
+                  const categoryIcon = isAccountActivity ?
+                    (item.category === 'Transfer' ? IconNames.refresh : IconNames.account_balance) :
+                    IconNames.edit;
+
                   return (
-                    <div key={contrib.id} style={{
-                      padding: '12px 0',
-                      borderBottom: '1px solid #3C3C3C',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center'
-                    }}>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ 
-                          fontSize: '14px', 
-                          color: '#FFFFFF',
-                          fontWeight: '500',
-                          marginBottom: '4px'
-                        }}>
-                          {contrib.description}
+                    <div key={item.id} className="activity-item">
+                      <div className="activity-meta">
+                        <span>{formatDate(item.date)}</span>
+                      </div>
+                      <div className="activity-main shadow-sm">
+                        {/* Transaction Icon */}
+                        <div className="activity-icon">
+                          <Icon
+                            name={categoryIcon}
+                            size="sm"
+                            style={{ fontSize: '18px' }}
+                          />
                         </div>
-                        <div style={{ 
-                          fontSize: '12px', 
-                          color: '#B6B6B6',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '12px'
-                        }}>
-                          <span>{formatDate(contrib.date)}</span>
-                          <span>{contribAccount?.name || 'Unknown Account'}</span>
-                          <span 
-                            style={{
-                              backgroundColor: '#f0fdf4',
-                              color: '#166534',
-                              padding: '2px 6px',
-                              borderRadius: '4px',
-                              fontSize: '10px',
-                              fontWeight: '500',
-                              textTransform: 'uppercase',
-                              letterSpacing: '0.5px'
-                            }}
-                          >
-                            Manual
+
+                        <div className="activity">
+                          <div className="activity-description">
+                            {item.description}
+                          </div>
+                          <span className="activity-category">
+                            {categoryName}
                           </span>
                         </div>
-                      </div>
-                      
-                      <div style={{ textAlign: 'right' }}>
-                        <div style={{ 
-                          fontSize: '14px', 
-                          fontWeight: '600',
-                          color: contrib.amount >= 0 ? '#10b981' : '#ef4444'
-                        }}>
-                          {contrib.amount >= 0 ? '+' : ''}{formatCurrency(contrib.amount)}
+
+                        <div className="activity-amount">
+                          <div className={`amount-value ${item.amount >= 0 ? 'amount-positive' : 'amount-negative'}`}>
+                            {item.amount >= 0 ? '+' : ''}{formatCurrency(item.amount)}
+                          </div>
+                          {linkedAccount && (
+                            <div className="running-balance">
+                              {formatCurrency(linkedAccount.balance)}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -365,31 +321,17 @@ export default function GoalDetailPage() {
                 })}
             </div>
           ) : (
-            <div style={{
-              background: '#1C1C1C',
-              border: '1px solid #3C3C3C',
-              borderRadius: '12px',
-              padding: '40px 20px',
-              textAlign: 'center',
-              color: '#B6B6B6',
-              fontStyle: 'italic'
-            }}>
-              No contributions logged yet. {linkedAccount ? 'Linked account balance is used for progress tracking.' : 'Log a contribution to get started.'}
+            <div className="no-activity shadow-sm">
+              {linkedAccount ? (
+                `No activity yet. This goal is linked to your ${linkedAccount.name} account. Transactions will appear here when they sync.`
+              ) : (
+                'No contributions logged yet. Log a contribution to get started.'
+              )}
             </div>
           )}
         </div>
 
-        {/* Footer Compliance Line */}
-        <div style={{
-          background: '#1C1C1C',
-          border: '1px solid #3C3C3C',
-          borderRadius: '12px',
-          padding: '20px',
-          textAlign: 'center',
-          color: '#B6B6B6',
-          fontSize: '14px'
-        }}>
-        </div>
+
       </div>
 
       {/* Log Contribution Modal */}
@@ -405,14 +347,14 @@ export default function GoalDetailPage() {
 
       {/* Edit Goal Modal */}
       {editOpen && editedGoal && (
-        <div 
-          role="dialog" 
-          aria-modal="true" 
+        <div
+          role="dialog"
+          aria-modal="true"
           onClick={handleCancelEdit}
-          style={{ 
-            position: 'fixed', 
-            inset: 0, 
-            background: 'rgba(0,0,0,0.4)', 
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.4)',
             zIndex: 1000,
             display: 'flex',
             alignItems: 'center',
@@ -420,9 +362,9 @@ export default function GoalDetailPage() {
             padding: '20px'
           }}
         >
-          <div 
+          <div
             onClick={(e) => e.stopPropagation()}
-            style={{ 
+            style={{
               background: '#1C1C1C',
               border: '1px solid #3C3C3C',
               borderRadius: '12px',
@@ -432,9 +374,9 @@ export default function GoalDetailPage() {
               width: '100%'
             }}
           >
-            <h2 style={{ 
-              margin: '0 0 20px 0', 
-              fontSize: '20px', 
+            <h2 style={{
+              margin: '0 0 20px 0',
+              fontSize: '20px',
               fontWeight: '600',
               color: '#FFFFFF'
             }}>
@@ -444,9 +386,9 @@ export default function GoalDetailPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {/* Goal Name */}
               <div>
-                <label style={{ 
-                  display: 'block', 
-                  fontSize: '14px', 
+                <label style={{
+                  display: 'block',
+                  fontSize: '14px',
                   fontWeight: '500',
                   color: '#FFFFFF',
                   marginBottom: '6px'
@@ -471,9 +413,9 @@ export default function GoalDetailPage() {
 
               {/* Target Amount */}
               <div>
-                <label style={{ 
-                  display: 'block', 
-                  fontSize: '14px', 
+                <label style={{
+                  display: 'block',
+                  fontSize: '14px',
                   fontWeight: '500',
                   color: '#FFFFFF',
                   marginBottom: '6px'
@@ -498,9 +440,9 @@ export default function GoalDetailPage() {
 
               {/* Target Date */}
               <div>
-                <label style={{ 
-                  display: 'block', 
-                  fontSize: '14px', 
+                <label style={{
+                  display: 'block',
+                  fontSize: '14px',
                   fontWeight: '500',
                   color: '#FFFFFF',
                   marginBottom: '6px'
@@ -525,9 +467,9 @@ export default function GoalDetailPage() {
 
               {/* Priority */}
               <div>
-                <label style={{ 
-                  display: 'block', 
-                  fontSize: '14px', 
+                <label style={{
+                  display: 'block',
+                  fontSize: '14px',
                   fontWeight: '500',
                   color: '#FFFFFF',
                   marginBottom: '6px'
@@ -555,9 +497,9 @@ export default function GoalDetailPage() {
 
               {/* Monthly Contribution */}
               <div>
-                <label style={{ 
-                  display: 'block', 
-                  fontSize: '14px', 
+                <label style={{
+                  display: 'block',
+                  fontSize: '14px',
                   fontWeight: '500',
                   color: '#FFFFFF',
                   marginBottom: '6px'
@@ -582,9 +524,9 @@ export default function GoalDetailPage() {
 
               {/* Note */}
               <div>
-                <label style={{ 
-                  display: 'block', 
-                  fontSize: '14px', 
+                <label style={{
+                  display: 'block',
+                  fontSize: '14px',
                   fontWeight: '500',
                   color: '#FFFFFF',
                   marginBottom: '6px'
@@ -610,9 +552,9 @@ export default function GoalDetailPage() {
             </div>
 
             {/* Modal Actions */}
-            <div style={{ 
-              display: 'flex', 
-              gap: '12px', 
+            <div style={{
+              display: 'flex',
+              gap: '12px',
               marginTop: '24px',
               justifyContent: 'flex-end'
             }}>

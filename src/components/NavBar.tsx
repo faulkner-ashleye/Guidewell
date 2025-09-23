@@ -4,6 +4,7 @@ import { Icon, IconNames } from './Icon';
 import QuickActionsSheet from '../app/components/QuickActionsSheet';
 import AddGoalModal from '../app/plan/components/AddGoalModal';
 import LogContributionModal from '../app/components/LogContributionModal';
+import UploadDocumentModal from '../app/components/UploadDocumentModal';
 import PlaidLinkButton from './PlaidLinkButton';
 import Sheet from '../app/components/Sheet';
 import { useAppState } from '../state/AppStateContext';
@@ -30,6 +31,7 @@ export function NavBar() {
   const [goalOpen, setGoalOpen] = useState(false);
   const [logOpen, setLogOpen] = useState(false);
   const [connectOpen, setConnectOpen] = useState(false);
+  const [uploadOpen, setUploadOpen] = useState(false);
 
   return (
     <>
@@ -75,6 +77,7 @@ export function NavBar() {
         onClose={() => setQaOpen(false)}
         onAddGoal={() => setGoalOpen(true)}
         onConnectAccount={() => setConnectOpen(true)}
+        onUploadDocument={() => setUploadOpen(true)}
         onLogContribution={() => setLogOpen(true)}
       />
 
@@ -93,6 +96,12 @@ export function NavBar() {
         onSave={(c: any) => { /* apply to state in your handler */ }}
         accounts={accounts}
         goals={goals}
+      />
+
+      {/* Upload Document modal */}
+      <UploadDocumentModal
+        open={uploadOpen}
+        onClose={() => setUploadOpen(false)}
       />
 
       {/* Connect account sheet (Plaid or other methods) */}

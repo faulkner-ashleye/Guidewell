@@ -4,6 +4,9 @@ import { Card } from '../components/Card';
 import AppHeader from '../app/components/AppHeader';
 import { useAppState } from '../state/AppStateContext';
 import { sumByType } from '../state/selectors';
+import { ProgressMilestoneTracker } from '../components/ProgressMilestoneTracker';
+import { PersonalSnapshot } from '../components/PersonalSnapshot';
+import { TradeoffHighlight } from '../components/TradeoffHighlight';
 import './Strategies.css';
 
 export function Strategies() {
@@ -21,6 +24,23 @@ export function Strategies() {
   const hasDebt = debtTotal > 0;
   const hasSavings = savingsTotal > 0;
   const hasInvestments = investmentTotal > 0;
+
+  // Determine current financial stage
+  const getCurrentStage = (): 'foundation' | 'growth' | 'wealth' => {
+    if (!hasData) return 'foundation';
+    
+    // Foundation: High debt relative to savings, or no emergency fund
+    if (hasDebt && debtTotal > savingsTotal * 2) return 'foundation';
+    if (!hasSavings || savingsTotal < 5000) return 'foundation';
+    
+    // Growth: Has savings but limited investments
+    if (hasSavings && (!hasInvestments || investmentTotal < savingsTotal)) return 'growth';
+    
+    // Wealth: Strong investment portfolio
+    return 'wealth';
+  };
+
+  const currentStage = getCurrentStage();
 
   const handleBuildStrategy = () => {
     navigate('/build-strategy');
@@ -55,15 +75,15 @@ export function Strategies() {
       <AppHeader title="Strategies" />
 
       <div className="p-lg container-md mx-auto">
-        {/* Intro Card */}
-        <Card className="intro-card">
-          <h2 className="intro-title">
-            Your starting line
-          </h2>
-          <p className="intro-description">
-            Choose a strategy that fits your financial goals and timeline.
-          </p>
-        </Card>
+        {/* Progress / Milestone Tracker */}
+        <ProgressMilestoneTracker currentStage={currentStage} />
+
+        {/* Personal Snapshot / Progress Strip */}
+        <PersonalSnapshot 
+          debtTotal={debtTotal}
+          savingsTotal={savingsTotal}
+          investmentTotal={investmentTotal}
+        />
 
         {/* Strategy Cards */}
         <div className="grid-auto mb-lg">
@@ -115,6 +135,17 @@ export function Strategies() {
             </button>
           </Card>
         </div>
+
+        {/* Tradeoff Highlight + Educational Tip */}
+        <TradeoffHighlight 
+          userFinancialProfile={{
+            hasDebt,
+            hasSavings,
+            hasInvestments,
+            debtTotal,
+            savingsTotal
+          }}
+        />
 
         {/* Footer */}
         <div className="text-center text-muted text-xs">

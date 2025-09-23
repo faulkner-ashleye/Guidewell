@@ -5,73 +5,73 @@
 
 /* Hub Page Styles */
 .intro-card {
-  margin-bottom: 24px;
+  margin-bottom: var(--spacing-2xl);
 }
 
 .intro-title {
-  margin: 0 0 12px 0;
-  font-size: 24px;
-  font-weight: 600;
-  color: #111827;
+  margin: 0 0 var(--spacing-md) 0;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
 }
 
 .intro-description {
   margin: 0;
-  color: #666;
-  font-size: 16px;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
 }
 
 .strategy-card-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
 }
 
 .strategy-card-icon {
-  font-size: 24px;
+  font-size: var(--font-size-xl);
 }
 
 .strategy-card-title {
   margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: #111827;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
 }
 
 .strategy-card-description {
-  margin: 0 0 20px 0;
-  color: #666;
-  font-size: 14px;
-  line-height: 1.5;
+  margin: 0 0 var(--spacing-xl) 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
 }
 
 .strategy-button {
-  padding: 12px 24px;
+  padding: var(--spacing-md) var(--spacing-2xl);
   border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-normal);
 }
 
 .strategy-button--primary {
-  background: #3b82f6;
-  color: white;
+  background: var(--color-secondary-main);
+  color: var(--color-secondary-contrast-text);
 }
 
 .strategy-button--primary:hover {
-  background: #2563eb;
+  background: var(--color-secondary-dark);
 }
 
 .strategy-button--secondary {
-  background: #10b981;
-  color: white;
+  background: var(--color-success-main);
+  color: var(--color-success-contrast-text);
 }
 
 .strategy-button--secondary:hover {
-  background: #059669;
+  background: var(--color-success-dark);
 }
 
 
@@ -179,13 +179,13 @@
 }
 
 .strategy-card.recommended {
-  background: linear-gradient(135deg, #fef3c7, #fde68a);
-  border-color: #f59e0b;
+  background: var(--color-warning-subtle);
+  border-color: var(--color-warning-main);
 }
 
 .strategy-card.build-your-own {
-  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-  border-color: #3b82f6;
+  background: var(--color-secondary-subtle);
+  border-color: var(--color-secondary-main);
 }
 
 /* Stepper Styles */

@@ -1,0 +1,133 @@
+.goal-card {
+  background: var(--color-background-paper);
+  border: 1px solid var(--color-root-divider);
+  border-radius: 8px;
+  margin:0 var(--spacing-lg);
+  overflow: hidden;
+  width: auto;
+}
+
+.goal-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-root-divider);
+}
+
+.goal-card-name {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.goal-card-content {
+  padding: var(--spacing-lg);
+}
+
+.goal-card-summary-header {
+  margin-bottom: var(--spacing-md);
+}
+
+.summary-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.goal-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--color-root-divider);
+  margin-bottom: var(--spacing-lg);
+}
+
+.meta-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xs) 0;
+}
+
+.meta-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.meta-value {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.goal-chart {
+  margin-bottom: var(--spacing-lg);
+}
+
+.goal-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+  width: 100%;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xs) 0;
+}
+
+.summary-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.summary-value {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.goal-card-action {
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-root-divider);
+}
+
+.goal-action-button {
+  width: 100%;
+}
+
+.card-footer {
+  padding: var(--spacing-lg);
+  border-top: 1px solid var(--color-root-divider);
+  margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .goal-card-header {
+    padding: var(--spacing-md);
+  }
+
+  .goal-card-content {
+    padding: var(--spacing-md);
+  }
+
+  .goal-card-name {
+    font-size: var(--font-size-base);
+  }
+
+  .meta-label,
+  .meta-value,
+  .summary-label,
+  .summary-value {
+    font-size: var(--font-size-xs);
+  }
+}

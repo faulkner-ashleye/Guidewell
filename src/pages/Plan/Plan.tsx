@@ -135,12 +135,31 @@ export function Plan() {
           >
             Accounts
           </button>
-          <button
-            onClick={() => setActiveTab('goals')}
-            className={`plan-tab-button ${activeTab === 'goals' ? 'active' : ''}`}
-          >
-            Goals
-          </button>
+          <div className="plan-tab-goals-header">
+            <button
+              onClick={() => setActiveTab('goals')}
+              className={`plan-tab-button ${activeTab === 'goals' ? 'active' : ''}`}
+            >
+              Goals
+            </button>
+            {activeTab === 'goals' && (
+              <button
+                className="w-8 h-8 rounded-full flex items-center justify-center ml-2"
+                style={{
+                  backgroundColor: COLORS.primary,
+                  color: 'white',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+                onClick={handleAddGoal}
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Tab Content */}
@@ -218,79 +237,12 @@ export function Plan() {
             </>
           ) : (
             <>
-              {goals.length === 0 ? (
-                <div className="plan-empty-state">
-                  No goals yet — add one to get started.
-                </div>
-              ) : (
-                <div className="plan-goals-list">
-                  {goals.map(goal => {
-                    // Calculate progress based on linked account(s) or target
-                    let current = 0;
-                    let linkedAccountNames: string[] = [];
-
-                    if (goal.accountIds && goal.accountIds.length > 0) {
-                      // Multiple accounts linked
-                      const linkedAccounts = goal.accountIds.map(id => accounts.find(a => a.id === id)).filter((account): account is Account => account !== undefined);
-
-                      if (goal.type === 'debt') {
-                        // For debt goals, current represents actual payments made toward the goal
-                        current = calculateDebtGoalProgress(goal);
-                      } else {
-                        // For savings/investing goals, current represents accumulated amount
-                        current = linkedAccounts.reduce((sum, account) => sum + account.balance, 0);
-                      }
-                      linkedAccountNames = linkedAccounts.map(account => account.name);
-                    } else if (goal.accountId) {
-                      // Single account linked
-                      const linkedAccount = accounts.find(a => a.id === goal.accountId);
-
-                      if (goal.type === 'debt') {
-                        // For debt goals, current represents actual payments made toward the goal
-                        current = calculateDebtGoalProgress(goal);
-                      } else {
-                        // For savings/investing goals, current represents account balance
-                        current = linkedAccount ? linkedAccount.balance : 0;
-                      }
-                      linkedAccountNames = linkedAccount ? [linkedAccount.name] : [];
-                    }
-
-                    const progress = goal.target > 0 ? Math.min(100, Math.round((current / goal.target) * 100)) : 0;
-
-                    return (
-                      <div
-                        key={goal.id}
-                        onClick={() => handleNavigateToGoal(goal.id)}
-                        className="plan-goal-item"
-                      >
-                        <div className="plan-goal-header">
-                          <span className="plan-goal-name">{goal.name}</span>
-                          <span className="plan-goal-progress">{progress}%</span>
-                        </div>
-                        <div className="plan-goal-details">
-                          {formatMoney(current)} of {formatMoney(goal.target)}
-                          {goal.type === 'debt' && ' (payoff goal)'}
-                        </div>
-                        {linkedAccountNames.length > 0 && (
-                          <div className="plan-goal-linked">
-                            Linked: {linkedAccountNames.join(', ')}
-                          </div>
-                        )}
-                        <ProgressBar percent={progress} color={
-                          goal.type === 'debt' ? COLORS.debt :
-                          goal.type === 'investing' ? COLORS.investing :
-                          COLORS.savings
-                        } />
-                        {goal.note && (
-                          <div className="plan-goal-note">
-                            "{goal.note}"
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+              <div className="goals-tab-header">
+                <h2>Savings Goals</h2>
+                <p style={{ color: COLORS.textMuted }}>
+                  These are the items you are saving towards.
+                </p>
+              </div>
               <div className="plan-actions-section">
                 <Button
                   variant={ButtonVariants.contained}
@@ -302,6 +254,8 @@ export function Plan() {
                 </Button>
 
               </div>
+              <GoalList accounts={accounts} goals={goals} />
+
             </>
           )}
         </div>

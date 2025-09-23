@@ -197,7 +197,7 @@ export function DesignSystemDemo() {
       {/* Typography System */}
       <Card className="demo-section">
         <h2>Typography System</h2>
-        <p>Consistent font sizes and weights using Manrope font:</p>
+        <p>Consistent font sizes and weights using FigTree font:</p>
         <div className="typography-examples">
           {typographyExamples.map((type) => (
             <div key={type.name} className="typography-example">

@@ -134,7 +134,12 @@ export const IconNames = {
   // Insights & Ideas
   lightbulb_outline: 'lightbulb_outline',
   analytics: 'analytics',
-  flag: 'flag'
+  flag: 'flag',
+  
+  // Additional icons for goals
+  directions_car: 'directions_car',
+  favorite: 'favorite',
+  school: 'school'
 } as const;
 
 export type IconName = typeof IconNames[keyof typeof IconNames];

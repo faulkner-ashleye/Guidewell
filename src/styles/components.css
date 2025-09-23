@@ -172,15 +172,127 @@
   transition: width var(--transition-normal);
 }
 
+/* Donut Goal Components */
+.donut-goal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  min-width: 200px;
+}
+
+.donut-goal-chart {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.donut-chart-percentage {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.donut-chart-progress-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* Breakdown Dot Components */
+.breakdown-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-sm);
+}
+
+/* Debt Goal Colors */
+.breakdown-dot--paid-off {
+  background-color: #10B981;
+}
+
+.breakdown-dot--remaining-debt {
+  background-color: #E15252;
+}
+
+.breakdown-dot--left-to-pay {
+  background-color: #FFCD06;
+}
+
+.breakdown-dot--original-debt {
+  background-color: #981818;
+}
+
+/* Savings/Investment Goal Colors */
+.breakdown-dot--available {
+  background-color: #007A2F;
+}
+
+.breakdown-dot--spent {
+  background-color: #DA2727;
+}
+
+.breakdown-dot--left-to-save {
+  background-color: #FFCD06;
+}
+
+.breakdown-dot--goal {
+  background-color: #AAD04E;
+}
+
+
+.menu-list{
+    display:flex;
+    flex-direction:column;
+    gap:var(--spacing-md);
+}
 /* Card Components */
 .card {
   background: var(--color-card);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-root-interactive-border);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
   box-shadow: var(--shadow-sm);
+  width:100%;
 }
 
+.card-interactive{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.card-interactive:hover{
+    border-color:var(--color-secondary-main);
+    background:var(--color-secondary-states-selected);
+    box-shadow:var(--shadow-lg);
+}
+
+.card-chart{
+    width: 100%;
+}
+.card-header.goal{
+    display:flex;
+    flex-flow:row wrap;
+    justify-content: flex-start;
+    gap:var(--spacing-lg);
+}
+
+.card-content{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+}
+
+.card-content.fullWidth{
+    flex-grow:1;
+}
+
+.card-interactive .material-icons{
+    color:var(--color-secondary-main);
+    font-size:20px;
+    padding-right:var(--spacing-md)
+}
 .card-header {
   margin-bottom: var(--spacing-md);
 }
@@ -483,16 +595,47 @@ box-shadow: 0 -1px -2px rgba(0, 0, 0, 0.64);
   /* Custom styling for manual entry dialog */
 }
 
+.sheet-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+
+/* Ensure sheet overlay is positioned relative to phone screen, not scrollable content */
+.phone-screen .sheet-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* Prevent scrolling when sheet is open */
+body.sheet-open {
+    overflow: hidden;
+}
+
+.phone-content.sheet-open {
+    overflow: hidden;
+}
+
 .sheet{
     position: absolute;
-    top:24px;
-    bottom:24px;
-    transform:translateX(-12px);
-    background:var(--color-background-paper);
-    border-radius:8px;
-    border:1px solid var(--color-root-divider);
-    box-shadow: var(--shadow-md);
-    overflow:auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-height: 80vh;
+    z-index: 101;
+    background: var(--color-background-default);
+    border-radius: 16px 16px 0 0;
+    border: 1px solid var(--color-root-divider);
+    box-shadow: var(--shadow-lg);
+    overflow: auto;
 }
 
 .sheet-header{
@@ -504,6 +647,10 @@ box-shadow: 0 -1px -2px rgba(0, 0, 0, 0.64);
     display:flex;
     justify-content: space-between;
     border-bottom:1px solid var(--color-root-divider);
+}
+
+.sheet-body{
+    padding: var(--spacing-2xl) var(--spacing-lg);
 }
 
 /* Prevent body scroll when sheet is open */
@@ -536,6 +683,7 @@ body.sheet-open {
 .sample-profiles-sheet .sample-profile-card.selected {
   border-color: var(--color-secondary-contrast);
   background-color: var(--color-secondary-dark);
+
 }
 
 .sample-profiles-sheet .sample-profile-card.selected::before {
@@ -545,7 +693,7 @@ body.sheet-open {
   right: 8px;
   width: 20px;
   height: 20px;
-  background-color: var(--color-primary);
+  background-color: var(--color-secondary-main);
   border-radius: 50%;
   display: flex;
   align-items: center;
