@@ -37,7 +37,12 @@ export function NetWorthStackedArea({ data }: NetWorthStackedAreaProps) {
                 background: COLORS.card,
                 border: `1px solid ${COLORS.border}`,
                 color: COLORS.text,
-                borderRadius: '8px'
+                borderRadius: 'var(--radius-lg)',
+                boxShadow: 'var(--shadow-lg)',
+                maxWidth: '320px',
+                minWidth: '280px',
+                padding: 'var(--spacing-lg)',
+                fontSize: 'var(--font-size-base)'
               }}
               labelFormatter={(v) => `Date: ${v}`}
               formatter={(v: number, k) => [`$${Math.round(v).toLocaleString()}`, k]}

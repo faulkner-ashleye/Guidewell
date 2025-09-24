@@ -8,21 +8,23 @@ import { sumByType, getHighestAPR } from '../state/selectors';
 import { ProgressMilestoneTracker } from '../components/ProgressMilestoneTracker';
 import { PersonalSnapshot } from '../components/PersonalSnapshot';
 import { TradeoffHighlight } from '../components/TradeoffHighlight';
+import { FinancialJourneyChart } from '../components/FinancialJourneyChart';
+import { AvatarUtils, NarrativeAvatar } from '../data/narrativeAvatars';
 import '../components/Button.css';
 import './Strategies.css';
 
 export function Strategies() {
   const navigate = useNavigate();
-  
+
   // Get real account data
-  const { accounts = [], userProfile } = useAppState();
-  
+  const { accounts = [], userProfile, goals = [] } = useAppState();
+
   // Calculate financial summary
   const savingsTotal = sumByType(accounts, ['checking', 'savings']);
   const debtTotal = sumByType(accounts, ['credit_card', 'loan']);
   const investmentTotal = sumByType(accounts, ['investment']);
   const highestAPR = getHighestAPR(accounts);
-  
+
   const hasData = accounts.length > 0;
   const hasDebt = debtTotal > 0;
   const hasSavings = savingsTotal > 0;
@@ -31,128 +33,186 @@ export function Strategies() {
   // Determine current financial stage
   const getCurrentStage = (): 'foundation' | 'growth' | 'wealth' => {
     if (!hasData) return 'foundation';
-    
+
     // Foundation: High debt relative to savings, or no emergency fund
     if (hasDebt && debtTotal > savingsTotal * 2) return 'foundation';
     if (!hasSavings || savingsTotal < 5000) return 'foundation';
-    
+
     // Growth: Has savings but limited investments
     if (hasSavings && (!hasInvestments || investmentTotal < savingsTotal)) return 'growth';
-    
+
     // Wealth: Strong investment portfolio
     return 'wealth';
   };
 
   const currentStage = getCurrentStage();
 
+  // Determine recommended strategy based on user's financial situation
+  const getRecommendedStrategy = (): NarrativeAvatar => {
+    if (!hasData) {
+      return AvatarUtils.getAvatarById('goal_keeper')!; // Default for new users
+    }
+
+    // High debt situation - recommend debt-focused strategy
+    if (hasDebt && debtTotal > savingsTotal * 2) {
+      return AvatarUtils.getAvatarById('debt_crusher')!;
+    }
+
+    // Low savings situation - recommend savings-focused strategy
+    if (!hasSavings || savingsTotal < 5000) {
+      return AvatarUtils.getAvatarById('goal_keeper')!;
+    }
+
+    // Has savings but no investments - recommend investment strategy
+    if (hasSavings && !hasInvestments) {
+      return AvatarUtils.getAvatarById('nest_builder')!;
+    }
+
+    // Balanced situation - recommend balanced approach
+    return AvatarUtils.getAvatarById('balanced_builder')!;
+  };
+
+  const recommendedStrategy = getRecommendedStrategy();
+
   const handleBuildStrategy = () => {
     navigate('/build-strategy');
+    
+    // Ensure scroll to top after navigation
+    setTimeout(() => {
+      const phoneContent = document.querySelector('.phone-content');
+      if (phoneContent) {
+        phoneContent.scrollTo(0, 0);
+      }
+    }, 50);
   };
 
   const handleViewStrategy = () => {
-    // Generate recommended strategy based on user's financial situation
-    let recommendedStrategy = 'balanced_builder'; // default
-    
-    if (hasDebt && debtTotal > savingsTotal) {
-      recommendedStrategy = 'debt_crusher';
-    } else if (!hasSavings || savingsTotal < 5000) {
-      recommendedStrategy = 'goal_keeper';
-    } else if (hasSavings && !hasInvestments) {
-      recommendedStrategy = 'nest_builder';
-    }
-    
     // Navigate to custom strategy with recommended settings
     navigate('/custom-strategy', {
       state: {
         scope: 'all',
-        strategy: recommendedStrategy,
+        strategy: recommendedStrategy.id,
         timeframe: 'mid',
         extra: 0,
-        allocation: undefined // Will use avatar default
+        allocation: recommendedStrategy.allocation
       }
     });
+    
+    // Ensure scroll to top after navigation
+    setTimeout(() => {
+      const phoneContent = document.querySelector('.phone-content');
+      if (phoneContent) {
+        phoneContent.scrollTo(0, 0);
+      }
+    }, 50);
   };
 
   return (
     <div className="strategies">
       <AppHeader title="Strategies" />
 
-      <div className="p-lg container-md mx-auto">
-        {/* Progress / Milestone Tracker */}
-        <ProgressMilestoneTracker currentStage={currentStage} />
 
-        {/* Personal Snapshot / Progress Strip */}
-        <PersonalSnapshot 
-          debtTotal={debtTotal}
-          savingsTotal={savingsTotal}
-          investmentTotal={investmentTotal}
+      <div className="strategy-page">
+      <div className="journey-header">
+        <div className="journey-title">
+          <h1 className="typography-h1">Your financial journey</h1>
+        </div>
+      </div>
+        {/* Financial Journey Chart */}
+        <FinancialJourneyChart
+          accounts={accounts}
+          goals={goals}
+          userProfile={userProfile}
         />
 
+        <div className="strategy-cards-header">
+        <h3 className="typography-h3">Choose how to explore</h3>
+        </div>
         {/* Strategy Cards */}
-        <div className="grid-auto mb-lg">
+        <div className="strategy-cards-container">
           {/* Recommended Strategy Card */}
           <Card className="strategy-card recommended">
-            <div className="card-header">
-              <div className="strategy-card-icon">⭐</div>
-              <h3 className="card-title">
-                Recommended Strategy
-              </h3>
+            <div className="strategy-card-illustration">
+              <img
+                src={`/images/${recommendedStrategy.id}-illustration.svg`}
+                alt={`${recommendedStrategy.name} illustration`}
+                className="strategy-illustration"
+                onError={(e) => {
+                  // Fallback to placeholder if image doesn't exist
+                  e.currentTarget.style.display = 'none';
+                  const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+                  if (nextElement) {
+                    nextElement.style.display = 'block';
+                  }
+                }}
+              />
+              <div className="strategy-illustration-placeholder" style={{display: 'none'}}>
+                <div className="illustration-fallback">{recommendedStrategy.emoji}</div>
+              </div>
+              <div className="recommended-badge">Recommended</div>
             </div>
-            <div className="card-body">
+            <div className="card-content">
+              <h3 className="strategy-card-title typography-h3">{recommendedStrategy.name}</h3>
               <p className="strategy-card-description">
-                {hasData ? (
-                  hasDebt && debtTotal > savingsTotal ? 
-                    "Based on your current debt situation, we recommend focusing on debt reduction strategies to improve your financial foundation." :
-                  !hasSavings || savingsTotal < 5000 ?
-                    "Based on your current savings, we recommend building your emergency fund and savings goals first." :
-                  hasSavings && !hasInvestments ?
-                    "Based on your savings progress, we recommend starting to invest for long-term wealth building." :
-                    "Based on your balanced financial profile, we recommend a diversified approach across debt, savings, and investments."
-                ) : (
-                  "Connect your accounts to get a personalized strategy recommendation based on your financial situation."
-                )}
+                {recommendedStrategy.description}
               </p>
             </div>
             <div className="card-footer">
-              <Button 
-                variant={ButtonVariants.contained}
-                color={ButtonColors.secondary}
-                fullWidth={true}
-                onClick={handleViewStrategy}
-              >
-                View strategy
-              </Button>
+            <Button
+              variant={ButtonVariants.text}
+              color={ButtonColors.secondary}
+              fullWidth={true}
+              onClick={handleViewStrategy}
+              className="strategy-action-button"
+            >
+              View strategy
+            </Button>
             </div>
           </Card>
 
           {/* Build Your Own Strategy Card */}
           <Card className="strategy-card build-your-own">
-            <div className="card-header">
-              <div className="strategy-card-icon">🛠️</div>
-              <h3 className="card-title">
-                Build Your Own Strategy
-              </h3>
+            <div className="strategy-card-illustration">
+              <img
+                src="/images/build-strategy-illustration.svg"
+                alt="Build strategy illustration"
+                className="strategy-illustration"
+                onError={(e) => {
+                  // Fallback to placeholder if image doesn't exist
+                  e.currentTarget.style.display = 'none';
+                  const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+                  if (nextElement) {
+                    nextElement.style.display = 'block';
+                  }
+                }}
+              />
+              <div className="strategy-illustration-placeholder" style={{display: 'none'}}>
+                <div className="illustration-fallback">⚙️</div>
+              </div>
             </div>
-            <div className="card-body">
+            <div className="card-content">
+              <h3 className="strategy-card-title typography-h3">Build your own strategy</h3>
               <p className="strategy-card-description">
-                Create a custom financial strategy tailored to your specific goals and risk tolerance.
+                Try different allocations across debt, savings, and investing.
               </p>
             </div>
             <div className="card-footer">
-              <Button 
-                variant={ButtonVariants.outline}
-                color={ButtonColors.secondary}
-                fullWidth={true}
-                onClick={handleBuildStrategy}
-              >
-                Start building
-              </Button>
+
+            <Button
+              variant={ButtonVariants.text}
+              color={ButtonColors.secondary}
+              fullWidth={true}
+              onClick={handleBuildStrategy}
+              className="strategy-action-button"
+            >
+              Start building
+            </Button>
             </div>
           </Card>
         </div>
 
         {/* Tradeoff Highlight + Educational Tip */}
-        <TradeoffHighlight 
+        <TradeoffHighlight
           userFinancialProfile={{
             hasDebt,
             hasSavings,
@@ -160,7 +220,7 @@ export function Strategies() {
             debtTotal,
             savingsTotal,
             investmentTotal,
-            highestAPR,
+            highestAPR: highestAPR ?? undefined,
             monthlyExpenses: 3000 // Default estimate, could be made dynamic
           }}
         />

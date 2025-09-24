@@ -1,0 +1,345 @@
+/* Financial Journey Chart Styles */
+.financial-journey-chart {
+  background:var(--color-background-paper);
+  border: 1px solid var(--color-root-divider);
+  border-radius: 8px;
+  padding:var(--spacing-2xl) var(--spacing-lg) ;
+  margin:0 0 var(--spacing-2xl);
+}
+
+/* Header */
+.journey-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 var(--spacing-2xl);
+}
+
+.journey-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.journey-title h1 {
+  margin: 0;
+}
+
+
+/* Timeline Chips */
+.timeline-chips {
+  display: flex;
+  flex-flow:row wrap;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-2xl);
+  justify-content: flex-start;
+}
+
+.timeline-chips .chip{
+    flex-grow: 1;
+    flex-basis:48%;
+    justify-content: center;
+}
+
+/* Custom Timeline Modal */
+.custom-timeline-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: relative;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  max-width: 400px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+  max-height: 90%;
+  overflow: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.modal-header h4 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.modal-close {
+  padding: var(--spacing-xs);
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text);
+}
+
+.custom-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.input-group label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.input-group input {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.input-divider {
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+}
+
+.modal-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-lg);
+}
+
+.modal-cancel,
+.modal-confirm {
+  flex: 1;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-cancel {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.modal-cancel:hover {
+  background: var(--color-bg-hover);
+}
+
+.modal-confirm {
+  background: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  color: white;
+}
+
+.modal-confirm:hover {
+  background: var(--color-primary-dark);
+}
+
+/* Chart Container */
+.chart-container {
+  margin-bottom: var(--spacing-lg);
+  margin-left: calc(-1 * var(--spacing-3xl));
+  margin-right: calc(-1 * var(--spacing-3xl));
+  padding-left: var(--spacing-2xl);
+  padding-right: var(--spacing-xl);
+  border-bottom:0!important;
+}
+
+/* KPI Grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: var(--spacing-2xl);
+}
+
+.kpi-card {
+  border-radius: var(--radius-lg);
+  transition: all 0.2s ease;
+}
+
+
+
+.kpi-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.kpi-value {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-main);
+  margin-bottom: var(--spacing-xs);
+}
+
+.kpi-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-tight);
+}
+
+/* KPI Progress Bars */
+.financial-journey-chart .kpi-progress {
+  margin-top: var(--spacing-sm);
+}
+
+.financial-journey-chart .progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #E0E0E0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: var(--spacing-xs);
+  border: 1px solid #BDBDBD;
+  align-items: flex-start;
+}
+
+.financial-journey-chart .progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  min-width: 2px;
+}
+
+.financial-journey-chart .monthly-progress {
+  background: var(--color-primary-main);
+}
+
+.financial-journey-chart .time-progress {
+  background: var(--color-primary-main);
+}
+
+.financial-journey-chart .goal-progress {
+  background: var(--color-primary-main);
+}
+
+.financial-journey-chart .progress-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .financial-journey-chart {
+    padding: var(--spacing-lg);
+  }
+
+  .journey-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+
+  .timeline-options {
+    position: static;
+    width: 100%;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+  }
+
+  .timeline-presets {
+    flex-direction: column;
+  }
+
+  .custom-inputs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .custom-inputs span {
+    text-align: center;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .kpi-card {
+    padding: var(--spacing-sm);
+  }
+
+  .kpi-value {
+    font-size: var(--font-size-base);
+  }
+}
+
+@media (max-width: 480px) {
+  .journey-title h3 {
+    font-size: var(--font-size-lg);
+  }
+
+  .timeline-display {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-xs);
+  }
+
+  .chart-container {
+    height: 250px;
+  }
+}
+
+
+.card.journey{
+    margin:0 var(--spacing-lg);
+    width:auto;
+}
+
+
+.card-label{
+    display: flex;
+    flex-flow:row wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+}

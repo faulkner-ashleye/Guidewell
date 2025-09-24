@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppHeader from '../app/components/AppHeader';
 import { QuestionBlock } from '../components/QuestionBlock';
@@ -14,13 +14,34 @@ type Strategy = 'debt_crusher' | 'goal_keeper' | 'nest_builder' | 'steady_payer'
 
 type ScopeType = 'all' | 'debts' | 'savings' | 'investing';
 type TimeframeType = 'short' | 'mid' | 'long';
-type AllocationMode = 'preset' | 'custom';
 
 export function BuildStrategy() {
   const navigate = useNavigate();
   
   // Get app state
   const { accounts = [], transactions = [], goals = [] } = useAppState();
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    // Small delay to ensure DOM is rendered
+    const scrollToTop = () => {
+      // Scroll the phone content to top
+      const phoneContent = document.querySelector('.phone-content');
+      if (phoneContent) {
+        phoneContent.scrollTo(0, 0);
+      }
+      // Also scroll window as fallback
+      window.scrollTo(0, 0);
+    };
+    
+    // Immediate scroll
+    scrollToTop();
+    
+    // Delayed scroll as backup
+    const timeoutId = setTimeout(scrollToTop, 100);
+    
+    return () => clearTimeout(timeoutId);
+  }, []);
   
   // State management
   const [scope, setScope] = useState<ScopeType>();
@@ -29,8 +50,6 @@ export function BuildStrategy() {
   const [selectedAvatar, setSelectedAvatar] = useState<NarrativeAvatar | null>(null);
   const [timeframe, setTimeframe] = useState<TimeframeType>();
   const [extra, setExtra] = useState<number>();
-  const [allocMode, setAllocMode] = useState<AllocationMode>('preset');
-  const [alloc, setAlloc] = useState<{debt: number; savings: number; investing: number}>();
   
   // Calculate goals monthly contribution
   const goalsMonthly = goals.reduce((sum, goal) => sum + (goal.monthlyContribution || 0), 0);
@@ -79,13 +98,6 @@ export function BuildStrategy() {
   const handleAvatarSelect = (avatar: NarrativeAvatar) => {
     setSelectedAvatar(avatar);
     
-    // Set allocation based on avatar
-    setAlloc({ 
-      debt: avatar.allocation.debt, 
-      savings: avatar.allocation.savings, 
-      investing: avatar.allocation.investing 
-    });
-    
     // Trigger animation for next step
     setTimeout(() => setAnimateStep(3), 300);
   };
@@ -100,7 +112,7 @@ export function BuildStrategy() {
 
 
   const handleViewBreakdown = () => {
-    console.log('Build Strategy button clicked!', { scope, selectedAvatar, timeframe, extra, alloc });
+    console.log('Build Strategy button clicked!', { scope, selectedAvatar, timeframe, extra });
     // Navigate to custom strategy page with current data
     navigate('/custom-strategy', {
       state: {
@@ -108,8 +120,7 @@ export function BuildStrategy() {
         strategy: selectedAvatar?.id,
         avatar: selectedAvatar,
         timeframe,
-        extra,
-        allocation: alloc
+        extra
       }
     });
   };
@@ -286,16 +297,12 @@ export function BuildStrategy() {
             >
             <ContributionEditor
               extra={extra}
-              allocMode={allocMode}
-              allocation={alloc}
               strategy={(selectedAvatar?.id || 'debt_crusher') as Strategy}
               scope={scope || 'all'}
               accounts={accounts}
               transactions={transactions}
               goalsMonthly={goalsMonthly}
               onExtraChange={setExtra}
-              onAllocModeChange={setAllocMode}
-              onAllocationChange={setAlloc}
             />
             
             {/* Debug Info */}
@@ -313,7 +320,7 @@ export function BuildStrategy() {
               <button
                 onClick={(e) => {
                   console.log('Button clicked!', e);
-                  console.log('Current state:', { scope, selectedAvatar, timeframe, extra, alloc });
+                  console.log('Current state:', { scope, selectedAvatar, timeframe, extra });
                   handleViewBreakdown();
                 }}
                 disabled={!scope || !selectedAvatar || !timeframe}

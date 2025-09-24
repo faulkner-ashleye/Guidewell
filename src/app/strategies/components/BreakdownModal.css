@@ -1,6 +1,6 @@
 /* BreakdownModal Styles */
 .breakdown-modal-overlay {
-  position: fixed;
+  position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
   z-index: 1000;
@@ -11,35 +11,41 @@
 }
 
 .breakdown-modal-content {
-  background: white;
-  border-radius: 12px;
+  background: var(--color-background-paper);
+  border:1px solid var(--color-root-divider);
+  border-radius: var(--spacing-sm);
   max-width: 600px;
   width: 100%;
-  max-height: 90vh;
+  height: 100%;
+  margin:24px auto;
   overflow: auto;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .breakdown-modal-header {
-  padding: 20px 24px;
-  border-bottom: 1px solid #e5e7eb;
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-root-divider);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: sticky;
+  top:0;
+  background:var(--color-background-paper);
+  box-shadow: var(--shadow-sm);
 }
 
 .breakdown-modal-title {
   margin: 0;
   font-size: 20px;
   font-weight: 600;
-  color: #111827;
+  color: var(--color-text-primary);
 }
 
 .breakdown-modal-close-btn {
   background: transparent;
   border: none;
   font-size: 24px;
-  color: #6b7280;
+  color: var(--color-action);
   cursor: pointer;
   padding: 4px;
 }
@@ -50,11 +56,14 @@
 
 .breakdown-modal-compliance-notice {
   padding: 12px 24px;
-  background: #fef2f2;
-  border-bottom: 1px solid #fecaca;
+
   font-size: 12px;
   color: #dc2626;
   font-weight: 500;
+}
+
+.breakdown-modal-compliance-notice:empty{
+    display: none;
 }
 
 .breakdown-modal-body {
@@ -62,76 +71,18 @@
 }
 
 .breakdown-modal-section {
-  border-radius: 8px;
-  padding: 16px;
+
   margin-bottom: 20px;
-}
-
-.breakdown-modal-overview {
-  background: #f8fafc;
-  border: 1px solid #e5e7eb;
-}
-
-.breakdown-modal-debt-impact {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-}
-
-.breakdown-modal-savings-tradeoff {
-  background: #f0f9ff;
-  border: 1px solid #bae6fd;
-}
-
-.breakdown-modal-investing-opportunity {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-}
-
-.breakdown-modal-market-insights {
-  background: #f0f9ff;
-  border: 1px solid #bae6fd;
-}
-
-.breakdown-modal-assumptions {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
 }
 
 .breakdown-modal-section-title {
   margin: 0 0 12px 0;
-  font-size: 16px;
-  font-weight: 600;
 }
 
-.breakdown-modal-overview-title {
-  color: #111827;
-}
 
-.breakdown-modal-debt-title {
-  color: #dc2626;
-}
+.breakdown-modal-text, .breakdown-modal-market-list, .breakdown-modal-assumptions-list {
 
-.breakdown-modal-savings-title {
-  color: #0369a1;
-}
-
-.breakdown-modal-investing-title {
-  color: #166534;
-}
-
-.breakdown-modal-market-title {
-  color: #0369a1;
-}
-
-.breakdown-modal-assumptions-title {
-  color: #111827;
-}
-
-.breakdown-modal-text {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #374151;
+  color: var(--color-text-secondary);
 }
 
 .breakdown-modal-text-loading {
@@ -151,17 +102,6 @@
   font-style: italic;
 }
 
-.breakdown-modal-savings-goal {
-  font-size: 14px;
-  color: #374151;
-  margin-bottom: 8px;
-}
-
-.breakdown-modal-investing-text {
-  font-size: 14px;
-  color: #374151;
-  margin-bottom: 8px;
-}
 
 .breakdown-modal-investing-disclaimer {
   font-size: 12px;
@@ -169,38 +109,20 @@
   font-style: italic;
 }
 
-.breakdown-modal-market-list {
-  margin: 0;
-  padding-left: 20px;
-  font-size: 14px;
-  color: #374151;
-  line-height: 1.6;
-}
 
 .breakdown-modal-market-item {
   margin-bottom: 4px;
 }
 
-.breakdown-modal-market-item-loading {
-  font-style: italic;
-  color: #6b7280;
-}
-
-.breakdown-modal-assumptions-list {
-  margin: 0;
-  padding-left: 20px;
-  font-size: 14px;
-  color: #374151;
-  line-height: 1.6;
-}
 
 .breakdown-modal-footer {
-  padding: 16px 24px;
-  border-top: 1px solid #e5e7eb;
-  background: #f9fafb;
-  text-align: center;
-  font-size: 12px;
-  color: #6b7280;
+    position: sticky;
+    bottom: 0;
+  padding: var(--spacing-lg);
+  border-top: 1px solid var(--color-root-divider);
+  background: var(--color-background-default);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
 }
 
 /* Mobile responsiveness */
@@ -208,30 +130,29 @@
   .breakdown-modal-overlay {
     padding: 10px;
   }
-  
+
   .breakdown-modal-content {
     max-width: 100%;
     border-radius: 8px;
   }
-  
+
   .breakdown-modal-header {
     padding: 16px 20px;
   }
-  
+
   .breakdown-modal-title {
     font-size: 18px;
   }
-  
+
   .breakdown-modal-body {
     padding: 20px;
   }
-  
+
   .breakdown-modal-section {
     padding: 12px;
   }
-  
+
   .breakdown-modal-footer {
     padding: 12px 20px;
   }
 }
-

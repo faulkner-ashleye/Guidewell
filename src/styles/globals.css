@@ -716,7 +716,7 @@ body {
 .typography-h1 {
   font-size: var(--font-size-2xl);     /* 24px */
   line-height: 1.33;                  /* 133% */
-  font-weight: var(--font-weight-extrabold);
+  font-weight: var(--font-weight-semibold);
   letter-spacing: var(--letter-spacing-tighter);
 }
 

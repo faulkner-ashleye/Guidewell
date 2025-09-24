@@ -1,56 +1,42 @@
-.tradeoff-highlight {
+.tradeoff-highlight-container {
   margin-bottom: var(--spacing-2xl);
-  background: var(--color-grey-50);
-  border: 1px solid var(--color-grey-200);
-  transition: all var(--transition-slow);
-}
-
-.tradeoff-highlight:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
 }
 
 .tradeoff-header {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
-}
-
-.tradeoff-icon {
-  font-size: var(--font-size-xl);
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-background-paper);
-  border-radius: var(--radius-full);
-  box-shadow: var(--shadow-sm);
+  margin:var(--spacing-3xl) 0 var(--spacing-sm);
 }
 
 .tradeoff-title {
   flex: 1;
   margin: 0;
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-primary);
 }
 
+.tradeoff-highlight {
+  border: 1px solid var(--color-root-divider);
+  transition: all var(--transition-slow);
+  min-height: 175px;
+}
+
 .tradeoff-controls {
   display: flex;
-  gap: 4px;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  margin: var(--spacing-md) 0 var(--spacing-2xl);
 }
 
 .control-btn {
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
   border: none;
   border-radius: var(--radius-full);
-  background: var(--color-grey-200);
-  color: var(--color-grey-600);
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
   cursor: pointer;
   transition: all var(--transition-normal);
   display: flex;
@@ -59,8 +45,7 @@
 }
 
 .control-btn:hover {
-  background: var(--color-secondary-main);
-  color: var(--color-secondary-contrast-text);
+  background: var(--color-action-focus);
   transform: scale(1.1);
 }
 
@@ -82,9 +67,7 @@
 
 .tip-content {
   margin: 0;
-  font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
-  line-height: var(--line-height-normal);
 }
 
 .tradeoff-footer {
@@ -96,24 +79,26 @@
 .tip-indicators {
   display: flex;
   gap: 6px;
+  align-items: center;
 }
 
 .indicator {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #cbd5e1;
+  background: var(--color-primary-subtle);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .indicator.active {
-  background: #3b82f6;
-  transform: scale(1.2);
+  background: var(--color-primary-main);
+
+    transform: scale(1.2);
 }
 
 .indicator:hover {
-  background: #64748b;
+  transform: scale(1.5);
 }
 
 .tip-category {
@@ -127,71 +112,42 @@
   border-radius: var(--radius-xl);
 }
 
-/* Animation for content changes */
-.tradeoff-content {
-  animation: fadeIn 0.5s ease-in-out;
-}
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Pulse animation for active indicator */
-.indicator.active {
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
 
 @media (max-width: 480px) {
   .tradeoff-header {
     gap: 8px;
   }
-  
-  .tradeoff-icon {
-    width: 32px;
-    height: 32px;
-    font-size: 20px;
-  }
-  
+
   .tradeoff-title {
     font-size: 14px;
   }
-  
+
+  .tradeoff-controls {
+    margin-top: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
   .control-btn {
     width: 24px;
     height: 24px;
     font-size: 14px;
   }
-  
+
   .tip-title {
     font-size: 16px;
   }
-  
+
   .tip-content {
     font-size: 13px;
   }
-  
+
   .tradeoff-footer {
     flex-direction: column;
     gap: 8px;
     align-items: flex-start;
   }
-  
+
   .tip-category {
     font-size: 11px;
   }

@@ -3,6 +3,10 @@
   margin: 0 auto;
 }
 
+.strategy-page{
+    padding:var(--spacing-2xl) var(--spacing-lg);
+}
+
 /* Hub Page Styles */
 .intro-card {
   margin-bottom: var(--spacing-2xl);
@@ -37,8 +41,6 @@
 .strategy-card-description {
   margin: 0;
   color: var(--color-text-secondary);
-  font-size: var(--font-size-sm);
-  line-height: var(--line-height-normal);
 }
 
 
@@ -92,67 +94,98 @@
   color: #111827;
 }
 
-.strategy-cards {
+/* Strategy Cards Container */
+.strategy-cards-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap:32px;
+  margin:;
 }
 
+.strategy-cards-header h3{
+    margin:var(--spacing-3xl) 0 var(--spacing-lg);
+}
+
+/* Strategy Card Layout */
 .strategy-card {
+    padding:0;
+  background: var(--color-background-paper);
+  border: 1px solid var(--color-root-divider);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
   transition: all 0.2s ease;
 }
 
-.strategy-card:hover {
-  transform: translateY(-2px);
+/* Illustration Area */
+.strategy-card-illustration {
+  position: relative;
+  background: var(--color-background-default);
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-.strategy-card-content {
-  text-align: center;
+.strategy-illustration {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
-.strategy-card-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
+.strategy-illustration-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.strategy-card h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #111827;
-  margin: 0 0 12px 0;
+.illustration-fallback {
+  font-size: 64px;
+  opacity: 0.7;
 }
 
-.strategy-card p {
-  font-size: 14px;
-  color: #6b7280;
-  line-height: 1.5;
-  margin: 0 0 20px 0;
-}
-
-.strategy-button {
-  background: #3b82f6;
+/* Recommended Badge */
+.recommended-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--color-info-main);
   color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 24px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.strategy-button:hover {
-  background: #2563eb;
+/* Card Content */
+.strategy-card .card-content {
+  padding: var(--spacing-lg);
+
 }
 
+.strategy-card-title {
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-xs);
+  text-transform: capitalize;
+}
+
+.strategy-card-description {
+  color: var(--color-text-muted);
+  line-height: var(--line-height-relaxed);
+  margin: 0 0 var(--spacing-lg) 0;
+}
+
+/* Action Button - Now using Button component with fullWidth prop */
+
+/* Card Variants */
 .strategy-card.recommended {
-  background: var(--color-warning-subtle);
-  border-color: var(--color-warning-main);
 }
 
 .strategy-card.build-your-own {
-  background: var(--color-secondary-subtle);
-  border-color: var(--color-secondary-main);
 }
 
 /* Stepper Styles */
@@ -381,11 +414,41 @@
     padding: 16px 12px 100px 12px;
   }
 
-
-  .strategy-card-icon {
-    font-size: 40px;
+  .strategy-cards-container {
+    gap: 16px;
   }
 
+  .strategy-card-illustration {
+    height: 160px;
+  }
+
+  .illustration-fallback {
+    font-size: 48px;
+  }
+
+  .recommended-badge {
+    top: 12px;
+    right: 12px;
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .strategy-card-content {
+    padding: var(--spacing-lg);
+  }
+
+  .strategy-card-title {
+    font-size: var(--font-size-lg);
+  }
+
+  .strategy-card-description {
+    font-size: var(--font-size-xs);
+  }
+
+  .strategy-action-button {
+    font-size: var(--font-size-xs) !important;
+    padding: var(--spacing-xs) var(--spacing-sm) !important;
+  }
   .stepper-steps {
     gap: 8px;
   }

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card } from './Card';
+import { Icon, IconNames } from './Icon';
 import './TradeoffHighlight.css';
 
 interface TradeoffTip {
@@ -145,15 +146,8 @@ export function TradeoffHighlight({ userFinancialProfile, className }: TradeoffH
     }
   ];
 
-  const relevantTips = generatePersonalizedTips();
+  const relevantTips = useMemo(() => generatePersonalizedTips(), [userFinancialProfile]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTipIndex(prev => (prev + 1) % relevantTips.length);
-    }, 8000); // Change tip every 8 seconds
-
-    return () => clearInterval(interval);
-  }, [relevantTips.length]);
 
   useEffect(() => {
     setCurrentTip(relevantTips[tipIndex] || relevantTips[0]);
@@ -168,47 +162,49 @@ export function TradeoffHighlight({ userFinancialProfile, className }: TradeoffH
   };
 
   return (
-    <Card className={`tradeoff-highlight ${className || ''}`}>
+    <div className={`tradeoff-highlight-container ${className || ''}`}>
       <div className="tradeoff-header">
-        <div className="tradeoff-icon">{currentTip.icon}</div>
         <h3 className="tradeoff-title">Financial Insight</h3>
-        <div className="tradeoff-controls">
-          <button 
-            className="control-btn prev" 
-            onClick={() => handleTipChange('prev')}
-            aria-label="Previous tip"
-          >
-            ‹
-          </button>
-          <button 
-            className="control-btn next" 
-            onClick={() => handleTipChange('next')}
-            aria-label="Next tip"
-          >
-            ›
-          </button>
+      </div>
+
+      <Card className="tradeoff-highlight">
+        <div className="tradeoff-content">
+          <h4 className="tip-title">{currentTip.title}</h4>
+          <p className="tip-content">{currentTip.content}</p>
         </div>
-      </div>
-      
-      <div className="tradeoff-content">
-        <h4 className="tip-title">{currentTip.title}</h4>
-        <p className="tip-content">{currentTip.content}</p>
-      </div>
-      
-      <div className="tradeoff-footer">
+
+        <div className="tradeoff-footer">
+          <div className="tip-category">
+            {currentTip.category.charAt(0).toUpperCase() + currentTip.category.slice(1)}
+          </div>
+        </div>
+      </Card>
+
+      <div className="tradeoff-controls">
+        <button
+          className="control-btn prev"
+          onClick={() => handleTipChange('prev')}
+          aria-label="Previous tip"
+        >
+          <Icon name={IconNames.arrow_back} size="sm" />
+        </button>
         <div className="tip-indicators">
           {relevantTips.map((_, index) => (
-            <div 
+            <div
               key={index}
               className={`indicator ${index === tipIndex ? 'active' : ''}`}
               onClick={() => setTipIndex(index)}
             />
           ))}
         </div>
-        <div className="tip-category">
-          {currentTip.category.charAt(0).toUpperCase() + currentTip.category.slice(1)}
-        </div>
+        <button
+          className="control-btn next"
+          onClick={() => handleTipChange('next')}
+          aria-label="Next tip"
+        >
+          <Icon name={IconNames.arrow_forward} size="sm" />
+        </button>
       </div>
-    </Card>
+    </div>
   );
 }

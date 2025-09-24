@@ -92,8 +92,12 @@ export function NetWorthChartWithTimeline({ data, title = "Assets vs Debts" }: N
                 background: COLORS.card,
                 border: `1px solid ${COLORS.border}`,
                 color: COLORS.text,
-                borderRadius: '8px',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+                borderRadius: 'var(--radius-lg)',
+                boxShadow: 'var(--shadow-lg)',
+                maxWidth: '320px',
+                minWidth: '280px',
+                padding: 'var(--spacing-lg)',
+                fontSize: 'var(--font-size-base)'
               }}
               labelFormatter={(value) => {
                 const date = new Date(value);

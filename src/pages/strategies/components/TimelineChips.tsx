@@ -17,11 +17,6 @@ function Chip({ label, selected, onClick }: ChipProps) {
   return (
     <button
       onClick={onClick}
-      className={`px-lg py-md border-2 rounded-full text-sm font-medium cursor-pointer transition-all ${
-        selected 
-          ? 'border-blue-600 bg-blue-600 text-white' 
-          : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
-      }`}
     >
       {label}
     </button>
@@ -48,7 +43,3 @@ export function TimelineChips({ selected, onSelect }: TimelineChipsProps) {
     </div>
   );
 }
-
-
-
-

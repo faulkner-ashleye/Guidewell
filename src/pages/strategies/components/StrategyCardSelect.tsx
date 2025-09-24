@@ -22,22 +22,17 @@ function SelectCard({ title, description, selected, onClick, icon }: SelectCardP
   return (
     <button
       onClick={onClick}
-      className={`p-lg border-2 rounded-xl cursor-pointer transition-all text-left w-full min-w-50 ${
-        selected 
-          ? 'border-blue-600 bg-blue-50' 
-          : 'border-gray-200 bg-white hover:border-blue-600 hover:bg-gray-50'
-      }`}
     >
       <div className="text-2xl mb-sm">
         {icon}
       </div>
-      
+
       <h4 className={`mb-xs text-base font-semibold ${
         selected ? 'text-blue-700' : 'text-gray-900'
       }`}>
         {title}
       </h4>
-      
+
       <p className="text-sm text-gray-500 leading-relaxed">
         {description}
       </p>
@@ -47,7 +42,7 @@ function SelectCard({ title, description, selected, onClick, icon }: SelectCardP
 
 export function StrategyCardSelect({ selected, onSelect, accountTypes = [], focusCategory }: StrategyCardSelectProps) {
   // Get appropriate avatars based on context
-  const availableAvatars = focusCategory 
+  const availableAvatars = focusCategory
     ? anchorAvatars.filter(avatar => avatar.category === focusCategory)
     : anchorAvatars;
 
@@ -76,7 +71,3 @@ export function StrategyCardSelect({ selected, onSelect, accountTypes = [], focu
     </div>
   );
 }
-
-
-
-
