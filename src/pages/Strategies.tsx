@@ -76,7 +76,7 @@ export function Strategies() {
 
   const handleBuildStrategy = () => {
     navigate('/build-strategy');
-    
+
     // Ensure scroll to top after navigation
     setTimeout(() => {
       const phoneContent = document.querySelector('.phone-content');
@@ -97,7 +97,7 @@ export function Strategies() {
         allocation: recommendedStrategy.allocation
       }
     });
-    
+
     // Ensure scroll to top after navigation
     setTimeout(() => {
       const phoneContent = document.querySelector('.phone-content');
@@ -225,9 +225,7 @@ export function Strategies() {
           }}
         />
 
-        {/* Footer */}
-        <div className="text-center text-muted text-xs">
-        </div>
+
       </div>
     </div>
   );

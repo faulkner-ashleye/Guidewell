@@ -344,7 +344,7 @@ async function generateAINarrative(
       .filter(a => a.type === 'investment')
       .reduce((sum, a) => sum + a.balance, 0);
 
-    const monthlyContribution = extraDollars || 500; // Use default for educational purposes
+    const monthlyContribution = extraDollars !== undefined ? extraDollars : 500; // Use default for educational purposes
 
     // Generate avatar-based narrative with user context
     let narrative = AvatarUtils.generateAvatarNarrative(avatar, {

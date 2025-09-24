@@ -5,8 +5,7 @@ import { NavBar } from '../components/NavBar';
 import { MobilePhoneWrapper } from '../components/MobilePhoneWrapper';
 import { Home } from '../pages/Home/Home';
 import { Strategies } from '../pages/Strategies';
-import { BuildStrategy } from '../pages/BuildStrategy';
-import { CustomStrategy } from '../pages/CustomStrategy';
+import { StrategyBuilder } from '../pages/StrategyBuilder';
 import { Goals } from '../pages/Goals';
 import { Plan } from '../pages/Plan/Plan';
 import { Settings } from '../pages/Settings/Settings';
@@ -32,8 +31,8 @@ function AppContent() {
             <Route path="/" element={<Onboarding />} />
             <Route path="/home" element={<Home />} />
             <Route path="/strategies" element={<Strategies />} />
-            <Route path="/build-strategy" element={<BuildStrategy />} />
-            <Route path="/custom-strategy" element={<CustomStrategy />} />
+            <Route path="/build-strategy" element={<StrategyBuilder mode="build" />} />
+            <Route path="/custom-strategy" element={<StrategyBuilder mode="custom" />} />
             <Route path="/strategies/breakdown" element={<div>Breakdown page coming soon...</div>} />
             <Route path="/goals" element={<Goals />} />
             <Route path="/plan" element={<Plan />} />

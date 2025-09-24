@@ -25,26 +25,19 @@ export function ContributionEditor({
   goalsMonthly = 0,
   onExtraChange
 }: ContributionEditorProps) {
-  const [inputMode, setInputMode] = useState<'dollar' | 'percent'>('dollar');
   const [extraDollars, setExtraDollars] = useState<number | undefined>(extra);
-  const [extraPercent, setExtraPercent] = useState<number | undefined>(undefined);
-  
-  // Calculate baseline monthly contribution
-  const baselineMonthly = estimateBaselineMonthly(scope, strategy, { 
-    accounts, 
-    transactions, 
-    goalsMonthly 
-  });
-  
-  // Calculate computed extra when in percent mode
-  const computedExtra = inputMode === 'percent' && extraPercent 
-    ? Math.round(baselineMonthly * (extraPercent / 100))
-    : extraDollars;
 
-  // Update parent component when computed extra changes
+  // Calculate baseline monthly contribution
+  const baselineMonthly = estimateBaselineMonthly(scope, strategy, {
+    accounts,
+    transactions,
+    goalsMonthly
+  });
+
+  // Update parent component when extra dollars changes
   useEffect(() => {
-    onExtraChange(computedExtra);
-  }, [computedExtra, onExtraChange]);
+    onExtraChange(extraDollars);
+  }, [extraDollars, onExtraChange]);
 
 
   // Mock account data for suggestion
@@ -54,87 +47,27 @@ export function ContributionEditor({
 
   return (
     <div className="flex flex-col gap-lg">
-      {/* Input Mode Toggle */}
-      <div className="m-md">
-        <div className="m-sm text-sm font-medium text-grey-700">
-          Input Mode:
-        </div>
-        <div className="flex gap-sm">
-          <button
-            onClick={() => setInputMode('dollar')}
-            className={`p-sm rounded-md text-sm font-medium cursor-pointer transition-all ${
-              inputMode === 'dollar' 
-                ? 'bg-primary-subtle text-primary-dark' 
-                : 'bg-paper text-grey-700'
-            }`}
-            style={{
-              border: `2px solid ${inputMode === 'dollar' ? 'var(--color-primary-main)' : 'var(--color-grey-300)'}`
-            }}
-          >
-            $ Dollar Amount
-          </button>
-          <button
-            onClick={() => setInputMode('percent')}
-            className={`p-sm rounded-md text-sm font-medium cursor-pointer transition-all ${
-              inputMode === 'percent' 
-                ? 'bg-primary-subtle text-primary-dark' 
-                : 'bg-paper text-grey-700'
-            }`}
-            style={{
-              border: `2px solid ${inputMode === 'percent' ? 'var(--color-primary-main)' : 'var(--color-grey-300)'}`
-            }}
-          >
-            % Percentage
-          </button>
-        </div>
-      </div>
-
       {/* Currency Input */}
       <div>
         <CurrencyInput
-          value={inputMode === 'dollar' ? extraDollars : extraPercent}
+          value={extraDollars}
           onChange={(value) => {
-            if (inputMode === 'dollar') {
-              setExtraDollars(value);
-            } else {
-              // Clamp percentage to 0-100
-              const clampedValue = value ? Math.max(0, Math.min(100, value)) : undefined;
-              setExtraPercent(clampedValue);
-            }
+            setExtraDollars(value);
           }}
-          placeholder={inputMode === 'dollar' ? "500.00" : "20"}
-          label={`Extra contribution ${inputMode === 'dollar' ? '($)' : '(%)'}`}
+          placeholder="500.00"
+          label="Extra contribution ($)"
         />
-        
-        {/* Baseline estimation helper */}
-        {inputMode === 'percent' && (
-          <div className={`m-sm p-sm rounded-md text-xs ${
-            baselineMonthly > 0 
-              ? 'bg-info-subtle text-info-dark' 
-              : 'bg-error-subtle text-error-dark'
-          }`} style={{
-            border: `1px solid ${baselineMonthly > 0 ? 'var(--color-info-light)' : 'var(--color-error-light)'}`
-          }}>
-            {baselineMonthly > 0 ? (
-              <>
-                Estimated baseline: ${baselineMonthly.toLocaleString()}/mo → {extraPercent || 0}% ≈ ${computedExtra?.toLocaleString() || 0} extra
-              </>
-            ) : (
-              'Not enough data to estimate. Enter a $ amount instead.'
-            )}
-          </div>
-        )}
-        
+
         {/* Helper text when empty */}
-        {computedExtra === undefined && inputMode === 'dollar' && (
+        {extraDollars === undefined && (
           <div className="m-sm text-xs text-grey-500 italic">
             If left blank, we'll assume the maximum time for the selected timeline.
           </div>
         )}
-        
-        {/* Suggested range for dollar mode */}
-        {computedExtra === undefined && inputMode === 'dollar' && (
-          <div className="m-sm p-sm bg-info-subtle rounded-md text-xs text-info-dark" style={{ border: '1px solid var(--color-info-light)' }}>
+
+        {/* Suggested range */}
+        {extraDollars === undefined && (
+          <div className="alert info text-sm">
             Suggested range: ${suggestedLow.toLocaleString()}–${suggestedHigh.toLocaleString()} based on recent inflows
           </div>
         )}

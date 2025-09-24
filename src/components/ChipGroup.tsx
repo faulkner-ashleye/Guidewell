@@ -7,7 +7,7 @@ interface ChipGroupProps {
 
 export function ChipGroup({ children, direction = 'horizontal' }: ChipGroupProps) {
   return (
-    <div className={`flex gap-sm flex-wrap ${
+    <div className={`flex gap-sm flex-wrap chipgroup ${
       direction === 'vertical' ? 'flex-col' : 'flex-row'
     }`}>
       {children}
@@ -23,16 +23,16 @@ interface ChipProps {
   variant?: 'default' | 'success' | 'warning' | 'error';
 }
 
-export function Chip({ 
-  label, 
-  selected, 
-  onClick, 
+export function Chip({
+  label,
+  selected,
+  onClick,
   disabled = false,
   variant = 'default'
 }: ChipProps) {
   const baseClasses = 'chip';
   const selectedClasses = selected ? 'chip-active' : '';
-  
+
   return (
     <button
       onClick={onClick}
@@ -43,7 +43,3 @@ export function Chip({
     </button>
   );
 }
-
-
-
-

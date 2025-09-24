@@ -138,25 +138,37 @@
 }
 
 [data-theme="dark"] .chip-active {
-  background: var(--color-primary-subtle);
-  color: var(--color-primary-subtle-contrast);
+  background: var(--color-primary-main);
+  color: var(--color-primary-contrast-text);
 }
 
 [data-theme="dark"] .chip-active:hover:not(:disabled) {
-  background: var(--color-primary-subtle-hover);
-  color: var(--color-primary-subtle-contrast);
+  background: var(--color-primary-light);
+  color: var(--color-primary-contrast-text);
 }
 
 [data-theme="dark"] .chip-active:focus:not(:disabled) {
-  background: var(--color-primary-subtle-hover);
-  color: var(--color-primary-subtle-contrast);
+    background: var(--color-primary-main);
+    color: var(--color-primary-contrast-text);
 }
 
 [data-theme="dark"] .chip-active:disabled {
   background: rgba(var(--color-primary-subtle-rgb), 0.24);
   color: var(--color-primary-subtle-contrast);
 }
+/* alert */
+.alert{
+    padding:var(--spacing-sm) var(--spacing-lg);
+    border-radius:var(--spacing-sm);
+    box-shadow:var(--shadow-sm);
+    margin:var(--spacing-2xl) 0;
+}
 
+.alert.info{
+    border:1px solid var(--color-info-dark);
+    background: var(--color-info-subtle);
+    color:var(--color-info-subtle-contrast)
+}
 /* Progress Components */
 .progress-bar {
   width: 100%;
@@ -442,7 +454,7 @@
   background: var(--color-card);
   color: var(--color-text-primary);
   font-family: var(--font-family-sans);
-  font-size: 16px;
+  font-size: var(--font-size-base);
   line-height: 24px;
   transition: all var(--transition-normal);
 }
@@ -472,7 +484,7 @@
   background: var(--color-card);
   color: var(--color-text-primary);
   font-family: var(--font-family-sans);
-  font-size: 16px;
+  font-size: var(--font-size-base);
   line-height: 24px;
   cursor: pointer;
   transition: all var(--transition-normal);

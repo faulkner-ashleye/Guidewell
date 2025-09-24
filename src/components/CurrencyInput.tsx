@@ -46,17 +46,15 @@ export function CurrencyInput({
   };
 
   return (
-    <div className="w-full">
+    <div className="currency-input-container">
       {label && (
-        <label className="block mb-xs text-sm font-medium text-gray-700">
+        <label className="form-label">
           {label}
         </label>
       )}
       
-      <div className="relative">
-        <span className="absolute left-md top-1/2 transform -translate-y-1/2 text-gray-500 text-base font-medium pointer-events-none">
-          $
-        </span>
+      <div className="currency-input-wrapper">
+        <span className="currency-symbol">$</span>
         
         <input
           type="text"
@@ -64,11 +62,7 @@ export function CurrencyInput({
           onChange={handleChange}
           placeholder={placeholder}
           disabled={disabled}
-          className={`w-full pl-lg pr-md py-md border-2 border-gray-200 rounded-lg text-base font-medium outline-none transition-colors ${
-            disabled 
-              ? 'bg-gray-50 text-gray-400' 
-              : 'bg-white text-gray-900 focus:border-blue-600'
-          }`}
+          className="form-input currency-input"
           onBlur={handleBlur}
         />
       </div>

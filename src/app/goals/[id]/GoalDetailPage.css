@@ -338,10 +338,6 @@
   }
 }
 
-.text-muted {
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-sm);
-}
 
 .contribution-badge {
   padding: 2px 8px;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line, LineChart, Tooltip, ResponsiveContainer, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { Area, AreaChart, Tooltip, ResponsiveContainer, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { COLORS } from '../ui/colors';
 
 interface NetWorthStackedAreaProps {
@@ -16,7 +16,7 @@ export function NetWorthStackedArea({ data }: NetWorthStackedAreaProps) {
       </div>
       <div className="chartSize">
         <ResponsiveContainer>
-          <LineChart
+          <AreaChart
             data={data}
             margin={{ left: 8, right: 8, top: 8, bottom: 8 }}
           >
@@ -47,25 +47,29 @@ export function NetWorthStackedArea({ data }: NetWorthStackedAreaProps) {
               labelFormatter={(v) => `Date: ${v}`}
               formatter={(v: number, k) => [`$${Math.round(v).toLocaleString()}`, k]}
             />
-            <Line
+            <Area
               type="monotone"
               dataKey="assets"
               name="Assets"
               stroke={COLORS.savings}
+              fill={COLORS.savings}
+              fillOpacity={0.3}
               strokeWidth={3}
               dot={false}
               activeDot={{ r: 6, stroke: COLORS.savings, strokeWidth: 2 }}
             />
-            <Line
+            <Area
               type="monotone"
               dataKey="debts"
               name="Debts"
               stroke={COLORS.debt}
+              fill={COLORS.debt}
+              fillOpacity={0.3}
               strokeWidth={3}
               dot={false}
               activeDot={{ r: 6, stroke: COLORS.debt, strokeWidth: 2 }}
             />
-          </LineChart>
+          </AreaChart>
         </ResponsiveContainer>
       </div>
     </div>

@@ -12,31 +12,31 @@ interface AvatarSelectorProps {
     mainGoals: string[];
     financialLiteracy: 'beginner' | 'intermediate' | 'advanced';
   };
+  hideShowAllButton?: boolean;
 }
 
-export function AvatarSelector({ 
-  accountTypes, 
-  focusCategory, 
-  selectedAvatar, 
+export function AvatarSelector({
+  accountTypes,
+  focusCategory,
+  selectedAvatar,
   onAvatarSelect,
-  userProfile 
+  userProfile,
+  hideShowAllButton = false
 }: AvatarSelectorProps) {
-  const [showSupporting, setShowSupporting] = useState(false);
 
   // Get appropriate avatars based on context
   const availableAvatars = AvatarUtils.getAvatarsForContext(accountTypes, focusCategory);
-  const supportingAvatars = availableAvatars.filter(avatar => avatar.tier === 'supporting');
 
   // Get recommended avatars if user profile is provided
-  const recommendedAvatars = userProfile 
+  const recommendedAvatars = userProfile
     ? AvatarUtils.getRecommendedAvatars(userProfile)
     : anchorAvatars;
 
-  // When focusing on a specific category, show all avatars by default
-  // When comparing all accounts, show only anchor avatars by default
-  const displayAvatars = focusCategory 
-    ? availableAvatars // Always show all when focusing on a category
-    : (showSupporting ? availableAvatars : anchorAvatars); // Show anchor only when comparing all
+  // When focusing on a specific category, show all avatars
+  // When comparing all accounts, show only anchor avatars
+  const displayAvatars = focusCategory
+    ? availableAvatars // Show all when focusing on a category
+    : anchorAvatars; // Show only main strategies when comparing all accounts
 
   const handleAvatarClick = (avatar: NarrativeAvatar) => {
     onAvatarSelect(avatar);
@@ -58,11 +58,6 @@ export function AvatarSelector({
 
   return (
     <div className="avatar-selector">
-      <div className="avatar-header">
-        <h3 className="avatar-title">{getCategoryTitle()}</h3>
-        <p className="avatar-description">{getCategoryDescription()}</p>
-      </div>
-
       <div className="avatar-grid">
         {displayAvatars.map(avatar => (
           <div
@@ -82,17 +77,17 @@ export function AvatarSelector({
               </div>
               <div className="avatar-allocation">
                 <div className="allocation-bar">
-                  <div 
+                  <div
                     className="allocation-segment debt"
                     style={{ width: `${avatar.allocation.debt}%` }}
                     title={`${avatar.allocation.debt}% Debt`}
                   ></div>
-                  <div 
+                  <div
                     className="allocation-segment savings"
                     style={{ width: `${avatar.allocation.savings}%` }}
                     title={`${avatar.allocation.savings}% Savings`}
                   ></div>
-                  <div 
+                  <div
                     className="allocation-segment investment"
                     style={{ width: `${avatar.allocation.investing}%` }}
                     title={`${avatar.allocation.investing}% Investment`}
@@ -112,16 +107,6 @@ export function AvatarSelector({
         ))}
       </div>
 
-      {supportingAvatars.length > 0 && !focusCategory && (
-        <div className="avatar-toggle">
-          <button 
-            className={`toggle-button ${showSupporting ? 'active' : ''}`}
-            onClick={() => setShowSupporting(!showSupporting)}
-          >
-            {showSupporting ? 'Show Main Strategies Only' : `Show All ${focusCategory || 'Financial'} Strategies (${supportingAvatars.length} more)`}
-          </button>
-        </div>
-      )}
 
       {userProfile && recommendedAvatars.length > 0 && (
         <div className="recommended-section">

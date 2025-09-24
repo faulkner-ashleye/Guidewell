@@ -279,19 +279,8 @@ export class AvatarUtils {
     let narrative = avatar.narrative;
     
     // Add context-specific details
-    if (avatar.category === 'debt' && totalDebt > 0) {
-      const debtAllocation = monthlyContribution * (avatar.allocation.debt / 100);
-      narrative += ` With $${debtAllocation.toFixed(0)}/month toward debt, you could see significant progress.`;
-    }
-    
-    if (avatar.category === 'savings' && totalSavings > 0) {
-      const savingsAllocation = monthlyContribution * (avatar.allocation.savings / 100);
-      narrative += ` With $${savingsAllocation.toFixed(0)}/month toward savings, your goals could accelerate.`;
-    }
-    
-    if (avatar.category === 'investment' && totalInvestment > 0) {
-      const investmentAllocation = monthlyContribution * (avatar.allocation.investing / 100);
-      narrative += ` With $${investmentAllocation.toFixed(0)}/month toward investments, you could build long-term wealth.`;
+    if (monthlyContribution > 0) {
+      narrative += ` With $${monthlyContribution.toFixed(0)}/month toward savings, your goals could accelerate.`;
     }
     
     return narrative;

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Line, LineChart, Tooltip, ResponsiveContainer, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { Area, AreaChart, Tooltip, ResponsiveContainer, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { COLORS } from '../ui/colors';
 import './NetWorthChartWithTimeline.css';
 
@@ -71,7 +71,7 @@ export function NetWorthChartWithTimeline({ data, title = "Assets vs Debts" }: N
 
       <div className="chart-container">
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart
+          <AreaChart
             data={filteredData}
             margin={{ left: 20, right: 20, top: 20, bottom: 20 }}
           >
@@ -112,25 +112,29 @@ export function NetWorthChartWithTimeline({ data, title = "Assets vs Debts" }: N
                 name === 'assets' ? 'Assets' : name === 'debts' ? 'Debts' : 'Net Worth'
               ]}
             />
-            <Line
+            <Area
               type="monotone"
               dataKey="assets"
               name="assets"
               stroke={COLORS.savings}
+              fill={COLORS.savings}
+              fillOpacity={0.3}
               strokeWidth={3}
               dot={false}
               activeDot={{ r: 6, stroke: COLORS.savings, strokeWidth: 2 }}
             />
-            <Line
+            <Area
               type="monotone"
               dataKey="debts"
               name="debts"
               stroke={COLORS.debt}
+              fill={COLORS.debt}
+              fillOpacity={0.3}
               strokeWidth={3}
               dot={false}
               activeDot={{ r: 6, stroke: COLORS.debt, strokeWidth: 2 }}
             />
-          </LineChart>
+          </AreaChart>
         </ResponsiveContainer>
       </div>
 
