@@ -1,3 +1,11 @@
+/* SVG Theme Adaptation */
+/* Theme-aware SVGs use CSS custom properties for automatic color adaptation */
+
+.theme-aware-svg {
+  /* Ensure SVGs inherit theme colors properly */
+  color: var(--color-text-primary);
+}
+
 /* Form Components */
 .form-group {
   margin-bottom: var(--spacing-sm);
@@ -510,7 +518,7 @@
 /* Navbar Components */
 .navbar {
   position: sticky;
-  bottom:0;
+  bottom:-1px;
   background: var(--color-card);
   border-top: 1px solid var(--color-border);
   padding: var(--spacing-sm) 0 var(--spacing-md);

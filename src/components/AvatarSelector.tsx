@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NarrativeAvatar, AvatarUtils, anchorAvatars } from '../data/narrativeAvatars';
+import { AvatarIllustration } from './AvatarIllustration';
 import './AvatarSelector.css';
 
 interface AvatarSelectorProps {
@@ -67,7 +68,13 @@ export function AvatarSelector({
             }`}
             onClick={() => handleAvatarClick(avatar)}
           >
-            <div className="avatar-icon">{avatar.emoji}</div>
+            <div className="avatar-illustration-container">
+              <AvatarIllustration 
+                avatarId={avatar.id} 
+                fallbackEmoji={avatar.emoji}
+                className="avatar-illustration"
+              />
+            </div>
             <div className="avatar-content">
               <h4 className="avatar-name">{avatar.name}</h4>
               <p className="avatar-narrative">"{avatar.narrative}"</p>
@@ -118,7 +125,13 @@ export function AvatarSelector({
                 className="recommended-avatar"
                 onClick={() => handleAvatarClick(avatar)}
               >
-                <span className="recommended-icon">{avatar.emoji}</span>
+                <div className="recommended-icon-container">
+                  <AvatarIllustration 
+                    avatarId={avatar.id} 
+                    fallbackEmoji={avatar.emoji}
+                    className="recommended-icon"
+                  />
+                </div>
                 <span className="recommended-name">{avatar.name}</span>
               </div>
             ))}

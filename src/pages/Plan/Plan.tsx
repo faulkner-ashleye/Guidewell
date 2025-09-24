@@ -113,15 +113,7 @@ export function Plan() {
       {/* Overview: Net worth cards + line chart */}
       <section className="plan-overview">
       <NetWorthChartWithTimeline data={series} title="Net Worth Trend" />
-        <div className="plan-summary-grid">
-          <SummaryCard title="Assets" value={formatMoney(assets)} />
-          <SummaryCard title="Debts"  value={formatMoney(debts)} />
-          <SummaryCard
-            title="Net Worth"
-            value={formatMoney(net)}
-            subline={assets + debts > 0 ? `${Math.round((assets/(assets+debts))*100)}% assets` : ''}
-          />
-        </div>
+
 
       </section>
 

@@ -10,6 +10,7 @@ import { PersonalSnapshot } from '../components/PersonalSnapshot';
 import { TradeoffHighlight } from '../components/TradeoffHighlight';
 import { FinancialJourneyChart } from '../components/FinancialJourneyChart';
 import { AvatarUtils, NarrativeAvatar } from '../data/narrativeAvatars';
+import { DebtCrusherSVG, BuildYourOwnSVG } from '../components/ThemeAwareSVG';
 import '../components/Button.css';
 import './Strategies.css';
 
@@ -74,6 +75,11 @@ export function Strategies() {
 
   const recommendedStrategy = getRecommendedStrategy();
 
+  // Convert avatar ID to file name format
+  const getPersonaFileName = (avatarId: string): string => {
+    return avatarId.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+  };
+
   const handleBuildStrategy = () => {
     navigate('/build-strategy');
 
@@ -133,22 +139,13 @@ export function Strategies() {
           {/* Recommended Strategy Card */}
           <Card className="strategy-card recommended">
             <div className="strategy-card-illustration">
-              <img
-                src={`/images/${recommendedStrategy.id}-illustration.svg`}
-                alt={`${recommendedStrategy.name} illustration`}
-                className="strategy-illustration"
-                onError={(e) => {
-                  // Fallback to placeholder if image doesn't exist
-                  e.currentTarget.style.display = 'none';
-                  const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
-                  if (nextElement) {
-                    nextElement.style.display = 'block';
-                  }
-                }}
-              />
-              <div className="strategy-illustration-placeholder" style={{display: 'none'}}>
-                <div className="illustration-fallback">{recommendedStrategy.emoji}</div>
-              </div>
+              {recommendedStrategy.id === 'debt_crusher' ? (
+                <DebtCrusherSVG className="strategy-illustration" />
+              ) : (
+                <div className="strategy-illustration-placeholder">
+                  <div className="illustration-fallback">{recommendedStrategy.emoji}</div>
+                </div>
+              )}
               <div className="recommended-badge">Recommended</div>
             </div>
             <div className="card-content">
@@ -173,22 +170,7 @@ export function Strategies() {
           {/* Build Your Own Strategy Card */}
           <Card className="strategy-card build-your-own">
             <div className="strategy-card-illustration">
-              <img
-                src="/images/build-strategy-illustration.svg"
-                alt="Build strategy illustration"
-                className="strategy-illustration"
-                onError={(e) => {
-                  // Fallback to placeholder if image doesn't exist
-                  e.currentTarget.style.display = 'none';
-                  const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
-                  if (nextElement) {
-                    nextElement.style.display = 'block';
-                  }
-                }}
-              />
-              <div className="strategy-illustration-placeholder" style={{display: 'none'}}>
-                <div className="illustration-fallback">⚙️</div>
-              </div>
+              <BuildYourOwnSVG className="strategy-illustration" />
             </div>
             <div className="card-content">
               <h3 className="strategy-card-title typography-h3">Build your own strategy</h3>

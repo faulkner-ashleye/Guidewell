@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AvatarSelector } from './AvatarSelector';
 import { NarrativeAvatar, AvatarUtils } from '../data/narrativeAvatars';
+import { AvatarIllustration } from './AvatarIllustration';
 import { useAppState } from '../state/AppStateContext';
 import './AvatarSystemDemo.css';
 
@@ -111,7 +112,13 @@ export function AvatarSystemDemo() {
               return (
                 <div className="avatar-detail-card">
                   <div className="detail-header">
-                    <span className="detail-icon">{avatar.emoji}</span>
+                    <div className="detail-icon-container">
+                      <AvatarIllustration 
+                        avatarId={avatar.id} 
+                        fallbackEmoji={avatar.emoji}
+                        className="detail-icon"
+                      />
+                    </div>
                     <div className="detail-info">
                       <h4>{avatar.name}</h4>
                       <span className="detail-category">{avatar.category} • {avatar.tier}</span>

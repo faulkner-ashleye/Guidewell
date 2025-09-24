@@ -17,6 +17,7 @@ import GoalDetailPage from './goals/[id]/page';
 import { initializeTheme } from '../ui/colors';
 import { FoundationFeatures } from '../components/FoundationFeatures';
 import { DesignSystemDemo } from '../components/DesignSystemDemo';
+import { SVGColorTest } from '../components/SVGColorTest';
 import './App.css';
 
 function AppContent() {
@@ -42,6 +43,7 @@ function AppContent() {
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/foundation" element={<FoundationFeatures />} />
             <Route path="/design-system" element={<DesignSystemDemo />} />
+            <Route path="/svg-test" element={<SVGColorTest />} />
             <Route path="/accounts/:id" element={<AccountDetailPage />} />
             <Route path="/goals/:id" element={<GoalDetailPage />} />
           </Routes>
