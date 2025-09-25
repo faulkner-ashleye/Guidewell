@@ -1,9 +1,15 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { PlaidLinkOptions } from 'react-plaid-link';
 import { usePlaidLinkSingleton } from '../hooks/usePlaidLinkSingleton';
 import { Button, ButtonVariants, ButtonColors } from './Button';
 import { Icon, IconNames } from './Icon';
 import './Button.css';
+
+// Define PlaidLinkOptions type locally
+interface PlaidLinkOptions {
+  token: string;
+  onSuccess: (public_token: string) => void;
+  onExit?: () => void;
+}
 
 type Props = {
   userId?: string;
@@ -20,17 +26,30 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
   const handleSuccess = useCallback(async (public_token: string) => {
     try {
       // Exchange public_token -> access_token (server-side)
-      await fetch(`${apiBase}/plaid/item/public_token/exchange`, {
+      const exchangeResponse = await fetch(`${apiBase}/plaid/item/public_token/exchange`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ public_token, userId }),
       });
-      // Fetch mapped accounts
-      const r = await fetch(`${apiBase}/plaid/accounts?userId=${encodeURIComponent(userId)}`);
-      const { accounts } = await r.json();
+      
+      if (!exchangeResponse.ok) {
+        throw new Error('Token exchange failed');
+      }
+      
+      const { access_token } = await exchangeResponse.json();
+      
+      // Fetch mapped accounts using the access token
+      const accountsResponse = await fetch(`${apiBase}/plaid/accounts?access_token=${encodeURIComponent(access_token)}&userId=${encodeURIComponent(userId)}`);
+      
+      if (!accountsResponse.ok) {
+        throw new Error('Account fetch failed');
+      }
+      
+      const { accounts } = await accountsResponse.json();
       onSuccess(accounts);
-    } catch (e) {
-      setError('Link success, but account fetch failed');
+    } catch (e: any) {
+      console.error('Plaid success flow error:', e);
+      setError(`Link success, but account fetch failed: ${e.message}`);
     }
   }, [apiBase, userId, onSuccess]);
 
@@ -96,6 +115,15 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
 
   const { open, ready, error: plaidError } = usePlaidLinkSingleton(config);
 
+  // Debug logging
+  console.log('PlaidLinkButton state:', {
+    isInitialized,
+    linkToken: linkToken ? 'Present' : 'Missing',
+    ready,
+    error,
+    plaidError
+  });
+
   if (error) return <div>{error}</div>;
   if (plaidError) return <div>Plaid Error: {plaidError}</div>;
   if (!isInitialized || !linkToken) return <Button variant={ButtonVariants.outline} color={ButtonColors.secondary} fullWidth={true} disabled>Plaid unavailable</Button>;
@@ -106,11 +134,14 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
       variant={ButtonVariants.outline}
       color={ButtonColors.secondary}
       fullWidth={true}
-      onClick={() => open()}
+      onClick={() => {
+        console.log('Plaid button clicked, ready:', ready);
+        open();
+      }}
       disabled={!ready}
     >
       <Icon name={IconNames.account_balance_wallet} size="md" />
-      Connect with Plaid
+      Connect with Plaid {!ready ? '(Loading...)' : ''}
     </Button>
   );
 }

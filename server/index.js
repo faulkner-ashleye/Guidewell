@@ -1,20 +1,21 @@
 const dotenv = require('dotenv');
-dotenv.config();
+const path = require('path');
+dotenv.config({ path: path.join(__dirname, '..', '.env') });
 const express = require('express');
 const cors = require('cors');
 const { Configuration, PlaidApi, PlaidEnvironments } = require('plaid');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:5173', credentials: true })); // adjust origin to your dev client
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(express.json());
 
 const cfg = new Configuration({
   basePath: PlaidEnvironments[process.env.PLAID_ENV || 'sandbox'],
   baseOptions: {
     headers: {
-      'PLAID-CLIENT-ID': process.env.PLAID_CLIENT_ID!,
-      'PLAID-SECRET': process.env.PLAID_SECRET!,
+      'PLAID-CLIENT-ID': process.env.PLAID_CLIENT_ID,
+      'PLAID-SECRET': process.env.PLAID_SECRET,
     },
   },
 });
@@ -27,20 +28,25 @@ const supabase = createClient(
 );
 
 // 1) Create link token
-app.post('/plaid/link/token/create', async (req: Request, res: Response) => {
-  const userId = (req.body?.userId as string) || 'demo-user-123';
-  const r = await plaid.linkTokenCreate({
-    user: { client_user_id: userId },
-    client_name: 'Guidewell',
-    products: ['auth', 'transactions', 'liabilities'] as any,
-    country_codes: ['US'] as any,
-    language: 'en',
-  });
-  res.json({ link_token: r.data.link_token });
+app.post('/plaid/link/token/create', async (req, res) => {
+  try {
+    const userId = req.body?.userId || 'demo-user-123';
+    const r = await plaid.linkTokenCreate({
+      user: { client_user_id: userId },
+      client_name: 'Guidewell',
+      products: ['auth', 'transactions', 'liabilities'],
+      country_codes: ['US'],
+      language: 'en',
+    });
+    res.json({ link_token: r.data.link_token });
+  } catch (error) {
+    console.error('Error creating link token:', error);
+    res.status(500).json({ error: 'Failed to create link token' });
+  }
 });
 
 // 2) Exchange public token
-app.post('/plaid/item/public_token/exchange', async (req: Request, res: Response) => {
+app.post('/plaid/item/public_token/exchange', async (req, res) => {
   try {
     const { public_token, userId = 'demo-user-123' } = req.body || {};
     const ex = await plaid.itemPublicTokenExchange({ public_token });
@@ -64,7 +70,7 @@ app.post('/plaid/item/public_token/exchange', async (req: Request, res: Response
         user_id: userId,
         plaid_item_id: ex.data.item_id,
         plaid_access_token: ex.data.access_token,
-        account_id: ex.data.item_id, // Using item_id as account_id for now
+        account_id: ex.data.item_id,
         account_name: 'Plaid Item',
         account_type: 'item',
         account_subtype: 'item'
@@ -85,9 +91,9 @@ app.post('/plaid/item/public_token/exchange', async (req: Request, res: Response
 });
 
 // 3) Fetch accounts + liabilities and map
-app.get('/plaid/accounts', async (req: Request, res: Response) => {
+app.get('/plaid/accounts', async (req, res) => {
   try {
-    const userId = (req.query.userId as string) || 'demo-user-123';
+    const userId = req.query.userId || 'demo-user-123';
     
     // Get access token from Supabase
     const { data: accountData, error: accountError } = await supabase
@@ -102,41 +108,41 @@ app.get('/plaid/accounts', async (req: Request, res: Response) => {
     
     const [acct, liab] = await Promise.all([
       plaid.accountsGet({ access_token: accountData.plaid_access_token }),
-      plaid.liabilitiesGet({ access_token: accountData.plaid_access_token }).catch(() => ({ data: { liabilities: {} as any } })),
+      plaid.liabilitiesGet({ access_token: accountData.plaid_access_token }).catch(() => ({ data: { liabilities: {} } })),
     ]);
 
-  const accounts = acct.data.accounts.map((a: any) => ({
-    id: a.account_id,
-    type:
-      a.type === 'depository' ? (a.subtype === 'savings' ? 'savings' : 'checking') :
-      a.type === 'credit' ? 'credit_card' :
-      a.type === 'loan' ? 'loan' :
-      a.type === 'investment' ? 'investment' : 'checking',
-    name: a.name || a.official_name || `${a.type} ${a.subtype}`,
-    balance: a.balances.current || 0,
-    apr: undefined as number | undefined,
-    minPayment: undefined as number | undefined,
-    institutionId: a.institution_id,
-    institutionName: a.institution_name,
-  }));
+    const accounts = acct.data.accounts.map((a) => ({
+      id: a.account_id,
+      type:
+        a.type === 'depository' ? (a.subtype === 'savings' ? 'savings' : 'checking') :
+        a.type === 'credit' ? 'credit_card' :
+        a.type === 'loan' ? 'loan' :
+        a.type === 'investment' ? 'investment' : 'checking',
+      name: a.name || a.official_name || `${a.type} ${a.subtype}`,
+      balance: a.balances.current || 0,
+      apr: undefined,
+      minPayment: undefined,
+      institutionId: a.institution_id,
+      institutionName: a.institution_name,
+    }));
 
-  const cc = liab.data.liabilities?.credit || [];
-  const student = liab.data.liabilities?.student || [];
+    const cc = liab.data.liabilities?.credit || [];
+    const student = liab.data.liabilities?.student || [];
 
-  for (const c of cc) {
-    const i = accounts.findIndex((a: any) => a.id === c.account_id);
-    if (i >= 0) {
-      accounts[i].apr = c.aprs?.purchase_apr || (c as any).apr || accounts[i].apr;
-    accounts[i].minPayment = c.minimum_payment_amount || accounts[i].minPayment;
+    for (const c of cc) {
+      const i = accounts.findIndex((a) => a.id === c.account_id);
+      if (i >= 0) {
+        accounts[i].apr = c.aprs?.purchase_apr || c.apr || accounts[i].apr;
+        accounts[i].minPayment = c.minimum_payment_amount || accounts[i].minPayment;
+      }
     }
-  }
-  for (const s of student) {
-    const i = accounts.findIndex((a: any) => a.id === s.account_id);
-    if (i >= 0) {
-      accounts[i].apr = s.interest_rate_percentage || accounts[i].apr;
-      accounts[i].minPayment = s.minimum_payment_amount || accounts[i].minPayment;
+    for (const s of student) {
+      const i = accounts.findIndex((a) => a.id === s.account_id);
+      if (i >= 0) {
+        accounts[i].apr = s.interest_rate_percentage || accounts[i].apr;
+        accounts[i].minPayment = s.minimum_payment_amount || accounts[i].minPayment;
+      }
     }
-  }
 
     res.json({ accounts });
   } catch (error) {
@@ -146,7 +152,7 @@ app.get('/plaid/accounts', async (req: Request, res: Response) => {
 });
 
 // 4) Fetch institution logo
-app.post('/plaid/institution/logo', async (req: Request, res: Response) => {
+app.post('/plaid/institution/logo', async (req, res) => {
   try {
     const { institutionId } = req.body;
     
@@ -156,7 +162,7 @@ app.post('/plaid/institution/logo', async (req: Request, res: Response) => {
 
     const institution = await plaid.institutionsGetById({
       institution_id: institutionId,
-      country_codes: ['US'] as any
+      country_codes: ['US']
     });
 
     res.json({ 

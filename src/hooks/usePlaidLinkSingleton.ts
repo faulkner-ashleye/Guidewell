@@ -1,17 +1,41 @@
-import { useEffect, useState, useRef } from 'react';
-import { usePlaidLink, PlaidLinkOptions } from 'react-plaid-link';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { usePlaidScript } from './usePlaidScript';
+
+// Define PlaidLinkOptions type locally
+interface PlaidLinkOptions {
+  token: string;
+  onSuccess: (public_token: string) => void;
+  onExit?: () => void;
+}
 
 // Global state to track if Plaid Link is already initialized
 let globalPlaidInitialized = false;
 let globalLinkToken: string | null = null;
 let globalConfig: PlaidLinkOptions | null = null;
+let globalPlaidLinkInstance: any = null;
 let componentCount = 0;
+
+// Declare Plaid types
+declare global {
+  interface Window {
+    Plaid?: {
+      create: (config: any) => any;
+    };
+  }
+}
 
 export function usePlaidLinkSingleton(config: PlaidLinkOptions) {
   const [isReady, setIsReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const initializedRef = useRef(false);
   const componentId = useRef(++componentCount);
+  const scriptLoaded = usePlaidScript();
+
+  const open = useCallback(() => {
+    if (globalPlaidLinkInstance) {
+      globalPlaidLinkInstance.open();
+    }
+  }, []);
 
   useEffect(() => {
     console.log(`Component ${componentId.current}: usePlaidLinkSingleton effect running`);
@@ -29,16 +53,33 @@ export function usePlaidLinkSingleton(config: PlaidLinkOptions) {
       return;
     }
 
-    // Only initialize if we have a token and haven't initialized yet
-    if (config.token && !globalPlaidInitialized) {
+    // Only initialize if we have a token, script is loaded, and haven't initialized yet
+    if (config.token && scriptLoaded && !globalPlaidInitialized) {
       console.log(`Component ${componentId.current}: Initializing global Plaid Link`);
-      globalPlaidInitialized = true;
-      globalLinkToken = config.token;
-      globalConfig = config;
-      initializedRef.current = true;
-      setIsReady(true);
+      
+      try {
+        if (window.Plaid) {
+          globalPlaidLinkInstance = window.Plaid.create({
+            token: config.token,
+            onSuccess: config.onSuccess,
+            onExit: config.onExit,
+          });
+        } else {
+          throw new Error('Plaid is not available on window object');
+        }
+        
+        globalPlaidInitialized = true;
+        globalLinkToken = config.token;
+        globalConfig = config;
+        initializedRef.current = true;
+        setIsReady(true);
+        console.log('Global Plaid Link initialized successfully');
+      } catch (error) {
+        console.error('Error initializing Plaid Link:', error);
+        setError('Failed to initialize Plaid Link');
+      }
     }
-  }, [config.token]);
+  }, [config.token, config.onSuccess, config.onExit, scriptLoaded]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -47,14 +88,9 @@ export function usePlaidLinkSingleton(config: PlaidLinkOptions) {
     };
   }, []);
 
-  // Return the global config if available, otherwise return the passed config
-  const effectiveConfig = globalConfig || config;
-  
-  const { open, ready } = usePlaidLink(effectiveConfig);
-
   return {
     open,
-    ready: ready && isReady,
+    ready: isReady,
     error
   };
 }
