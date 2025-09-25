@@ -64,10 +64,10 @@ export function Opportunities() {
     const insights: Insight[] = [];
 
     // High-interest debt insights
-    const highInterestDebt = accounts.find(acc => 
+    const highInterestDebt = accounts.find(acc =>
       acc.type === 'credit_card' && acc.apr && acc.apr > 20
     );
-    
+
     if (highInterestDebt && savingsTotal > 1000 && highInterestDebt.apr) {
       const suggestedPayment = Math.min(1000, savingsTotal * 0.2);
       insights.push({
@@ -84,7 +84,7 @@ export function Opportunities() {
     // Emergency fund insights
     const monthlyExpenses = 3000; // Default estimate
     const emergencyFundRatio = savingsTotal / monthlyExpenses;
-    
+
     if (emergencyFundRatio < 3 && savingsTotal > 0) {
       const targetEmergencyFund = monthlyExpenses * 3;
       const shortfall = targetEmergencyFund - savingsTotal;
@@ -102,7 +102,7 @@ export function Opportunities() {
     // Investment opportunity insights
     const hasDebt = debtTotal > 0;
     const hasInvestments = accounts.some(acc => acc.type === 'investment');
-    const recentInvestments = recentActivity.filter(item => 
+    const recentInvestments = recentActivity.filter(item =>
       item.description.includes('401K') || item.description.includes('INVESTMENT')
     ).length;
 
@@ -134,7 +134,7 @@ export function Opportunities() {
     const recentSpending = recentActivity
       .filter(item => item.amount < 0 && !item.description.includes('TRANSFER'))
       .slice(0, 10);
-    
+
     if (recentSpending.length > 0) {
       const avgSpending = Math.abs(recentSpending.reduce((sum, item) => sum + item.amount, 0) / recentSpending.length);
       if (avgSpending > 100) {
@@ -187,10 +187,10 @@ export function Opportunities() {
     const nudges: Nudge[] = [];
 
     // High-interest debt nudges
-    const highInterestDebt = accounts.find(acc => 
+    const highInterestDebt = accounts.find(acc =>
       acc.type === 'credit_card' && acc.apr && acc.apr > 20
     );
-    
+
     if (highInterestDebt && savingsTotal > 1000) {
       nudges.push({
         id: 'pay-credit-card-now',
@@ -207,7 +207,7 @@ export function Opportunities() {
     // Emergency fund nudges
     const monthlyExpenses = 3000;
     const emergencyFundRatio = savingsTotal / monthlyExpenses;
-    
+
     if (emergencyFundRatio < 3 && savingsTotal > 0) {
       const targetEmergencyFund = monthlyExpenses * 3;
       const shortfall = targetEmergencyFund - savingsTotal;
@@ -226,7 +226,7 @@ export function Opportunities() {
     // Investment nudges
     const hasDebt = debtTotal > 0;
     const hasInvestments = accounts.some(acc => acc.type === 'investment');
-    
+
     if (!hasDebt && savingsTotal > 5000 && !hasInvestments) {
       nudges.push({
         id: 'start-investing-401k',
@@ -258,7 +258,7 @@ export function Opportunities() {
     const recentSpending = recentActivity
       .filter(item => item.amount < 0 && !item.description.includes('TRANSFER'))
       .slice(0, 5);
-    
+
     if (recentSpending.length > 0) {
       const avgSpending = Math.abs(recentSpending.reduce((sum, item) => sum + item.amount, 0) / recentSpending.length);
       if (avgSpending > 100) {
@@ -276,10 +276,10 @@ export function Opportunities() {
     }
 
     // Account optimization nudges
-    const lowYieldSavings = accounts.find(acc => 
+    const lowYieldSavings = accounts.find(acc =>
       acc.type === 'savings' && acc.balance > 1000 && (!acc.apr || acc.apr < 4)
     );
-    
+
     if (lowYieldSavings) {
       nudges.push({
         id: 'high-yield-savings',
@@ -334,25 +334,18 @@ export function Opportunities() {
       />
 
       <div className="opportunities-content">
-        <div className="opportunities-intro">
-          <p className="opportunities-description">
-            Personalized insights and actionable nudges based on your financial data to help you make informed decisions.
-            <br />
-          </p>
-        </div>
-
         {/* Nudges Section */}
         {nudges.length > 0 && (
           <div className="nudges-section">
-            <h2 className="section-title">🎯 Take Action</h2>
+            <h2 className="section-title">Take Action</h2>
             <p className="section-subtitle">Quick wins you can implement today</p>
             <div className="nudges-list">
               {nudges.map((nudge) => (
                 <div key={nudge.id} className="nudge-card">
                   <div className="nudge-header">
                     <div className="nudge-icon">
-                      <Icon 
-                        name={nudge.icon} 
+                      <Icon
+                        name={nudge.icon}
                         size="lg"
                         style={{ color: getCategoryColor(nudge.category) }}
                       />
@@ -361,13 +354,14 @@ export function Opportunities() {
                       <h3 className="nudge-title">{nudge.title}</h3>
                     </div>
                   </div>
-                  
+
                   <div className="nudge-content">
                     <p className="nudge-description">{nudge.description}</p>
-                    
+
+                    {/* Temporarily hidden - buttons don't lead anywhere yet
                     <div className="nudge-action">
                       <Button
-                        variant={ButtonVariants.contained}
+                        variant={ButtonVariants.outline}
                         onClick={() => {
                           // Handle nudge action - for now just show an alert
                           alert(`Action: ${nudge.action}`);
@@ -376,6 +370,7 @@ export function Opportunities() {
                         {nudge.action}
                       </Button>
                     </div>
+                    */}
                   </div>
                 </div>
               ))}
@@ -392,8 +387,8 @@ export function Opportunities() {
             <div key={insight.id} className="insight-card">
               <div className="insight-header">
                 <div className="insight-icon">
-                  <Icon 
-                    name={insight.icon} 
+                  <Icon
+                    name={insight.icon}
                     size="lg"
                     style={{ color: getCategoryColor(insight.category) }}
                   />
@@ -402,10 +397,10 @@ export function Opportunities() {
                   <h3 className="insight-title">{insight.title}</h3>
                 </div>
               </div>
-              
+
               <div className="insight-content">
                 <p className="insight-description">{insight.description}</p>
-                
+
                 {insight.estimatedImpact && (
                   <div className="insight-impact">
                     <Icon name={IconNames.info} size="sm" />

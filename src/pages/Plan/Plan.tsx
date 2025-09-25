@@ -18,7 +18,7 @@ import { getGoalsFromAccounts } from '../../state/planSelectors';
 import PlaidLinkButton from '../../components/PlaidLinkButton';
 import Sheet from '../../components/Sheet';
 import { ConnectChoose } from '../Onboarding/steps/ConnectChoose';
-import AddGoalModal from '../../app/plan/components/AddGoalModal';
+import GoalModal from '../../components/GoalModal';
 import { Goal } from '../../app/types';
 import { Account } from '../../state/AppStateContext';
 import { Contribution } from '../../state/activitySelectors';
@@ -134,23 +134,7 @@ export function Plan() {
             >
               Goals
             </button>
-            {activeTab === 'goals' && (
-              <button
-                className="w-8 h-8 rounded-full flex items-center justify-center ml-2"
-                style={{
-                  backgroundColor: COLORS.primary,
-                  color: 'white',
-                  border: 'none',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}
-                onClick={handleAddGoal}
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-                </svg>
-              </button>
-            )}
+        
           </div>
         </div>
 
@@ -230,10 +214,12 @@ export function Plan() {
             <>
               <div className="goals-tab-header">
                 <h2>Savings Goals</h2>
-                <p style={{ color: COLORS.textMuted }}>
+                <p>
                   These are the items you are saving towards.
                 </p>
               </div>
+
+              <GoalList accounts={accounts} goals={goals} contributions={contributions} transactions={transactions} />
               <div className="plan-actions-section">
                 <Button
                   variant={ButtonVariants.contained}
@@ -245,8 +231,6 @@ export function Plan() {
                 </Button>
 
               </div>
-              <GoalList accounts={accounts} goals={goals} contributions={contributions} transactions={transactions} />
-
             </>
           )}
         </div>
@@ -267,7 +251,7 @@ export function Plan() {
 
 
       {/* Add Goal Modal */}
-      <AddGoalModal
+      <GoalModal
         open={goalModalOpen}
         onClose={() => {
           setGoalModalOpen(false);
@@ -276,6 +260,8 @@ export function Plan() {
         onCreate={handleCreateGoal}
         accounts={accounts}
         preselectedAccountId={preselectedAccountId}
+        mode="add"
+        useSheet={true}
       />
 
 

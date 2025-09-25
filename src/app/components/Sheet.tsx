@@ -1,10 +1,9 @@
 'use client';
 import { ReactNode, useEffect } from 'react';
 
-export default function Sheet({ open, onClose, title, children }:{
-  open:boolean; onClose:()=>void; title?:string; children:ReactNode;
+export default function Sheet({ open, onClose, title, children, footer }:{
+  open:boolean; onClose:()=>void; title?:string; children:ReactNode; footer?:ReactNode;
 }) {
-  console.log('Sheet rendered with open:', open, 'title:', title);
   
   // Prevent body scrolling when sheet is open
   useEffect(() => {
@@ -41,6 +40,7 @@ export default function Sheet({ open, onClose, title, children }:{
           <div>{title}</div>
         </div>
         <div className="sheet-body">{children}</div>
+        {footer && <div className="sheet-footer">{footer}</div>}
       </div>
     </div>
   );

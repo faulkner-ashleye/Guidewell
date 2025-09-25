@@ -16,7 +16,7 @@ const avatarSvgMap: Record<string, string> = {
   'juggler': '/images/persona_juggler.svg',
   'interest_minimizer': '/images/persona_interestMInimizer.svg',
   'safety_builder': '/images/persona_safetyBuilder.svg',
-  'auto_pilot': '/images/persona_goalKeeper.svg', // Using goal_keeper as fallback since they're similar
+  'auto_pilot': '/images/persona_autoPilot.svg',
   'opportunistic_saver': '/images/persona_opportunisticSaver.svg',
   'balanced_builder': '/images/persona_balancedBuilder.svg',
   'future_investor': '/images/persona_futureInvestor.svg',

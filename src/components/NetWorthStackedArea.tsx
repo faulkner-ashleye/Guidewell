@@ -34,9 +34,9 @@ export function NetWorthStackedArea({ data }: NetWorthStackedAreaProps) {
             />
             <Tooltip
               contentStyle={{
-                background: COLORS.card,
+                background: 'var(--color-background-paper)',
                 border: `1px solid ${COLORS.border}`,
-                color: COLORS.text,
+                color: 'var(--color-text-primary)',
                 borderRadius: 'var(--radius-lg)',
                 boxShadow: 'var(--shadow-lg)',
                 maxWidth: '320px',

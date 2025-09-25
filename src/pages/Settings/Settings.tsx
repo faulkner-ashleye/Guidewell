@@ -160,13 +160,15 @@ export function Settings() {
         <Card className="settings-section">
           <div className="section-header">
             <h3 className="section-title">Your Financial Profile</h3>
-            <button
-              className="edit-button"
+            <Button
+              variant={ButtonVariants.text}
+              color={ButtonColors.secondary}
+              size="small"
               onClick={() => setIsEditing(!isEditing)}
               aria-label={isEditing ? "Cancel editing" : "Edit profile"}
             >
               <Icon name={IconNames.edit} size="sm" />
-            </button>
+            </Button>
           </div>
 
           <div className="profile-form">

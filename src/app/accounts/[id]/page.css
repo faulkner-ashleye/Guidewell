@@ -5,8 +5,8 @@
 }
 
 .account-summary-card {
-  background: #1C1C1C;
-  border: 1px solid #3C3C3C;
+  background: var(--color-background-paper);
+  border: 1px solid var(--color-root-divider);
   border-radius: 12px;
   padding: 24px;
   margin-bottom: 24px;
@@ -22,22 +22,22 @@
   margin: 0 0 8px 0;
   font-size: 24px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--color-text-primary);
 }
 
 .account-balance {
   font-size: 32px;
   font-weight: 700;
-  color: #10b981; /* Default to positive, will be overridden by inline styles */
+  color: var(--color-primary-main); /* Default to positive, will be overridden by inline styles */
 }
 
 .account-balance.negative {
-  color: #ef4444;
+  color:var(--color-error-main);
 }
 
 .account-meta {
   font-size: 14px;
-  color: #B6B6B6;
+  color: var(--color-text-secondary);
   margin-top: 4px;
 }
 
@@ -50,11 +50,11 @@
 }
 
 .credit-limit-label {
-  color: #B6B6B6;
+  color: var(--color-text-secondary);
 }
 
 .credit-limit-value {
-  color: #FFFFFF;
+  color: var(--color-text-primary;);
   font-weight: 600;
 }
 

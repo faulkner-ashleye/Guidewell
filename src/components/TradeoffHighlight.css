@@ -104,12 +104,12 @@
 
 .tip-category {
   font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
+  color: var(--color-text-primayr);
   font-weight: var(--font-weight-medium);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-wide);
   padding: var(--spacing-xs) var(--spacing-sm);
-  background: var(--color-grey-600);
+  background: var(--color-action-selected);
   border-radius: var(--radius-xl);
 }
 

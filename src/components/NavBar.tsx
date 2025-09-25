@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Icon, IconNames } from './Icon';
 import QuickActionsSheet from '../app/components/QuickActionsSheet';
-import AddGoalModal from '../app/plan/components/AddGoalModal';
+import GoalModal from './GoalModal';
 import LogContributionModal from '../app/components/LogContributionModal';
 import UploadDocumentModal from '../app/components/UploadDocumentModal';
 import PlaidLinkButton from './PlaidLinkButton';
@@ -82,11 +82,13 @@ export function NavBar() {
       />
 
       {/* Add Goal modal */}
-      <AddGoalModal
+      <GoalModal
         open={goalOpen}
         onClose={() => setGoalOpen(false)}
         onCreate={(g: any) => {/* setGoals(prev=>[...prev, g]) handled inside modal caller */}}
         accounts={accounts}
+        mode="add"
+        useSheet={true}
       />
 
       {/* Log Contribution modal */}

@@ -15,6 +15,7 @@ import { Button, ButtonVariants, ButtonColors } from '../../../components/Button
 import AppHeader from '../../components/AppHeader';
 import LogContributionModal from '../../components/LogContributionModal';
 import { Modal } from '../../../components/Modal';
+import GoalModal from '../../../components/GoalModal';
 import { Goal } from '../../../app/types';
 import { COLORS } from '../../../ui/colors';
 import './GoalDetailPage.css';
@@ -187,27 +188,25 @@ export default function GoalDetailPage() {
     return IconNames.savings;
   };
 
-  if (!goal || !progress) {
-    return (
-      <main>
-        <AppHeader
-          title="Goal Not Found"
-        />
-        <div className="goal-not-found">
-          <p>Goal not found. Please check the URL and try again.</p>
-          <button
-            onClick={handleBack}
-            className="modal-button modal-button-save"
-          >
-            Go Back
-          </button>
-        </div>
-      </main>
-    );
-  }
-
   return (
     <main>
+      {!goal || !progress ? (
+        <>
+          <AppHeader
+            title="Goal Not Found"
+          />
+          <div className="goal-not-found">
+            <p>Goal not found. Please check the URL and try again.</p>
+            <button
+              onClick={handleBack}
+              className="modal-button modal-button-save"
+            >
+              Go Back
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
       <AppHeader
         title="Goal"
         leftAction={
@@ -338,109 +337,17 @@ export default function GoalDetailPage() {
       />
 
       {/* Edit Goal Modal */}
-      <Modal
-        isOpen={editOpen}
+      <GoalModal
+        open={editOpen}
         onClose={handleCancelEdit}
-        title="Edit Goal"
-        size="large"
-        footer={editedGoal ? (
-          <>
-            <Button
-              variant={ButtonVariants.text}
-              color={ButtonColors.secondary}
-          onClick={handleCancelEdit}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant={ButtonVariants.contained}
-              color={ButtonColors.secondary}
-              onClick={handleSaveGoal}
-              disabled={!editedGoal.name || editedGoal.target <= 0}
-            >
-              Update
-            </Button>
-          </>
-        ) : null}
-      >
-        {editedGoal && (
-          <div>
-              {/* Goal Name */}
-            <div className="form-group">
-              <label className="form-label">
-                  Goal Name
-                </label>
-                <input
-                  type="text"
-                  value={editedGoal.name}
-                  onChange={(e) => setEditedGoal({ ...editedGoal, name: e.target.value })}
-                className="form-input"
-                />
-              </div>
-
-              {/* Target Amount */}
-            <div className="form-group">
-              <label className="form-label">
-                  Target Amount
-                </label>
-                <input
-                type="text"
-                  value={editedGoal.target}
-                  onChange={(e) => setEditedGoal({ ...editedGoal, target: parseFloat(e.target.value) || 0 })}
-                className="form-input"
-                placeholder="Enter target amount"
-                />
-              </div>
-
-              {/* Target Date */}
-            <div className="form-group">
-              <label className="form-label">
-                  Target Date
-                </label>
-                <input
-                  type="date"
-                  value={editedGoal.targetDate || ''}
-                  onChange={(e) => setEditedGoal({ ...editedGoal, targetDate: e.target.value })}
-                className="form-input"
-                />
-              </div>
-
-              {/* Priority */}
-            <div className="form-group">
-              <label className="form-label">
-                  Priority
-                </label>
-                <select
-                  value={editedGoal.priority}
-                  onChange={(e) => setEditedGoal({ ...editedGoal, priority: e.target.value as 'high' | 'medium' | 'low' })}
-                className="form-input"
-                >
-                  <option value="high">High Priority</option>
-                  <option value="medium">Medium Priority</option>
-                  <option value="low">Low Priority</option>
-                </select>
-              </div>
-
-
-              {/* Note */}
-            <div className="form-group">
-              <label className="form-label">
-                  Note (Optional)
-                </label>
-                <textarea
-                  value={editedGoal.note || ''}
-                  onChange={(e) => setEditedGoal({ ...editedGoal, note: e.target.value })}
-                className="form-input"
-                style={{
-                  resize: 'vertical',
-                  height: '112px',
-                  minHeight: '112px'
-                }}
-              />
-          </div>
-        </div>
+        onUpdate={handleSaveGoal}
+        accounts={accounts}
+        existingGoal={editedGoal || undefined}
+        mode="edit"
+        useSheet={false}
+      />
+        </>
       )}
-      </Modal>
     </main>
   );
 }

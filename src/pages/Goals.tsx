@@ -7,7 +7,7 @@ import { Chip } from '../components/Chips';
 import { formatCurrency } from '../utils/format';
 import { useAppState } from '../state/AppStateContext';
 import { sampleScenarios, SampleScenarioUtils } from '../data/sampleScenarios';
-import Sheet from '../app/components/Sheet';
+import GoalModal from '../components/GoalModal';
 import './Goals.css';
 
 interface Goal {
@@ -239,74 +239,17 @@ export function Goals() {
       </div>
 
       {/* Add Goal Modal */}
-      <Sheet
+      <GoalModal
         open={showAddModal}
         onClose={() => setShowAddModal(false)}
-        title="Add New Goal"
-      >
-        <div className="add-goal-form">
-          <Input
-            label="Goal Name"
-            value={newGoal.name || ''}
-            onChange={(e) => setNewGoal({ ...newGoal, name: e.target.value })}
-            placeholder="e.g., Pay off student loans"
-          />
-
-          <Select
-            label="Goal Type"
-            value={newGoal.type || 'custom'}
-            onChange={(e) => setNewGoal({ ...newGoal, type: e.target.value as Goal['type'] })}
-            options={goalTypes}
-          />
-
-          <Input
-            label="Target Amount"
-            type="number"
-            value={newGoal.target || 0}
-            onChange={(e) => setNewGoal({ ...newGoal, target: parseInt(e.target.value) || 0 })}
-          />
-
-          <Input
-            label="Current Amount"
-            type="number"
-            value={newGoal.currentAmount || 0}
-            onChange={(e) => setNewGoal({ ...newGoal, currentAmount: parseInt(e.target.value) || 0 })}
-          />
-
-          <Select
-            label="Priority"
-            value={newGoal.priority || 'medium'}
-            onChange={(e) => setNewGoal({ ...newGoal, priority: e.target.value as Goal['priority'] })}
-            options={priorityOptions}
-          />
-
-          <div className="modal-actions" style={{ 
-            display: 'flex', 
-            gap: '12px', 
-            justifyContent: 'flex-end',
-            marginTop: '24px',
-            paddingTop: '16px',
-            borderTop: '1px solid #e5e7eb'
-          }}>
-            <button 
-              className="modal-button secondary"
-              onClick={() => setShowAddModal(false)}
-            >
-              Cancel
-            </button>
-            <button 
-              className="modal-button primary"
-              onClick={() => {
-                // In a real app, this would save the goal
-                setShowAddModal(false);
-                setNewGoal({ name: '', type: 'custom', target: 0, currentAmount: 0, priority: 'medium' });
-              }}
-            >
-              Add Goal
-            </button>
-          </div>
-        </div>
-      </Sheet>
+        onCreate={(goal) => {
+          // In a real app, this would save the goal
+          setShowAddModal(false);
+        }}
+        accounts={accounts}
+        mode="add"
+        useSheet={true}
+      />
     </div>
   );
 }

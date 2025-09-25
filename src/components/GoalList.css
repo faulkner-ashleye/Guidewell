@@ -45,6 +45,7 @@
 
 .card.goal{
     padding:0;
+    margin-bottom: var(--spacing-3xl);
 }
 
 .card.goal .card-header{

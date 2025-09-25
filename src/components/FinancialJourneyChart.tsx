@@ -194,8 +194,9 @@ export function FinancialJourneyChart({
             />
             <Tooltip
               contentStyle={{
-                background: 'var(--color-card)',
+                background: 'var(--color-background-paper)',
                 border: '1px solid var(--color-border)',
+                color: 'var(--color-text-primary)',
                 borderRadius: 'var(--radius-lg)',
                 boxShadow: 'var(--shadow-lg)',
                 maxWidth: '320px',

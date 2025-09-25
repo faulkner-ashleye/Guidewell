@@ -151,7 +151,7 @@ export function Onboarding() {
     // Set user profile with sample data flag and any completed onboarding data
     setUserProfile({
       ...selectedScenario.userProfile,
-      ...data, // Preserve any completed onboarding data
+      ...data, // Preserve any completed onboarding data including name
       hasSampleData: true // Flag to indicate sample data was loaded
     });
     
@@ -161,6 +161,7 @@ export function Onboarding() {
   const handleFinish = (finalData: OnboardingState) => {
     setUserProfile({
       ...userProfile, // Preserve existing profile data including hasSampleData
+      name: finalData.name,
       firstName: finalData.firstName,
       lastName: finalData.lastName,
       ageRange: finalData.ageRange,

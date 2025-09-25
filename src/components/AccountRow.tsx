@@ -23,10 +23,10 @@ interface AccountRowProps {
   onNavigateToAccount?: (accountId: string) => void;
 }
 
-export function AccountRow({ 
-  name, 
-  value, 
-  meta, 
+export function AccountRow({
+  name,
+  value,
+  meta,
   health = 'ok',
   accountId,
   accountType,
@@ -86,7 +86,7 @@ export function AccountRow({
     };
     return icons[type || 'checking'] || IconNames.account_balance_wallet;
   };
-  
+
   const getGoalButtonText = () => {
     switch (accountType) {
       case 'savings':
@@ -118,10 +118,10 @@ export function AccountRow({
         return COLORS.primary;
     }
   };
-  
+
   return (
     <div className="account-row-container">
-      <div 
+      <div
         className={`account-row-card ${onNavigateToAccount && accountId ? 'account-row-clickable' : ''}`}
         onClick={() => onNavigateToAccount && accountId && onNavigateToAccount(accountId)}
       >
@@ -133,8 +133,8 @@ export function AccountRow({
                 <Icon name={IconNames.refresh} size="sm" />
               </div>
             ) : institutionLogo ? (
-              <img 
-                src={institutionLogo} 
+              <img
+                src={institutionLogo}
                 alt={`${institutionName || name} logo`}
                 className="account-row-bank-logo"
                 onError={() => {
@@ -167,21 +167,23 @@ export function AccountRow({
           </div>
         </div>
       </div>
-      
+
       {/* Goal Section - Now available for all account types */}
       {accountId && (
         <div className="account-row-goal-section">
           {hasGoal ? (
             <>
               <div className="account-row-goal-info">
-                🎯 Linked to: <span className="account-row-goal-name">{goalName}</span>
+                Linked to: <span className="account-row-goal-name">{goalName}</span>
               </div>
-              <button
+              <Button
+                variant={ButtonVariants.text}
+                color={ButtonColors.secondary}
+                size={ButtonSizes.small}
                 onClick={() => goalId && onViewGoal?.(goalId)}
-                className="account-row-goal-button"
               >
                 View Goal
-              </button>
+              </Button>
             </>
           ) : (
             <>
@@ -198,7 +200,6 @@ export function AccountRow({
                 onClick={() => onCreateGoal?.(accountId)}
               >
                 Set Goal
-                <Icon name={IconNames.add} size="md" />
               </Button>
             </>
           )}

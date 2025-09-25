@@ -54,7 +54,7 @@
 
 .nudge-card {
   background: var(--color-card);
-  border: 2px solid var(--color-primary-light);
+  border: 2px solid var(--color-root-divider);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -62,16 +62,7 @@
   position: relative;
 }
 
-.nudge-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--color-primary-main), var(--color-secondary-main));
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-}
+
 
 .nudge-card:hover {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -243,34 +234,34 @@
   .opportunities-content {
     padding: var(--spacing-sm);
   }
-  
+
   .nudge-card,
   .insight-card {
     padding: var(--spacing-md);
   }
-  
+
   .nudge-header,
   .insight-header {
     gap: var(--spacing-sm);
   }
-  
+
   .nudge-icon,
   .insight-icon {
     width: 40px;
     height: 40px;
   }
-  
+
   .nudge-title,
   .insight-title {
     font-size: var(--font-size-base);
   }
-  
+
   .nudge-title-section,
   .insight-title-section {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .nudge-action {
     justify-content: stretch;
   }

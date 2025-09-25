@@ -85,41 +85,39 @@ export default function AccountDetailPage() {
     ));
   };
 
-  if (!account) {
-    return (
-      <main>
-        <AppHeader
-          title="Account Not Found"
-        />
-        <div className="error-container">
-          <p>Account not found. Please check the URL and try again.</p>
-          <button
-            onClick={handleBack}
-            className="error-button"
-          >
-            Go Back
-          </button>
-        </div>
-      </main>
-    );
-  }
-
   return (
     <main>
-      <AppHeader
-        title="Account Details"
-        leftAction={
-          <button
-            onClick={handleBack}
-            className="back-button"
-            aria-label="Go back"
-          >
-            <Icon name={IconNames.arrow_back} size="lg" />
-          </button>
-        }
-      />
+      {!account ? (
+        <>
+          <AppHeader
+            title="Account Not Found"
+          />
+          <div className="error-container">
+            <p>Account not found. Please check the URL and try again.</p>
+            <button
+              onClick={handleBack}
+              className="error-button"
+            >
+              Go Back
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          <AppHeader
+            title="Account Details"
+            leftAction={
+              <button
+                onClick={handleBack}
+                className="back-button"
+                aria-label="Go back"
+              >
+                <Icon name={IconNames.arrow_back} size="lg" />
+              </button>
+            }
+          />
 
-      <div className="account-detail-page">
+          <div className="account-detail-page">
         {/* Top Summary Card */}
         <div className="account-summary-card">
           <div className="account-summary-header">
@@ -287,16 +285,18 @@ export default function AccountDetailPage() {
           )}
         </div>
 
-      </div>
+          </div>
 
-      {/* Log Contribution Modal */}
-      <LogContributionModal
-        open={logOpen}
-        onClose={() => setLogOpen(false)}
-        onSave={handleLogContribution}
-        accounts={[account]} // Pre-select this account
-        goals={[]} // Could be populated with goals linked to this account
-      />
+          {/* Log Contribution Modal */}
+          <LogContributionModal
+            open={logOpen}
+            onClose={() => setLogOpen(false)}
+            onSave={handleLogContribution}
+            accounts={[account]} // Pre-select this account
+            goals={[]} // Could be populated with goals linked to this account
+          />
+        </>
+      )}
     </main>
   );
 }
