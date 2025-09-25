@@ -9,7 +9,9 @@ export interface InstitutionLogoData {
 
 export class InstitutionLogoService {
   private static logoCache = new Map<string, InstitutionLogoData>();
-  private static readonly API_BASE = 'http://localhost:3001';
+  private static readonly API_BASE = process.env.NODE_ENV === 'development' 
+    ? 'http://localhost:3000' 
+    : 'https://guidewell-app.vercel.app/api';
 
   /**
    * Get institution logo from Plaid or return fallback icon

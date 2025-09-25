@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { usePlaidLinkSingleton } from '../hooks/usePlaidLinkSingleton';
 import { Button, ButtonVariants, ButtonColors } from './Button';
 import { Icon, IconNames } from './Icon';
+import { API_BASE_URL } from '../config/api';
 import './Button.css';
 
 // Define PlaidLinkOptions type locally
@@ -14,10 +15,10 @@ interface PlaidLinkOptions {
 type Props = {
   userId?: string;
   onSuccess: (mappedAccounts: any[]) => void;
-  apiBase?: string; // default http://localhost:3001
+  apiBase?: string; // defaults to environment-based API_BASE_URL
 };
 
-export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, apiBase = 'http://localhost:3001' }: Props) {
+export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, apiBase = API_BASE_URL }: Props) {
   const [linkToken, setLinkToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);

@@ -8,7 +8,7 @@ export default function ServerTest() {
     const testServer = async () => {
       try {
         console.log('Testing server connection...');
-        const response = await fetch('http://localhost:3001/test');
+        const response = await fetch(`${process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://guidewell-app.vercel.app/api'}/test`);
         const data = await response.json();
         setStatus('✅ Server connected!');
         setDetails(JSON.stringify(data, null, 2));
