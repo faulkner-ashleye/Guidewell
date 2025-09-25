@@ -1,5 +1,6 @@
 import React from 'react';
 import './Charts.css';
+import '../styles/card-animations.css';
 
 interface ChartProps {
   title?: string;
@@ -91,12 +92,3 @@ export function ProgressChart({ value, max, label, className = '' }: { value: nu
     </div>
   );
 }
-
-
-
-
-
-
-
-
-

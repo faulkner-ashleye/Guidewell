@@ -1,7 +1,19 @@
+export type AccountType = 
+  // Depository accounts
+  | 'checking' | 'savings' | 'money_market' | 'cd' | 'cash_management' | 'prepaid' | 'hsa' | 'gic'
+  // Credit accounts  
+  | 'credit_card' | 'line_of_credit' | 'overdraft'
+  // Investment accounts
+  | '401a' | '401k' | '403b' | '457b' | '529' | 'brokerage' | 'esa' | 'ira' | 'isa' | 'lira' | 'rif' | 'rsp' | 'pension' | 'profit_sharing' | 'roth_ira' | 'roth_401k' | 'sep_ira' | 'simple_ira' | 'sipp' | 'stock_plan' | 'tsp' | 'tfsa' | 'custodial' | 'variable_annuity'
+  // Loan accounts
+  | 'auto' | 'commercial' | 'construction' | 'consumer' | 'home_equity' | 'mortgage' | 'student'
+  // Legacy/fallback types
+  | 'loan' | 'investment' | 'debt';
+
 export interface Account {
   id: string;
   name: string;
-  type: 'checking' | 'savings' | 'investment' | 'debt' | 'loan' | 'credit_card';
+  type: AccountType;
   balance: number;
   interestRate?: number;
   monthlyContribution?: number;

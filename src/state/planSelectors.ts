@@ -1,4 +1,5 @@
 import { Account } from './AppStateContext';
+import { getAccountTypeDisplayName } from '../utils/plaidAccountMapping';
 
 export function groupAccountsByType(accts: Account[]) {
   const groups: Record<string, Account[]> = {};
@@ -24,15 +25,7 @@ export function goalProgress(goal: { current: number; target: number }) {
 }
 
 export function getAccountTypeLabel(type: Account['type']): string {
-  const labels: Record<Account['type'], string> = {
-    'checking': 'Checking',
-    'savings': 'Savings', 
-    'credit_card': 'Credit Cards',
-    'loan': 'Loans',
-    'investment': 'Investments',
-    'debt': 'Debt'
-  };
-  return labels[type] || type;
+  return getAccountTypeDisplayName(type);
 }
 
 export function getGoalsFromAccounts(accounts: Account[]) {

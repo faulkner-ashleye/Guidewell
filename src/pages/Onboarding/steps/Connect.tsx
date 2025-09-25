@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import PlaidLinkButton from '../../../components/PlaidLinkButton';
 import { useAppState } from '../../../state/AppStateContext';
 import { Button, ButtonVariants, ButtonColors } from '../../../components/Button';
@@ -14,8 +14,9 @@ export default function Connect({ onNext, onBack, onSkip, onNavigateToSampleData
   onNavigateToSampleData: () => void;
   onNavigateToManualEntry: () => void;
 }) {
-  const { clearSampleData, setAccounts, setTransactions } = useAppState();
+  const { clearSampleData, setAccounts, setTransactions, userProfile } = useAppState();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [plaidOpenRequested, setPlaidOpenRequested] = useState(false);
 
   const handleSampleDataClick = () => {
     setSelectedOption('sample-data');
@@ -27,7 +28,13 @@ export default function Connect({ onNext, onBack, onSkip, onNavigateToSampleData
 
   const handlePlaidClick = () => {
     setSelectedOption('plaid');
+    // Trigger the PlaidLinkButton to open
+    setPlaidOpenRequested(true);
   };
+
+  const handlePlaidOpenRequest = useCallback(() => {
+    setPlaidOpenRequested(false);
+  }, []);
 
   const handleNext = () => {
     if (selectedOption === 'sample-data') {
@@ -52,7 +59,7 @@ export default function Connect({ onNext, onBack, onSkip, onNavigateToSampleData
           <div className="connect-options">
             {/* Sample Accounts Card */}
             <Card
-              className={`connect-card ${selectedOption === 'sample-data' ? 'selected' : ''}`}
+              className={`connect-card card-visible ${selectedOption === 'sample-data' ? 'selected' : ''}`}
               onClick={handleSampleDataClick}
             >
               <div className="connect-card-content">
@@ -68,7 +75,7 @@ export default function Connect({ onNext, onBack, onSkip, onNavigateToSampleData
 
             {/* Plaid Connection Card */}
             <Card 
-              className={`connect-card ${selectedOption === 'plaid' ? 'selected' : ''}`}
+              className={`connect-card card-visible ${selectedOption === 'plaid' ? 'selected' : ''}`}
               onClick={handlePlaidClick}
             >
               <div className="connect-card-content">
@@ -81,9 +88,11 @@ export default function Connect({ onNext, onBack, onSkip, onNavigateToSampleData
                 </div>
                 <div className="connect-card-action">
                   <PlaidLinkButton
-                    key="plaid-link-singleton"
+                    key={`plaid-link-${userProfile ? 'logged-in' : 'logged-out'}`}
                     userId="demo-user-123"
-                    autoOpen={selectedOption === 'plaid'}
+                    autoOpen={false}
+                    hidden={true}
+                    plaidOpenRequested={plaidOpenRequested}
                     onSuccess={(data) => {
                       console.log('Plaid success callback received:', data);
                       console.log('User connected real accounts via Plaid - clearing sample data');
@@ -113,6 +122,15 @@ export default function Connect({ onNext, onBack, onSkip, onNavigateToSampleData
                       }
                       
                       console.log('Real accounts set, calling onNext()');
+                      
+                      // Ensure Plaid iframe is closed before moving to next step
+                      setTimeout(() => {
+                        const plaidIframes = document.querySelectorAll('iframe[src*="plaid"]');
+                        plaidIframes.forEach(iframe => {
+                          iframe.remove();
+                        });
+                      }, 500);
+                      
                       onNext();
                     }}
                   />
@@ -122,7 +140,7 @@ export default function Connect({ onNext, onBack, onSkip, onNavigateToSampleData
 
             {/* Manual Entry Card */}
             <Card
-              className={`connect-card ${selectedOption === 'manual-entry' ? 'selected' : ''}`}
+              className={`connect-card card-visible ${selectedOption === 'manual-entry' ? 'selected' : ''}`}
               onClick={handleManualEntryClick}
             >
               <div className="connect-card-content">

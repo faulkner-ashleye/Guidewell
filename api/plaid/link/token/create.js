@@ -1,4 +1,18 @@
 // Vercel serverless function for creating Plaid link tokens
+import { PlaidApi, PlaidEnvironments, Configuration } from 'plaid';
+
+const configuration = new Configuration({
+  basePath: PlaidEnvironments[process.env.PLAID_ENV || 'sandbox'],
+  baseOptions: {
+    headers: {
+      'PLAID-CLIENT-ID': process.env.PLAID_CLIENT_ID,
+      'PLAID-SECRET': process.env.PLAID_SECRET,
+    },
+  },
+});
+
+const plaidClient = new PlaidApi(configuration);
+
 export default async function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -21,19 +35,30 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'userId is required' });
     }
 
-    // For now, return a mock link token
-    // In production, you would:
-    // 1. Initialize Plaid client with your credentials
-    // 2. Create a real link token
-    // 3. Store it securely
+    // Check if Plaid credentials are configured
+    if (!process.env.PLAID_CLIENT_ID || !process.env.PLAID_SECRET) {
+      console.log('Plaid credentials not configured, using mock token');
+      const mockLinkToken = `link-sandbox-mock-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      return res.status(200).json({
+        link_token: mockLinkToken,
+        expiration: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
+      });
+    }
+
+    // Create real Plaid sandbox link token
+    const response = await plaidClient.linkTokenCreate({
+      user: { client_user_id: userId },
+      client_name: 'Guidewell',
+      products: ['auth', 'transactions', 'liabilities'],
+      country_codes: ['US'],
+      language: 'en',
+    });
     
-    const mockLinkToken = `link-sandbox-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    
-    console.log(`Created link token for user: ${userId}`);
+    console.log(`Created real Plaid link token for user: ${userId}`);
     
     res.status(200).json({
-      link_token: mockLinkToken,
-      expiration: new Date(Date.now() + 30 * 60 * 1000).toISOString(), // 30 minutes
+      link_token: response.data.link_token,
+      expiration: response.data.expiration,
     });
   } catch (error) {
     console.error('Error creating link token:', error);

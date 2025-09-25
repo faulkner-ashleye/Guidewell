@@ -34,15 +34,83 @@ export function AccountList({ accounts }: AccountListProps) {
   };
 
   const getAccountIcon = (type: Account['type']): string => {
-    const icons: Record<Account['type'], string> = {
-      'checking': IconNames.account_balance_wallet,
-      'savings': IconNames.savings,
-      'credit_card': IconNames.credit_card,
-      'loan': IconNames.account_balance,
-      'investment': IconNames.trending_up,
-      'debt': IconNames.account_balance
-    };
-    return icons[type] || IconNames.account_balance_wallet;
+    // Map account types to icons with fallbacks for new types
+    switch (type) {
+      // Depository accounts
+      case 'checking':
+      case 'cash_management':
+        return IconNames.account_balance_wallet;
+      case 'savings':
+      case 'money_market':
+      case 'hsa':
+        return IconNames.savings;
+      case 'cd':
+      case 'gic':
+        return IconNames.schedule; // Clock icon for time-based accounts
+      case 'prepaid':
+        return IconNames.payment;
+      
+      // Credit accounts
+      case 'credit_card':
+        return IconNames.credit_card;
+      case 'line_of_credit':
+      case 'overdraft':
+        return IconNames.account_balance;
+      
+      // Investment accounts
+      case '401a':
+      case '401k':
+      case '403b':
+      case '457b':
+      case 'roth_401k':
+        return IconNames.account_balance; // Work-related retirement
+      case 'ira':
+      case 'roth_ira':
+      case 'sep_ira':
+      case 'simple_ira':
+      case 'sipp':
+        return IconNames.account_balance_wallet; // Personal retirement
+      case '529':
+      case 'esa':
+        return IconNames.school; // Education
+      case 'brokerage':
+      case 'stock_plan':
+        return IconNames.trending_up;
+      case 'pension':
+      case 'profit_sharing':
+        return IconNames.account_balance;
+      case 'tsp':
+        return IconNames.account_balance;
+      case 'tfsa':
+      case 'isa':
+        return IconNames.savings;
+      case 'custodial':
+        return IconNames.person; // Use person icon for custodial accounts
+      case 'variable_annuity':
+        return IconNames.trending_up;
+      case 'investment':
+        return IconNames.trending_up;
+      
+      // Loan accounts
+      case 'auto':
+        return IconNames.directions_car;
+      case 'student':
+        return IconNames.school;
+      case 'mortgage':
+      case 'home_equity':
+        return IconNames.home;
+      case 'commercial':
+      case 'construction':
+      case 'consumer':
+        return IconNames.account_balance;
+      case 'loan':
+        return IconNames.account_balance;
+      case 'debt':
+        return IconNames.account_balance;
+      
+      default:
+        return IconNames.account_balance_wallet;
+    }
   };
   
   if (accounts.length === 0) {

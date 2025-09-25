@@ -13,6 +13,7 @@ interface Transaction {
   amount: number;
   date: string;
   name: string;
+  description?: string;
   merchant_name?: string;
   category?: string[];
   created_at: string;
@@ -47,10 +48,11 @@ export function SpendingCard({ transactions }: SpendingCardProps) {
     // Filter for spending transactions (negative amounts, exclude transfers and payments)
     const spendingTransactions = transactions.filter(transaction => {
       const isSpending = transaction.amount < 0;
-      const isTransfer = transaction.name.toLowerCase().includes('transfer');
-      const isPayment = transaction.name.toLowerCase().includes('payment');
-      const isInvestment = transaction.name.toLowerCase().includes('401k') || 
-                          transaction.name.toLowerCase().includes('investment');
+      const transactionName = transaction.name || transaction.description || '';
+      const isTransfer = transactionName.toLowerCase().includes('transfer');
+      const isPayment = transactionName.toLowerCase().includes('payment');
+      const isInvestment = transactionName.toLowerCase().includes('401k') || 
+                          transactionName.toLowerCase().includes('investment');
       
       return isSpending && !isTransfer && !isPayment && !isInvestment;
     });

@@ -57,52 +57,65 @@ export function Goals() {
       });
     }
     
-    // If no app goals, load from sample data
-    const scenarioId = userProfile?.hasSampleData ? 'recentGrad' : 'recentGrad';
-    const scenario = SampleScenarioUtils.getScenario(scenarioId);
-    
-    if (scenario && scenario.goals) {
-      return scenario.goals.map(goal => ({
-        id: goal.id,
-        name: goal.name,
-        type: goal.type as Goal['type'],
-        target: goal.target,
-        currentAmount: 0, // Will be calculated from linked accounts
-        targetDate: goal.targetDate || '2024-12-31',
-        priority: goal.priority || 'medium'
-      }));
+    // If user has real accounts (not sample data), don't auto-create goals
+    // Let them create their own goals based on their actual financial situation
+    if (!userProfile?.hasSampleData && accounts.length > 0) {
+      return []; // Return empty array - user should create their own goals
     }
     
-    // Fallback to default goals
-    return [
-      {
-        id: '1',
-        name: 'Pay off Credit Card Debt',
-        type: 'debt_payoff',
-        target: 15000,
-        currentAmount: 8500,
-        targetDate: '2024-12-31',
-        priority: 'high'
-      },
-      {
-        id: '2',
-        name: 'Emergency Fund',
-        type: 'emergency_fund',
-        target: 10000,
-        currentAmount: 2500,
-        targetDate: '2024-06-30',
-        priority: 'high'
-      },
-      {
-        id: '3',
-        name: 'Retirement Savings',
-        type: 'retirement',
-        target: 100000,
-        currentAmount: 15000,
-        targetDate: '2030-12-31',
-        priority: 'medium'
+    // Only load sample goals if user is using sample data
+    if (userProfile?.hasSampleData) {
+      const scenarioId = 'recentGrad';
+      const scenario = SampleScenarioUtils.getScenario(scenarioId);
+      
+      if (scenario && scenario.goals) {
+        return scenario.goals.map(goal => ({
+          id: goal.id,
+          name: goal.name,
+          type: goal.type as Goal['type'],
+          target: goal.target,
+          currentAmount: 0, // Will be calculated from linked accounts
+          targetDate: goal.targetDate || '2024-12-31',
+          priority: goal.priority || 'medium'
+        }));
       }
-    ];
+    }
+    
+    // Fallback to default goals only if no accounts are connected
+    if (accounts.length === 0) {
+      return [
+        {
+          id: '1',
+          name: 'Pay off Credit Card Debt',
+          type: 'debt_payoff',
+          target: 15000,
+          currentAmount: 8500,
+          targetDate: '2024-12-31',
+          priority: 'high'
+        },
+        {
+          id: '2',
+          name: 'Emergency Fund',
+          type: 'emergency_fund',
+          target: 10000,
+          currentAmount: 2500,
+          targetDate: '2024-06-30',
+          priority: 'high'
+        },
+        {
+          id: '3',
+          name: 'Retirement Savings',
+          type: 'retirement',
+          target: 100000,
+          currentAmount: 15000,
+          targetDate: '2030-12-31',
+          priority: 'medium'
+        }
+      ];
+    }
+    
+    // If user has real accounts but no goals set up, return empty array
+    return [];
   };
 
   const [goals] = useState<Goal[]>(convertAppGoalsToDisplayGoals());

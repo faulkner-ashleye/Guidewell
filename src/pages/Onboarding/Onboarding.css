@@ -8,6 +8,8 @@
 .onboarding-content {
   flex: 1;
   display: flex;
+  /* Add padding bottom to prevent banner from covering content */
+  padding-bottom: 20px;
 }
 
 .onboarding-content .onboarding-content{
@@ -103,6 +105,10 @@
 
 .connect-card-action {
   flex-shrink: 0;
+  /* Ensure Plaid iframe can render properly */
+  position: relative;
+  z-index: auto;
+  overflow: visible;
 }
 
 /* Attached Files List */

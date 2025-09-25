@@ -1,4 +1,18 @@
 // Vercel serverless function for exchanging Plaid public tokens
+import { PlaidApi, PlaidEnvironments, Configuration } from 'plaid';
+
+const configuration = new Configuration({
+  basePath: PlaidEnvironments[process.env.PLAID_ENV || 'sandbox'],
+  baseOptions: {
+    headers: {
+      'PLAID-CLIENT-ID': process.env.PLAID_CLIENT_ID,
+      'PLAID-SECRET': process.env.PLAID_SECRET,
+    },
+  },
+});
+
+const plaidClient = new PlaidApi(configuration);
+
 export default async function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -21,19 +35,26 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'public_token and userId are required' });
     }
 
-    // For now, return a mock access token
-    // In production, you would:
-    // 1. Initialize Plaid client with your credentials
-    // 2. Exchange the public token for an access token
-    // 3. Store the access token securely for the user
-    
-    const mockAccessToken = `access-sandbox-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    // Check if Plaid credentials are configured
+    if (!process.env.PLAID_CLIENT_ID || !process.env.PLAID_SECRET) {
+      console.log('Plaid credentials not configured, using mock exchange');
+      const mockAccessToken = `access-sandbox-mock-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      return res.status(200).json({
+        access_token: mockAccessToken,
+        item_id: `item-mock-${userId}-${Date.now()}`,
+      });
+    }
+
+    // Exchange public token for access token using real Plaid sandbox
+    const response = await plaidClient.itemPublicTokenExchange({
+      public_token: public_token,
+    });
     
     console.log(`Exchanged public token for user: ${userId}`);
     
     res.status(200).json({
-      access_token: mockAccessToken,
-      item_id: `item-${userId}-${Date.now()}`,
+      access_token: response.data.access_token,
+      item_id: response.data.item_id,
     });
   } catch (error) {
     console.error('Error exchanging public token:', error);

@@ -24,7 +24,7 @@ const navItems: NavItem[] = [
 
 export function NavBar() {
   const location = useLocation();
-  const { accounts = [], goals = [], setAccounts, clearSampleData } = useAppState();
+  const { accounts = [], goals = [], setAccounts, clearSampleData, userProfile } = useAppState();
 
   // Quick Actions state
   const [qaOpen, setQaOpen] = useState(false);
@@ -109,7 +109,9 @@ export function NavBar() {
       {/* Connect account sheet (Plaid or other methods) */}
       <Sheet open={connectOpen} onClose={() => setConnectOpen(false)} title="Connect account">
         <div className="grid-auto">
-          <PlaidLinkButton onSuccess={(data: any) => {
+          <PlaidLinkButton 
+            key={`plaid-link-navbar-${userProfile ? 'logged-in' : 'logged-out'}`}
+            onSuccess={(data: any) => {
             clearSampleData();
             
             // Handle both accounts and transactions if provided

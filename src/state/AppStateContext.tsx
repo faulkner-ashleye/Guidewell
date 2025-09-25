@@ -7,8 +7,19 @@ import { ValidationUtils } from '../utils/validation';
 import { OpportunityDetection } from '../data/marketData';
 import { sampleScenarios, SampleScenario } from '../data/sampleScenarios';
 import { resetInsightsDismissal } from '../hooks/useInsightsCount';
+import { resetPlaidGlobalState } from '../hooks/usePlaidLinkSingleton';
 
-export type AccountType = 'loan' | 'credit_card' | 'savings' | 'checking' | 'investment' | 'debt';
+export type AccountType = 
+  // Depository accounts
+  | 'checking' | 'savings' | 'money_market' | 'cd' | 'cash_management' | 'prepaid' | 'hsa' | 'gic'
+  // Credit accounts  
+  | 'credit_card' | 'line_of_credit' | 'overdraft'
+  // Investment accounts
+  | '401a' | '401k' | '403b' | '457b' | '529' | 'brokerage' | 'esa' | 'ira' | 'isa' | 'lira' | 'rif' | 'rsp' | 'pension' | 'profit_sharing' | 'roth_ira' | 'roth_401k' | 'sep_ira' | 'simple_ira' | 'sipp' | 'stock_plan' | 'tsp' | 'tfsa' | 'custodial' | 'variable_annuity'
+  // Loan accounts
+  | 'auto' | 'commercial' | 'construction' | 'consumer' | 'home_equity' | 'mortgage' | 'student'
+  // Legacy/fallback types
+  | 'loan' | 'investment' | 'debt';
 
 // Re-export Account from types for compatibility
 export type { Account } from '../app/types';
@@ -265,6 +276,9 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
         investPct: 0
       }
     });
+    
+    // Reset Plaid global state to fix connection issues after logout
+    resetPlaidGlobalState();
     
     // Reset scenario flags
     setCurrentScenario(null);

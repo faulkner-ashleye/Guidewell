@@ -7,6 +7,9 @@
   font-weight: 600;
   color: #374151;
   margin: 0 0 16px 0;
+  animation: fadeInDown 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
+  transform: translateY(-10px);
 }
 
 .chart-placeholder {
@@ -43,7 +46,44 @@
   border-radius: 4px 4px 0 0;
   min-height: 4px;
   transition: all 0.3s ease;
+  transform-origin: bottom;
+  animation: growUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
+  position: relative;
+  overflow: hidden;
 }
+
+.chart-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(255,255,255,0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.chart-bar:hover {
+  transform: scaleY(1.05);
+  filter: brightness(1.1);
+  transition: all 0.2s ease;
+}
+
+.chart-bar:hover::before {
+  opacity: 1;
+}
+
+/* Staggered animation for multiple bars */
+.chart-bar:nth-child(1) { animation-delay: 0.1s; }
+.chart-bar:nth-child(2) { animation-delay: 0.2s; }
+.chart-bar:nth-child(3) { animation-delay: 0.3s; }
+.chart-bar:nth-child(4) { animation-delay: 0.4s; }
+.chart-bar:nth-child(5) { animation-delay: 0.5s; }
+.chart-bar:nth-child(6) { animation-delay: 0.6s; }
+.chart-bar:nth-child(7) { animation-delay: 0.7s; }
+.chart-bar:nth-child(8) { animation-delay: 0.8s; }
 
 .chart-labels {
   display: flex;
@@ -57,7 +97,17 @@
   color: #6b7280;
   text-align: center;
   flex: 1;
+  animation: fadeInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
+  transform: translateY(10px);
 }
+
+.chart-label:nth-child(1) { animation-delay: 0.3s; }
+.chart-label:nth-child(2) { animation-delay: 0.4s; }
+.chart-label:nth-child(3) { animation-delay: 0.5s; }
+.chart-label:nth-child(4) { animation-delay: 0.6s; }
+.chart-label:nth-child(5) { animation-delay: 0.7s; }
+.chart-label:nth-child(6) { animation-delay: 0.8s; }
 
 .pie-chart-placeholder {
   display: flex;
@@ -77,6 +127,22 @@
     #ef4444 270deg 360deg
   );
   position: relative;
+  animation: rotateIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
+  transform: rotate(-180deg) scale(0.8);
+}
+
+.pie-chart::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  background: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
 }
 
 .pie-legend {
@@ -90,12 +156,21 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  animation: slideInLeft 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
+  transform: translateX(-20px);
 }
+
+.legend-item:nth-child(1) { animation-delay: 0.4s; }
+.legend-item:nth-child(2) { animation-delay: 0.5s; }
+.legend-item:nth-child(3) { animation-delay: 0.6s; }
+.legend-item:nth-child(4) { animation-delay: 0.7s; }
 
 .legend-color {
   width: 12px;
   height: 12px;
   border-radius: 2px;
+  animation: pulse 2s infinite;
 }
 
 .color-0 { background-color: #3b82f6; }
@@ -112,6 +187,9 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  animation: fadeInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
+  transform: translateY(20px);
 }
 
 .progress-label {
@@ -125,6 +203,18 @@
   background-color: #e5e7eb;
   border-radius: 16px;
   overflow: hidden;
+  position: relative;
+}
+
+.progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s infinite;
 }
 
 .progress-fill {
@@ -132,12 +222,139 @@
   background: linear-gradient(90deg, #3b82f6, #60a5fa);
   border-radius: 4px;
   transition: width 0.3s ease;
+  animation: fillProgress 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  transform-origin: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: progressShimmer 1.5s ease-in-out;
 }
 
 .progress-text {
   font-size: 12px;
   color: #6b7280;
   text-align: right;
+  animation: fadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
+  animation-delay: 0.6s;
+}
+
+/* Keyframe Animations */
+@keyframes growUp {
+  from {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes rotateIn {
+  from {
+    opacity: 0;
+    transform: rotate(-180deg) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@keyframes fillProgress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes progressShimmer {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Loading skeleton animation */
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.5s infinite;
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Success celebration animation */
+.goal-achieved {
+  animation: celebrate 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes celebrate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
 @media (max-width: 480px) {

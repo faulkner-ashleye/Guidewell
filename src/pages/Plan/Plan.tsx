@@ -194,7 +194,7 @@ export function Plan() {
 
               <div className="plan-actions-section">
                 <PlaidLinkButton
-                  key="plaid-link-plan"
+                  key={`plaid-link-plan-${userProfile ? 'logged-in' : 'logged-out'}`}
                   userId="demo-user-123"
                   onSuccess={(data) => {
                     clearSampleData();
@@ -279,7 +279,9 @@ export function Plan() {
       {/* Connect account sheet (Plaid or other methods) */}
       <Sheet open={connectOpen} onClose={() => setConnectOpen(false)} title="Connect account">
         <div className="plan-connect-sheet">
-          <PlaidLinkButton onSuccess={(linked: any) => {
+          <PlaidLinkButton 
+            key={`plaid-link-plan-sheet-${userProfile ? 'logged-in' : 'logged-out'}`}
+            onSuccess={(linked: any) => {
             clearSampleData();
             setAccounts(linked);
           }} />

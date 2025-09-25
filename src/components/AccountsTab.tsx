@@ -7,7 +7,7 @@ import { ConnectChoose } from '../pages/Onboarding/steps/ConnectChoose';
 import { COLORS } from '../ui/colors';
 
 export function AccountsTab() {
-  const { accounts = [] } = useAppState();
+  const { accounts = [], userProfile } = useAppState();
   const [showAddAccountSheet, setShowAddAccountSheet] = useState(false);
   
   const hasAccounts = accounts.length > 0;
@@ -25,7 +25,7 @@ export function AccountsTab() {
       
       <div className="account-actions">
         <PlaidLinkButton
-          key="plaid-link-accounts"
+          key={`plaid-link-accounts-${userProfile ? 'logged-in' : 'logged-out'}`}
           userId="demo-user-123"
           onSuccess={(data) => {
             console.log('Accounts linked:', data);

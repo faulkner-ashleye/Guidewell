@@ -105,20 +105,31 @@ app.get('/plaid/accounts', async (req: Request, res: Response) => {
       plaid.liabilitiesGet({ access_token: accountData.plaid_access_token }).catch(() => ({ data: { liabilities: {} as any } })),
     ]);
 
-  const accounts = acct.data.accounts.map((a: any) => ({
-    id: a.account_id,
-    type:
-      a.type === 'depository' ? (a.subtype === 'savings' ? 'savings' : 'checking') :
-      a.type === 'credit' ? 'credit_card' :
-      a.type === 'loan' ? 'loan' :
-      a.type === 'investment' ? 'investment' : 'checking',
-    name: a.name || a.official_name || `${a.type} ${a.subtype}`,
-    balance: a.balances.current || 0,
-    apr: undefined as number | undefined,
-    minPayment: undefined as number | undefined,
-    institutionId: a.institution_id,
-    institutionName: a.institution_name,
-  }));
+  const accounts = acct.data.accounts.map((a: any) => {
+    // Debug: Log institution data from Plaid
+    console.log('Account institution data:', {
+      account_id: a.account_id,
+      institution_id: a.institution_id,
+      institution_name: a.institution_name,
+      name: a.name,
+      official_name: a.official_name
+    });
+    
+    return {
+      id: a.account_id,
+      type:
+        a.type === 'depository' ? (a.subtype === 'savings' ? 'savings' : 'checking') :
+        a.type === 'credit' ? 'credit_card' :
+        a.type === 'loan' ? 'loan' :
+        a.type === 'investment' ? 'investment' : 'checking',
+      name: a.name || a.official_name || `${a.type} ${a.subtype}`,
+      balance: a.balances.current || 0,
+      apr: undefined as number | undefined,
+      minPayment: undefined as number | undefined,
+      institutionId: a.institution_id,
+      institutionName: a.institution_name,
+    };
+  });
 
   const cc = liab.data.liabilities?.credit || [];
   const student = liab.data.liabilities?.student || [];
@@ -150,6 +161,8 @@ app.post('/plaid/institution/logo', async (req: Request, res: Response) => {
   try {
     const { institutionId } = req.body;
     
+    console.log('Fetching institution logo for ID:', institutionId);
+    
     if (!institutionId) {
       return res.status(400).json({ error: 'Institution ID is required' });
     }
@@ -157,6 +170,15 @@ app.post('/plaid/institution/logo', async (req: Request, res: Response) => {
     const institution = await plaid.institutionsGetById({
       institution_id: institutionId,
       country_codes: ['US'] as any
+    });
+
+    console.log('Institution data from Plaid:', {
+      id: institution.data.institution.institution_id,
+      name: institution.data.institution.name,
+      hasLogo: !!institution.data.institution.logo,
+      logoLength: institution.data.institution.logo?.length || 0,
+      primaryColor: institution.data.institution.primary_color,
+      url: institution.data.institution.url
     });
 
     res.json({ 
@@ -178,4 +200,5 @@ app.listen(port, () => {
   console.log(`   POST /plaid/link/token/create`);
   console.log(`   POST /plaid/item/public_token/exchange`);
   console.log(`   GET /plaid/accounts`);
+  console.log(`   POST /plaid/institution/logo`);
 });

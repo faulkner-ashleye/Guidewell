@@ -124,6 +124,22 @@ app.get('/plaid/accounts', async (req, res) => {
   }
 });
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Guidewell API Server', 
+    status: 'Running',
+    timestamp: new Date().toISOString(),
+    endpoints: [
+      'POST /plaid/link/token/create',
+      'POST /plaid/item/public_token/exchange', 
+      'GET /plaid/accounts',
+      'GET /health',
+      'GET /test'
+    ]
+  });
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });

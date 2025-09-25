@@ -49,13 +49,18 @@ export function Home() {
   const debtTotal = sumByType(accounts, ['credit_card', 'loan']);
 
 
-  // Determine display name - use persona name when in sample data mode
+  // Determine display name - prioritize user's actual name
   const getDisplayName = () => {
-    if (userProfile?.hasSampleData) {
-      // When in sample data mode, use a generic greeting to avoid confusion
-      return 'there';
+    // Always try to show the user's name if available
+    if (userProfile?.firstName) {
+      return userProfile.firstName;
     }
-    return userProfile?.firstName || 'there';
+    if (userProfile?.name) {
+      // If no firstName but we have full name, extract first name
+      return userProfile.name.split(' ')[0];
+    }
+    // Fallback to generic greeting
+    return 'there';
   };
 
   // Build net worth series for line chart
@@ -294,7 +299,9 @@ export function Home() {
       {/* Connect account sheet (Plaid or other methods) */}
       <Sheet open={connectOpen} onClose={() => setConnectOpen(false)} title="Connect account">
         <div className="grid-auto">
-          <PlaidLinkButton onSuccess={(data: any) => {
+          <PlaidLinkButton 
+            key={`plaid-link-home-${userProfile ? 'logged-in' : 'logged-out'}`}
+            onSuccess={(data: any) => {
             clearSampleData();
             
             // Handle both accounts and transactions if provided

@@ -1,8 +1,11 @@
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
-import { usePlaidLinkSingleton } from '../hooks/usePlaidLinkSingleton';
+import { createPortal } from 'react-dom';
+import { usePlaidLinkSingleton, resetPlaidGlobalState } from '../hooks/usePlaidLinkSingleton';
 import { Button, ButtonVariants, ButtonColors } from './Button';
 import { Icon, IconNames } from './Icon';
 import { API_BASE_URL } from '../config/api';
+import { mapPlaidAccountType } from '../utils/plaidAccountMapping';
+import PlaidSandboxBanner from './PlaidSandboxBanner';
 import './Button.css';
 
 // Define PlaidLinkOptions type locally
@@ -10,6 +13,7 @@ interface PlaidLinkOptions {
   token: string;
   onSuccess: (public_token: string) => void;
   onExit?: (err: any, metadata: any) => void;
+  onEvent?: (eventName: string, metadata: any) => void;
 }
 
 type Props = {
@@ -17,14 +21,24 @@ type Props = {
   onSuccess: (data: any[] | { accounts: any[], transactions?: any[] }) => void;
   apiBase?: string; // defaults to environment-based API_BASE_URL
   autoOpen?: boolean; // automatically open Plaid Link when ready
+  hidden?: boolean; // hide the button and only expose via ref
+  plaidOpenRequested?: boolean; // trigger to open Plaid
 };
 
-export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, apiBase = API_BASE_URL, autoOpen = false }: Props) {
-  console.log('PlaidLinkButton render, userId:', userId, 'apiBase:', apiBase, 'autoOpen:', autoOpen);
+export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, apiBase = API_BASE_URL, autoOpen = false, hidden = false, plaidOpenRequested = false }: Props) {
   const [linkToken, setLinkToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
   const isInitializing = useRef(false);
+  
+  // Banner state
+  const [showBanner, setShowBanner] = useState(false);
+  const [bannerStep, setBannerStep] = useState<'initial' | 'login' | 'success'>('initial');
+
+  // Reset global Plaid state on mount to prevent auto-initialization
+  useEffect(() => {
+    resetPlaidGlobalState();
+  }, []);
 
   const handleSuccess = useCallback(async (public_token: string) => {
     try {
@@ -58,6 +72,7 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
             account_id: 'mock-checking-1',
             amount: -45.50,
             date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+            name: 'Coffee Shop',
             description: 'Coffee Shop',
             category: ['Food and Drink', 'Restaurants'],
             type: 'debit'
@@ -67,6 +82,7 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
             account_id: 'mock-checking-1',
             amount: -1200.00,
             date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+            name: 'Rent Payment',
             description: 'Rent Payment',
             category: ['Rent', 'Housing'],
             type: 'debit'
@@ -76,6 +92,7 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
             account_id: 'mock-checking-1', 
             amount: 500.00,
             date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+            name: 'Salary Deposit',
             description: 'Salary Deposit',
             category: ['Payroll', 'Income'],
             type: 'credit'
@@ -83,6 +100,21 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
         ];
         
         onSuccess({ accounts: mockAccounts, transactions: mockTransactions });
+        
+        // Clean up Plaid iframe after successful connection (mock data)
+        setTimeout(() => {
+          // Reset Plaid state to close any open iframes
+          resetPlaidGlobalState();
+          setShouldInitializePlaid(false);
+          setShowBanner(false);
+          
+          // Force remove any remaining Plaid iframes
+          const plaidIframes = document.querySelectorAll('iframe[src*="plaid"]');
+          plaidIframes.forEach(iframe => {
+            iframe.remove();
+          });
+        }, 1000); // Small delay to ensure success callback completes
+        
         return;
       }
       
@@ -109,39 +141,506 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
       const { accounts } = await accountsResponse.json();
       console.log('Real Plaid accounts received:', accounts);
       
-      // Add mock transactions for Plaid accounts to make the app more functional
+      // Map Plaid account types to our internal types
+      const mappedAccounts = accounts.map((account: any) => ({
+        ...account,
+        type: mapPlaidAccountType(account.type, account.subtype)
+      }));
+      
+      console.log('Mapped Plaid accounts:', mappedAccounts);
+      
+      // Add comprehensive mock transactions for all Plaid account types (50+ transactions)
       const mockTransactions = [
+        // Checking account transactions (15 transactions)
         {
           id: 'txn-1',
-          account_id: accounts[0]?.id || 'checking',
-          amount: -45.50,
-          date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+          account_id: mappedAccounts[0]?.id || 'checking',
+          amount: -8.50,
+          date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Coffee Shop',
           description: 'Coffee Shop',
           category: ['Food and Drink', 'Restaurants'],
           type: 'debit'
         },
         {
           id: 'txn-2', 
-          account_id: accounts[0]?.id || 'checking',
+          account_id: mappedAccounts[0]?.id || 'checking',
           amount: -1200.00,
-          date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Rent Payment',
           description: 'Rent Payment',
           category: ['Rent', 'Housing'],
           type: 'debit'
         },
         {
           id: 'txn-3',
-          account_id: accounts[1]?.id || 'savings', 
-          amount: 500.00,
+          account_id: mappedAccounts[0]?.id || 'checking',
+          amount: -89.99,
+          date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Grocery Store',
+          description: 'Grocery Store',
+          category: ['Food and Drink', 'Groceries'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-4',
+          account_id: mappedAccounts[0]?.id || 'checking',
+          amount: 3500.00,
           date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Salary Deposit',
           description: 'Salary Deposit',
           category: ['Payroll', 'Income'],
           type: 'credit'
+        },
+        {
+          id: 'txn-5',
+          account_id: mappedAccounts[0]?.id || 'checking',
+          amount: -15.99,
+          date: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Uber Ride',
+          description: 'Uber Ride',
+          category: ['Transportation', 'Rideshare'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-6',
+          account_id: mappedAccounts[0]?.id || 'checking',
+          amount: -45.00,
+          date: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Electric Bill',
+          description: 'Electric Bill',
+          category: ['Utilities', 'Electric'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-7',
+          account_id: mappedAccounts[0]?.id || 'checking',
+          amount: -32.50,
+          date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Restaurant',
+          description: 'Restaurant',
+          category: ['Food and Drink', 'Restaurants'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-8',
+          account_id: mappedAccounts[0]?.id || 'checking',
+          amount: -25.00,
+          date: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Gym Membership',
+          description: 'Gym Membership',
+          category: ['Recreation', 'Sports'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-9',
+          account_id: mappedAccounts[0]?.id || 'checking',
+          amount: -75.00,
+          date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Phone Bill',
+          description: 'Phone Bill',
+          category: ['Utilities', 'Phone'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-10',
+          account_id: mappedAccounts[0]?.id || 'checking',
+          amount: -12.99,
+          date: new Date(Date.now() - 16 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Spotify Premium',
+          description: 'Spotify Premium',
+          category: ['Entertainment', 'Streaming Services'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-11',
+          account_id: mappedAccounts[0]?.id || 'checking',
+          amount: -67.50,
+          date: new Date(Date.now() - 18 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Target',
+          description: 'Target',
+          category: ['Shops', 'Department Store'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-12',
+          account_id: mappedAccounts[0]?.id || 'checking',
+          amount: -22.00,
+          date: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Gas Station',
+          description: 'Gas Station',
+          category: ['Gas', 'Transportation'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-13',
+          account_id: mappedAccounts[0]?.id || 'checking',
+          amount: -18.75,
+          date: new Date(Date.now() - 22 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Starbucks',
+          description: 'Starbucks',
+          category: ['Food and Drink', 'Coffee'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-14',
+          account_id: mappedAccounts[0]?.id || 'checking',
+          amount: -150.00,
+          date: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Internet Bill',
+          description: 'Internet Bill',
+          category: ['Utilities', 'Internet'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-15',
+          account_id: mappedAccounts[0]?.id || 'checking',
+          amount: -35.00,
+          date: new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Movie Theater',
+          description: 'Movie Theater',
+          category: ['Entertainment', 'Movies'],
+          type: 'debit'
+        },
+        
+        // Savings account transactions (5 transactions)
+        {
+          id: 'txn-16',
+          account_id: mappedAccounts[1]?.id || 'savings',
+          amount: 500.00,
+          date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Transfer from Checking',
+          description: 'Transfer from Checking',
+          category: ['Transfer', 'Internal Transfer'],
+          type: 'credit'
+        },
+        {
+          id: 'txn-17',
+          account_id: mappedAccounts[1]?.id || 'savings',
+          amount: 1.25,
+          date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Interest Payment',
+          description: 'Interest Payment',
+          category: ['Interest', 'Income'],
+          type: 'credit'
+        },
+        {
+          id: 'txn-18',
+          account_id: mappedAccounts[1]?.id || 'savings',
+          amount: 300.00,
+          date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Emergency Fund Deposit',
+          description: 'Emergency Fund Deposit',
+          category: ['Transfer', 'Savings'],
+          type: 'credit'
+        },
+        {
+          id: 'txn-19',
+          account_id: mappedAccounts[1]?.id || 'savings',
+          amount: 200.00,
+          date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Vacation Fund Deposit',
+          description: 'Vacation Fund Deposit',
+          category: ['Transfer', 'Savings'],
+          type: 'credit'
+        },
+        {
+          id: 'txn-20',
+          account_id: mappedAccounts[1]?.id || 'savings',
+          amount: 0.95,
+          date: new Date(Date.now() - 35 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Interest Payment',
+          description: 'Interest Payment',
+          category: ['Interest', 'Income'],
+          type: 'credit'
+        },
+        
+        // Credit card transactions (12 transactions)
+        {
+          id: 'txn-21',
+          account_id: mappedAccounts[2]?.id || 'credit_card',
+          amount: -156.78,
+          date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Gas Station',
+          description: 'Gas Station',
+          category: ['Gas', 'Transportation'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-22',
+          account_id: mappedAccounts[2]?.id || 'credit_card',
+          amount: -299.99,
+          date: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Amazon Purchase',
+          description: 'Amazon Purchase',
+          category: ['Shops', 'Online Purchase'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-23',
+          account_id: mappedAccounts[2]?.id || 'credit_card',
+          amount: -45.00,
+          date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Netflix',
+          description: 'Netflix',
+          category: ['Entertainment', 'Streaming Services'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-24',
+          account_id: mappedAccounts[2]?.id || 'credit_card',
+          amount: 450.00,
+          date: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Payment from Checking',
+          description: 'Payment from Checking',
+          category: ['Payment', 'Credit Card Payment'],
+          type: 'credit'
+        },
+        {
+          id: 'txn-25',
+          account_id: mappedAccounts[2]?.id || 'credit_card',
+          amount: -89.99,
+          date: new Date(Date.now() - 11 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Restaurant',
+          description: 'Restaurant',
+          category: ['Food and Drink', 'Restaurants'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-26',
+          account_id: mappedAccounts[2]?.id || 'credit_card',
+          amount: -125.00,
+          date: new Date(Date.now() - 13 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Clothing Store',
+          description: 'Clothing Store',
+          category: ['Shops', 'Clothing'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-27',
+          account_id: mappedAccounts[2]?.id || 'credit_card',
+          amount: -35.50,
+          date: new Date(Date.now() - 17 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Grocery Store',
+          description: 'Grocery Store',
+          category: ['Food and Drink', 'Groceries'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-28',
+          account_id: mappedAccounts[2]?.id || 'credit_card',
+          amount: -75.00,
+          date: new Date(Date.now() - 19 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Pharmacy',
+          description: 'Pharmacy',
+          category: ['Health', 'Pharmacy'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-29',
+          account_id: mappedAccounts[2]?.id || 'credit_card',
+          amount: -199.99,
+          date: new Date(Date.now() - 21 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Electronics Store',
+          description: 'Electronics Store',
+          category: ['Shops', 'Electronics'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-30',
+          account_id: mappedAccounts[2]?.id || 'credit_card',
+          amount: -15.99,
+          date: new Date(Date.now() - 23 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'App Store',
+          description: 'App Store',
+          category: ['Entertainment', 'Software'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-31',
+          account_id: mappedAccounts[2]?.id || 'credit_card',
+          amount: -67.50,
+          date: new Date(Date.now() - 26 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Home Improvement',
+          description: 'Home Improvement',
+          category: ['Shops', 'Hardware'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-32',
+          account_id: mappedAccounts[2]?.id || 'credit_card',
+          amount: -22.00,
+          date: new Date(Date.now() - 29 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Coffee Shop',
+          description: 'Coffee Shop',
+          category: ['Food and Drink', 'Coffee'],
+          type: 'debit'
+        },
+        
+        // 401k investment transactions (5 transactions)
+        {
+          id: 'txn-33',
+          account_id: mappedAccounts[3]?.id || '401k',
+          amount: 850.00,
+          date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Employer 401k Contribution',
+          description: 'Employer 401k Contribution',
+          category: ['Payroll', 'Retirement'],
+          type: 'credit'
+        },
+        {
+          id: 'txn-34',
+          account_id: mappedAccounts[3]?.id || '401k',
+          amount: 425.00,
+          date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Employee 401k Contribution',
+          description: 'Employee 401k Contribution',
+          category: ['Payroll', 'Retirement'],
+          type: 'credit'
+        },
+        {
+          id: 'txn-35',
+          account_id: mappedAccounts[3]?.id || '401k',
+          amount: 127.50,
+          date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+          name: '401k Investment Gains',
+          description: '401k Investment Gains',
+          category: ['Investment', 'Capital Gains'],
+          type: 'credit'
+        },
+        {
+          id: 'txn-36',
+          account_id: mappedAccounts[3]?.id || '401k',
+          amount: 45.75,
+          date: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Dividend Payment',
+          description: 'Dividend Payment',
+          category: ['Investment', 'Dividends'],
+          type: 'credit'
+        },
+        {
+          id: 'txn-37',
+          account_id: mappedAccounts[3]?.id || '401k',
+          amount: -12.50,
+          date: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
+          name: '401k Management Fee',
+          description: '401k Management Fee',
+          category: ['Investment', 'Fees'],
+          type: 'debit'
+        },
+        
+        // Student loan transactions (4 transactions)
+        {
+          id: 'txn-38',
+          account_id: mappedAccounts[4]?.id || 'student_loan',
+          amount: -350.00,
+          date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Student Loan Payment',
+          description: 'Student Loan Payment',
+          category: ['Payment', 'Loan Payment'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-39',
+          account_id: mappedAccounts[4]?.id || 'student_loan',
+          amount: -285.67,
+          date: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Student Loan Interest',
+          description: 'Student Loan Interest',
+          category: ['Interest', 'Loan Interest'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-40',
+          account_id: mappedAccounts[4]?.id || 'student_loan',
+          amount: -64.33,
+          date: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Student Loan Principal',
+          description: 'Student Loan Principal',
+          category: ['Payment', 'Loan Principal'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-41',
+          account_id: mappedAccounts[4]?.id || 'student_loan',
+          amount: -5.00,
+          date: new Date(Date.now() - 75 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Student Loan Fee',
+          description: 'Student Loan Fee',
+          category: ['Payment', 'Loan Fees'],
+          type: 'debit'
+        },
+        
+        // Mortgage transactions (5 transactions)
+        {
+          id: 'txn-42',
+          account_id: mappedAccounts[5]?.id || 'mortgage',
+          amount: -1850.00,
+          date: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Mortgage Payment',
+          description: 'Mortgage Payment',
+          category: ['Payment', 'Mortgage Payment'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-43',
+          account_id: mappedAccounts[5]?.id || 'mortgage',
+          amount: -1200.00,
+          date: new Date(Date.now() - 42 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Mortgage Principal',
+          description: 'Mortgage Principal',
+          category: ['Payment', 'Mortgage Principal'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-44',
+          account_id: mappedAccounts[5]?.id || 'mortgage',
+          amount: -650.00,
+          date: new Date(Date.now() - 42 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Mortgage Interest',
+          description: 'Mortgage Interest',
+          category: ['Interest', 'Mortgage Interest'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-45',
+          account_id: mappedAccounts[5]?.id || 'mortgage',
+          amount: -350.00,
+          date: new Date(Date.now() - 72 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Property Tax',
+          description: 'Property Tax',
+          category: ['Payment', 'Taxes'],
+          type: 'debit'
+        },
+        {
+          id: 'txn-46',
+          account_id: mappedAccounts[5]?.id || 'mortgage',
+          amount: -125.00,
+          date: new Date(Date.now() - 72 * 24 * 60 * 60 * 1000).toISOString(),
+          name: 'Home Insurance',
+          description: 'Home Insurance',
+          category: ['Payment', 'Insurance'],
+          type: 'debit'
         }
       ];
       
-      // Pass both accounts and transactions
-      onSuccess({ accounts, transactions: mockTransactions });
+      // Pass both mapped accounts and transactions
+      onSuccess({ accounts: mappedAccounts, transactions: mockTransactions });
+      
+      // Clean up Plaid iframe after successful connection
+      setTimeout(() => {
+        // Reset Plaid state to close any open iframes
+        resetPlaidGlobalState();
+        setShouldInitializePlaid(false);
+        setShowBanner(false);
+        
+        // Force remove any remaining Plaid iframes
+        const plaidIframes = document.querySelectorAll('iframe[src*="plaid"]');
+        plaidIframes.forEach(iframe => {
+          iframe.remove();
+        });
+      }, 1000); // Small delay to ensure success callback completes
+      
     } catch (e: any) {
       console.error('Plaid success flow error:', e);
       setError(`Link success, but account fetch failed: ${e.message}`);
@@ -149,7 +648,11 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
   }, [apiBase, userId, onSuccess, linkToken]);
 
   useEffect(() => {
-    console.log('PlaidLinkButton useEffect running, userId:', userId, 'apiBase:', apiBase);
+    console.log('PlaidLinkButton useEffect running, userId:', userId, 'apiBase:', apiBase, 'hidden:', hidden);
+    
+    // Always initialize to get the link token, even when hidden
+    // The hidden prop only affects rendering, not initialization
+    
     let isMounted = true;
     let timeoutId: NodeJS.Timeout;
 
@@ -178,18 +681,18 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
         // For development, try the API first, then fall back to mock
         let data;
         try {
-          const r = await fetch(`${apiBase}/plaid/link/token/create`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId }),
-          });
+        const r = await fetch(`${apiBase}/plaid/link/token/create`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId }),
+        });
 
-          console.log('Response status:', r.status);
-          console.log('Response headers:', Object.fromEntries(r.headers.entries()));
+        console.log('Response status:', r.status);
+        console.log('Response headers:', Object.fromEntries(r.headers.entries()));
 
-          if (!r.ok) {
-            throw new Error(`HTTP ${r.status}: ${r.statusText}`);
-          }
+        if (!r.ok) {
+          throw new Error(`HTTP ${r.status}: ${r.statusText}`);
+        }
 
           data = await r.json();
           console.log('Received link token from API:', data);
@@ -232,6 +735,10 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
     onExit: (err: any, metadata: any) => {
       console.log('Plaid Link exited:', err, metadata);
       
+      // Hide banner when Plaid Link exits
+      setShowBanner(false);
+      setBannerStep('initial');
+      
       // Handle INVALID_LINK_TOKEN error as recommended by Plaid docs
       if (err && err.error_code === 'INVALID_LINK_TOKEN') {
         console.log('Link token invalidated, regenerating...');
@@ -242,42 +749,128 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
         // The useEffect will automatically regenerate the token
       }
     },
+    onEvent: (eventName: string, metadata: any) => {
+      console.log('Plaid Link event:', eventName, metadata);
+      
+      // More specific event handling to control banner progression
+      switch (eventName) {
+        case 'OPEN':
+          setShowBanner(true);
+          setBannerStep('initial'); // Show phone + passcode
+          break;
+        case 'SELECT_INSTITUTION':
+          // Stay on initial state (phone + passcode) when institution is selected
+          console.log('Institution selected - staying on initial state');
+          break;
+        case 'SUBMIT_CREDENTIALS':
+        case 'VERIFY_CODE':
+        case 'VERIFY_MFA':
+          // Only progress to login state for actual credential submission
+          console.log('Login step detected, showing username/password');
+          setBannerStep('login'); // Show username/password + verification code
+          break;
+        case 'OPEN_OAUTH':
+          // Plaid opened a new window for OAuth - this is when we should show login credentials
+          console.log('Plaid opened OAuth window - showing login credentials');
+          setBannerStep('login');
+          break;
+        case 'HANDOFF':
+        case 'OAUTH_REDIRECT':
+          // These might happen during phone verification, stay on initial
+          console.log('Handoff/OAuth redirect - staying on initial state');
+          break;
+        case 'EXIT':
+          setShowBanner(false);
+          setBannerStep('initial');
+          break;
+        default:
+          console.log('Unhandled Plaid event:', eventName, metadata);
+          // Don't auto-progress for unhandled events - let timer handle it
+      }
+    },
   }), [linkToken, handleSuccess]);
 
-  const { open, ready, error: plaidError } = usePlaidLinkSingleton(config);
+  // State to track if we should initialize Plaid
+  const [shouldInitializePlaid, setShouldInitializePlaid] = useState(false);
 
-  // Auto-open effect
+  // Only initialize Plaid when we actually want to open it
+  const { open, ready, error: plaidError } = usePlaidLinkSingleton(shouldInitializePlaid ? config : null as any);
+
+  // Handle open request from parent component
   useEffect(() => {
-    if (autoOpen && ready && isInitialized && linkToken) {
-      console.log('Auto-opening Plaid Link');
-      
+    if (plaidOpenRequested && linkToken) {
+      setShouldInitializePlaid(true);
+      setShowBanner(true);
+      setBannerStep('initial');
+    }
+  }, [plaidOpenRequested, linkToken]);
+
+  // Open Plaid when it becomes ready
+  useEffect(() => {
+    if (shouldInitializePlaid && ready && linkToken) {
+      open();
+    }
+  }, [shouldInitializePlaid, ready, linkToken, open]);
+
+  // Auto-open effect - only run if not hidden
+  useEffect(() => {
+    if (autoOpen && !hidden && ready && isInitialized && linkToken) {
       // If using mock token, simulate the Plaid flow instead of opening real Plaid
       if (linkToken.startsWith('link-sandbox-mock')) {
-        console.log('Using mock Plaid flow for development');
+        // Show banner for mock flow
+        setShowBanner(true);
+        setBannerStep('initial');
+        
+        // Simulate the simplified flow
+        setTimeout(() => {
+          setBannerStep('login'); // Show login credentials after 3 seconds
+        }, 3000);
+        
         setTimeout(() => {
           // Simulate successful Plaid Link flow with mock data
           const mockPublicToken = 'public-sandbox-mock-' + Date.now();
+          setBannerStep('success');
           handleSuccess(mockPublicToken);
-        }, 1000); // 1 second delay to simulate user interaction
+        }, 6000); // Complete after 6 seconds
       } else {
         // Use real Plaid Link for production tokens
+        setShowBanner(true);
+        setBannerStep('initial');
         open();
       }
     }
-  }, [autoOpen, ready, isInitialized, linkToken, open, handleSuccess]);
+  }, [autoOpen, hidden, ready, isInitialized, linkToken, open, handleSuccess]);
 
-  // Debug logging
-  console.log('PlaidLinkButton state:', {
-    isInitialized,
-    linkToken: linkToken ? 'Present' : 'Missing',
-    ready,
-    error,
-    plaidError,
-    autoOpen
-  });
+
+  // Window focus detection for OAuth popup
+  useEffect(() => {
+    if (showBanner && bannerStep === 'initial') {
+      const handleFocus = () => {
+        console.log('Window focus detected - user returned from popup, showing login credentials');
+        setBannerStep('login');
+      };
+
+      window.addEventListener('focus', handleFocus);
+      return () => window.removeEventListener('focus', handleFocus);
+    }
+  }, [showBanner, bannerStep]);
+
+
 
   if (error) return <div>{error}</div>;
   if (plaidError) return <div>Plaid Error: {plaidError}</div>;
+  
+  // If hidden, only render the banner via portal
+  if (hidden) {
+    return showBanner ? createPortal(
+      <PlaidSandboxBanner
+        isVisible={showBanner}
+        currentStep={bannerStep}
+        onClose={() => setShowBanner(false)}
+      />,
+      document.body
+    ) : null;
+  }
   
   // Show loading state while initializing
   if (!isInitialized) {
@@ -296,6 +889,13 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
   
   // Show unavailable state only if we have an error and no token
   if (!linkToken) {
+    if (hidden) {
+      return <PlaidSandboxBanner 
+        isVisible={showBanner} 
+        currentStep={bannerStep}
+        onClose={() => setShowBanner(false)}
+      />;
+    }
     return (
       <Button 
         variant={ButtonVariants.outline} 
@@ -310,13 +910,26 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
   }
 
 
+  if (hidden) {
+    return (
+      <PlaidSandboxBanner 
+        isVisible={showBanner} 
+        currentStep={bannerStep}
+        onClose={() => setShowBanner(false)}
+      />
+    );
+  }
+
   return (
+    <>
     <Button
       variant={ButtonVariants.outline}
       color={ButtonColors.secondary}
       fullWidth={true}
       onClick={() => {
         console.log('Plaid button clicked, ready:', ready);
+          setShowBanner(true);
+          setBannerStep('initial');
         open();
       }}
       disabled={!ready}
@@ -324,5 +937,16 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
       <Icon name={IconNames.account_balance_wallet} size="md" />
       Connect with Plaid {!ready ? '(Loading...)' : ''}
     </Button>
+      
+      
+      {showBanner && createPortal(
+        <PlaidSandboxBanner 
+          isVisible={showBanner} 
+          currentStep={bannerStep}
+          onClose={() => setShowBanner(false)}
+        />,
+        document.body
+      )}
+    </>
   );
 }

@@ -159,11 +159,15 @@ export function Onboarding() {
   };
 
   const handleFinish = (finalData: OnboardingState) => {
+    // Extract first name from full name if firstName is not provided
+    const firstName = finalData.firstName || (finalData.name ? finalData.name.split(' ')[0] : undefined);
+    const lastName = finalData.lastName || (finalData.name ? finalData.name.split(' ').slice(1).join(' ') : undefined);
+    
     setUserProfile({
       ...userProfile, // Preserve existing profile data including hasSampleData
       name: finalData.name,
-      firstName: finalData.firstName,
-      lastName: finalData.lastName,
+      firstName: firstName,
+      lastName: lastName,
       ageRange: finalData.ageRange,
       mainGoals: finalData.mainGoals,
       topPriority: finalData.topPriority,
