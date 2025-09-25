@@ -19,9 +19,7 @@ export function QuestionBlock({
     <div
     >
 
-      <h3 className={`mb-xs text-lg font-semibold ${
-        locked ? 'text-gray-500' : 'text-gray-900'
-      }`}>
+      <h3 className="mb-xs text-lg font-semibold">
         {title}
       </h3>
 

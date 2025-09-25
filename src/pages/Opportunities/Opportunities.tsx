@@ -347,7 +347,6 @@ export function Opportunities() {
                       <Icon
                         name={nudge.icon}
                         size="lg"
-                        style={{ color: getCategoryColor(nudge.category) }}
                       />
                     </div>
                     <div className="nudge-title-section">
@@ -380,7 +379,7 @@ export function Opportunities() {
 
         {/* Insights Section */}
         <div className="insights-section">
-          <h2 className="section-title">💡 Insights</h2>
+          <h2 className="section-title">Insights</h2>
           <p className="section-subtitle">Analysis of your financial patterns</p>
           <div className="insights-list">
           {insights.map((insight) => (
@@ -390,7 +389,6 @@ export function Opportunities() {
                   <Icon
                     name={insight.icon}
                     size="lg"
-                    style={{ color: getCategoryColor(insight.category) }}
                   />
                 </div>
                 <div className="insight-title-section">

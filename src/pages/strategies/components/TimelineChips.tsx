@@ -25,9 +25,9 @@ function Chip({ label, selected, onClick }: ChipProps) {
 
 export function TimelineChips({ selected, onSelect }: TimelineChipsProps) {
   const timeframes = [
-    { id: 'short' as Timeframe, label: 'Short (3-12 mo)' },
-    { id: 'mid' as Timeframe, label: 'Mid (1-5 yr)' },
-    { id: 'long' as Timeframe, label: 'Long (5+ yr)' }
+    { id: 'short' as Timeframe, label: 'Short (1–2 years)' },
+    { id: 'mid' as Timeframe, label: 'Mid (3–5 years)' },
+    { id: 'long' as Timeframe, label: 'Long (5+ years)' }
   ];
 
   return (

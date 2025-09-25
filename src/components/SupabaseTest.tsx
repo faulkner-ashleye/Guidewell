@@ -13,7 +13,7 @@ export default function SupabaseTest() {
 
   const testConnection = async () => {
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('users')
         .select('count')
         .limit(1);
@@ -35,18 +35,21 @@ export default function SupabaseTest() {
     setIsRunningTests(true);
     setTestResults([]);
     
+    // Generate a proper UUID for testing
+    const testUserId = crypto.randomUUID();
+    
     const tests = [
       {
         name: 'Create Test User',
         test: async () => {
-          const user = await SupabaseService.createUser('test-user-123', 'test@example.com');
+          const user = await SupabaseService.createUser(testUserId, 'test@example.com');
           return user ? '✅ User created successfully' : '❌ Failed to create user';
         }
       },
       {
         name: 'Fetch Test User',
         test: async () => {
-          const user = await SupabaseService.getUser('test-user-123');
+          const user = await SupabaseService.getUser(testUserId);
           return user ? '✅ User fetched successfully' : '❌ Failed to fetch user';
         }
       },
@@ -54,7 +57,7 @@ export default function SupabaseTest() {
         name: 'Create Test Account',
         test: async () => {
           const account = await SupabaseService.createAccount({
-            user_id: 'test-user-123',
+            user_id: testUserId,
             plaid_item_id: 'test-item-123',
             plaid_access_token: 'test-token-123',
             account_id: 'test-account-123',
@@ -69,7 +72,7 @@ export default function SupabaseTest() {
       {
         name: 'Fetch User Accounts',
         test: async () => {
-          const accounts = await SupabaseService.getUserAccounts('test-user-123');
+          const accounts = await SupabaseService.getUserAccounts(testUserId);
           return accounts.length > 0 ? '✅ Accounts fetched successfully' : '❌ No accounts found';
         }
       }
@@ -163,6 +166,3 @@ export default function SupabaseTest() {
     </div>
   );
 }
-
-
-

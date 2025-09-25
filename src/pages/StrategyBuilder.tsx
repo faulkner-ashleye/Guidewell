@@ -450,12 +450,12 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
                   >
                     <ChipGroup>
                       <Chip
-                        label="Short (6-12 months)"
+                        label="Short (1–2 years)"
                         selected={timeframe === 'short'}
                         onClick={() => setTimeframe('short')}
                       />
                       <Chip
-                        label="Mid (1-3 years)"
+                        label="Mid (3–5 years)"
                         selected={timeframe === 'mid'}
                         onClick={() => setTimeframe('mid')}
                       />
@@ -655,12 +655,12 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
             >
             <ChipGroup>
               <Chip
-                label="Short (6-12 months)"
+                label="Short (1–2 years)"
                 selected={timeframe === 'short'}
                 onClick={() => handleTimeframeSelect('short')}
               />
               <Chip
-                label="Mid (1-3 years)"
+                label="Mid (3–5 years)"
                 selected={timeframe === 'mid'}
                 onClick={() => handleTimeframeSelect('mid')}
               />

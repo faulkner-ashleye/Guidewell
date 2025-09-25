@@ -51,9 +51,9 @@ interface KPIData {
 }
 
 const TIMELINE_PRESETS: TimelineConfig[] = [
-  { id: 'short', label: '1-2 years', months: 18, color: '#10b981' },
-  { id: 'mid', label: '3-5 years', months: 36, color: '#3b82f6' },
-  { id: 'long', label: '5+ years', months: 60, color: '#8b5cf6' },
+  { id: 'short', label: 'Short (1–2 years)', months: 18, color: '#10b981' },
+  { id: 'mid', label: 'Mid (3–5 years)', months: 36, color: '#3b82f6' },
+  { id: 'long', label: 'Long (5+ years)', months: 60, color: '#8b5cf6' },
   { id: 'custom', label: 'Custom', months: 24, color: '#6b7280' }
 ];
 
