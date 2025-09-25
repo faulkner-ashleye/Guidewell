@@ -196,9 +196,20 @@ export function Plan() {
                 <PlaidLinkButton
                   key="plaid-link-plan"
                   userId="demo-user-123"
-                  onSuccess={(linked) => {
+                  onSuccess={(data) => {
                     clearSampleData();
-                    setAccounts(linked);
+                    
+                    // Handle both accounts and transactions if provided
+                    if (Array.isArray(data)) {
+                      // Legacy format: just accounts array
+                      setAccounts(data);
+                    } else if (data.accounts) {
+                      // New format: object with accounts and transactions
+                      setAccounts(data.accounts);
+                    } else {
+                      // Fallback: treat as accounts array
+                      setAccounts(Array.isArray(data) ? data : []);
+                    }
                   }}
                 />
                 <Button

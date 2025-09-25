@@ -6,7 +6,7 @@ const { Configuration, PlaidApi, PlaidEnvironments } = require('plaid');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:5173', credentials: true })); // adjust origin to your dev client
+app.use(cors({ origin: 'http://localhost:3000', credentials: true })); // adjust origin to your dev client
 app.use(express.json());
 
 const cfg = new Configuration({

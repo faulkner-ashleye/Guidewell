@@ -2,7 +2,7 @@
 const getApiBaseUrl = (): string => {
   // Check if we're in development
   if (process.env.NODE_ENV === 'development') {
-    return 'http://localhost:3000';
+    return 'http://localhost:3001';
   }
   
   // For production, you have several options:

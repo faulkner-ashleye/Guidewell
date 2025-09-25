@@ -1,11 +1,11 @@
 const dotenv = require('dotenv');
-dotenv.config();
+dotenv.config({ path: '../.env' });
 const express = require('express');
 const cors = require('cors');
 const { Configuration, PlaidApi, PlaidEnvironments } = require('plaid');
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(express.json());
 
 // Check if environment variables are loaded
@@ -37,6 +37,10 @@ app.post('/plaid/link/token/create', async (req, res) => {
       products: ['auth', 'transactions', 'liabilities'],
       country_codes: ['US'],
       language: 'en',
+      // Optional: Add webhook URL if you want to receive updates
+      // webhook: 'https://your-domain.com/webhook',
+      // Optional: Add redirect URI for OAuth flows
+      // redirect_uri: 'https://your-domain.com/oauth',
     });
     console.log('Link token created successfully');
     res.json({ link_token: r.data.link_token });
@@ -125,6 +129,29 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
+// Test endpoint for debugging
+app.get('/test', (req, res) => {
+  res.json({ 
+    message: 'Server is running!', 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+    plaidConfigured: !!(process.env.PLAID_CLIENT_ID && process.env.PLAID_SECRET)
+  });
+});
+
+// Test endpoint to create an invalid link token (for testing error handling)
+app.post('/plaid/link/token/create-invalid', async (req, res) => {
+  try {
+    // Return a mock invalid token for testing
+    res.json({ 
+      link_token: 'link-sandbox-invalid-token-for-testing',
+      note: 'This is a test invalid token for testing INVALID_LINK_TOKEN error handling'
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to create test token' });
+  }
+});
+
 const port = Number(process.env.PORT || 3001);
 app.listen(port, () => {
   console.log(`🚀 Simple Plaid API running on port ${port}`);
@@ -133,4 +160,5 @@ app.listen(port, () => {
   console.log(`   POST /plaid/item/public_token/exchange`);
   console.log(`   GET /plaid/accounts`);
   console.log(`   GET /health`);
+  console.log(`   GET /test`);
 });

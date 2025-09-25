@@ -109,9 +109,20 @@ export function NavBar() {
       {/* Connect account sheet (Plaid or other methods) */}
       <Sheet open={connectOpen} onClose={() => setConnectOpen(false)} title="Connect account">
         <div className="grid-auto">
-          <PlaidLinkButton onSuccess={(linked: any) => {
+          <PlaidLinkButton onSuccess={(data: any) => {
             clearSampleData();
-            setAccounts(linked);
+            
+            // Handle both accounts and transactions if provided
+            if (Array.isArray(data)) {
+              // Legacy format: just accounts array
+              setAccounts(data);
+            } else if (data.accounts) {
+              // New format: object with accounts and transactions
+              setAccounts(data.accounts);
+            } else {
+              // Fallback: treat as accounts array
+              setAccounts(Array.isArray(data) ? data : []);
+            }
           }} />
         </div>
       </Sheet>

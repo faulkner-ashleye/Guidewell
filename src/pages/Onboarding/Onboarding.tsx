@@ -29,7 +29,7 @@ export function Onboarding() {
     setContributions, 
     setGoals, 
     accounts, 
-    userProfile 
+    userProfile
   } = useAppState();
 
   const update = <K extends keyof OnboardingState>(key: K, value: OnboardingState[K]) =>
@@ -170,6 +170,11 @@ export function Onboarding() {
       timeline: finalData.timeline,
       comfortLevel: finalData.comfort
     });
+    
+    // Onboarding complete - preserve whatever accounts the user has
+    console.log('Onboarding complete - preserving user accounts');
+    console.log('Final accounts:', accounts);
+    console.log('Account count:', accounts.length);
     navigate('/home');
   };
 

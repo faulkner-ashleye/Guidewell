@@ -27,8 +27,23 @@ export function AccountsTab() {
         <PlaidLinkButton
           key="plaid-link-accounts"
           userId="demo-user-123"
-          onSuccess={(linked) => {
-            console.log('Accounts linked:', linked);
+          onSuccess={(data) => {
+            console.log('Accounts linked:', data);
+            
+            // Handle both accounts and transactions if provided
+            if (Array.isArray(data)) {
+              // Legacy format: just accounts array
+              console.log('Legacy format - accounts:', data);
+            } else if (data.accounts) {
+              // New format: object with accounts and transactions
+              console.log('New format - accounts:', data.accounts);
+              if (data.transactions) {
+                console.log('New format - transactions:', data.transactions);
+              }
+            } else {
+              // Fallback: treat as accounts array
+              console.log('Fallback format:', data);
+            }
           }}
         />
         

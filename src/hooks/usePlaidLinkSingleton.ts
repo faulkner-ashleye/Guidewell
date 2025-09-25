@@ -5,7 +5,7 @@ import { usePlaidScript } from './usePlaidScript';
 interface PlaidLinkOptions {
   token: string;
   onSuccess: (public_token: string) => void;
-  onExit?: () => void;
+  onExit?: (err: any, metadata: any) => void;
 }
 
 // Global state to track if Plaid Link is already initialized
