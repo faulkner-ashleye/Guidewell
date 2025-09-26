@@ -1,4 +1,5 @@
 # Guidewell
+<!-- Trigger deployment -->
 
 A mobile-first web app built with React + TypeScript that helps people in their 20s–30s explore financial trade-offs across debt, savings, and investing.
 
