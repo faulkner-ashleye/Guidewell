@@ -5,7 +5,7 @@
   align-items: center;
   min-height: 100vh;
   padding: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(var(--color-primary-light), var(--color-secondary-main));
   background-attachment: fixed;
 }
 
@@ -29,7 +29,6 @@
   border-radius: 32px;
   overflow: hidden;
   position: relative;
-  max-height: 812px; /* Constrain to phone frame height */
 }
 
 .phone-content {
@@ -38,7 +37,6 @@
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
-  max-height: 812px; /* Constrain to phone frame height */
 }
 
 .phone-home-indicator {
