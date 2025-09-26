@@ -90,13 +90,14 @@
 .profile-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   padding:var(--spacing-xl) 0 0;
+  gap:24px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
+  margin-bottom: 0;
 }
 
 .form-label {

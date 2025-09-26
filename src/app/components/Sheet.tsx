@@ -34,7 +34,7 @@ export default function Sheet({ open, onClose, title, children, footer }:{
   
   if (!open) return null;
   return (
-    <div className="sheet-overlay" onClick={onClose}>
+    <div className="sheet-overlay sheet-last-child" onClick={onClose}>
       <div className="sheet" onClick={(e)=>e.stopPropagation()}>
         <div className="sheet-header">
           <div>{title}</div>

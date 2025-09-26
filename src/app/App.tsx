@@ -18,6 +18,8 @@ import { initializeTheme } from '../ui/colors';
 import { FoundationFeatures } from '../components/FoundationFeatures';
 import { DesignSystemDemo } from '../components/DesignSystemDemo';
 import { SVGColorTest } from '../components/SVGColorTest';
+import { AIIntegrationDemo } from '../components/AIIntegrationDemo';
+import GlobalSheets from './components/GlobalSheets';
 import './App.css';
 
 function AppContent() {
@@ -42,6 +44,7 @@ function AppContent() {
             <Route path="/terms" element={<Terms />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/foundation" element={<FoundationFeatures />} />
+            <Route path="/ai-demo" element={<AIIntegrationDemo />} />
             <Route path="/design-system" element={<DesignSystemDemo />} />
             <Route path="/svg-test" element={<SVGColorTest />} />
             <Route path="/accounts/:id" element={<AccountDetailPage />} />
@@ -49,6 +52,9 @@ function AppContent() {
           </Routes>
         </main>
         {!isOnboarding && <NavBar />}
+        
+        {/* Global Sheets - rendered outside of main content */}
+        <GlobalSheets />
       </MobilePhoneWrapper>
     </div>
   );

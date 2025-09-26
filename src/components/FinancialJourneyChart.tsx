@@ -111,7 +111,7 @@ export function FinancialJourneyChart({
   // Generate chart data
   const chartData: ChartDataPoint[] = useMemo(() => {
     const data: ChartDataPoint[] = [];
-    const monthlyContribution = 500; // Default monthly contribution
+    const monthlyContribution = 0; // No default contribution - use actual user data
     const assetGrowthRate = 0.004; // 0.4% monthly growth for assets
     const debtPayoffRate = 0.02; // 2% monthly debt reduction
 

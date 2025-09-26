@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useAppState } from '../../state/AppStateContext';
 import { getRecentActivity } from '../../state/activitySelectors';
 import {
@@ -18,6 +18,12 @@ import { getTransactionIcon } from '../../utils/transactionIcons';
 import { formatDate } from '../../utils/format';
 import { Icon } from '../../components/Icon';
 import { getActivityItemCategoryName, getActivityItemCategoryIcon } from '../../utils/transactionCategories';
+import { ContentRecommendationCard } from '../../components/ContentRecommendationCard';
+import { ContentRecommendationEngine } from '../../data/contentLibrary';
+import { EnhancedUserProfile } from '../../data/enhancedUserProfile';
+import { UserProfileUtils } from '../../data/enhancedUserProfile';
+import { ContentItem } from '../../data/contentLibrary';
+import { Goal as AppGoal } from '../../app/types';
 // Removed COLORS import - using design system utilities instead
 import './Home.css';
 
@@ -47,6 +53,63 @@ export function Home() {
   // Calculate totals using selectors
   const savingsTotal = sumByType(accounts, ['checking', 'savings']);
   const debtTotal = sumByType(accounts, ['credit_card', 'loan']);
+
+  // Convert AppGoal to data Goal type for enhanced user profile
+  const convertedGoals = useMemo(() => {
+    return goals.map((goal: AppGoal) => ({
+      id: goal.id,
+      name: goal.name,
+      type: goal.type === 'savings' ? 'emergency_fund' : 
+            goal.type === 'debt' ? 'debt_payoff' : 
+            goal.type as 'debt_payoff' | 'emergency_fund' | 'retirement' | 'investment' | 'custom',
+      accountId: goal.accountId,
+      accountIds: goal.accountIds,
+      target: goal.target,
+      targetDate: goal.targetDate,
+      monthlyContribution: goal.monthlyContribution,
+      priority: goal.priority,
+      note: goal.note,
+      createdAt: goal.createdAt
+    }));
+  }, [goals]);
+
+  // Create enhanced user profile for content recommendations
+  const enhancedUserProfile = useMemo((): EnhancedUserProfile => {
+    return UserProfileUtils.createEnhancedProfile(userProfile, accounts, convertedGoals);
+  }, [userProfile, accounts, convertedGoals]);
+
+  // Get content recommendations
+  const contentRecommendations = useMemo(() => {
+    if (!enhancedUserProfile) return [];
+    
+    // Identify current challenges
+    const challenges: string[] = [];
+    const highInterestDebt = accounts.filter(a => a.type === 'credit_card' && (a.apr || 0) > 15).length > 0;
+    const lowSavings = savingsTotal < 1000;
+    const noInvestments = accounts.filter(a => a.type === 'investment').length === 0;
+    
+    if (highInterestDebt) challenges.push('high_interest_debt');
+    if (lowSavings) challenges.push('low_emergency_fund');
+    if (noInvestments) challenges.push('no_investments');
+    
+    const recommendations = ContentRecommendationEngine.getRecommendations(
+      enhancedUserProfile,
+      enhancedUserProfile.mainGoals,
+      challenges
+    ).slice(0, 3); // Show only top 3 recommendations on home page
+
+    // Get the actual content items for each recommendation
+    return recommendations.map(rec => {
+      const content = ContentRecommendationEngine.getContentById(rec.contentId);
+      return { recommendation: rec, content };
+    }).filter(item => item.content !== null) as Array<{ recommendation: any; content: ContentItem }>;
+  }, [enhancedUserProfile, accounts, savingsTotal]);
+
+  // Handle content read
+  const handleContentRead = (content: ContentItem) => {
+    console.log('Content read:', content.title);
+    // In a real app, this would track reading progress, open content, etc.
+  };
 
 
   // Determine display name - prioritize user's actual name
@@ -106,6 +169,25 @@ export function Home() {
             <AccountBalanceCard accounts={accounts} />
             <SpendingCard transactions={transactions} />
           </div>
+
+          {/* Content Recommendations */}
+          {contentRecommendations.length > 0 && (
+            <div className="content-recommendations">
+              <h2>Recommended for You</h2>
+              <div className="content-grid">
+                {contentRecommendations.map((item) => (
+                  <ContentRecommendationCard
+                    key={item.recommendation.contentId}
+                    recommendation={item.recommendation}
+                    content={item.content}
+                    onRead={handleContentRead}
+                    onBookmark={(contentId) => console.log('Bookmark:', contentId)}
+                    onDismiss={(contentId) => console.log('Dismiss:', contentId)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Recent Activity */}
           <div className="recent-activity">

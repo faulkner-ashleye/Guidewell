@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Icon, IconNames } from './Icon';
 import QuickActionsSheet from '../app/components/QuickActionsSheet';
-import GoalModal from './GoalModal';
-import LogContributionModal from '../app/components/LogContributionModal';
-import UploadDocumentModal from '../app/components/UploadDocumentModal';
 import PlaidLinkButton from './PlaidLinkButton';
-import Sheet from '../app/components/Sheet';
 import { useAppState } from '../state/AppStateContext';
 
 interface NavItem {
@@ -28,10 +24,6 @@ export function NavBar() {
 
   // Quick Actions state
   const [qaOpen, setQaOpen] = useState(false);
-  const [goalOpen, setGoalOpen] = useState(false);
-  const [logOpen, setLogOpen] = useState(false);
-  const [connectOpen, setConnectOpen] = useState(false);
-  const [uploadOpen, setUploadOpen] = useState(false);
   const [plaidOpenRequested, setPlaidOpenRequested] = useState(false);
 
   return (
@@ -76,39 +68,29 @@ export function NavBar() {
       <QuickActionsSheet
         open={qaOpen}
         onClose={() => setQaOpen(false)}
-        onAddGoal={() => setGoalOpen(true)}
+        onAddGoal={() => {
+          setQaOpen(false);
+          if ((window as any).globalSheets) {
+            (window as any).globalSheets.openGoalModal('add');
+          }
+        }}
         onConnectAccount={() => {
-          setQaOpen(false); // Close the Quick Actions sheet
+          setQaOpen(false);
           // Trigger Plaid directly
           setPlaidOpenRequested(true);
         }}
-        onUploadDocument={() => setUploadOpen(true)}
-        onLogContribution={() => setLogOpen(true)}
-      />
-
-      {/* Add Goal modal */}
-      <GoalModal
-        open={goalOpen}
-        onClose={() => setGoalOpen(false)}
-        onCreate={(g: any) => {/* setGoals(prev=>[...prev, g]) handled inside modal caller */}}
-        accounts={accounts}
-        mode="add"
-        useSheet={true}
-      />
-
-      {/* Log Contribution modal */}
-      <LogContributionModal
-        open={logOpen}
-        onClose={() => setLogOpen(false)}
-        onSave={(c: any) => { /* apply to state in your handler */ }}
-        accounts={accounts}
-        goals={goals}
-      />
-
-      {/* Upload Document modal */}
-      <UploadDocumentModal
-        open={uploadOpen}
-        onClose={() => setUploadOpen(false)}
+        onUploadDocument={() => {
+          setQaOpen(false);
+          if ((window as any).globalSheets) {
+            (window as any).globalSheets.openUploadDocument();
+          }
+        }}
+        onLogContribution={() => {
+          setQaOpen(false);
+          if ((window as any).globalSheets) {
+            (window as any).globalSheets.openLogContribution();
+          }
+        }}
       />
 
       {/* Hidden PlaidLinkButton for direct launch */}
@@ -136,30 +118,6 @@ export function NavBar() {
           setPlaidOpenRequested(false);
         }} 
       />
-
-      {/* Connect account sheet (Plaid or other methods) */}
-      <Sheet open={connectOpen} onClose={() => setConnectOpen(false)} title="Connect account">
-        <div className="grid-auto">
-          <PlaidLinkButton 
-            instanceId="navbar"
-            key={`plaid-link-navbar-${userProfile ? 'logged-in' : 'logged-out'}`}
-            onSuccess={(data: any) => {
-            clearSampleData();
-            
-            // Handle both accounts and transactions if provided
-            if (Array.isArray(data)) {
-              // Legacy format: just accounts array
-              setAccounts(data);
-            } else if (data.accounts) {
-              // New format: object with accounts and transactions
-              setAccounts(data.accounts);
-            } else {
-              // Fallback: treat as accounts array
-              setAccounts(Array.isArray(data) ? data : []);
-            }
-          }} />
-        </div>
-      </Sheet>
     </>
   );
 }

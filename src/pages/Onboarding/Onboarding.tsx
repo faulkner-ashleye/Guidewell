@@ -218,7 +218,9 @@ export function Onboarding() {
   return (
     <div className="onboarding">
       <div className="onboarding-content">
-        {renderCurrentStep()}
+        <div className="onboarding-step" key={currentStep}>
+          {renderCurrentStep()}
+        </div>
       </div>
     </div>
   );

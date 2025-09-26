@@ -40,10 +40,39 @@ export function ContributionEditor({
   }, [extraDollars, onExtraChange]);
 
 
-  // Mock account data for suggestion
-  const mockMonthlyInflow = 5000; // Example monthly direct deposit
-  const suggestedLow = Math.floor(0.05 * mockMonthlyInflow);
-  const suggestedHigh = Math.floor(0.15 * mockMonthlyInflow);
+  // Calculate actual monthly income from transactions
+  const calculateMonthlyIncome = (): number => {
+    if (!transactions || transactions.length === 0) {
+      return 5000; // Fallback to default if no transaction data
+    }
+
+    // Filter for positive transactions (income) from the last 3 months
+    const threeMonthsAgo = new Date();
+    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+    
+    const recentIncomeTransactions = transactions.filter(tx => {
+      const txDate = new Date(tx.date);
+      return txDate >= threeMonthsAgo && tx.amount > 0;
+    });
+
+    if (recentIncomeTransactions.length === 0) {
+      return 5000; // Fallback if no recent income transactions
+    }
+
+    // Calculate total income over the period
+    const totalIncome = recentIncomeTransactions.reduce((sum, tx) => sum + tx.amount, 0);
+    
+    // Calculate average monthly income
+    const monthsInPeriod = 3;
+    const averageMonthlyIncome = totalIncome / monthsInPeriod;
+    
+    return Math.max(1000, averageMonthlyIncome); // Minimum $1000/month
+  };
+
+  // Calculate suggested range based on actual income
+  const monthlyIncome = calculateMonthlyIncome();
+  const suggestedLow = Math.floor(0.05 * monthlyIncome);
+  const suggestedHigh = Math.floor(0.15 * monthlyIncome);
 
   return (
     <div className="flex flex-col gap-lg">
@@ -54,7 +83,7 @@ export function ContributionEditor({
           onChange={(value) => {
             setExtraDollars(value);
           }}
-          placeholder="500.00"
+          placeholder="300"
           label="Extra contribution ($)"
         />
 
@@ -65,12 +94,13 @@ export function ContributionEditor({
           </div>
         )}
 
-        {/* Suggested range */}
-        {extraDollars === undefined && (
-          <div className="alert info text-sm">
-            Suggested range: ${suggestedLow.toLocaleString()}–${suggestedHigh.toLocaleString()} based on recent inflows
-          </div>
-        )}
+        {/* Suggested range - always show */}
+        <div className="alert info text-sm">
+          Suggested range: ${suggestedLow.toLocaleString()}–${suggestedHigh.toLocaleString()} 
+          {transactions && transactions.length > 0 
+            ? ` based on your recent income patterns` 
+            : ` based on typical income patterns`}
+        </div>
       </div>
 
     </div>

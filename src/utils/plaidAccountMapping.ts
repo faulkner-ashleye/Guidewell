@@ -31,6 +31,31 @@ export function mapPlaidAccountType(plaidType: string, plaidSubtype?: string): A
       return '401k';
     case 'roth_ira':
       return 'roth_ira';
+    case 'home_equity':
+      return 'home_equity';
+    case 'construction':
+      return 'construction';
+    case 'commercial':
+      return 'commercial';
+    case 'consumer':
+      return 'consumer';
+    case 'money_market':
+    case 'money_market_account':
+    case 'mma':
+      return 'money_market';
+    case 'cd':
+    case 'certificate_of_deposit':
+      return 'cd';
+    case 'cash_management':
+      return 'cash_management';
+    case 'prepaid':
+      return 'prepaid';
+    case 'hsa':
+    case 'health_savings_account':
+      return 'hsa';
+    case 'gic':
+    case 'guaranteed_investment_certificate':
+      return 'gic';
   }
 
   // Handle standard Plaid account types
@@ -60,8 +85,11 @@ function mapDepositorySubtype(subtype?: string): AccountType {
       return 'savings';
     case 'money market':
     case 'money_market':
+    case 'money_market_account':
+    case 'mma':
       return 'money_market';
     case 'cd':
+    case 'certificate_of_deposit':
       return 'cd';
     case 'cash management':
     case 'cash_management':
@@ -69,8 +97,10 @@ function mapDepositorySubtype(subtype?: string): AccountType {
     case 'prepaid':
       return 'prepaid';
     case 'hsa':
+    case 'health_savings_account':
       return 'hsa';
     case 'gic':
+    case 'guaranteed_investment_certificate':
       return 'gic';
     default:
       return 'checking'; // Default for depository

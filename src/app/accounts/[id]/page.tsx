@@ -150,17 +150,7 @@ export default function AccountDetailPage() {
           </div>
         </div>
 
-        {/* Quick Actions */}
-        {!account.linked && (
-          <div className="quick-actions">
-            <button
-              onClick={() => setLogOpen(true)}
-              className="log-contribution-button"
-            >
-              Log Contribution
-            </button>
-          </div>
-        )}
+
 
         {/* Recent Activity */}
         <div className="recent-activity">

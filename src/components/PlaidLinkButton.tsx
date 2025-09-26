@@ -144,15 +144,267 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
       console.log('Real Plaid accounts received:', accounts);
       
       // Map Plaid account types to our internal types
-      const mappedAccounts = accounts.map((account: any) => ({
+      const mappedAccounts = accounts.map((account: any) => {
+        const mappedType = mapPlaidAccountType(account.type, account.subtype);
+        console.log(`Account mapping: "${account.name}" - Plaid type: "${account.type}", subtype: "${account.subtype}" -> Mapped to: "${mappedType}"`);
+        return {
         ...account,
-        type: mapPlaidAccountType(account.type, account.subtype)
-      }));
+          type: mappedType
+        };
+      });
       
       console.log('Mapped Plaid accounts:', mappedAccounts);
       
-      // Add comprehensive mock transactions for all Plaid account types (50+ transactions)
-      const mockTransactions = [
+      // Create appropriate mock transactions based on account type
+      const createMockTransactionsForAccount = (account: any) => {
+        const transactions = [];
+        const accountId = account.id;
+        
+        switch (account.type) {
+          case 'checking':
+            return [
+              {
+                id: `txn-${accountId}-1`,
+                account_id: accountId,
+                amount: -8.50,
+                date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Coffee Shop',
+                description: 'Coffee Shop',
+                category: ['Food and Drink', 'Restaurants'],
+                type: 'debit'
+              },
+              {
+                id: `txn-${accountId}-2`,
+                account_id: accountId,
+                amount: -1200.00,
+                date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Rent Payment',
+                description: 'Rent Payment',
+                category: ['Rent', 'Housing'],
+                type: 'debit'
+              },
+              {
+                id: `txn-${accountId}-3`,
+                account_id: accountId,
+                amount: 3500.00,
+                date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Salary Deposit',
+                description: 'Salary Deposit',
+                category: ['Payroll', 'Income'],
+                type: 'credit'
+              }
+            ];
+            
+          case 'savings':
+            return [
+              {
+                id: `txn-${accountId}-1`,
+                account_id: accountId,
+                amount: 500.00,
+                date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Monthly Savings Transfer',
+                description: 'Monthly Savings Transfer',
+                category: ['Transfer', 'Savings'],
+                type: 'credit'
+              },
+              {
+                id: `txn-${accountId}-2`,
+                account_id: accountId,
+                amount: 1.25,
+                date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Interest Payment',
+                description: 'Interest Payment',
+                category: ['Interest', 'Income'],
+                type: 'credit'
+              }
+            ];
+            
+          case 'money_market':
+            return [
+              {
+                id: `txn-${accountId}-1`,
+                account_id: accountId,
+                amount: 1000.00,
+                date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Money Market Deposit',
+                description: 'Money Market Deposit',
+                category: ['Transfer', 'Deposit'],
+                type: 'credit'
+              },
+              {
+                id: `txn-${accountId}-2`,
+                account_id: accountId,
+                amount: 2.50,
+                date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Money Market Interest',
+                description: 'Money Market Interest',
+                category: ['Interest', 'Income'],
+                type: 'credit'
+              }
+            ];
+            
+          case 'cd':
+            return [
+              {
+                id: `txn-${accountId}-1`,
+                account_id: accountId,
+                amount: 10000.00,
+                date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'CD Initial Deposit',
+                description: 'CD Initial Deposit',
+                category: ['Deposit', 'Investment'],
+                type: 'credit'
+              },
+              {
+                id: `txn-${accountId}-2`,
+                account_id: accountId,
+                amount: 25.00,
+                date: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'CD Interest',
+                description: 'CD Interest',
+                category: ['Interest', 'Income'],
+                type: 'credit'
+              }
+            ];
+            
+          case 'credit_card':
+            return [
+              {
+                id: `txn-${accountId}-1`,
+                account_id: accountId,
+                amount: -89.99,
+                date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Grocery Store',
+                description: 'Grocery Store',
+                category: ['Food and Drink', 'Groceries'],
+                type: 'debit'
+              },
+              {
+                id: `txn-${accountId}-2`,
+                account_id: accountId,
+                amount: -45.00,
+                date: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Gas Station',
+                description: 'Gas Station',
+                category: ['Gas', 'Transportation'],
+                type: 'debit'
+              },
+              {
+                id: `txn-${accountId}-3`,
+                account_id: accountId,
+                amount: 150.00,
+                date: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Credit Card Payment',
+                description: 'Credit Card Payment',
+                category: ['Payment', 'Transfer'],
+                type: 'credit'
+              }
+            ];
+            
+          case 'mortgage':
+            return [
+              {
+                id: `txn-${accountId}-1`,
+                account_id: accountId,
+                amount: -1200.00,
+                date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Mortgage Payment',
+                description: 'Mortgage Payment',
+                category: ['Payment', 'Housing'],
+                type: 'debit'
+              },
+              {
+                id: `txn-${accountId}-2`,
+                account_id: accountId,
+                amount: -150.00,
+                date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Property Tax',
+                description: 'Property Tax',
+                category: ['Tax', 'Housing'],
+                type: 'debit'
+              },
+              {
+                id: `txn-${accountId}-3`,
+                account_id: accountId,
+                amount: -85.00,
+                date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Home Insurance',
+                description: 'Home Insurance',
+                category: ['Insurance', 'Housing'],
+                type: 'debit'
+              }
+            ];
+            
+          case 'student':
+            return [
+              {
+                id: `txn-${accountId}-1`,
+                account_id: accountId,
+                amount: -250.00,
+                date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Student Loan Payment',
+                description: 'Student Loan Payment',
+                category: ['Payment', 'Education'],
+                type: 'debit'
+              },
+              {
+                id: `txn-${accountId}-2`,
+                account_id: accountId,
+                amount: 15.00,
+                date: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Student Loan Interest',
+                description: 'Student Loan Interest',
+                category: ['Interest', 'Education'],
+                type: 'debit'
+              }
+            ];
+            
+          case 'ira':
+          case '401k':
+          case 'roth_ira':
+            return [
+              {
+                id: `txn-${accountId}-1`,
+                account_id: accountId,
+                amount: 500.00,
+                date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                name: '401k Contribution',
+                description: '401k Contribution',
+                category: ['Investment', 'Retirement'],
+                type: 'credit'
+              },
+              {
+                id: `txn-${accountId}-2`,
+                account_id: accountId,
+                amount: 25.00,
+                date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Dividend Payment',
+                description: 'Dividend Payment',
+                category: ['Dividend', 'Investment'],
+                type: 'credit'
+              },
+              {
+                id: `txn-${accountId}-3`,
+                account_id: accountId,
+                amount: -12.50,
+                date: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
+                name: 'Management Fee',
+                description: 'Management Fee',
+                category: ['Fee', 'Investment'],
+                type: 'debit'
+              }
+            ];
+            
+          default:
+            return []; // No transactions for unknown account types
+        }
+      };
+      
+      // Generate appropriate transactions for each account
+      const mockTransactions = mappedAccounts.flatMap((account: any) => createMockTransactionsForAccount(account));
+      
+      // Legacy transaction array (keeping for reference but not using)
+      /* const legacyMockTransactions = [
         // Checking account transactions (15 transactions)
         {
           id: 'txn-1',
@@ -624,7 +876,7 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
           category: ['Payment', 'Insurance'],
           type: 'debit'
         }
-      ];
+      ]; */
       
       // Pass both mapped accounts and transactions
       onSuccess({ accounts: mappedAccounts, transactions: mockTransactions });
@@ -1051,7 +1303,7 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
         onClose={() => setShowBanner(false)}
       />;
     }
-    return (
+  return (
       <Button 
         variant={ButtonVariants.outline} 
         color={ButtonColors.secondary} 
@@ -1087,7 +1339,7 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
           console.log(`PlaidLinkButton [${instanceId}] Opening Plaid...`);
           setShowBanner(true);
           setBannerStep('initial');
-          open();
+        open();
         } else {
           console.log(`PlaidLinkButton [${instanceId}] Button clicked but not ready. Ready:`, ready, 'ShouldInitialize:', shouldInitializePlaid);
         }
@@ -1100,10 +1352,10 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
       
       
       {showBanner && createPortal(
-        <PlaidSandboxBanner 
-          isVisible={showBanner} 
-          currentStep={bannerStep}
-          onClose={() => setShowBanner(false)}
+      <PlaidSandboxBanner 
+        isVisible={showBanner} 
+        currentStep={bannerStep}
+        onClose={() => setShowBanner(false)}
         />,
         document.body
       )}

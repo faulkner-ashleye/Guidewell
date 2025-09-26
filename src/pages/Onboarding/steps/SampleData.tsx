@@ -27,7 +27,7 @@ export default function SampleData({ onNext, onBack }: SampleDataProps) {
   };
 
   return (
-    <div className="onboarding-screen">
+    <div className="onboarding-screen sample">
       <OnboardingHeader />
 
       <div className="onboarding-content">

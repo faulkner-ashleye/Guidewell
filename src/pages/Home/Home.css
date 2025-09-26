@@ -74,6 +74,24 @@
   padding:var(--spacing-lg);
 }
 
+.content-recommendations {
+  padding: var(--spacing-lg);
+  margin-bottom: 32px;
+}
+
+.content-recommendations h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: var(--color-text-primary);
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+}
+
 .recent-activity {
 padding:var(--spacing-lg);
   margin-bottom: 32px;

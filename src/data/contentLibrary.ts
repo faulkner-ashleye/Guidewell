@@ -459,6 +459,22 @@ export class ContentRecommendationEngine {
   }
 
   /**
+   * Get content item by ID
+   */
+  static getContentById(contentId: string): ContentItem | null {
+    const allContent = [
+      ...contentLibrary.articles,
+      ...contentLibrary.videos,
+      ...contentLibrary.interactive,
+      ...contentLibrary.calculators,
+      ...contentLibrary.checklists,
+      ...contentLibrary.guides
+    ];
+
+    return allContent.find(content => content.id === contentId) || null;
+  }
+
+  /**
    * Get content by category
    */
   static getContentByCategory(category: string): ContentItem[] {

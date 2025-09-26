@@ -8,7 +8,7 @@ import { sampleScenarios } from '../data/sampleScenarios';
 import './AIIntegrationDemo.css';
 
 interface AIIntegrationDemoProps {
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export function AIIntegrationDemo({ onClose }: AIIntegrationDemoProps) {

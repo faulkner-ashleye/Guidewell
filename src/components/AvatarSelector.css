@@ -289,38 +289,3 @@
   font-weight: 500;
   color: #374151;
 }
-
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  .avatar-selector {
-    padding: 16px;
-  }
-
-  .avatar-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .avatar-card {
-    padding: 16px;
-  }
-
-  .avatar-icon {
-    font-size: 40px;
-  }
-
-  .avatar-name {
-    font-size: 18px;
-  }
-
-  .recommended-avatars {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .recommended-avatar {
-    width: 100%;
-    max-width: 200px;
-    justify-content: center;
-  }
-}

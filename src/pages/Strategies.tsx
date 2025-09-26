@@ -10,7 +10,21 @@ import { PersonalSnapshot } from '../components/PersonalSnapshot';
 import { TradeoffHighlight } from '../components/TradeoffHighlight';
 import { FinancialJourneyChart } from '../components/FinancialJourneyChart';
 import { AvatarUtils, NarrativeAvatar } from '../data/narrativeAvatars';
-import { DebtCrusherSVG, BuildYourOwnSVG } from '../components/ThemeAwareSVG';
+import { 
+  DebtCrusherSVG, 
+  BuildYourOwnSVG, 
+  GoalKeeperSVG, 
+  NestBuilderSVG, 
+  BalancedBuilderSVG, 
+  SafetyBuilderSVG, 
+  AutoPilotSVG, 
+  OpportunisticSaverSVG, 
+  FutureInvestorSVG, 
+  RiskTakerSVG, 
+  SteadyPayerSVG, 
+  JugglerSVG, 
+  InterestMinimizerSVG 
+} from '../components/ThemeAwareSVG';
 import '../components/Button.css';
 import './Strategies.css';
 
@@ -95,9 +109,42 @@ export function Strategies() {
 
   const recommendedStrategy = getRecommendedStrategy();
 
-  // Convert avatar ID to file name format
-  const getPersonaFileName = (avatarId: string): string => {
-    return avatarId.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+  // Render the correct SVG component based on avatar ID
+  const renderAvatarIllustration = (avatarId: string, className: string = 'strategy-illustration') => {
+    switch (avatarId) {
+      case 'debt_crusher':
+        return <DebtCrusherSVG className={className} />;
+      case 'goal_keeper':
+        return <GoalKeeperSVG className={className} />;
+      case 'nest_builder':
+        return <NestBuilderSVG className={className} />;
+      case 'balanced_builder':
+        return <BalancedBuilderSVG className={className} />;
+      case 'safety_builder':
+        return <SafetyBuilderSVG className={className} />;
+      case 'auto_pilot':
+        return <AutoPilotSVG className={className} />;
+      case 'opportunistic_saver':
+        return <OpportunisticSaverSVG className={className} />;
+      case 'future_investor':
+        return <FutureInvestorSVG className={className} />;
+      case 'risk_taker':
+        return <RiskTakerSVG className={className} />;
+      case 'steady_payer':
+        return <SteadyPayerSVG className={className} />;
+      case 'juggler':
+        return <JugglerSVG className={className} />;
+      case 'interest_minimizer':
+        return <InterestMinimizerSVG className={className} />;
+      default:
+        // Fallback to emoji if no SVG is available
+        const avatar = AvatarUtils.getAvatarById(avatarId);
+        return (
+          <div className="strategy-illustration-placeholder">
+            <div className="illustration-fallback">{avatar?.emoji || '🎯'}</div>
+          </div>
+        );
+    }
   };
 
   const handleBuildStrategy = () => {
@@ -159,13 +206,7 @@ export function Strategies() {
           {/* Recommended Strategy Card */}
           <Card className="strategy-card recommended">
             <div className="strategy-card-illustration">
-              {recommendedStrategy.id === 'debt_crusher' ? (
-                <DebtCrusherSVG className="strategy-illustration" />
-              ) : (
-                <div className="strategy-illustration-placeholder">
-                  <div className="illustration-fallback">{recommendedStrategy.emoji}</div>
-                </div>
-              )}
+              {renderAvatarIllustration(recommendedStrategy.id)}
               <div className="recommended-badge">Recommended</div>
             </div>
             <div className="card-content">

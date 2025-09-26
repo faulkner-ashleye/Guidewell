@@ -1,24 +1,32 @@
+
+.app-main:has(.onboarding){
+    height: 100%;
+}
+
 /* Onboarding Styles */
 .onboarding-screen {
   display: flex;
   flex-direction: column;
   width:100%;
+  height:100%;
 }
 
 .onboarding-content {
   flex: 1;
   display: flex;
-  /* Add padding bottom to prevent banner from covering content */
-  padding-bottom: 20px;
+  /* No animation - header should stay static */
 }
 
 .onboarding-content .onboarding-content{
     padding:var(--spacing-lg) var(--spacing-2xl) var(--spacing-2xl);
+    /* Add slide animation to the inner content only */
+    animation: slideInFromRight 0.4s ease-out;
 }
 
 .onboarding-step {
   max-width: 400px;
   width: 100%;
+  /* No animation here - animation happens on inner content */
 }
 
 .onboarding-step ul li{
@@ -46,6 +54,8 @@
   flex-direction: column;
   gap: 16px;
   margin: 24px 0;
+  /* Add slide animation */
+  animation: slideInFromRight 0.5s ease-out 0.1s both;
 }
 
 .connect-card {
@@ -55,15 +65,10 @@
   box-shadow:var(--shadow-sm);
 }
 
-.connect-card:hover {
-  border-color: var(--color-secondary-main);
-  background-color: var(--color-secondary-states-selected);
-  box-shadow:var(--shadow-lg);
-}
 
-.connect-card.selected {
-  border-color: var(--color-secondary-main);
-  background-color: var(--color-secondary-states-selected);
+.card-interactive.selected {
+  border-color: var(--color-secondary-light);
+  background-color: var(--color-action-selected);
   box-shadow:var(--shadow-md);
 }
 
@@ -80,9 +85,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-primary-light);
-  border-radius: 12px;
+  background: var(--color-background-default);
+  border-radius: 48px;
   color: var(--color-primary-main);
+}
+
+.connect-card-icon .material-icons{
+    padding:0;
 }
 
 .connect-card-text {
@@ -294,12 +303,8 @@
 .sample-profile-card {
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid var(--color-border);
-}
-
-.sample-profile-card:hover {
-  border-color: var(--color-secondary-main);
-  box-shadow: 0 2px 8px rgba(var(--color-secondary-main-rgb), 0.1);
+  border: 1px solid var(--color-root-interactive-border);
+  box-shadow: var(--shadow-sm);
 }
 
 .sample-profile-content {
@@ -339,7 +344,7 @@
 }
 
 .selected .sample-profile-text p, .selected .sample-profile-details{
-    color:var(--color-secondary-contrast-text)
+    color:var(--color-text-secondary);
 }
 
 .sample-profile-details {
@@ -354,11 +359,13 @@
   font-weight: 500;
 }
 
-.onboarding, .onboarding-content{
+.onboarding{
     height: 100%;
 }
 
-
+.onboarding-content:not(:has(.sample)){
+    height:100%
+}
 
 /* Welcome Screen Layout */
 .welcome-screen {
@@ -366,6 +373,7 @@
   flex-direction: column;
   position: relative;
   overflow: hidden;
+  height: 100%;
 }
 
 .welcome-bottom-section {
@@ -566,16 +574,21 @@
   gap: 8px;
   justify-content: center;
   margin: 48px 0;
+  /* Add slide animation */
+  animation: slideInFromRight 0.5s ease-out 0.1s both;
 }
 
 /* Action Buttons */
 .onboarding-actions {
   position: sticky;
   bottom:0;
-  padding:var(--spacing-2xl) var(--spacing-lg) 48px;
+  padding:var(--spacing-2xl) var(--spacing-lg);
   background: var(--color-background-default);
   border-top:1px solid var(--color-root-divider);
   box-shadow:0 -1px -2px rgba(0, 0, 0, 0.12);
+  /* Smooth height transition when buttons change */
+  transition: height 0.3s ease-out;
+  /* No slide animation - should stay static */
 }
 
 [data-theme="dark"] .onboarding-actions{
@@ -587,6 +600,8 @@
   flex-direction: column;
   gap: 12px;
   justify-content: center;
+  /* Smooth transition when buttons are added/removed */
+  transition: all 0.3s ease-out;
 }
 
 .action-buttons.single-button {
@@ -602,6 +617,9 @@
   transition: all 0.2s ease;
   border: none;
   min-width: 120px;
+  /* Smooth appearance/disappearance */
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .action-button.primary {
@@ -625,14 +643,36 @@
 
 
 /* Animations */
-@keyframes fadeInUp {
+@keyframes slideInFromRight {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateX(30px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
@@ -731,4 +771,10 @@
 
 [data-theme="dark"] .onboarding-input::placeholder {
   color: var(--color-text-muted);
+}
+
+.account-fields{
+    gap:24px;
+    display: flex;
+    flex-direction: column;
 }

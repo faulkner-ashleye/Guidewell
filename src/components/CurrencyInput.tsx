@@ -19,7 +19,8 @@ export function CurrencyInput({
 
   useEffect(() => {
     if (value !== undefined) {
-      setDisplayValue(value.toFixed(2));
+      // Only show decimals if the value has them, otherwise show as integer
+      setDisplayValue(value % 1 === 0 ? value.toString() : value.toFixed(2));
     } else {
       setDisplayValue('');
     }
@@ -39,9 +40,9 @@ export function CurrencyInput({
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    // Format the value on blur
+    // Format the value on blur - only show decimals if needed
     if (value !== undefined) {
-      setDisplayValue(value.toFixed(2));
+      setDisplayValue(value % 1 === 0 ? value.toString() : value.toFixed(2));
     }
   };
 

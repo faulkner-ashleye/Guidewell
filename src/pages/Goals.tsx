@@ -7,7 +7,6 @@ import { Chip } from '../components/Chips';
 import { formatCurrency } from '../utils/format';
 import { useAppState } from '../state/AppStateContext';
 import { sampleScenarios, SampleScenarioUtils } from '../data/sampleScenarios';
-import GoalModal from '../components/GoalModal';
 import './Goals.css';
 
 interface Goal {
@@ -120,29 +119,6 @@ export function Goals() {
 
   const [goals] = useState<Goal[]>(convertAppGoalsToDisplayGoals());
 
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [newGoal, setNewGoal] = useState<Partial<Goal>>({
-    name: '',
-    type: 'custom',
-    target: 0,
-    currentAmount: 0,
-    priority: 'medium'
-  });
-
-  const goalTypes = [
-    { value: 'debt_payoff', label: 'Debt Payoff' },
-    { value: 'emergency_fund', label: 'Emergency Fund' },
-    { value: 'retirement', label: 'Retirement' },
-    { value: 'investment', label: 'Investment' },
-    { value: 'custom', label: 'Custom Goal' }
-  ];
-
-  const priorityOptions = [
-    { value: 'high', label: 'High Priority' },
-    { value: 'medium', label: 'Medium Priority' },
-    { value: 'low', label: 'Low Priority' }
-  ];
-
   const getGoalIcon = (type: Goal['type']) => {
     switch (type) {
       case 'debt_payoff': return '💳';
@@ -208,7 +184,11 @@ export function Goals() {
           <h3>Your Goals</h3>
           <button 
             className="add-goal-button"
-            onClick={() => setShowAddModal(true)}
+            onClick={() => {
+              if ((window as any).globalSheets) {
+                (window as any).globalSheets.openGoalModal('add');
+              }
+            }}
           >
             + Add Goal
           </button>
@@ -253,19 +233,6 @@ export function Goals() {
       </div>
 
     </div>
-
-    {/* Add Goal Modal - rendered outside goals container */}
-    <GoalModal
-      open={showAddModal}
-      onClose={() => setShowAddModal(false)}
-      onCreate={(goal) => {
-        // In a real app, this would save the goal
-        setShowAddModal(false);
-      }}
-      accounts={accounts}
-      mode="add"
-      useSheet={true}
-    />
     </>
   );
 }

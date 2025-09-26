@@ -39,7 +39,7 @@ export function Finish({ data, update, onFinish, onBack }: FinishProps) {
     <div className="onboarding-screen">
       <OnboardingHeader />
 
-      <div className="onboarding-content">
+      <div className="onboarding-content final">
         <div className="onboarding-step">
           <h1>You're all set!</h1>
           <p>Here's what we'll use to personalize your experience:</p>

@@ -17,7 +17,6 @@ import {
 import { getGoalsFromAccounts } from '../../state/planSelectors';
 import Sheet from '../../components/Sheet';
 import { ConnectChoose } from '../Onboarding/steps/ConnectChoose';
-import GoalModal from '../../components/GoalModal';
 import { Goal } from '../../app/types';
 import { Account } from '../../state/AppStateContext';
 import { Contribution } from '../../state/activitySelectors';
@@ -40,8 +39,6 @@ export function Plan() {
 
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'accounts' | 'goals'>('accounts');
-  const [goalModalOpen, setGoalModalOpen] = useState(false);
-  const [preselectedAccountId, setPreselectedAccountId] = useState<string | undefined>(undefined);
 
   // Connect account state
   const [connectOpen, setConnectOpen] = useState(false);
@@ -53,19 +50,16 @@ export function Plan() {
 
   // Handle creating a new goal from the Goals tab
   const handleAddGoal = () => {
-    setPreselectedAccountId(undefined); // No preselected account
-    setGoalModalOpen(true);
+    if ((window as any).globalSheets) {
+      (window as any).globalSheets.openGoalModal('add');
+    }
   };
 
   // Handle creating a goal for a specific account
   const handleCreateGoalForAccount = (accountId: string) => {
-    setPreselectedAccountId(accountId);
-    setGoalModalOpen(true);
-  };
-
-  // Handle creating a goal from the modal
-  const handleCreateGoal = (goal: Goal) => {
-    setGoals(prev => [...prev, goal]);
+    if ((window as any).globalSheets) {
+      (window as any).globalSheets.openGoalModal('add', accountId);
+    }
   };
 
   // Handle navigation to account details
@@ -103,7 +97,7 @@ export function Plan() {
   };
 
   return (
-    <main className="plan-page">
+    <div className="plan-page">
       <AppHeader
         title="Plan"
       />
@@ -238,30 +232,6 @@ export function Plan() {
           }}
         />
       </Sheet>
-
-
-
-      {/* Add Goal Modal */}
-      <GoalModal
-        open={goalModalOpen}
-        onClose={() => {
-          setGoalModalOpen(false);
-          setPreselectedAccountId(undefined);
-        }}
-        onCreate={handleCreateGoal}
-        accounts={accounts}
-        preselectedAccountId={preselectedAccountId}
-        mode="add"
-        useSheet={true}
-      />
-
-
-      {/* Connect account sheet (Plaid or other methods) */}
-      <Sheet open={connectOpen} onClose={() => setConnectOpen(false)} title="Connect account">
-        <div className="plan-connect-sheet">
-          {/* Connect account functionality can be added here */}
-        </div>
-      </Sheet>
-    </main>
+    </div>
   );
 }

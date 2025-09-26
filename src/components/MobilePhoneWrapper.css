@@ -29,6 +29,7 @@
   border-radius: 32px;
   overflow: hidden;
   position: relative;
+  max-height: 812px; /* Constrain to phone frame height */
 }
 
 .phone-content {
@@ -37,6 +38,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
+  max-height: 812px; /* Constrain to phone frame height */
 }
 
 .phone-home-indicator {

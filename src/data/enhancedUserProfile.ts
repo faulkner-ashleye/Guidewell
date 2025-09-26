@@ -48,6 +48,106 @@ export interface EnhancedUserProfile {
 // User profile utility functions
 export class UserProfileUtils {
   /**
+   * Create enhanced user profile from basic profile and financial data
+   */
+  static createEnhancedProfile(
+    basicProfile: any, 
+    accounts: Account[], 
+    goals: Goal[]
+  ): EnhancedUserProfile {
+    // Calculate financial metrics
+    const totalAssets = accounts
+      .filter(a => ['checking', 'savings', 'investment'].includes(a.type))
+      .reduce((sum, a) => sum + a.balance, 0);
+    
+    const totalDebt = accounts
+      .filter(a => ['credit_card', 'loan', 'mortgage'].includes(a.type))
+      .reduce((sum, a) => sum + Math.abs(a.balance), 0);
+    
+    const netWorth = totalAssets - totalDebt;
+    
+    // Calculate emergency fund months (estimate)
+    const monthlyExpenses = basicProfile?.monthlyExpenses || 3000;
+    const emergencyFund = accounts
+      .filter(a => a.type === 'savings')
+      .reduce((sum, a) => sum + a.balance, 0);
+    const emergencyFundMonths = monthlyExpenses > 0 ? emergencyFund / monthlyExpenses : 0;
+    
+    // Calculate debt-to-income ratio
+    const annualIncome = basicProfile?.income || 60000;
+    const debtToIncomeRatio = annualIncome > 0 ? (totalDebt / annualIncome) * 100 : 0;
+    
+    // Calculate financial health score
+    const financialHealthScore = this.calculateFinancialHealthScore({
+      netWorth,
+      emergencyFundMonths,
+      debtToIncomeRatio,
+      totalAssets,
+      totalDebt
+    });
+
+    return {
+      id: basicProfile?.id || 'user-1',
+      firstName: basicProfile?.firstName || basicProfile?.name?.split(' ')[0],
+      lastName: basicProfile?.lastName || basicProfile?.name?.split(' ')[1],
+      email: basicProfile?.email,
+      age: basicProfile?.age,
+      ageRange: basicProfile?.ageRange,
+      income: annualIncome,
+      monthlyExpenses,
+      riskTolerance: basicProfile?.riskTolerance || 'moderate',
+      financialLiteracy: basicProfile?.financialLiteracy || 'intermediate',
+      mainGoals: basicProfile?.mainGoals || ['build_emergency_fund'],
+      topPriority: basicProfile?.topPriority,
+      timeline: basicProfile?.timeline || 'mid',
+      communicationStyle: basicProfile?.communicationStyle || 'concise',
+      notificationFrequency: 'weekly',
+      preferredLanguage: basicProfile?.preferredLanguage || 'simple',
+      aiPersonality: basicProfile?.aiPersonality || 'encouraging',
+      detailLevel: basicProfile?.detailLevel || 'medium',
+      primaryGoalAccountId: basicProfile?.primaryGoalAccountId,
+      hasSampleData: basicProfile?.hasSampleData || false,
+      lastActiveDate: new Date().toISOString(),
+      onboardingCompleted: true,
+      financialHealthScore,
+      netWorth,
+      debtToIncomeRatio,
+      emergencyFundMonths
+    };
+  }
+
+  /**
+   * Calculate financial health score (0-100)
+   */
+  private static calculateFinancialHealthScore(metrics: {
+    netWorth: number;
+    emergencyFundMonths: number;
+    debtToIncomeRatio: number;
+    totalAssets: number;
+    totalDebt: number;
+  }): number {
+    let score = 50; // Base score
+    
+    // Net worth factor
+    if (metrics.netWorth > 0) score += 20;
+    else if (metrics.netWorth > -10000) score += 10;
+    else score -= 10;
+    
+    // Emergency fund factor
+    if (metrics.emergencyFundMonths >= 6) score += 15;
+    else if (metrics.emergencyFundMonths >= 3) score += 10;
+    else if (metrics.emergencyFundMonths >= 1) score += 5;
+    else score -= 5;
+    
+    // Debt-to-income factor
+    if (metrics.debtToIncomeRatio < 20) score += 15;
+    else if (metrics.debtToIncomeRatio < 40) score += 10;
+    else if (metrics.debtToIncomeRatio < 60) score += 5;
+    else score -= 10;
+    
+    return Math.max(0, Math.min(100, score));
+  }
+  /**
    * Calculate financial literacy level based on user characteristics
    */
   static calculateFinancialLiteracy(profile: Partial<EnhancedUserProfile>): 'beginner' | 'intermediate' | 'advanced' {
@@ -149,41 +249,6 @@ Accounts: ${context.accounts.totalAccounts} accounts (${context.accounts.account
 Goals: ${context.goalsSummary.totalGoals} total goals, ${context.goalsSummary.completedGoals} completed, ${context.goalsSummary.highPriorityGoals} high priority`;
   }
 
-  /**
-   * Calculate financial health score
-   */
-  static calculateFinancialHealthScore(profile: EnhancedUserProfile, accounts: Account[]): number {
-    let score = 50; // Base score
-    
-    const assets = accounts.filter(a => ['checking', 'savings', 'investment'].includes(a.type));
-    const debts = accounts.filter(a => ['loan', 'credit_card'].includes(a.type));
-    
-    const totalAssets = assets.reduce((sum, a) => sum + a.balance, 0);
-    const totalDebt = debts.reduce((sum, a) => sum + a.balance, 0);
-    const netWorth = totalAssets - totalDebt;
-    
-    // Net worth factor
-    if (netWorth > 0) score += 20;
-    if (netWorth > profile.income! * 0.5) score += 10; // Net worth > 50% of income
-    
-    // Debt factor
-    if (totalDebt === 0) score += 15;
-    else if (totalDebt < profile.income! * 0.3) score += 10; // Debt < 30% of income
-    
-    // Emergency fund factor
-    if (profile.monthlyExpenses) {
-      const emergencyFund = assets.filter(a => a.type === 'savings').reduce((sum, a) => sum + a.balance, 0);
-      const monthsCovered = emergencyFund / profile.monthlyExpenses;
-      if (monthsCovered >= 6) score += 10;
-      else if (monthsCovered >= 3) score += 5;
-    }
-    
-    // Diversification factor
-    if (assets.length > 1) score += 5;
-    if (accounts.some(a => a.type === 'investment')) score += 5;
-    
-    return Math.min(100, Math.max(0, score));
-  }
 
   /**
    * Generate personalized AI prompt context
@@ -264,7 +329,34 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
     }
     
     // Calculate financial health score
-    enriched.financialHealthScore = this.calculateFinancialHealthScore(enriched, accounts);
+    const totalAssets = accounts
+      .filter(a => ['checking', 'savings', 'investment'].includes(a.type))
+      .reduce((sum, a) => sum + a.balance, 0);
+    
+    const totalDebt = accounts
+      .filter(a => ['credit_card', 'loan', 'mortgage'].includes(a.type))
+      .reduce((sum, a) => sum + Math.abs(a.balance), 0);
+    
+    const netWorth = totalAssets - totalDebt;
+    
+    // Calculate emergency fund months (estimate)
+    const monthlyExpenses = enriched.monthlyExpenses || 3000;
+    const emergencyFund = accounts
+      .filter(a => a.type === 'savings')
+      .reduce((sum, a) => sum + a.balance, 0);
+    const emergencyFundMonths = monthlyExpenses > 0 ? emergencyFund / monthlyExpenses : 0;
+    
+    // Calculate debt-to-income ratio
+    const annualIncome = enriched.income || 60000;
+    const debtToIncomeRatio = annualIncome > 0 ? (totalDebt / annualIncome) * 100 : 0;
+    
+    enriched.financialHealthScore = this.calculateFinancialHealthScore({
+      netWorth,
+      emergencyFundMonths,
+      debtToIncomeRatio,
+      totalAssets,
+      totalDebt
+    });
     
     // Calculate net worth
     const assets = accounts.filter(a => ['checking', 'savings', 'investment'].includes(a.type));

@@ -318,6 +318,7 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
             timeframe={timeframe}
             scope={scope}
             extraMonthly={extra}
+            allocation={AvatarUtils.getAvatarById(strategy)?.allocation}
             onTimelineChange={(newTimeline) => {
               if (typeof newTimeline === 'string' && newTimeline !== 'custom') {
                 setTimeframe(newTimeline as Timeframe);
@@ -460,7 +461,7 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
                         onClick={() => setTimeframe('mid')}
                       />
                       <Chip
-                        label="Long (3+ years)"
+                        label="Long (5+ years)"
                         selected={timeframe === 'long'}
                         onClick={() => setTimeframe('long')}
                       />
@@ -523,6 +524,7 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
           strategy={strategy}
           timeframe={timeframe}
           extraDollars={extra}
+          allocation={AvatarUtils.getAvatarById(strategy)?.allocation}
           accounts={accounts}
           goals={goals}
           transactions={transactions}
@@ -665,7 +667,7 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
                 onClick={() => handleTimeframeSelect('mid')}
               />
               <Chip
-                label="Long (3+ years)"
+                label="Long (5+ years)"
                 selected={timeframe === 'long'}
                 onClick={() => handleTimeframeSelect('long')}
               />

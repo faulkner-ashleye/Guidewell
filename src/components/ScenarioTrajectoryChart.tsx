@@ -151,18 +151,21 @@ export function ScenarioTrajectoryChart({
     const data: ChartDataPoint[] = [];
     const monthlyReturn = 0.06 / 12; // 6% annual return
 
+    // Use avatar-specific allocations or fallback to default
+    const avatarAllocation = allocation || { debt: 30, savings: 50, investing: 20 };
+
     for (let month = 0; month <= timelineMonths; month++) {
       // Base contributions
-      const baseMonthly = 500; // Default monthly contribution
+      const baseMonthly = 0; // No default contribution - use actual user data
       const totalMonthly = baseMonthly + extraMonthly;
 
-      // Calculate accumulated amounts with compound growth
+      // Calculate accumulated amounts with compound growth using avatar allocations
       const checkingGrowth = currentState.checking * Math.pow(1 + monthlyReturn * 0.1, month); // Low growth for checking
-      const savingsGrowth = (currentState.savings + (totalMonthly * 0.6 * month)) * Math.pow(1 + monthlyReturn * 0.3, month);
-      const investmentsGrowth = (currentState.investments + (totalMonthly * 0.4 * month)) * Math.pow(1 + monthlyReturn, month);
+      const savingsGrowth = (currentState.savings + (totalMonthly * (avatarAllocation.savings / 100) * month)) * Math.pow(1 + monthlyReturn * 0.3, month);
+      const investmentsGrowth = (currentState.investments + (totalMonthly * (avatarAllocation.investing / 100) * month)) * Math.pow(1 + monthlyReturn, month);
 
-      // Debt reduction (assuming minimum payments)
-      const debtReduction = Math.max(0, currentState.debts - (totalMonthly * 0.3 * month));
+      // Debt reduction using avatar allocation
+      const debtReduction = Math.max(0, currentState.debts - (totalMonthly * (avatarAllocation.debt / 100) * month));
 
       const totalAssets = checkingGrowth + savingsGrowth + investmentsGrowth;
       const netWorth = totalAssets - debtReduction;
@@ -195,7 +198,7 @@ export function ScenarioTrajectoryChart({
     }
 
     return data;
-  }, [currentState, timelineMonths, extraMonthly, mainGoal.target]);
+  }, [currentState, timelineMonths, extraMonthly, mainGoal.target, allocation]);
 
   // Handle timeline changes
   const handleTimelineChange = (timeline: typeof TIMELINE_PRESETS[0]) => {

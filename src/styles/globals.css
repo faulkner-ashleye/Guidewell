@@ -41,7 +41,7 @@
   --color-info-contrast-text: #FFFFFF;
   --color-info-subtle: #E2F6FD;
   --color-info-subtle-hover: #B6E7FA;
-  --color-info-subtle-contrast: #653570;
+  --color-info-subtle-contrast: #053570;
 
   --color-success-main: #AAD04E;
   --color-success-dark: #89B81F;
@@ -211,7 +211,7 @@
   --color-info-contrast-text: #FFFFFF;
   --color-info-subtle: #E2F6FD;
   --color-info-subtle-hover: #B6E7FA;
-  --color-info-subtle-contrast: #653570;
+  --color-info-subtle-contrast: #053570;
 
   --color-success-main: #AAD04E;
   --color-success-dark: #89B81F;
@@ -313,38 +313,43 @@
   --color-secondary-subtle-hover: #B9C1F2;
   --color-secondary-subtle-contrast: #212121;
 
-  /* Semantic Colors - Adjusted for dark mode */
-  --color-error-main: #F44336;
-  --color-error-dark: #D32F2F;
-  --color-error-light: #EF5350;
-  --color-error-contrast-text: #FFFFFF;
-  --color-error-subtle: #B71C1C;
-  --color-error-subtle-hover: #C62828;
-  --color-error-subtle-contrast: #FFFFFF;
 
-  --color-warning-main: #FF9800;
-  --color-warning-dark: #F57C00;
-  --color-warning-light: #FFB74D;
-  --color-warning-contrast-text: #000000;
-  --color-warning-subtle: #E65100;
-  --color-warning-subtle-hover: #FF6F00;
-  --color-warning-subtle-contrast: #FFFFFF;
+/* Error */
+--color-error-main: #F55145;           /* contrast vs #1e2430 = 4.55 */
+--color-error-dark: #DE6464;           /* contrast = 4.53 */
+--color-error-light: #EF5552;          /* contrast = 4.51 */
+--color-error-contrast-text: #FFFFFF;  /* contrast = 15.55 (kept white) */
+--color-error-subtle: #E65D5D;         /* contrast = 4.51 */
+--color-error-subtle-hover: #DF6363;   /* contrast = 4.52 */
+--color-error-subtle-contrast: #FFFFFF;/* contrast = 15.55 */
 
-  --color-info-main: #2196F3;
-  --color-info-dark: #1976D2;
-  --color-info-light: #42A5F5;
-  --color-info-contrast-text: #FFFFFF;
-  --color-info-subtle: #0D47A1;
-  --color-info-subtle-hover: #1565C0;
-  --color-info-subtle-contrast: #FFFFFF;
+/* Warning */
+--color-warning-main: #FF9800;         /* contrast = 7.22 (unchanged) */
+--color-warning-dark: #F57C00;         /* contrast = 5.75 (unchanged) */
+--color-warning-light: #FFB74D;        /* contrast = 8.99 (unchanged) */
+--color-warning-contrast-text: #FFFFFF;/* changed from #000 -> #FFF; contrast = 15.55 */
+--color-warning-subtle: #F35500;       /* adjusted from #E65100 -> #F35500; contrast = 4.53 */
+--color-warning-subtle-hover: #FF6F00; /* contrast = 5.57 */
+--color-warning-subtle-contrast: #FFFFFF;/* contrast = 15.55 */
 
-  --color-success-main: #AAD04E;
-  --color-success-dark: #89B81F;
-  --color-success-light: #CEE39B;
-  --color-success-contrast-text: #000000;
-  --color-success-subtle: #F3F9E7;
-  --color-success-subtle-hover: #E2EEC2;
-  --color-success-subtle-contrast: #08400E;
+/* Info */
+--color-info-main: #2196F3;            /* contrast = 4.98 (unchanged) */
+--color-info-dark: #328DE7;            /* adjusted from #1976D2 -> #328DE7; contrast = 4.52 */
+--color-info-light: #42A5F5;           /* contrast = 5.87 (unchanged) */
+--color-info-contrast-text: #FFFFFF;   /* contrast = 15.55 */
+--color-info-subtle: #488AF0;          /* adjusted from #0D47A1 -> #488AF0; contrast = 4.57 */
+--color-info-subtle-hover: #3B8CEA;    /* adjusted from #1565C0 -> #3B8CEA; contrast = 4.54 */
+--color-info-subtle-contrast: #FFFFFF; /* contrast = 15.55 */
+
+/* Success */
+--color-success-main: #AAD04E;         /* contrast = 8.77 (unchanged) */
+--color-success-dark: #89B81F;         /* contrast = 6.62 (unchanged) */
+--color-success-light: #CEE39B;        /* contrast = 11.17 (unchanged) */
+--color-success-contrast-text: #FFFFFF;/* changed from #000 -> #FFF; contrast = 15.55 */
+--color-success-subtle: #F3F9E7;       /* contrast = 14.45 (unchanged) */
+--color-success-subtle-hover: #E2EEC2; /* contrast = 12.77 (unchanged) */
+--color-success-subtle-contrast: #14A123;/* adjusted from #08400E -> #14A123; contrast = 4.56 */
+
 
   --color-invest-main: #8AD2D5;
   --color-invest-subtle: #125954;

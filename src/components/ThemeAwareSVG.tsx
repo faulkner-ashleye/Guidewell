@@ -102,3 +102,92 @@ export const BuildYourOwnSVG: React.FC<{ className?: string }> = ({ className })
     alt="Build Your Own Strategy illustration"
   />
 );
+
+// All persona avatar SVG components
+export const GoalKeeperSVG: React.FC<{ className?: string }> = ({ className }) => (
+  <ThemeAwareSVG 
+    src="/images/persona_goalKeeper.svg" 
+    className={className}
+    alt="Goal Keeper illustration"
+  />
+);
+
+export const NestBuilderSVG: React.FC<{ className?: string }> = ({ className }) => (
+  <ThemeAwareSVG 
+    src="/images/persona_nestBuilder.svg" 
+    className={className}
+    alt="Nest Builder illustration"
+  />
+);
+
+export const BalancedBuilderSVG: React.FC<{ className?: string }> = ({ className }) => (
+  <ThemeAwareSVG 
+    src="/images/persona_balancedBuilder.svg" 
+    className={className}
+    alt="Balanced Builder illustration"
+  />
+);
+
+export const SafetyBuilderSVG: React.FC<{ className?: string }> = ({ className }) => (
+  <ThemeAwareSVG 
+    src="/images/persona_safetyBuilder.svg" 
+    className={className}
+    alt="Safety Builder illustration"
+  />
+);
+
+export const AutoPilotSVG: React.FC<{ className?: string }> = ({ className }) => (
+  <ThemeAwareSVG 
+    src="/images/persona_autoPilot.svg" 
+    className={className}
+    alt="Auto Pilot illustration"
+  />
+);
+
+export const OpportunisticSaverSVG: React.FC<{ className?: string }> = ({ className }) => (
+  <ThemeAwareSVG 
+    src="/images/persona_opportunisticSaver.svg" 
+    className={className}
+    alt="Opportunistic Saver illustration"
+  />
+);
+
+export const FutureInvestorSVG: React.FC<{ className?: string }> = ({ className }) => (
+  <ThemeAwareSVG 
+    src="/images/persona_futureInvestor.svg" 
+    className={className}
+    alt="Future Investor illustration"
+  />
+);
+
+export const RiskTakerSVG: React.FC<{ className?: string }> = ({ className }) => (
+  <ThemeAwareSVG 
+    src="/images/persona_riskTaker.svg" 
+    className={className}
+    alt="Risk Taker illustration"
+  />
+);
+
+export const SteadyPayerSVG: React.FC<{ className?: string }> = ({ className }) => (
+  <ThemeAwareSVG 
+    src="/images/persona_steadyPayer.svg" 
+    className={className}
+    alt="Steady Payer illustration"
+  />
+);
+
+export const JugglerSVG: React.FC<{ className?: string }> = ({ className }) => (
+  <ThemeAwareSVG 
+    src="/images/persona_juggler.svg" 
+    className={className}
+    alt="Juggler illustration"
+  />
+);
+
+export const InterestMinimizerSVG: React.FC<{ className?: string }> = ({ className }) => (
+  <ThemeAwareSVG 
+    src="/images/persona_interestMInimizer.svg" 
+    className={className}
+    alt="Interest Minimizer illustration"
+  />
+);

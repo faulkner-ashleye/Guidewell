@@ -172,11 +172,6 @@ export function BreakdownModal({
 
         {/* Compliance Notice */}
         <div className="breakdown-modal-compliance-notice">
-          {extraDollars === undefined && (
-            <div style={{ marginTop: '8px', fontSize: '11px' }}>
-              💡 Using $500/month for educational calculations since no specific amount was provided.
-            </div>
-          )}
         </div>
 
         <div className="breakdown-modal-body">
@@ -344,7 +339,7 @@ async function generateAINarrative(
       .filter(a => a.type === 'investment')
       .reduce((sum, a) => sum + a.balance, 0);
 
-    const monthlyContribution = extraDollars !== undefined ? extraDollars : 500; // Use default for educational purposes
+    const monthlyContribution = extraDollars !== undefined ? extraDollars : 0; // No default - use actual user data
 
     // Generate avatar-based narrative with user context
     let narrative = AvatarUtils.generateAvatarNarrative(avatar, {
