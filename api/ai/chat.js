@@ -1,4 +1,4 @@
-// api/ai/chat.js - Chat/conversation endpoint
+// Vercel serverless function for AI chat
 import OpenAI from 'openai';
 
 const openai = new OpenAI({

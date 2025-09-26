@@ -1,4 +1,4 @@
-// api/ai/analyze.js - Main AI analysis endpoint
+// Vercel serverless function for AI analysis
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
