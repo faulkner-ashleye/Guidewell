@@ -21,6 +21,8 @@
     padding:var(--spacing-lg) var(--spacing-2xl) var(--spacing-2xl);
     /* Add slide animation to the inner content only */
     animation: slideInFromRight 0.4s ease-out;
+    z-index: 20;
+    overflow: auto;
 }
 
 .onboarding-step {
@@ -402,7 +404,7 @@
 }
 
 .welcome-logo {
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xl);
 }
 
 .welcome-logo .logo-image {
@@ -423,7 +425,7 @@
 }
 
 .welcome-tagline {
-  margin-bottom: var(--spacing-3xl);
+  margin-bottom: 0;
 }
 
 .welcome-tagline h2 {
@@ -432,11 +434,6 @@
   color: var(--color-secondary-main);
   margin: 0;
   line-height: 1.2;
-}
-
-.welcome-button {
-  width: 100%;
-  max-width: 280px;
 }
 
 /* Logo Styles - Legacy (kept for other components) */
@@ -624,6 +621,7 @@
 .onboarding-actions {
   position: sticky;
   bottom:0;
+  z-index: 21;
   padding:var(--spacing-2xl) var(--spacing-lg);
   background: var(--color-background-default);
   border-top:1px solid var(--color-root-divider);
@@ -632,11 +630,10 @@
   transition: height 0.3s ease-out;
   /* No slide animation - should stay static */
 }
-
-[data-theme="dark"] .onboarding-actions{
-    box-shadow:0 -1px -2px 0px rgba(0, 0, 0, 0.64);
+.welcome-screen .onboarding-actions{
+    background: transparent;
+    border-top:none;
 }
-
 .action-buttons {
   display: flex;
   flex-direction: column;
@@ -769,9 +766,7 @@
   background: var(--color-background-default);
 }
 
-[data-theme="dark"] .onboarding-content {
-  background: var(--color-background-default);
-}
+
 
 [data-theme="dark"] .welcome-bottom-section {
   background: var(--color-background-default);

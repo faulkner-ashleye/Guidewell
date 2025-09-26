@@ -70,9 +70,11 @@ export function Welcome({ data, update, onNext, onSkip }: WelcomeProps) {
         <div className="welcome-tagline">
           <h2>Making money make sense</h2>
         </div>
+      </div>
 
-        {/* Button */}
-        <div className="welcome-button">
+      {/* Button at bottom */}
+      <div className="onboarding-actions">
+        <div className="action-buttons single-button">
           <Button
             variant={ButtonVariants.contained}
             color={ButtonColors.secondary}

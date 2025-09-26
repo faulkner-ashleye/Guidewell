@@ -1,5 +1,4 @@
 import React from 'react';
-import { Logo } from '../../../components/Logo';
 import './OnboardingHeader.css';
 
 interface OnboardingHeaderProps {
@@ -10,18 +9,26 @@ interface OnboardingHeaderProps {
 export function OnboardingHeader({ className = '', animated = false }: OnboardingHeaderProps) {
   return (
     <div className={`onboarding-header ${className}`}>
-      {/* Top Section with Logo */}
+      {/* Top Section with Logo and Arrow Background */}
       <div className="onboarding-header-top">
-        <div className={`onboarding-header-logo-container ${animated ? 'animated' : ''}`}>
-          <Logo size="lg" className="onboarding-header-logo" />
-        </div>
-      </div>
+        {/* Arrow Background */}
+        <div className="onboarding-header-arrow-bg">
 
-      {/* Wave Division */}
-      <div className="onboarding-header-wave">
-        <svg viewBox="0 0 375 100" preserveAspectRatio="none" className="onboarding-header-wave-svg">
-          <path d="M0,50 Q93.75,10 187.5,50 T375,50 L375,100 L0,100 Z" fill="currentColor"/>
-        </svg>
+        </div>
+
+        {/* Logo */}
+        <div className={`onboarding-header-logo-container ${animated ? 'animated' : ''}`}>
+          <img
+            src="/guidewell-logo_light.svg"
+            alt="Guidewell"
+            className="onboarding-header-logo light-logo"
+          />
+          <img
+            src="/guidewell-logo_dark.png"
+            alt="Guidewell"
+            className="onboarding-header-logo dark-logo"
+          />
+        </div>
       </div>
     </div>
   );
