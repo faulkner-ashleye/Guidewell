@@ -374,33 +374,75 @@
   position: relative;
   overflow: hidden;
   height: 100%;
+  background-color: var(--color-background-default);
 }
 
-.welcome-bottom-section {
-  flex: 1;
-  padding: var(--spacing-2xl) var(--spacing-xl) 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.welcome-background-figure {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.welcome-background-figure svg {
+  height: auto;
 }
 
 .welcome-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2xl);
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.welcome-logo {
+  margin-bottom: var(--spacing-sm);
+}
+
+.welcome-logo .logo-image {
+  height: 55px;
+  width: auto;
+}
+
+.welcome-logo .dark-logo {
+  display: none;
+}
+
+[data-theme="dark"] .welcome-logo .light-logo {
+  display: none;
+}
+
+[data-theme="dark"] .welcome-logo .dark-logo {
+  display: block;
+}
+
+.welcome-tagline {
+  margin-bottom: var(--spacing-3xl);
+}
+
+.welcome-tagline h2 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-secondary-main);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.welcome-button {
   width: 100%;
-  max-width: 400px;
+  max-width: 280px;
 }
 
-.welcome-content p {
-  font-size: 16px;
-  color: #6b7280;
-  margin: 0 0 32px 0;
-  line-height: 1.5;
-}
-
-/* Logo Styles */
+/* Logo Styles - Legacy (kept for other components) */
 .logo-container {
   margin-bottom: 32px;
 }
-
 
 .logo-icon {
   font-size: 48px;
@@ -739,9 +781,6 @@
   color: var(--color-text-primary);
 }
 
-[data-theme="dark"] .onboarding-step h2 {
-  color: var(--color-text-primary);
-}
 
 [data-theme="dark"] .onboarding-step p {
   color: var(--color-text-secondary);
@@ -751,9 +790,6 @@
   color: var(--color-text-primary);
 }
 
-[data-theme="dark"] .welcome-content h2 {
-  color: var(--color-text-primary);
-}
 
 [data-theme="dark"] .welcome-content p {
   color: var(--color-text-secondary);
