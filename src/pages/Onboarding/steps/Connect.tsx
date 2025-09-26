@@ -88,6 +88,7 @@ export default function Connect({ onNext, onBack, onSkip, onNavigateToSampleData
                 </div>
                 <div className="connect-card-action">
                   <PlaidLinkButton
+                    instanceId="onboarding-connect"
                     key={`plaid-link-${userProfile ? 'logged-in' : 'logged-out'}`}
                     userId="demo-user-123"
                     autoOpen={false}

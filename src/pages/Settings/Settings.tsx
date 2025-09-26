@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card } from '../../components/Card';
 import { Select } from '../../components/Inputs';
-import SupabaseTest from '../../components/SupabaseTest';
 import { ThemeSwitcher } from '../../components/ThemeSwitcher';
 import { Button, ButtonVariants, ButtonColors } from '../../components/Button';
 import { Icon, IconNames } from '../../components/Icon';
@@ -352,9 +351,6 @@ export function Settings() {
             </div>
           </div>
         </Card>
-
-        {/* Supabase Integration Test */}
-        <SupabaseTest />
 
         {/* App Information */}
         <Card className="settings-section">

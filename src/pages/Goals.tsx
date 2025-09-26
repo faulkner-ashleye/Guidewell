@@ -59,12 +59,12 @@ export function Goals() {
     
     // If user has real accounts (not sample data), don't auto-create goals
     // Let them create their own goals based on their actual financial situation
-    if (!userProfile?.hasSampleData && accounts.length > 0) {
+    if (accounts.length > 0 && userProfile?.hasSampleData === false) {
       return []; // Return empty array - user should create their own goals
     }
     
-    // Only load sample goals if user is using sample data
-    if (userProfile?.hasSampleData) {
+    // Only load sample goals if user is explicitly using sample data
+    if (userProfile?.hasSampleData === true) {
       const scenarioId = 'recentGrad';
       const scenario = SampleScenarioUtils.getScenario(scenarioId);
       
@@ -81,8 +81,8 @@ export function Goals() {
       }
     }
     
-    // Fallback to default goals only if no accounts are connected
-    if (accounts.length === 0) {
+    // Fallback to default goals only if no accounts are connected AND no explicit sample data flag
+    if (accounts.length === 0 && userProfile?.hasSampleData !== false) {
       return [
         {
           id: '1',
@@ -171,7 +171,8 @@ export function Goals() {
   };
 
   return (
-    <div className="goals">
+    <>
+      <div className="goals">
       <div className="goals-header">
         <h1 className="goals-title">Financial Goals</h1>
         <p className="goals-subtitle">
@@ -251,18 +252,20 @@ export function Goals() {
         ))}
       </div>
 
-      {/* Add Goal Modal */}
-      <GoalModal
-        open={showAddModal}
-        onClose={() => setShowAddModal(false)}
-        onCreate={(goal) => {
-          // In a real app, this would save the goal
-          setShowAddModal(false);
-        }}
-        accounts={accounts}
-        mode="add"
-        useSheet={true}
-      />
     </div>
+
+    {/* Add Goal Modal - rendered outside goals container */}
+    <GoalModal
+      open={showAddModal}
+      onClose={() => setShowAddModal(false)}
+      onCreate={(goal) => {
+        // In a real app, this would save the goal
+        setShowAddModal(false);
+      }}
+      accounts={accounts}
+      mode="add"
+      useSheet={true}
+    />
+    </>
   );
 }

@@ -100,12 +100,55 @@ const defaultStrategyConfig: StrategyConfig = {
 };
 
 export function AppStateProvider({ children }: { children: ReactNode }) {
-  const [accounts, setAccounts] = useState<Account[]>([]);
-  const [goals, setGoals] = useState<Goal[]>([]);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [contributions, setContributions] = useState<Contribution[]>([]);
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [strategyConfig, setStrategyConfig] = useState<StrategyConfig>(defaultStrategyConfig);
+  // Load initial state from localStorage
+  const [accounts, setAccounts] = useState<Account[]>(() => {
+    try {
+      const saved = localStorage.getItem('guidewell-accounts');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [goals, setGoals] = useState<Goal[]>(() => {
+    try {
+      const saved = localStorage.getItem('guidewell-goals');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [transactions, setTransactions] = useState<Transaction[]>(() => {
+    try {
+      const saved = localStorage.getItem('guidewell-transactions');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [contributions, setContributions] = useState<Contribution[]>(() => {
+    try {
+      const saved = localStorage.getItem('guidewell-contributions');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(() => {
+    try {
+      const saved = localStorage.getItem('guidewell-user-profile');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+  const [strategyConfig, setStrategyConfig] = useState<StrategyConfig>(() => {
+    try {
+      const saved = localStorage.getItem('guidewell-strategy-config');
+      return saved ? JSON.parse(saved) : defaultStrategyConfig;
+    } catch {
+      return defaultStrategyConfig;
+    }
+  });
   
   // Enhanced foundation state (non-breaking additions)
   const [enhancedUserProfile, setEnhancedUserProfile] = useState<EnhancedUserProfile | null>(null);
@@ -182,6 +225,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   // Load default sample scenario on app start
   useEffect(() => {
     // Only load sample data if no accounts are present, no user profile exists, and we haven't loaded a default scenario yet
+    // Also check if accounts array is empty (not just length === 0, in case localStorage has empty array)
     if (accounts.length === 0 && !userProfile && !hasLoadedDefaultScenario) {
       // Load the "recentGrad" scenario by default to show realistic activity
       loadSampleScenario('recentGrad');
@@ -189,60 +233,32 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     }
   }, []); // Empty dependency array means this runs once on mount
 
+  // Persist data to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('guidewell-accounts', JSON.stringify(accounts));
+  }, [accounts]);
+
+  useEffect(() => {
+    localStorage.setItem('guidewell-goals', JSON.stringify(goals));
+  }, [goals]);
+
+  useEffect(() => {
+    localStorage.setItem('guidewell-transactions', JSON.stringify(transactions));
+  }, [transactions]);
+
+  useEffect(() => {
+    localStorage.setItem('guidewell-contributions', JSON.stringify(contributions));
+  }, [contributions]);
+
+  useEffect(() => {
+    localStorage.setItem('guidewell-user-profile', JSON.stringify(userProfile));
+  }, [userProfile]);
+
+  useEffect(() => {
+    localStorage.setItem('guidewell-strategy-config', JSON.stringify(strategyConfig));
+  }, [strategyConfig]);
+
   const clearSampleData = () => {
-    // Show a more user-friendly notification
-    const notification = document.createElement('div');
-    notification.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-      z-index: 10000;
-      max-width: 400px;
-      font-family: 'FigTree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      font-size: 14px;
-      line-height: 1.5;
-      animation: slideIn 0.3s ease-out;
-    `;
-    
-    notification.innerHTML = `
-      <div style="display: flex; align-items: center; margin-bottom: 12px;">
-        <span style="font-size: 24px; margin-right: 12px;">🎉</span>
-        <strong style="font-size: 16px;">Welcome to your real data!</strong>
-      </div>
-      <p style="margin: 0 0 12px 0;">We've cleared the sample data so you can see your personal financial picture.</p>
-      <p style="margin: 0; font-size: 13px; opacity: 0.9;">Your accounts, goals, and transactions will now be displayed with Guidewell's personalized guidance.</p>
-    `;
-    
-    // Add CSS animation
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes slideIn {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-      }
-    `;
-    document.head.appendChild(style);
-    
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 5 seconds
-    setTimeout(() => {
-      notification.style.animation = 'slideIn 0.3s ease-out reverse';
-      setTimeout(() => {
-        if (notification.parentNode) {
-          notification.parentNode.removeChild(notification);
-        }
-        if (style.parentNode) {
-          style.parentNode.removeChild(style);
-        }
-      }, 300);
-    }, 5000);
-    
     // Clear all sample data when user adds their own accounts
     setAccounts([]);
     setGoals([]);
@@ -257,6 +273,9 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
         hasSampleData: false
       });
     }
+    // Reset insights dismissal state when connecting real accounts
+    // This ensures the badge reappears for new insights from real data
+    resetInsightsDismissal();
   };
 
   const logout = () => {

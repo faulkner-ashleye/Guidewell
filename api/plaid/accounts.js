@@ -56,6 +56,7 @@ export default async function handler(req, res) {
           type: 'credit',
           subtype: 'credit_card',
           balance: -1250.30,
+          apr: 24.99, // High APR to trigger debt insights
           institution: {
             name: 'Chase Bank',
             logo: '/images/chase_logo.jpeg'

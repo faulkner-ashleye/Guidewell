@@ -15,7 +15,6 @@ import {
   accountHealth
 } from '../../state/financeSelectors';
 import { getGoalsFromAccounts } from '../../state/planSelectors';
-import PlaidLinkButton from '../../components/PlaidLinkButton';
 import Sheet from '../../components/Sheet';
 import { ConnectChoose } from '../Onboarding/steps/ConnectChoose';
 import GoalModal from '../../components/GoalModal';
@@ -193,25 +192,6 @@ export function Plan() {
               )}
 
               <div className="plan-actions-section">
-                <PlaidLinkButton
-                  key={`plaid-link-plan-${userProfile ? 'logged-in' : 'logged-out'}`}
-                  userId="demo-user-123"
-                  onSuccess={(data) => {
-                    clearSampleData();
-                    
-                    // Handle both accounts and transactions if provided
-                    if (Array.isArray(data)) {
-                      // Legacy format: just accounts array
-                      setAccounts(data);
-                    } else if (data.accounts) {
-                      // New format: object with accounts and transactions
-                      setAccounts(data.accounts);
-                    } else {
-                      // Fallback: treat as accounts array
-                      setAccounts(Array.isArray(data) ? data : []);
-                    }
-                  }}
-                />
                 <Button
                   variant={ButtonVariants.outline}
                   color={ButtonColors.secondary}
@@ -279,13 +259,7 @@ export function Plan() {
       {/* Connect account sheet (Plaid or other methods) */}
       <Sheet open={connectOpen} onClose={() => setConnectOpen(false)} title="Connect account">
         <div className="plan-connect-sheet">
-          <PlaidLinkButton 
-            key={`plaid-link-plan-sheet-${userProfile ? 'logged-in' : 'logged-out'}`}
-            onSuccess={(linked: any) => {
-            clearSampleData();
-            setAccounts(linked);
-          }} />
-          {/* Or provide "Add accounts another way" here */}
+          {/* Connect account functionality can be added here */}
         </div>
       </Sheet>
     </main>

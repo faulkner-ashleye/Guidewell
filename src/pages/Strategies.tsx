@@ -22,9 +22,13 @@ export function Strategies() {
 
   // Calculate financial summary
   const savingsTotal = sumByType(accounts, ['checking', 'savings']);
-  const debtTotal = sumByType(accounts, ['credit_card', 'loan']);
+  const debtTotal = Math.abs(sumByType(accounts, ['credit_card', 'loan'])); // Use absolute value for debt
   const investmentTotal = sumByType(accounts, ['investment']);
   const highestAPR = getHighestAPR(accounts);
+
+  // Debug: Log the actual accounts data
+  console.log('Strategy page - Raw accounts data:', accounts);
+  console.log('Strategy page - Account types:', accounts.map(acc => ({ name: acc.name, type: acc.type, balance: acc.balance })));
 
   const hasData = accounts.length > 0;
   const hasDebt = debtTotal > 0;
@@ -50,26 +54,42 @@ export function Strategies() {
 
   // Determine recommended strategy based on user's financial situation
   const getRecommendedStrategy = (): NarrativeAvatar => {
+    console.log('Strategy recommendation debug:', {
+      hasData,
+      hasDebt,
+      hasSavings,
+      hasInvestments,
+      savingsTotal,
+      debtTotal,
+      investmentTotal,
+      highestAPR
+    });
+
     if (!hasData) {
+      console.log('No data - returning goal_keeper');
       return AvatarUtils.getAvatarById('goal_keeper')!; // Default for new users
     }
 
     // High debt situation - recommend debt-focused strategy
     if (hasDebt && debtTotal > savingsTotal * 2) {
+      console.log('High debt situation - returning debt_crusher');
       return AvatarUtils.getAvatarById('debt_crusher')!;
     }
 
     // Low savings situation - recommend savings-focused strategy
     if (!hasSavings || savingsTotal < 5000) {
+      console.log('Low savings situation - returning goal_keeper');
       return AvatarUtils.getAvatarById('goal_keeper')!;
     }
 
     // Has savings but no investments - recommend investment strategy
     if (hasSavings && !hasInvestments) {
+      console.log('Has savings but no investments - returning nest_builder');
       return AvatarUtils.getAvatarById('nest_builder')!;
     }
 
     // Balanced situation - recommend balanced approach
+    console.log('Balanced situation - returning balanced_builder');
     return AvatarUtils.getAvatarById('balanced_builder')!;
   };
 

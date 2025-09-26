@@ -23,9 +23,10 @@ type Props = {
   autoOpen?: boolean; // automatically open Plaid Link when ready
   hidden?: boolean; // hide the button and only expose via ref
   plaidOpenRequested?: boolean; // trigger to open Plaid
+  instanceId?: string; // identifier for debugging
 };
 
-export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, apiBase = API_BASE_URL, autoOpen = false, hidden = false, plaidOpenRequested = false }: Props) {
+export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, apiBase = API_BASE_URL, autoOpen = false, hidden = false, plaidOpenRequested = false, instanceId = 'unknown' }: Props) {
   const [linkToken, setLinkToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -61,6 +62,7 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
             name: 'Chase Freedom Credit Card',
             type: 'credit_card',
             balance: -1250.30,
+            apr: 24.99, // High APR to trigger debt insights
             institutionId: 'chase',
             institutionName: 'Chase Bank'
           }
@@ -739,6 +741,29 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
       setShowBanner(false);
       setBannerStep('initial');
       
+      // Clean up Plaid iframe when user cancels or exits
+      setTimeout(() => {
+        // Reset Plaid state
+        resetPlaidGlobalState();
+        setShouldInitializePlaid(false);
+        
+        // Force remove any remaining Plaid iframes
+        const plaidIframes = document.querySelectorAll('iframe[src*="plaid"]');
+        plaidIframes.forEach(iframe => {
+          console.log('Removing Plaid iframe on exit');
+          iframe.remove();
+        });
+        
+        // Also remove any Plaid-related divs that might be blocking interaction
+        const plaidDivs = document.querySelectorAll('div[style*="z-index"][style*="2147483647"]');
+        plaidDivs.forEach(div => {
+          if (div.innerHTML.includes('plaid') || div.querySelector('iframe[src*="plaid"]')) {
+            console.log('Removing Plaid overlay div');
+            div.remove();
+          }
+        });
+      }, 100); // Small delay to ensure Plaid has finished its cleanup
+      
       // Handle INVALID_LINK_TOKEN error as recommended by Plaid docs
       if (err && err.error_code === 'INVALID_LINK_TOKEN') {
         console.log('Link token invalidated, regenerating...');
@@ -791,10 +816,96 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
   }), [linkToken, handleSuccess]);
 
   // State to track if we should initialize Plaid
-  const [shouldInitializePlaid, setShouldInitializePlaid] = useState(false);
+  const [shouldInitializePlaid, setShouldInitializePlaid] = useState(!hidden);
 
   // Only initialize Plaid when we actually want to open it
   const { open, ready, error: plaidError } = usePlaidLinkSingleton(shouldInitializePlaid ? config : null as any);
+
+  // Debug ready state changes
+  useEffect(() => {
+    console.log(`PlaidLinkButton [${instanceId}] ready state changed:`, { 
+      ready, 
+      shouldInitializePlaid, 
+      linkToken: linkToken ? 'Present' : 'Missing', 
+      hidden, 
+      autoOpen 
+    });
+  }, [ready, shouldInitializePlaid, linkToken, instanceId, hidden, autoOpen]);
+
+  // Cleanup function to force remove Plaid iframes
+  const forceCleanupPlaid = useCallback(() => {
+    console.log('Force cleaning up Plaid iframes');
+    
+    // Reset Plaid state
+    resetPlaidGlobalState();
+    setShouldInitializePlaid(false);
+    setShowBanner(false);
+    
+    // Remove all Plaid iframes
+    const plaidIframes = document.querySelectorAll('iframe[src*="plaid"]');
+    plaidIframes.forEach(iframe => {
+      console.log('Force removing Plaid iframe');
+      iframe.remove();
+    });
+    
+    // Remove Plaid overlay divs
+    const plaidDivs = document.querySelectorAll('div[style*="z-index"][style*="2147483647"]');
+    plaidDivs.forEach(div => {
+      if (div.innerHTML.includes('plaid') || div.querySelector('iframe[src*="plaid"]')) {
+        console.log('Force removing Plaid overlay div');
+        div.remove();
+      }
+    });
+  }, []);
+
+  // Add global cleanup listeners
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        // Check if there are any Plaid iframes visible
+        const plaidIframes = document.querySelectorAll('iframe[src*="plaid"]');
+        if (plaidIframes.length > 0) {
+          console.log('Escape key pressed - cleaning up Plaid iframes');
+          forceCleanupPlaid();
+        }
+      }
+    };
+
+    const handleClickOutside = (event: MouseEvent) => {
+      // Check if click is outside any Plaid iframe
+      const target = event.target as Element;
+      const plaidIframes = document.querySelectorAll('iframe[src*="plaid"]');
+      
+      if (plaidIframes.length > 0) {
+        const isClickOnPlaid = Array.from(plaidIframes).some(iframe => 
+          iframe.contains(target) || iframe === target
+        );
+        
+        if (!isClickOnPlaid) {
+          // Click is outside Plaid iframe - check if it's on a Plaid overlay
+          const plaidOverlays = document.querySelectorAll('div[style*="z-index"][style*="2147483647"]');
+          const isClickOnOverlay = Array.from(plaidOverlays).some(overlay => 
+            overlay.contains(target) || overlay === target
+          );
+          
+          if (!isClickOnOverlay) {
+            console.log('Click outside Plaid - cleaning up iframes');
+            forceCleanupPlaid();
+          }
+        }
+      }
+    };
+
+    // Add event listeners
+    document.addEventListener('keydown', handleEscape);
+    document.addEventListener('click', handleClickOutside);
+
+    // Cleanup listeners
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [forceCleanupPlaid]);
 
   // Handle open request from parent component
   useEffect(() => {
@@ -805,16 +916,36 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
     }
   }, [plaidOpenRequested, linkToken]);
 
-  // Open Plaid when it becomes ready
+  // Open Plaid when it becomes ready (only for hidden/triggered mode)
   useEffect(() => {
-    if (shouldInitializePlaid && ready && linkToken) {
+    console.log(`PlaidLinkButton [${instanceId}] open effect triggered:`, {
+      shouldInitializePlaid,
+      ready,
+      linkToken: linkToken ? 'Present' : 'Missing',
+      hidden,
+      autoOpen
+    });
+    
+    if (shouldInitializePlaid && ready && linkToken && hidden) {
+      console.log(`PlaidLinkButton [${instanceId}] AUTO-OPENING (hidden mode)`);
       open();
+    } else if (shouldInitializePlaid && ready && linkToken && !hidden) {
+      console.log(`PlaidLinkButton [${instanceId}] READY but NOT auto-opening (visible mode)`);
     }
-  }, [shouldInitializePlaid, ready, linkToken, open]);
+  }, [shouldInitializePlaid, ready, linkToken, open, hidden, instanceId]);
 
   // Auto-open effect - only run if not hidden
   useEffect(() => {
+    console.log(`PlaidLinkButton [${instanceId}] auto-open effect triggered:`, {
+      autoOpen,
+      hidden,
+      ready,
+      isInitialized,
+      linkToken: linkToken ? 'Present' : 'Missing'
+    });
+    
     if (autoOpen && !hidden && ready && isInitialized && linkToken) {
+      console.log(`PlaidLinkButton [${instanceId}] AUTO-OPENING via autoOpen prop`);
       // If using mock token, simulate the Plaid flow instead of opening real Plaid
       if (linkToken.startsWith('link-sandbox-mock')) {
         // Show banner for mock flow
@@ -855,7 +986,31 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
     }
   }, [showBanner, bannerStep]);
 
+  // Monitor for Plaid iframes and ensure banner stays on top
+  useEffect(() => {
+    if (showBanner) {
+      const ensureBannerOnTop = () => {
+        const banner = document.querySelector('.plaid-sandbox-banner');
+        const plaidIframes = document.querySelectorAll('iframe[src*="plaid"]');
+        
+        if (banner && plaidIframes.length > 0) {
+          // Set banner z-index higher than any Plaid iframe
+          (banner as HTMLElement).style.zIndex = '2147483649';
+          
+          // Ensure Plaid iframes have lower z-index
+          plaidIframes.forEach(iframe => {
+            (iframe as HTMLElement).style.zIndex = '2147483647';
+          });
+        }
+      };
 
+      // Check immediately and then periodically
+      ensureBannerOnTop();
+      const interval = setInterval(ensureBannerOnTop, 100);
+
+      return () => clearInterval(interval);
+    }
+  }, [showBanner]);
 
   if (error) return <div>{error}</div>;
   if (plaidError) return <div>Plaid Error: {plaidError}</div>;
@@ -927,10 +1082,15 @@ export default function PlaidLinkButton({ userId = 'demo-user-123', onSuccess, a
       color={ButtonColors.secondary}
       fullWidth={true}
       onClick={() => {
-        console.log('Plaid button clicked, ready:', ready);
+        console.log(`PlaidLinkButton [${instanceId}] BUTTON CLICKED, ready:`, ready, 'shouldInitializePlaid:', shouldInitializePlaid, 'linkToken:', linkToken ? 'Present' : 'Missing');
+        if (ready) {
+          console.log(`PlaidLinkButton [${instanceId}] Opening Plaid...`);
           setShowBanner(true);
           setBannerStep('initial');
-        open();
+          open();
+        } else {
+          console.log(`PlaidLinkButton [${instanceId}] Button clicked but not ready. Ready:`, ready, 'ShouldInitialize:', shouldInitializePlaid);
+        }
       }}
       disabled={!ready}
     >

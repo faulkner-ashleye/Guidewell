@@ -300,6 +300,7 @@ export function Home() {
       <Sheet open={connectOpen} onClose={() => setConnectOpen(false)} title="Connect account">
         <div className="grid-auto">
           <PlaidLinkButton 
+            instanceId="home-page"
             key={`plaid-link-home-${userProfile ? 'logged-in' : 'logged-out'}`}
             onSuccess={(data: any) => {
             clearSampleData();

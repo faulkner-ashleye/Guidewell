@@ -249,25 +249,3 @@ flex-shrink: 0;
     transform: scale(1);
   }
 }
-
-@media (max-width: 768px) {
-  .home {
-    padding: 16px;
-  }
-
-  .summary-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .home-header h1 {
-    font-size: 24px;
-  }
-
-  .insights-badge {
-    min-width: 16px;
-    height: 16px;
-    font-size: 9px;
-    top: -3px;
-    right: -3px;
-  }
-}

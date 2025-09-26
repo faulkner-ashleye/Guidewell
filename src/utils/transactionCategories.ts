@@ -109,7 +109,7 @@ export const getCategoryName = (transaction: Transaction): string => {
 export const getCategoryIcon = (categoryName: string): string => {
   const iconMap: Record<string, string> = {
     'Debts': 'account_balance',
-    'Eating Out': 'restaurant',
+    'Eating Out': 'restaurant_menu',
     'Groceries': 'shopping_cart',
     'Shopping': 'shopping_bag',
     'Entertainment': 'movie',

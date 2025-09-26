@@ -17,7 +17,7 @@ function Row({ icon, title, desc, onClick }:{
   return (
     <button
       onClick={onClick}
-      className="card card-interactive"
+      className="card card-interactive card-visible"
 
     >
     <Icon name={icon} size="sm" />

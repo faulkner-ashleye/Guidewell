@@ -2,6 +2,17 @@
   padding: 20px 16px 100px 16px;
   max-width: 600px;
   margin: 0 auto;
+  position: relative;
+}
+
+/* Disable card animations on Goals page - use higher specificity */
+.goals .card,
+.goals .card.card-visible,
+.goals .card.card-interactive {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: none !important;
+  visibility: visible !important;
 }
 
 .goals-header {

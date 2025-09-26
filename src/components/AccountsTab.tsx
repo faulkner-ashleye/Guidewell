@@ -7,7 +7,7 @@ import { ConnectChoose } from '../pages/Onboarding/steps/ConnectChoose';
 import { COLORS } from '../ui/colors';
 
 export function AccountsTab() {
-  const { accounts = [], userProfile } = useAppState();
+  const { accounts = [], userProfile, setAccounts, clearSampleData } = useAppState();
   const [showAddAccountSheet, setShowAddAccountSheet] = useState(false);
   
   const hasAccounts = accounts.length > 0;
@@ -25,24 +25,32 @@ export function AccountsTab() {
       
       <div className="account-actions">
         <PlaidLinkButton
+          instanceId="accounts-tab"
           key={`plaid-link-accounts-${userProfile ? 'logged-in' : 'logged-out'}`}
           userId="demo-user-123"
           onSuccess={(data) => {
             console.log('Accounts linked:', data);
             
+            // Clear sample data first
+            clearSampleData();
+            
             // Handle both accounts and transactions if provided
             if (Array.isArray(data)) {
               // Legacy format: just accounts array
               console.log('Legacy format - accounts:', data);
+              setAccounts(data);
             } else if (data.accounts) {
               // New format: object with accounts and transactions
               console.log('New format - accounts:', data.accounts);
+              setAccounts(data.accounts);
               if (data.transactions) {
                 console.log('New format - transactions:', data.transactions);
+                // Note: transactions would need to be handled by setTransactions if available
               }
             } else {
               // Fallback: treat as accounts array
               console.log('Fallback format:', data);
+              setAccounts(Array.isArray(data) ? data : []);
             }
           }}
         />

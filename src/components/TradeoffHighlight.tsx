@@ -180,31 +180,33 @@ export function TradeoffHighlight({ userFinancialProfile, className }: TradeoffH
         </div>
       </Card>
 
-      <div className="tradeoff-controls">
-        <button
-          className="control-btn prev"
-          onClick={() => handleTipChange('prev')}
-          aria-label="Previous tip"
-        >
-          <Icon name={IconNames.arrow_back} size="sm" />
-        </button>
-        <div className="tip-indicators">
-          {relevantTips.map((_, index) => (
-            <div
-              key={index}
-              className={`indicator ${index === tipIndex ? 'active' : ''}`}
-              onClick={() => setTipIndex(index)}
-            />
-          ))}
+      {relevantTips.length > 1 && (
+        <div className="tradeoff-controls">
+          <button
+            className="control-btn prev"
+            onClick={() => handleTipChange('prev')}
+            aria-label="Previous tip"
+          >
+            <Icon name={IconNames.arrow_back} size="sm" />
+          </button>
+          <div className="tip-indicators">
+            {relevantTips.map((_, index) => (
+              <div
+                key={index}
+                className={`indicator ${index === tipIndex ? 'active' : ''}`}
+                onClick={() => setTipIndex(index)}
+              />
+            ))}
+          </div>
+          <button
+            className="control-btn next"
+            onClick={() => handleTipChange('next')}
+            aria-label="Next tip"
+          >
+            <Icon name={IconNames.arrow_forward} size="sm" />
+          </button>
         </div>
-        <button
-          className="control-btn next"
-          onClick={() => handleTipChange('next')}
-          aria-label="Next tip"
-        >
-          <Icon name={IconNames.arrow_forward} size="sm" />
-        </button>
-      </div>
+      )}
     </div>
   );
 }

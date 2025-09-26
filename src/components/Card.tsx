@@ -8,7 +8,7 @@ interface CardProps {
 }
 
 export function Card({ children, className = '', onClick, variant = 'default' }: CardProps) {
-  const baseClasses = 'card';
+  const baseClasses = 'card card-visible';
   
   const variantClasses = {
     default: '',
@@ -16,7 +16,7 @@ export function Card({ children, className = '', onClick, variant = 'default' }:
     elevated: 'card-elevated'
   };
   
-  const clickableClasses = onClick ? 'card-clickable' : '';
+  const clickableClasses = onClick ? 'card-clickable card-interactive' : '';
   
   const cardClasses = `${baseClasses} ${variantClasses[variant]} ${clickableClasses} ${className}`;
   

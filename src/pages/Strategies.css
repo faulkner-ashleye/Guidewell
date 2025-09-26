@@ -98,8 +98,7 @@
 .strategy-cards-container {
   display: flex;
   flex-direction: column;
-  gap:32px;
-  margin:;
+  gap: 32px;
 }
 
 .strategy-cards-header h3{
@@ -186,13 +185,6 @@
 }
 
 /* Action Button - Now using Button component with fullWidth prop */
-
-/* Card Variants */
-.strategy-card.recommended {
-}
-
-.strategy-card.build-your-own {
-}
 
 /* Stepper Styles */
 .stepper {

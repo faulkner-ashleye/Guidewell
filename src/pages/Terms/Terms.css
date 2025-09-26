@@ -62,6 +62,24 @@
   margin: 0;
 }
 
+.attribution-link {
+  color: var(--color-secondary-light);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: color 0.2s ease;
+}
+
+.attribution-link:hover {
+  color: var(--color-secondary-main);
+  text-decoration: underline;
+}
+
+.attribution-link:focus {
+  outline: 2px solid var(--color-secondary-light);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 .terms-footer {
   margin-top: var(--spacing-xl);
   padding: var(--spacing-lg);

@@ -66,6 +66,29 @@ export function Terms() {
             </p>
           </section>
 
+          <section className="terms-section">
+            <h2 className="terms-section-title">
+              <Icon name={IconNames.info} size="md" />
+              About Guidewell
+            </h2>
+            <p>
+              Guidewell is a comprehensive financial planning and education platform designed to help individuals understand and manage their personal finances. Our platform provides tools for budgeting, goal setting, investment tracking, and financial education through interactive scenarios and personalized insights. Guidewell aims to democratize financial literacy by making complex financial concepts accessible and actionable for users of all backgrounds.
+            </p>
+            <p>
+              Through our intuitive interface and AI-powered coaching, Guidewell helps users build healthy financial habits, set realistic goals, and make informed decisions about their financial future. Whether you're just starting your financial journey or looking to optimize your existing strategies, Guidewell provides the tools and knowledge you need to take control of your financial well-being.
+            </p>
+          </section>
+
+          <section className="terms-section">
+            <h2 className="terms-section-title">
+              <Icon name={IconNames.info} size="md" />
+              Attribution
+            </h2>
+            <p>
+              Free illustrations from <a href="https://www.streamlinehq.com/illustrations" target="_blank" rel="noopener noreferrer" className="attribution-link">Streamline</a>.
+            </p>
+          </section>
+
           
         </div>
       </div>

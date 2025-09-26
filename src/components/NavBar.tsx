@@ -32,6 +32,7 @@ export function NavBar() {
   const [logOpen, setLogOpen] = useState(false);
   const [connectOpen, setConnectOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
+  const [plaidOpenRequested, setPlaidOpenRequested] = useState(false);
 
   return (
     <>
@@ -76,7 +77,11 @@ export function NavBar() {
         open={qaOpen}
         onClose={() => setQaOpen(false)}
         onAddGoal={() => setGoalOpen(true)}
-        onConnectAccount={() => setConnectOpen(true)}
+        onConnectAccount={() => {
+          setQaOpen(false); // Close the Quick Actions sheet
+          // Trigger Plaid directly
+          setPlaidOpenRequested(true);
+        }}
         onUploadDocument={() => setUploadOpen(true)}
         onLogContribution={() => setLogOpen(true)}
       />
@@ -106,10 +111,37 @@ export function NavBar() {
         onClose={() => setUploadOpen(false)}
       />
 
+      {/* Hidden PlaidLinkButton for direct launch */}
+      <PlaidLinkButton 
+        instanceId="navbar-direct"
+        key={`plaid-link-navbar-direct-${userProfile ? 'logged-in' : 'logged-out'}`}
+        hidden={true}
+        plaidOpenRequested={plaidOpenRequested}
+        onSuccess={(data: any) => {
+          clearSampleData();
+          
+          // Handle both accounts and transactions if provided
+          if (Array.isArray(data)) {
+            // Legacy format: just accounts array
+            setAccounts(data);
+          } else if (data.accounts) {
+            // New format: object with accounts and transactions
+            setAccounts(data.accounts);
+          } else {
+            // Fallback: treat as accounts array
+            setAccounts(Array.isArray(data) ? data : []);
+          }
+          
+          // Reset the open request
+          setPlaidOpenRequested(false);
+        }} 
+      />
+
       {/* Connect account sheet (Plaid or other methods) */}
       <Sheet open={connectOpen} onClose={() => setConnectOpen(false)} title="Connect account">
         <div className="grid-auto">
           <PlaidLinkButton 
+            instanceId="navbar"
             key={`plaid-link-navbar-${userProfile ? 'logged-in' : 'logged-out'}`}
             onSuccess={(data: any) => {
             clearSampleData();

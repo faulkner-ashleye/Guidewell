@@ -40,18 +40,41 @@ export function usePlaidLinkSingleton(config: PlaidLinkOptions | null) {
   const initializedRef = useRef(false);
   const componentId = useRef(++componentCount);
   const scriptLoaded = usePlaidScript();
+  
+  // Log component creation
+  console.log(`Component ${componentId.current}: CREATED with config:`, config ? 'Present' : 'Null');
+  
+  // Log component destruction
+  useEffect(() => {
+    return () => {
+      console.log(`Component ${componentId.current}: DESTROYED`);
+    };
+  }, []);
 
   const open = useCallback(() => {
+    console.log(`Component ${componentId.current}: open() called`);
     if (globalPlaidLinkInstance) {
+      console.log(`Component ${componentId.current}: Actually opening Plaid`);
       globalPlaidLinkInstance.open();
+    } else {
+      console.log(`Component ${componentId.current}: No global instance to open`);
     }
   }, []);
 
   useEffect(() => {
     // If config is null, don't initialize
     if (!config) {
+      console.log(`Component ${componentId.current}: Config is null, not initializing`);
       return;
     }
+    
+    console.log(`Component ${componentId.current}: Starting initialization check`, {
+      globalPlaidInitialized,
+      globalLinkToken: globalLinkToken ? 'Present' : 'Missing',
+      configToken: config.token ? 'Present' : 'Missing',
+      scriptLoaded,
+      initializedRef: initializedRef.current
+    });
     
     // If Plaid Link is already initialized globally, don't initialize again
     if (globalPlaidInitialized && globalLinkToken === config.token) {

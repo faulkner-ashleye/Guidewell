@@ -10,7 +10,7 @@
 
 /* Header - Outside the card */
 .scenario-header {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-2xl);
 }
 
 
@@ -18,14 +18,10 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-lg);
 }
 
-.scenario-title h3 {
-  margin: 0;
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text);
+.scenario-title h1 {
+  margin-bottom:0;
 }
 
 
@@ -316,32 +312,7 @@
 
 
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .timeline-chips {
-    flex-direction: column;
-    align-items: center;
-  }
 
-  .extra-monthly-control {
-    flex-direction: column;
-    gap: var(--spacing-sm);
-    align-items: stretch;
-  }
-
-  .control-label {
-    min-width: auto;
-    text-align: center;
-  }
-
-  .chart-legend {
-    flex-direction: column;
-    gap: var(--spacing-md);
-    align-items: center;
-  }
-}
-
-@media (max-width: 480px) {
   .scenario-header {
     margin-bottom: var(--spacing-md);
   }
@@ -356,4 +327,3 @@
     padding: var(--spacing-lg);
     margin: var(--spacing-md);
   }
-}

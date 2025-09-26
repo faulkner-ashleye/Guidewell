@@ -1,13 +1,13 @@
 .plaid-sandbox-banner {
   position: fixed;
-  bottom: 0;
+  top: 0;
   left: 0;
   right: 0;
   background: var(--color-grey-900);
   color: white;
   padding: var(--spacing-lg) var(--spacing-2xl);
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
-  z-index: 2147483648 !important; /* Even higher z-index to ensure it's above everything */
+  z-index: 2147483649 !important; /* Higher than Plaid's maximum z-index */
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   text-align: center;
@@ -22,6 +22,8 @@
   /* Ensure it's not affected by parent containers */
   transform: translateZ(0);
   will-change: transform;
+  /* Force stacking context */
+  isolation: isolate;
 }
 
 
@@ -172,6 +174,11 @@
     font-size: 12px;
     padding: 3px 6px;
   }
+}
+
+/* Ensure Plaid iframes don't cover our banner */
+iframe[src*="plaid"] {
+  z-index: 2147483647 !important;
 }
 
 /* Animation for smooth appearance */

@@ -5,7 +5,35 @@ import { AccountType } from '../app/types';
  * Handles the conversion from Plaid's type/subtype structure to our simplified types
  */
 export function mapPlaidAccountType(plaidType: string, plaidSubtype?: string): AccountType {
-  // Handle main account types
+  // Handle direct account type mappings first (for simplified Plaid responses)
+  switch (plaidType.toLowerCase()) {
+    case 'checking':
+      return 'checking';
+    case 'savings':
+      return 'savings';
+    case 'credit_card':
+      return 'credit_card';
+    case 'investment':
+      return 'investment';
+    case 'loan':
+      return 'loan';
+    case 'mortgage':
+      return 'mortgage';
+    case 'auto':
+      return 'auto';
+    case 'student':
+      return 'student';
+    case 'brokerage':
+      return 'brokerage';
+    case 'ira':
+      return 'ira';
+    case '401k':
+      return '401k';
+    case 'roth_ira':
+      return 'roth_ira';
+  }
+
+  // Handle standard Plaid account types
   switch (plaidType.toLowerCase()) {
     case 'depository':
       return mapDepositorySubtype(plaidSubtype);
