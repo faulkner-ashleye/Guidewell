@@ -5,6 +5,7 @@ import { Button, ButtonVariants, ButtonColors } from '../../../components/Button
 import { OnboardingHeader } from '../components/OnboardingHeader';
 import '../../../components/Button.css';
 
+// Welcome screen component for onboarding flow
 interface WelcomeProps {
   data: OnboardingState;
   update: <K extends keyof OnboardingState>(key: K, value: OnboardingState[K]) => void;
