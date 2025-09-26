@@ -27,6 +27,9 @@
     "concurrently": "^7.6.0",
     "ts-node": "^10.9.1"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
