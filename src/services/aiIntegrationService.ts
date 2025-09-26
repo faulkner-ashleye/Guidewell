@@ -565,7 +565,7 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
     analysisType: string = 'general'
   ): Promise<any> {
     try {
-      const response = await fetch(`${this.baseUrl}/ai/analyze`, {
+      const response = await fetch(`${this.baseUrl}/ai-analyze`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -600,7 +600,7 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
     accounts: Account[]
   ): Promise<{ response: string; fallback?: boolean }> {
     try {
-      const response = await fetch(`${this.baseUrl}/ai/chat`, {
+      const response = await fetch(`${this.baseUrl}/ai-chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -636,7 +636,7 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
    */
   async checkAIHealth(): Promise<{ status: string; configured: boolean }> {
     try {
-      const response = await fetch(`${this.baseUrl}/ai/health`);
+      const response = await fetch(`${this.baseUrl}/ai-health`);
       const data = await response.json();
       return {
         status: data.status,
