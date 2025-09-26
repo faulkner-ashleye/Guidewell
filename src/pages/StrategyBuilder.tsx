@@ -16,6 +16,10 @@ import { Select } from '../components/Inputs';
 import { BreakdownModal } from '../app/strategies/components/BreakdownModal';
 import { AvatarUtils } from '../data/narrativeAvatars';
 import { NarrativeAvatar } from '../data/narrativeAvatars';
+import { aiIntegrationService } from '../services/aiIntegrationService';
+import { EnhancedUserProfile } from '../data/enhancedUserProfile';
+import { UserProfileUtils } from '../data/enhancedUserProfile';
+import { Goal as AppGoal } from '../app/types';
 import './StrategyBuilder.css';
 
 type Scope = 'all' | 'debts' | 'savings' | 'investing';
@@ -33,7 +37,7 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
   const location = useLocation();
 
   // Get app state
-  const { accounts = [], transactions = [], goals = [] } = useAppState();
+  const { accounts = [], transactions = [], goals = [], userProfile } = useAppState();
 
   // State management
   const [scope, setScope] = useState<Scope>('all');
@@ -46,6 +50,11 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
   // For build mode
   const [selectedAvatar, setSelectedAvatar] = useState<NarrativeAvatar | null>(null);
   const [animateStep, setAnimateStep] = useState<number>(1);
+
+  // AI-powered narrative state
+  const [aiNarrative, setAiNarrative] = useState<string>('');
+  const [narrativeLoading, setNarrativeLoading] = useState<boolean>(false);
+  const [narrativeError, setNarrativeError] = useState<string | null>(null);
 
   // Modal state (for custom mode)
   const [breakdownOpen, setBreakdownOpen] = useState(false);
@@ -97,6 +106,13 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
       }
     };
   }, [editParametersOpen, mode]);
+
+  // Trigger AI narrative generation when strategy parameters change
+  useEffect(() => {
+    if (strategy && accounts.length > 0) {
+      generateAINarrative();
+    }
+  }, [strategy, scope, timeframe, extra, accounts.length]);
 
   // Initialize from query params or state (custom mode)
   useEffect(() => {
@@ -216,8 +232,92 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
     }
   };
 
-  // Generate narrative based on current selections
-  const generateNarrative = () => {
+  // Convert AppGoal to data Goal type for AI
+  const convertedGoals = React.useMemo(() => {
+    return goals.map((goal: AppGoal) => ({
+      id: goal.id,
+      name: goal.name,
+      type: goal.type === 'savings' ? 'emergency_fund' :
+            goal.type === 'debt' ? 'debt_payoff' :
+            goal.type as 'debt_payoff' | 'emergency_fund' | 'retirement' | 'investment' | 'custom',
+      accountId: goal.accountId,
+      accountIds: goal.accountIds,
+      target: goal.target,
+      targetDate: goal.targetDate,
+      monthlyContribution: goal.monthlyContribution,
+      priority: goal.priority,
+      note: goal.note,
+      createdAt: goal.createdAt
+    }));
+  }, [goals]);
+
+  // Create enhanced user profile for AI
+  const enhancedUserProfile = React.useMemo((): EnhancedUserProfile => {
+    return UserProfileUtils.createEnhancedProfile(userProfile, accounts, convertedGoals);
+  }, [userProfile, accounts, convertedGoals]);
+
+  // Generate AI-powered narrative
+  const generateAINarrative = async () => {
+    if (!enhancedUserProfile || accounts.length === 0) {
+      setNarrativeError('Please connect accounts and complete your profile first');
+      return;
+    }
+
+    setNarrativeLoading(true);
+    setNarrativeError(null);
+
+    try {
+      const avatar = AvatarUtils.getAvatarById(strategy);
+      if (!avatar) {
+        setNarrativeError('Invalid strategy selected');
+        return;
+      }
+
+      const timeframeText = {
+        short: '3-12 months',
+        mid: '1-5 years',
+        long: '5+ years'
+      };
+
+      const scopeText = scope === 'all' ? 'all accounts' : scope;
+      const extraText = extra === undefined || extra === null || extra === 0 
+        ? '$0/month' 
+        : `$${extra.toLocaleString()}/month`;
+
+      // Create a custom analysis type for strategy narratives
+      const analysisType = `strategy_narrative_${strategy}`;
+      
+      const analysis = await aiIntegrationService.generateAIAnalysisWithAPI(
+        enhancedUserProfile,
+        accounts,
+        convertedGoals,
+        analysisType
+      );
+
+      if (analysis.aiResponse) {
+        // Use AI response to create personalized narrative
+        let narrative = analysis.aiResponse.summary;
+        
+        // Add strategy-specific context
+        narrative += `\n\nThis ${avatar.name} approach focuses on ${scopeText} over ${timeframeText[timeframe]}. `;
+        narrative += `With ${extraText} toward savings, ${analysis.aiResponse.nextStep}`;
+        
+        setAiNarrative(narrative);
+      } else {
+        // Fallback to enhanced rule-based narrative
+        setAiNarrative(generateEnhancedNarrative());
+      }
+    } catch (error) {
+      console.error('AI Narrative generation failed:', error);
+      setNarrativeError('Failed to generate AI narrative. Using fallback.');
+      setAiNarrative(generateEnhancedNarrative());
+    } finally {
+      setNarrativeLoading(false);
+    }
+  };
+
+  // Enhanced fallback narrative generation
+  const generateEnhancedNarrative = () => {
     const avatar = AvatarUtils.getAvatarById(strategy);
     if (!avatar) return 'Select a strategy to see your narrative.';
 
@@ -248,9 +348,26 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
       case 'nest_builder':
         narrative += `This long-term strategy emphasizes wealth building through investments while maintaining financial stability.`;
         break;
+      case 'safety_builder':
+        narrative += `This conservative approach prioritizes building a strong financial foundation with low-risk strategies.`;
+        break;
+      case 'future_investor':
+        narrative += `This growth-focused strategy emphasizes long-term wealth building through strategic investments.`;
+        break;
+      case 'balanced_builder':
+        narrative += `This well-rounded approach balances debt management, savings, and investments for steady progress.`;
+        break;
+      default:
+        narrative += `This strategy is tailored to your specific financial goals and risk tolerance.`;
     }
 
     return narrative;
+  };
+
+  // Generate narrative based on current selections
+  const generateNarrative = () => {
+    // Use AI narrative if available, otherwise fallback
+    return aiNarrative || generateEnhancedNarrative();
   };
 
   // Check if each step is completed (build mode)
@@ -331,10 +448,17 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
           {/* Narrative Card */}
           <NarrativeCard
             title={strategy === 'debt_crusher' ? 'Debt Crusher' :
-                  strategy === 'goal_keeper' ? 'Goal Keeper' : 'Nest Builder'}
+                  strategy === 'goal_keeper' ? 'Goal Keeper' : 
+                  strategy === 'nest_builder' ? 'Nest Builder' :
+                  strategy === 'safety_builder' ? 'Safety Builder' :
+                  strategy === 'future_investor' ? 'Future Investor' :
+                  strategy === 'balanced_builder' ? 'Balanced Builder' :
+                  AvatarUtils.getAvatarById(strategy)?.name || 'Strategy'}
             narrative={generateNarrative()}
             onViewBreakdown={handleViewBreakdown}
             className="card narrative-card"
+            loading={narrativeLoading}
+            error={narrativeError}
           />
 
           {/* Edit Parameters Modal */}

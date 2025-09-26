@@ -7,9 +7,19 @@ interface NarrativeCardProps {
   onViewBreakdown?: () => void;
   style?: React.CSSProperties;
   className?: string;
+  loading?: boolean;
+  error?: string | null;
 }
 
-export function NarrativeCard({ title, narrative, onViewBreakdown, style, className }: NarrativeCardProps) {
+export function NarrativeCard({ 
+  title, 
+  narrative, 
+  onViewBreakdown, 
+  style, 
+  className,
+  loading = false,
+  error = null
+}: NarrativeCardProps) {
   return (
     <div 
       className={`card ${className || ''}`}
@@ -17,11 +27,25 @@ export function NarrativeCard({ title, narrative, onViewBreakdown, style, classN
     >
       <h3 className="narrative-title">
         {title}
+        {loading && <span className="loading-indicator"> 🤖 Generating AI insights...</span>}
+        {error && <span className="error-indicator"> ⚠️ Using fallback narrative</span>}
       </h3>
       
-      <p className="narrative-content">
-        {narrative}
-      </p>
+      <div className="narrative-content">
+        {loading ? (
+          <div className="narrative-loading">
+            <div className="loading-spinner"></div>
+            <p>AI is analyzing your financial situation and generating personalized insights...</p>
+          </div>
+        ) : error ? (
+          <div className="narrative-error">
+            <p>{narrative}</p>
+            <small className="error-message">{error}</small>
+          </div>
+        ) : (
+          <p>{narrative}</p>
+        )}
+      </div>
       
       <div className="narrative-footer">
         <div className="narrative-meta">

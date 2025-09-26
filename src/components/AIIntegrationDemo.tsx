@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { EnhancedUserProfile } from '../data/enhancedUserProfile';
-import { Account, Goal } from '../data/types';
+import { useAppState } from '../state/AppStateContext';
 import { aiIntegrationService, AIAnalysisResult } from '../services/aiIntegrationService';
-import { OpportunitiesDashboard } from './OpportunitiesDashboard';
-import { ContentDashboard } from './ContentDashboard';
-import { sampleScenarios } from '../data/sampleScenarios';
+import { EnhancedUserProfile } from '../data/enhancedUserProfile';
+import { UserProfileUtils } from '../data/enhancedUserProfile';
+import { Goal as AppGoal } from '../app/types';
+import { Card } from './Card';
+import { Button } from './Button';
+import { Icon } from './Icon';
 import './AIIntegrationDemo.css';
 
 interface AIIntegrationDemoProps {
@@ -12,249 +14,271 @@ interface AIIntegrationDemoProps {
 }
 
 export function AIIntegrationDemo({ onClose }: AIIntegrationDemoProps) {
-  const [selectedScenario, setSelectedScenario] = useState<string>('recentGrad');
-  const [analysisResult, setAnalysisResult] = useState<AIAnalysisResult | null>(null);
+  const { userProfile, accounts = [], goals = [] } = useAppState();
+  
+  const [aiAnalysis, setAiAnalysis] = useState<AIAnalysisResult | null>(null);
+  const [chatMessages, setChatMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string; timestamp: Date }>>([]);
+  const [chatInput, setChatInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<'overview' | 'opportunities' | 'content'>('overview');
+  const [aiHealth, setAiHealth] = useState<{ status: string; configured: boolean } | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const currentScenario = sampleScenarios[selectedScenario];
-  const scenarioOptions = Object.entries(sampleScenarios).map(([key, scenario]) => ({
-    key,
-    label: scenario.name,
-    description: scenario.description
-  }));
+  // Convert AppGoal to data Goal type
+  const convertedGoals = React.useMemo(() => {
+    return goals.map((goal: AppGoal) => ({
+      id: goal.id,
+      name: goal.name,
+      type: goal.type === 'savings' ? 'emergency_fund' :
+            goal.type === 'debt' ? 'debt_payoff' :
+            goal.type as 'debt_payoff' | 'emergency_fund' | 'retirement' | 'investment' | 'custom',
+      accountId: goal.accountId,
+      accountIds: goal.accountIds,
+      target: goal.target,
+      targetDate: goal.targetDate,
+      monthlyContribution: goal.monthlyContribution,
+      priority: goal.priority,
+      note: goal.note,
+      createdAt: goal.createdAt
+    }));
+  }, [goals]);
+
+  // Create enhanced user profile
+  const enhancedUserProfile = React.useMemo((): EnhancedUserProfile => {
+    return UserProfileUtils.createEnhancedProfile(userProfile, accounts, convertedGoals);
+  }, [userProfile, accounts, convertedGoals]);
 
   useEffect(() => {
-    if (currentScenario) {
-      runAIAnalysis();
-    }
-  }, [selectedScenario]);
+    checkAIHealth();
+    generateAIAnalysis();
+  }, []);
 
-  const runAIAnalysis = async () => {
-    if (!currentScenario) return;
+  const checkAIHealth = async () => {
+    try {
+      const health = await aiIntegrationService.checkAIHealth();
+      setAiHealth(health);
+    } catch (error) {
+      console.error('Health check failed:', error);
+      setAiHealth({ status: 'error', configured: false });
+    }
+  };
+
+  const generateAIAnalysis = async () => {
+    if (!enhancedUserProfile || accounts.length === 0) {
+      setError('Please connect accounts and complete your profile first');
+      return;
+    }
 
     setLoading(true);
+    setError(null);
+
     try {
-      const result = await aiIntegrationService.generateAIAnalysis(
-        currentScenario.userProfile,
-        currentScenario.accounts,
-        currentScenario.goals
+      const analysis = await aiIntegrationService.generateAIAnalysisWithAPI(
+        enhancedUserProfile,
+        accounts,
+        convertedGoals,
+        'comprehensive'
       );
-      setAnalysisResult(result);
+      setAiAnalysis(analysis);
     } catch (error) {
-      console.error('Error running AI analysis:', error);
+      console.error('AI Analysis failed:', error);
+      setError('Failed to generate AI analysis. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleOpportunityAction = (opportunity: any) => {
-    console.log('Opportunity action:', opportunity);
-    // In a real app, this would navigate to detailed opportunity view
+  const sendChatMessage = async () => {
+    if (!chatInput.trim()) return;
+
+    const userMessage = chatInput.trim();
+    setChatInput('');
+    setLoading(true);
+
+    // Add user message to chat
+    const newMessages = [...chatMessages, { role: 'user' as const, content: userMessage, timestamp: new Date() }];
+    setChatMessages(newMessages);
+
+    try {
+      const response = await aiIntegrationService.sendChatMessage(
+        userProfile?.firstName || 'demo-user',
+        userMessage,
+        enhancedUserProfile,
+        accounts
+      );
+
+      // Add AI response to chat
+      setChatMessages(prev => [...prev, { 
+        role: 'assistant' as const, 
+        content: response.response, 
+        timestamp: new Date() 
+      }]);
+    } catch (error) {
+      console.error('Chat failed:', error);
+      setChatMessages(prev => [...prev, { 
+        role: 'assistant' as const, 
+        content: "I'm having trouble connecting right now. Please try again in a moment! 😊", 
+        timestamp: new Date() 
+      }]);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleContentRead = (content: any) => {
-    console.log('Content read:', content);
-    // In a real app, this would open the content viewer
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendChatMessage();
+    }
   };
 
   return (
     <div className="ai-integration-demo">
       <div className="demo-header">
-        <h2>AI Integration Demo</h2>
-        <p>Experience how our foundational features work together to provide personalized financial insights</p>
-        <button className="close-button" onClick={onClose}>
-          ×
-        </button>
-      </div>
-
-      <div className="demo-controls">
-        <div className="scenario-selector">
-          <label htmlFor="scenario-select">Choose a scenario:</label>
-          <select 
-            id="scenario-select"
-            value={selectedScenario}
-            onChange={(e) => setSelectedScenario(e.target.value)}
-          >
-            {scenarioOptions.map(option => (
-              <option key={option.key} value={option.key}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        
-        <button 
-          className="refresh-button"
-          onClick={runAIAnalysis}
-          disabled={loading}
-        >
-          {loading ? 'Analyzing...' : 'Refresh Analysis'}
-        </button>
-      </div>
-
-      {currentScenario && (
-        <div className="scenario-info">
-          <h3>{currentScenario.name}</h3>
-          <p>{currentScenario.description}</p>
-          <div className="scenario-details">
-            <div className="detail">
-              <span className="label">Age:</span>
-              <span className="value">{currentScenario.userProfile.age}</span>
-            </div>
-            <div className="detail">
-              <span className="label">Income:</span>
-              <span className="value">${currentScenario.userProfile.income?.toLocaleString()}</span>
-            </div>
-            <div className="detail">
-              <span className="label">Risk Tolerance:</span>
-              <span className="value">{currentScenario.userProfile.riskTolerance}</span>
-            </div>
-            <div className="detail">
-              <span className="label">Financial Literacy:</span>
-              <span className="value">{currentScenario.userProfile.financialLiteracy}</span>
-            </div>
+        <h1>AI Integration Demo</h1>
+        <div className="ai-status">
+          <div className={`status-indicator ${aiHealth?.configured ? 'connected' : 'disconnected'}`}>
+            {aiHealth?.configured ? '🤖 AI Connected' : '⚠️ AI Offline'}
           </div>
+          {aiHealth?.configured && (
+            <div className="status-details">
+              <small>Using ChatGPT 4 Mini • Cached responses enabled</small>
+            </div>
+          )}
         </div>
-      )}
-
-      <div className="demo-tabs">
-        <button 
-          className={`tab-button ${activeTab === 'overview' ? 'active' : ''}`}
-          onClick={() => setActiveTab('overview')}
-        >
-          AI Analysis Overview
-        </button>
-        <button 
-          className={`tab-button ${activeTab === 'opportunities' ? 'active' : ''}`}
-          onClick={() => setActiveTab('opportunities')}
-        >
-          Market Opportunities
-        </button>
-        <button 
-          className={`tab-button ${activeTab === 'content' ? 'active' : ''}`}
-          onClick={() => setActiveTab('content')}
-        >
-          Personalized Content
-        </button>
+        {onClose && (
+          <Button variant="text" onClick={onClose} className="close-button">
+            <Icon name="close" size="sm" />
+          </Button>
+        )}
       </div>
 
       <div className="demo-content">
-        {loading && (
-          <div className="loading-state">
-            <div className="loading-spinner"></div>
-            <p>Running AI analysis...</p>
-          </div>
-        )}
+        {/* AI Analysis Section */}
+        <Card className="analysis-card">
+          <h2>AI Financial Analysis</h2>
+          {loading && !aiAnalysis ? (
+            <div className="loading-state">
+              <div className="loading-spinner"></div>
+              <p>Generating AI analysis...</p>
+            </div>
+          ) : error ? (
+            <div className="error-state">
+              <p>{error}</p>
+              <Button onClick={generateAIAnalysis}>Try Again</Button>
+            </div>
+          ) : aiAnalysis?.aiResponse ? (
+            <div className="ai-analysis">
+              <div className="analysis-summary">
+                <h3>AI Summary</h3>
+                <p>{aiAnalysis.aiResponse.summary}</p>
+                {aiAnalysis.aiResponse.cached && (
+                  <div className="cached-indicator">📋 Cached Response</div>
+                )}
+                {aiAnalysis.aiResponse.fallback && (
+                  <div className="fallback-indicator">🔄 Fallback Response</div>
+                )}
+              </div>
 
-        {!loading && analysisResult && (
-          <>
-            {activeTab === 'overview' && (
-              <div className="overview-tab">
-                <div className="analysis-summary">
-                  <h3>AI Analysis Summary</h3>
-                  <div className="summary-grid">
-                    <div className="summary-card">
-                      <div className="card-title">Financial Health Score</div>
-                      <div className="card-value">{analysisResult.financialHealthScore}/100</div>
-                      <div className="card-description">
-                        {analysisResult.financialHealthScore >= 80 ? 'Excellent' :
-                         analysisResult.financialHealthScore >= 60 ? 'Good' :
-                         analysisResult.financialHealthScore >= 40 ? 'Fair' : 'Needs Improvement'}
-                      </div>
-                    </div>
-                    
-                    <div className="summary-card">
-                      <div className="card-title">Total Opportunities</div>
-                      <div className="card-value">{analysisResult.opportunities.opportunities.length}</div>
-                      <div className="card-description">
-                        ${analysisResult.opportunities.totalPotentialSavings.toFixed(0)} annual savings
-                      </div>
-                    </div>
-                    
-                    <div className="summary-card">
-                      <div className="card-title">Content Recommendations</div>
-                      <div className="card-value">{analysisResult.contentRecommendations.length}</div>
-                      <div className="card-description">
-                        {analysisResult.contentRecommendations.filter(c => c.priority === 'high').length} high priority
-                      </div>
-                    </div>
-                    
-                    <div className="summary-card">
-                      <div className="card-title">Risk Level</div>
-                      <div className="card-value">{analysisResult.riskAssessment.level}</div>
-                      <div className="card-description">
-                        {analysisResult.riskAssessment.factors.length} risk factors identified
-                      </div>
-                    </div>
+              <div className="ai-recommendations">
+                <h3>AI Recommendations</h3>
+                <ul>
+                  {aiAnalysis.aiResponse.recommendations.map((rec: string, index: number) => (
+                    <li key={index}>{rec}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="next-step">
+                <h3>Next Step</h3>
+                <p>{aiAnalysis.aiResponse.nextStep}</p>
+              </div>
+
+              <div className="motivation">
+                <h3>Motivation</h3>
+                <p>{aiAnalysis.aiResponse.motivation}</p>
+              </div>
+            </div>
+          ) : (
+            <div className="empty-state">
+              <p>No analysis available. Generate one to get started!</p>
+              <Button onClick={generateAIAnalysis}>Generate Analysis</Button>
+            </div>
+          )}
+        </Card>
+
+        {/* Chat Interface */}
+        <Card className="chat-card">
+          <h2>AI Chat Assistant</h2>
+          <div className="chat-messages">
+            {chatMessages.length === 0 ? (
+              <div className="chat-empty">
+                <p>Ask me anything about your finances! 💬</p>
+                <div className="suggested-questions">
+                  <Button 
+                    variant="outline" 
+                    size="small" 
+                    onClick={() => setChatInput("How can I improve my credit score?")}
+                  >
+                    How can I improve my credit score?
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="small" 
+                    onClick={() => setChatInput("What's the best way to save for retirement?")}
+                  >
+                    What's the best way to save for retirement?
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="small" 
+                    onClick={() => setChatInput("Should I pay off debt or invest first?")}
+                  >
+                    Should I pay off debt or invest first?
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              chatMessages.map((message, index) => (
+                <div key={index} className={`chat-message ${message.role}`}>
+                  <div className="message-content">
+                    {message.content}
+                  </div>
+                  <div className="message-time">
+                    {message.timestamp.toLocaleTimeString()}
                   </div>
                 </div>
-
-                <div className="insights-section">
-                  <h3>Personalized Insights</h3>
-                  <div className="insights-list">
-                    {analysisResult.personalizedInsights.map((insight, index) => (
-                      <div key={index} className="insight-item">
-                        <span className="insight-icon">💡</span>
-                        <span className="insight-text">{insight}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="next-steps-section">
-                  <h3>Recommended Next Steps</h3>
-                  <div className="next-steps-list">
-                    {analysisResult.nextSteps.map((step, index) => (
-                      <div key={index} className="next-step-item">
-                        <span className="step-number">{index + 1}</span>
-                        <span className="step-text">{step}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="risk-assessment-section">
-                  <h3>Risk Assessment</h3>
-                  <div className="risk-factors">
-                    <h4>Risk Factors:</h4>
-                    <ul>
-                      {analysisResult.riskAssessment.factors.map((factor, index) => (
-                        <li key={index}>{factor}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="risk-recommendations">
-                    <h4>Recommendations:</h4>
-                    <ul>
-                      {analysisResult.riskAssessment.recommendations.map((rec, index) => (
-                        <li key={index}>{rec}</li>
-                      ))}
-                    </ul>
+              ))
+            )}
+            {loading && (
+              <div className="chat-message assistant">
+                <div className="message-content">
+                  <div className="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                   </div>
                 </div>
               </div>
             )}
-
-            {activeTab === 'opportunities' && currentScenario && (
-              <OpportunitiesDashboard
-                userProfile={currentScenario.userProfile}
-                accounts={currentScenario.accounts}
-                goals={currentScenario.goals}
-                onOpportunityAction={handleOpportunityAction}
-              />
-            )}
-
-            {activeTab === 'content' && currentScenario && (
-              <ContentDashboard
-                userProfile={currentScenario.userProfile}
-                accounts={currentScenario.accounts}
-                goals={currentScenario.goals}
-                onContentRead={handleContentRead}
-              />
-            )}
-          </>
-        )}
+          </div>
+          
+          <div className="chat-input">
+            <input
+              type="text"
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Ask me about your finances..."
+              disabled={loading}
+            />
+            <Button 
+              onClick={sendChatMessage}
+              disabled={!chatInput.trim() || loading}
+            >
+              Send
+            </Button>
+          </div>
+        </Card>
       </div>
     </div>
   );

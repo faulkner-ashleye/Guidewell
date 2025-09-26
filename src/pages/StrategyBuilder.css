@@ -1,3 +1,52 @@
+/* AI Narrative Card Styles */
+.narrative-card .loading-indicator {
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: normal;
+  margin-left: 8px;
+}
+
+.narrative-card .error-indicator {
+  color: var(--color-warning);
+  font-size: 14px;
+  font-weight: normal;
+  margin-left: 8px;
+}
+
+.narrative-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  color: var(--color-text-secondary);
+}
+
+.narrative-loading .loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--color-border);
+  border-top: 2px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+.narrative-error {
+  color: var(--color-text-primary);
+}
+
+.narrative-error .error-message {
+  color: var(--color-warning);
+  font-style: italic;
+  margin-top: 8px;
+  display: block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* Strategy Builder Unified Styles */
 /* Combines CustomStrategy.css and BuildStrategy.css */
 

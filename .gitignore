@@ -15,6 +15,15 @@ dist/
 .env.test.local
 .env.production.local
 
+# API Keys and sensitive files
+*.key
+*.pem
+*_key.txt
+api_keys.txt
+secrets.txt
+CHATGPT_INTEGRATION_SETUP.md
+OPENAI_API_KEY.txt
+
 # IDE and editor files
 .vscode/
 .idea/

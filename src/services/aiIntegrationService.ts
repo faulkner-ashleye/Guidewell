@@ -22,6 +22,14 @@ export interface AIAnalysisResult {
   financialHealthScore: number;
   aiPersonality: string;
   communicationStyle: string;
+  aiResponse?: {
+    summary: string;
+    recommendations: string[];
+    nextStep: string;
+    motivation: string;
+    cached?: boolean;
+    fallback?: boolean;
+  };
 }
 
 export interface AIPromptContext {
@@ -37,8 +45,13 @@ export interface AIPromptContext {
 
 export class AIIntegrationService {
   private static instance: AIIntegrationService;
+  private baseUrl: string;
 
-  private constructor() {}
+  private constructor() {
+    this.baseUrl = process.env.NODE_ENV === 'production' 
+      ? '/api' 
+      : 'http://localhost:3001/api';
+  }
 
   static getInstance(): AIIntegrationService {
     if (!AIIntegrationService.instance) {
@@ -540,6 +553,129 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
 
   private addEducationalDisclaimers(response: string): string {
     return `${response}\n\n⚠️ This is educational content only and not financial advice. Results may vary based on individual circumstances.`;
+  }
+
+  /**
+   * Call ChatGPT API for analysis
+   */
+  async callAIAnalysisAPI(
+    userProfile: EnhancedUserProfile,
+    accounts: Account[],
+    goals: Goal[],
+    analysisType: string = 'general'
+  ): Promise<any> {
+    try {
+      const response = await fetch(`${this.baseUrl}/ai/analyze`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userProfile,
+          accounts,
+          goals,
+          analysisType
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('AI API call failed:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Send chat message to ChatGPT API
+   */
+  async sendChatMessage(
+    userId: string,
+    message: string,
+    userProfile: EnhancedUserProfile,
+    accounts: Account[]
+  ): Promise<{ response: string; fallback?: boolean }> {
+    try {
+      const response = await fetch(`${this.baseUrl}/ai/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          message,
+          userProfile,
+          accounts
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Chat API request failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return {
+        response: data.response,
+        fallback: data.fallback
+      };
+    } catch (error) {
+      console.error('Chat API call failed:', error);
+      return {
+        response: "I'm having trouble connecting right now, but I'm here to help! 😊 Please try again in a moment.",
+        fallback: true
+      };
+    }
+  }
+
+  /**
+   * Check AI service health
+   */
+  async checkAIHealth(): Promise<{ status: string; configured: boolean }> {
+    try {
+      const response = await fetch(`${this.baseUrl}/ai/health`);
+      const data = await response.json();
+      return {
+        status: data.status,
+        configured: data.openai?.configured || false
+      };
+    } catch (error) {
+      console.error('AI health check failed:', error);
+      return {
+        status: 'error',
+        configured: false
+      };
+    }
+  }
+
+  /**
+   * Enhanced generateAIAnalysis method that uses ChatGPT API
+   */
+  async generateAIAnalysisWithAPI(
+    userProfile: EnhancedUserProfile,
+    accounts: Account[],
+    goals: Goal[],
+    analysisType: string = 'general'
+  ): Promise<AIAnalysisResult> {
+    try {
+      // Get existing analysis
+      const baseAnalysis = await this.generateAIAnalysis(userProfile, accounts, goals);
+      
+      // Call ChatGPT API for enhanced insights
+      const aiResponse = await this.callAIAnalysisAPI(userProfile, accounts, goals, analysisType);
+      
+      return {
+        ...baseAnalysis,
+        aiResponse
+      };
+    } catch (error) {
+      console.error('Error generating AI analysis with API:', error);
+      // Return base analysis if API fails
+      return await this.generateAIAnalysis(userProfile, accounts, goals);
+    }
   }
 }
 
