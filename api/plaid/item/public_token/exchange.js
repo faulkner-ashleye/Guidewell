@@ -1,5 +1,5 @@
 // Vercel serverless function for exchanging Plaid public tokens
-import { PlaidApi, PlaidEnvironments, Configuration } from 'plaid';
+const { PlaidApi, PlaidEnvironments, Configuration } = require('plaid');
 
 const configuration = new Configuration({
   basePath: PlaidEnvironments[process.env.PLAID_ENV || 'sandbox'],

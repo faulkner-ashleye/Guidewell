@@ -19,14 +19,15 @@
       "dest": "/api/$1"
     },
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ]
+  ],
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }
 
 
