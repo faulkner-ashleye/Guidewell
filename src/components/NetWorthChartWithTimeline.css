@@ -24,6 +24,10 @@
   margin-bottom: 16px;
 }
 
+.custom-strategy-content .timeline-controls{
+    margin-top:48px;
+}
+
 .timeline-controls {
   display: flex;
   justify-content: center;

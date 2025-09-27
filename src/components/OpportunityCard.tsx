@@ -6,20 +6,12 @@ import './OpportunityCard.css';
 interface OpportunityCardProps {
   opportunity: Opportunity;
   onActionClick: (opportunity: Opportunity) => void;
-  onDismiss: (opportunityId: string) => void;
 }
 
-export function OpportunityCard({ opportunity, onActionClick, onDismiss }: OpportunityCardProps) {
+export function OpportunityCard({ opportunity, onActionClick }: OpportunityCardProps) {
 
   return (
     <div className="opportunity-card">
-      <button 
-        className="sheet-close"
-        onClick={() => onDismiss(opportunity.id)}
-        aria-label="Dismiss opportunity"
-      >
-        <Icon name={IconNames.close} size="md" />
-      </button>
       <div className="opportunity-details">
         <div className="opportunity-metrics">
           {opportunity.currentValue !== undefined && opportunity.currentValue !== null && opportunity.currentValue > 0 && (

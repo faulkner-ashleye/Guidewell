@@ -7,6 +7,10 @@
   border: 1px solid var(--color-root-divider);
 }
 
+.opportunity-card .sheet-close{
+
+}
+
 .opportunity-header {
   display: flex;
   justify-content: space-between;
@@ -66,20 +70,14 @@
 
 .metric {
   text-align: center;
-  padding: 12px;
-  background: #F9FAFB;
+  padding: 8px;
   border-radius: 8px;
-}
-
-.metric.highlight {
-  background: var(--color--background-default);
-  border: 1px solid var(--color-root-divider);
 }
 
 .metric-label {
   display: block;
-  font-size: 12px;
-  color: #6B7280;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
   margin-bottom: 4px;
   font-weight: 500;
 }
@@ -88,7 +86,7 @@
   display: block;
   font-size: 16px;
   font-weight: 600;
-  color: #1F2937;
+  color: var(--color-text-primary);
 }
 
 .metric.highlight .metric-value {

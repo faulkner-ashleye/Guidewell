@@ -203,7 +203,6 @@ export function OpportunitiesDashboard({
               key={opportunity.id}
               opportunity={opportunity}
               onActionClick={handleOpportunityAction}
-              onDismiss={handleDismissOpportunity}
             />
           ))
         )}
