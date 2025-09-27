@@ -48,8 +48,11 @@ export default async function handler(req, res) {
     // Generate AI analysis with encouraging tone
     const prompt = generateAnalysisPrompt(userProfile, accounts, goals, analysisType);
     
+    console.log('🤖 Calling OpenAI API with model:', process.env.OPENAI_MODEL || 'gpt-4o-mini');
+    console.log('📝 Prompt length:', prompt.length);
+    
     const completion = await openai.chat.completions.create({
-      model: process.env.OPENAI_MODEL || 'gpt-4-mini',
+      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
@@ -71,6 +74,8 @@ Remember: This is educational content only, not professional financial advice.`
       max_tokens: 500,
       temperature: 0.7,
     });
+    
+    console.log('✅ OpenAI API call successful');
 
     const aiResponse = completion.choices[0].message.content;
     
@@ -90,7 +95,13 @@ Remember: This is educational content only, not professional financial advice.`
     });
 
   } catch (error) {
-    console.error('AI Analysis Error:', error);
+    console.error('❌ AI Analysis Error:', error);
+    console.error('Error details:', {
+      message: error.message,
+      status: error.status,
+      code: error.code,
+      type: error.type
+    });
     
     // Return fallback analysis if API fails
     const fallbackAnalysis = generateFallbackAnalysis(req.body);
