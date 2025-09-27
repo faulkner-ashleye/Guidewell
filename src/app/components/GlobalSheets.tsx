@@ -5,6 +5,7 @@ import Sheet from './Sheet';
 import GoalModal from '../../components/GoalModal';
 import LogContributionModal from './LogContributionModal';
 import UploadDocumentModal from './UploadDocumentModal';
+import QuickActionsSheet from './QuickActionsSheet';
 import PlaidLinkButton from '../../components/PlaidLinkButton';
 
 export default function GlobalSheets() {
@@ -21,7 +22,8 @@ export default function GlobalSheets() {
     goalModal: { open: false, mode: 'add' as 'add' | 'edit' | 'set', preselectedAccountId: undefined as string | undefined },
     logContribution: { open: false },
     uploadDocument: { open: false },
-    plaidDirect: { open: false }
+    plaidDirect: { open: false },
+    quickActions: { open: false }
   });
 
   // Global functions to open sheets
@@ -50,6 +52,14 @@ export default function GlobalSheets() {
     setGlobalSheets(prev => ({
       ...prev,
       plaidDirect: { open: true }
+    }));
+  };
+
+  const openQuickActions = () => {
+    console.log('openQuickActions called');
+    setGlobalSheets(prev => ({
+      ...prev,
+      quickActions: { open: true }
     }));
   };
 
@@ -82,13 +92,21 @@ export default function GlobalSheets() {
     }));
   };
 
+  const closeQuickActions = () => {
+    setGlobalSheets(prev => ({
+      ...prev,
+      quickActions: { open: false }
+    }));
+  };
+
   // Expose functions globally (you can use a context or global state manager for this)
   React.useEffect(() => {
     (window as any).globalSheets = {
       openGoalModal,
       openLogContribution,
       openUploadDocument,
-      openPlaidDirect
+      openPlaidDirect,
+      openQuickActions
     };
   }, []);
 
@@ -144,6 +162,28 @@ export default function GlobalSheets() {
           }
           
           closePlaidDirect();
+        }}
+      />
+
+      {/* Quick Actions Sheet */}
+      <QuickActionsSheet
+        open={globalSheets.quickActions.open}
+        onClose={closeQuickActions}
+        onAddGoal={() => {
+          closeQuickActions();
+          openGoalModal('add');
+        }}
+        onConnectAccount={() => {
+          closeQuickActions();
+          openPlaidDirect();
+        }}
+        onUploadDocument={() => {
+          closeQuickActions();
+          openUploadDocument();
+        }}
+        onLogContribution={() => {
+          closeQuickActions();
+          openLogContribution();
         }}
       />
     </>

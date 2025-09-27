@@ -8,18 +8,22 @@ export default function AppHeader({
   title,
   leftAction,
   rightAction,
-  showOpportunities = true,
+  showSettings = true,
+  showQuickActions = true,
+  onQuickActionsClick,
 }: {
   title: string;
   leftAction?: ReactNode;
   rightAction?: ReactNode;
-  showOpportunities?: boolean;
+  showSettings?: boolean;
+  showQuickActions?: boolean;
+  onQuickActionsClick?: () => void;
 }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Don't show opportunities button on the opportunities page itself
-  const shouldShowOpportunities = showOpportunities && location.pathname !== '/opportunities';
+  // Don't show settings button on the settings page itself
+  const shouldShowSettings = showSettings && location.pathname !== '/settings';
 
   return (
     <header className="app-header shadow-sm">
@@ -33,13 +37,22 @@ export default function AppHeader({
           </div>
         </div>
         <div className="flex items-center gap-sm">
-          {shouldShowOpportunities && (
+          {shouldShowSettings && (
             <Button
             variant={ButtonVariants.text}
-              onClick={() => navigate('/opportunities')}
-              aria-label="View opportunities and insights"
+              onClick={() => navigate('/settings')}
+              aria-label="Settings"
             >
-              <Icon name={IconNames.lightbulb_outline} size="md" />
+              <Icon name={IconNames.settings} size="md" />
+            </Button>
+          )}
+          {showQuickActions && onQuickActionsClick && (
+            <Button
+              variant={ButtonVariants.text}
+              onClick={onQuickActionsClick}
+              aria-label="Quick actions"
+            >
+              <Icon name={IconNames.add} size="md" />
             </Button>
           )}
           {rightAction && <div>{rightAction}</div>}

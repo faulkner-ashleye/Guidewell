@@ -224,7 +224,7 @@ export function BreakdownModalTest() {
         onClose={() => setIsOpen(false)}
         scope="all"
         strategy="debt_crusher"
-        timeframe="mid"
+        timeframe="3yr"
         extraDollars={500}
         accounts={testAccounts}
         goals={testGoals}

@@ -35,6 +35,7 @@ export default function QuickActionsSheet({
   open, onClose, onAddGoal, onConnectAccount, onLogContribution, onUploadDocument
 }: Props) {
   console.log('QuickActionsSheet rendered with open:', open);
+  console.log('QuickActionsSheet props:', { open, onClose: !!onClose, onAddGoal: !!onAddGoal, onConnectAccount: !!onConnectAccount, onLogContribution: !!onLogContribution, onUploadDocument: !!onUploadDocument });
 
   return (
     <Sheet open={open} onClose={onClose} title="Quick actions">

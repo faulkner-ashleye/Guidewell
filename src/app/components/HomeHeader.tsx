@@ -9,13 +9,17 @@ interface HomeHeaderProps {
   subtitle: string;
   rightAction?: ReactNode;
   insightsCount?: number;
+  showQuickActions?: boolean;
+  onQuickActionsClick?: () => void;
 }
 
 export default function HomeHeader({
   greeting,
   subtitle,
   rightAction,
-  insightsCount = 0
+  insightsCount = 0,
+  showQuickActions = true,
+  onQuickActionsClick
 }: HomeHeaderProps) {
   const navigate = useNavigate();
 
@@ -29,21 +33,22 @@ export default function HomeHeader({
           </div>
         </div>
         <div className="home-header-actions">
-          <div className="insights-button-container">
-            <Button
+          <Button
             variant={ButtonVariants.text}
-              className="insights-button"
-              onClick={() => navigate('/opportunities')}
-              aria-label="View opportunities and insights"
+            onClick={() => navigate('/settings')}
+            aria-label="Settings"
+          >
+            <Icon name={IconNames.settings} size="md" />
+          </Button>
+          {showQuickActions && onQuickActionsClick && (
+            <Button
+              variant={ButtonVariants.text}
+              onClick={onQuickActionsClick}
+              aria-label="Quick actions"
             >
-              <Icon name={IconNames.lightbulb_outline} size="md" />
+              <Icon name={IconNames.add} size="md" />
             </Button>
-            {insightsCount > 0 && (
-              <span className="insights-badge">
-                {insightsCount > 99 ? '99+' : insightsCount}
-              </span>
-            )}
-          </div>
+          )}
           {rightAction && (
             <div className="home-header-action">
               {rightAction}

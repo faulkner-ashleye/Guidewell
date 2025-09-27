@@ -24,7 +24,7 @@ import './StrategyBuilder.css';
 
 type Scope = 'all' | 'debts' | 'savings' | 'investing';
 type Strategy = 'debt_crusher' | 'goal_keeper' | 'nest_builder' | 'steady_payer' | 'juggler' | 'interest_minimizer' | 'safety_builder' | 'auto_pilot' | 'opportunistic_saver' | 'future_investor' | 'balanced_builder' | 'risk_taker';
-type Timeframe = 'short' | 'mid' | 'long';
+type Timeframe = '1yr' | '2yr' | '3yr' | '5yr' | '10yr' | 'custom';
 
 type StrategyBuilderMode = 'build' | 'custom';
 
@@ -44,7 +44,7 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
   const [scopeSelection, setScopeSelection] = useState<'all' | 'one'>('all');
   const [accountId, setAccountId] = useState<string | undefined>(undefined);
   const [strategy, setStrategy] = useState<Strategy>('debt_crusher');
-  const [timeframe, setTimeframe] = useState<Timeframe>('mid');
+  const [timeframe, setTimeframe] = useState<Timeframe>('3yr');
   const [extra, setExtra] = useState<number | undefined>(undefined);
 
   // For build mode
@@ -123,12 +123,12 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
       if (state) {
         setScope(state.scope || 'all');
         setStrategy(state.strategy || 'debt_crusher');
-        setTimeframe(state.timeframe || 'mid');
+        setTimeframe(state.timeframe || '3yr');
         setExtra(state.extra);
       } else if (searchParams.get('scope')) {
         setScope(searchParams.get('scope') as Scope || 'all');
         setStrategy(searchParams.get('strategy') as Strategy || 'debt_crusher');
-        setTimeframe(searchParams.get('timeframe') as Timeframe || 'mid');
+        setTimeframe(searchParams.get('timeframe') as Timeframe || '3yr');
         const extraParam = searchParams.get('extra');
         setExtra(extraParam ? parseFloat(extraParam) : undefined);
       }
@@ -274,9 +274,12 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
       }
 
       const timeframeText = {
-        short: '3-12 months',
-        mid: '1-5 years',
-        long: '5+ years'
+        '1yr': '1 year',
+        '2yr': '2 years',
+        '3yr': '3 years',
+        '5yr': '5 years',
+        '10yr': '10 years',
+        'custom': 'custom timeline'
       };
 
       const scopeText = scope === 'all' ? 'all accounts' : scope;
@@ -323,9 +326,12 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
     if (!avatar) return 'Select a strategy to see your narrative.';
 
     const timeframeText = {
-      short: '3-12 months',
-      mid: '1-5 years',
-      long: '5+ years'
+      '1yr': '1 year',
+      '2yr': '2 years',
+      '3yr': '3 years',
+      '5yr': '5 years',
+      '10yr': '10 years',
+      'custom': 'custom timeline'
     };
 
     const scopeText = scope === 'all' ? 'all accounts' : scope;
@@ -391,6 +397,12 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
       <div className="custom-strategy-page">
         <AppHeader
           title="Custom Strategy"
+          showQuickActions={true}
+          onQuickActionsClick={() => {
+            if ((window as any).globalSheets) {
+              (window as any).globalSheets.openQuickActions();
+            }
+          }}
           leftAction={
             <button onClick={handleBack} className="back-button">
               <Icon name={IconNames.arrow_back} size="lg" />
@@ -420,6 +432,12 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
       <div className="custom-strategy-page">
         <AppHeader
           title="Custom Strategy"
+          showQuickActions={true}
+          onQuickActionsClick={() => {
+            if ((window as any).globalSheets) {
+              (window as any).globalSheets.openQuickActions();
+            }
+          }}
           leftAction={
             <button onClick={handleBack} className="back-button">
               <Icon name={IconNames.arrow_back} size="lg" />
@@ -576,19 +594,29 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
                   >
                     <ChipGroup>
                       <Chip
-                        label="Short (1–2 years)"
-                        selected={timeframe === 'short'}
-                        onClick={() => setTimeframe('short')}
+                        label="1YR"
+                        selected={timeframe === '1yr'}
+                        onClick={() => setTimeframe('1yr')}
                       />
                       <Chip
-                        label="Mid (3–5 years)"
-                        selected={timeframe === 'mid'}
-                        onClick={() => setTimeframe('mid')}
+                        label="2YR"
+                        selected={timeframe === '2yr'}
+                        onClick={() => setTimeframe('2yr')}
                       />
                       <Chip
-                        label="Long (5+ years)"
-                        selected={timeframe === 'long'}
-                        onClick={() => setTimeframe('long')}
+                        label="3YR"
+                        selected={timeframe === '3yr'}
+                        onClick={() => setTimeframe('3yr')}
+                      />
+                      <Chip
+                        label="5YR"
+                        selected={timeframe === '5yr'}
+                        onClick={() => setTimeframe('5yr')}
+                      />
+                      <Chip
+                        label="10YR"
+                        selected={timeframe === '10yr'}
+                        onClick={() => setTimeframe('10yr')}
                       />
                     </ChipGroup>
                   </QuestionBlock>
@@ -782,19 +810,29 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
             >
             <ChipGroup>
               <Chip
-                label="Short (1–2 years)"
-                selected={timeframe === 'short'}
-                onClick={() => handleTimeframeSelect('short')}
+                label="1YR"
+                selected={timeframe === '1yr'}
+                onClick={() => handleTimeframeSelect('1yr')}
               />
               <Chip
-                label="Mid (3–5 years)"
-                selected={timeframe === 'mid'}
-                onClick={() => handleTimeframeSelect('mid')}
+                label="2YR"
+                selected={timeframe === '2yr'}
+                onClick={() => handleTimeframeSelect('2yr')}
               />
               <Chip
-                label="Long (5+ years)"
-                selected={timeframe === 'long'}
-                onClick={() => handleTimeframeSelect('long')}
+                label="3YR"
+                selected={timeframe === '3yr'}
+                onClick={() => handleTimeframeSelect('3yr')}
+              />
+              <Chip
+                label="5YR"
+                selected={timeframe === '5yr'}
+                onClick={() => handleTimeframeSelect('5yr')}
+              />
+              <Chip
+                label="10YR"
+                selected={timeframe === '10yr'}
+                onClick={() => handleTimeframeSelect('10yr')}
               />
             </ChipGroup>
             </QuestionBlock>

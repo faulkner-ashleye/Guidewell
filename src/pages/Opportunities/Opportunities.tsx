@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppState } from '../../state/AppStateContext';
 import { Icon, IconNames } from '../../components/Icon';
@@ -6,6 +6,8 @@ import AppHeader from '../../app/components/AppHeader';
 import { Button, ButtonVariants } from '../../components/Button';
 import { dismissInsights } from '../../hooks/useInsightsCount';
 import { OpportunitiesDashboard } from '../../components/OpportunitiesDashboard';
+import { ContentRecommendationCard } from '../../components/ContentRecommendationCard';
+import { ContentItem, ContentRecommendation } from '../../data/contentLibrary';
 import { Opportunity } from '../../data/marketData';
 import { EnhancedUserProfile } from '../../data/enhancedUserProfile';
 import { UserProfileUtils } from '../../data/enhancedUserProfile';
@@ -19,6 +21,10 @@ export function Opportunities() {
     userProfile,
     goals = []
   } = useAppState();
+  
+  // State for content recommendations
+  const [contentRecommendations, setContentRecommendations] = useState<Array<{ recommendation: ContentRecommendation; content: ContentItem }>>([]);
+  const [contentLoading, setContentLoading] = useState(false);
 
   // Convert AppGoal to data Goal type for OpportunitiesDashboard
   const convertedGoals = useMemo(() => {
@@ -60,7 +66,8 @@ export function Opportunities() {
   return (
     <div className="opportunities-page">
       <AppHeader
-        title="Opportunities"
+        title="Insights"
+        showSettings={false}
         leftAction={
           <Button
             variant={ButtonVariants.text}

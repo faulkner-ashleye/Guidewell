@@ -59,6 +59,7 @@ export const IconNames = {
   close: 'close',
   arrow_back: 'arrow_back',
   arrow_forward: 'arrow_forward',
+  arrow_upward: 'arrow_upward',
   home: 'home',
   settings: 'settings',
   
@@ -135,6 +136,7 @@ export const IconNames = {
   lightbulb_outline: 'lightbulb_outline',
   analytics: 'analytics',
   flag: 'flag',
+  auto_awesome: 'auto_awesome',
   
   // Additional icons for goals
   directions_car: 'directions_car',

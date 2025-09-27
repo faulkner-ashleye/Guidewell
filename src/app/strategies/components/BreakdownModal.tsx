@@ -20,7 +20,7 @@ import './BreakdownModal.css';
 
 type Scope = 'all' | 'debts' | 'savings' | 'investing';
 type Strat = 'debt_crusher' | 'goal_keeper' | 'nest_builder' | 'steady_payer' | 'juggler' | 'interest_minimizer' | 'safety_builder' | 'auto_pilot' | 'opportunistic_saver' | 'future_investor' | 'balanced_builder' | 'risk_taker';
-type Timeframe = 'short' | 'mid' | 'long';
+type Timeframe = '1yr' | '2yr' | '3yr' | '5yr' | '10yr' | 'custom';
 
 type Props = {
   open: boolean;
@@ -63,7 +63,20 @@ export function BreakdownModal({
   const [marketInsights, setMarketInsights] = useState<string[]>([]);
   const [isLoadingInsights, setIsLoadingInsights] = useState(true);
 
-  const months = monthsFor(timeframe);
+  // Helper function to convert timeframe to months
+  const getMonthsForTimeframe = (timeframe: Timeframe): number => {
+    const timeframeMap = {
+      '1yr': 12,
+      '2yr': 24,
+      '3yr': 36,
+      '5yr': 60,
+      '10yr': 120,
+      'custom': 24 // Default for custom
+    };
+    return timeframeMap[timeframe] || 24;
+  };
+
+  const months = getMonthsForTimeframe(timeframe);
 
   // Derive effective allocation
   const effectiveAllocation = allocation || getDefaultAllocation(strategy);
@@ -356,9 +369,12 @@ async function generateAINarrative(
 
     // Add timeframe and scope context
     const timeframeText = {
-      short: '3-12 months',
-      mid: '1-5 years',
-      long: '5+ years'
+      '1yr': '1 year',
+      '2yr': '2 years',
+      '3yr': '3 years',
+      '5yr': '5 years',
+      '10yr': '10 years',
+      'custom': 'custom timeline'
     };
 
     const scopeText = scope === 'all' ? 'all accounts' : scope;
@@ -390,9 +406,12 @@ function generateFallbackNarrative(scope: Scope, strategy: Strat, timeframe: Tim
   };
 
   const timeframeText = {
-    short: '3-12 months',
-    mid: '1-5 years',
-    long: '5+ years'
+    '1yr': '1 year',
+    '2yr': '2 years',
+    '3yr': '3 years',
+    '5yr': '5 years',
+    '10yr': '10 years',
+    'custom': 'custom timeline'
   };
 
   const scopeText = scope === 'all' ? 'all accounts' : scope;

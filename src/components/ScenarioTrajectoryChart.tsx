@@ -28,7 +28,7 @@ import './ScenarioTrajectoryChart.css';
 
 type Scope = 'all' | 'debts' | 'savings' | 'investing';
 type Strategy = 'debt_crusher' | 'goal_keeper' | 'nest_builder' | 'steady_payer' | 'juggler' | 'interest_minimizer' | 'safety_builder' | 'auto_pilot' | 'opportunistic_saver' | 'future_investor' | 'balanced_builder' | 'risk_taker';
-type Timeframe = 'short' | 'mid' | 'long' | 'custom';
+type Timeframe = '1yr' | '2yr' | '3yr' | '5yr' | '10yr' | 'custom';
 
 interface ScenarioTrajectoryChartProps {
   accounts: Account[];
@@ -40,6 +40,7 @@ interface ScenarioTrajectoryChartProps {
   allocation?: { debt: number; savings: number; investing: number };
   onTimelineChange?: (timeframe: Timeframe | number) => void;
   onExtraMonthlyChange?: (amount: number) => void;
+  showTimelineControls?: boolean;
   className?: string;
 }
 
@@ -54,6 +55,8 @@ interface ChartDataPoint {
   netWorthWithExtra: number;
   milestone?: string;
   milestoneDate?: string;
+  actualDate?: string;
+  displayDate?: string;
 }
 
 interface KPIData {
@@ -66,9 +69,11 @@ interface KPIData {
 }
 
 const TIMELINE_PRESETS = [
-  { id: 'short' as Timeframe, label: 'Short (1–2 years)', months: 18 },
-  { id: 'mid' as Timeframe, label: 'Mid (3–5 years)', months: 36 },
-  { id: 'long' as Timeframe, label: 'Long (5+ years)', months: 60 },
+  { id: '1yr' as Timeframe, label: '1YR', months: 12 },
+  { id: '2yr' as Timeframe, label: '2YR', months: 24 },
+  { id: '3yr' as Timeframe, label: '3YR', months: 36 },
+  { id: '5yr' as Timeframe, label: '5YR', months: 60 },
+  { id: '10yr' as Timeframe, label: '10YR', months: 120 },
   { id: 'custom' as Timeframe, label: 'Custom', months: 24 }
 ];
 
@@ -82,10 +87,16 @@ export function ScenarioTrajectoryChart({
   allocation,
   onTimelineChange,
   onExtraMonthlyChange,
+  showTimelineControls = true,
   className
 }: ScenarioTrajectoryChartProps) {
   const [selectedTimeline, setSelectedTimeline] = useState<Timeframe>(timeframe);
-  const [customMonths, setCustomMonths] = useState<number>(24);
+  const [customEndDate, setCustomEndDate] = useState<string>(() => {
+    // Default to 2 years from now
+    const futureDate = new Date();
+    futureDate.setFullYear(futureDate.getFullYear() + 2);
+    return futureDate.toISOString().split('T')[0];
+  });
   const [isEditingTimeline, setIsEditingTimeline] = useState(false);
 
   // Calculate current financial state
@@ -113,13 +124,31 @@ export function ScenarioTrajectoryChart({
     };
   }, [goals]);
 
-  // Calculate timeline months
+  // Calculate timeline months based on selected timeframe
   const timelineMonths = useMemo(() => {
     if (selectedTimeline === 'custom') {
-      return customMonths;
+      const startDate = new Date();
+      const endDate = new Date(customEndDate);
+      const diffTime = endDate.getTime() - startDate.getTime();
+      const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30.44)); // Average days per month
+      return Math.max(1, diffMonths); // Ensure at least 1 month
     }
-    return monthsFor(selectedTimeline);
-  }, [selectedTimeline, customMonths]);
+    const preset = TIMELINE_PRESETS.find(p => p.id === selectedTimeline);
+    return preset?.months || 24;
+  }, [selectedTimeline, customEndDate]);
+
+  // Helper function for use in other places (like the preview)
+  const getMonthsForTimeframe = (timeframe: Timeframe): number => {
+    if (timeframe === 'custom') {
+      const startDate = new Date();
+      const endDate = new Date(customEndDate);
+      const diffTime = endDate.getTime() - startDate.getTime();
+      const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30.44)); // Average days per month
+      return Math.max(1, diffMonths); // Ensure at least 1 month
+    }
+    const preset = TIMELINE_PRESETS.find(p => p.id === timeframe);
+    return preset?.months || 24;
+  };
 
   // Calculate KPIs
   const kpis = useMemo((): KPIData => {
@@ -154,6 +183,14 @@ export function ScenarioTrajectoryChart({
     // Use avatar-specific allocations or fallback to default
     const avatarAllocation = allocation || { debt: 30, savings: 50, investing: 20 };
 
+    // Calculate start date for the timeline
+    const startDate = new Date();
+    if (selectedTimeline === 'custom') {
+      // For custom timeline, work backwards from the end date
+      const endDate = new Date(customEndDate);
+      startDate.setTime(endDate.getTime() - (timelineMonths * 30.44 * 24 * 60 * 60 * 1000));
+    }
+
     for (let month = 0; month <= timelineMonths; month++) {
       // Base contributions
       const baseMonthly = 0; // No default contribution - use actual user data
@@ -183,6 +220,10 @@ export function ScenarioTrajectoryChart({
         });
       }
 
+      // Calculate the actual date for this month
+      const currentDate = new Date(startDate);
+      currentDate.setMonth(currentDate.getMonth() + month);
+
       data.push({
         month,
         checking: checkingGrowth,
@@ -193,12 +234,14 @@ export function ScenarioTrajectoryChart({
         netWorth,
         netWorthWithExtra,
         milestone,
-        milestoneDate
+        milestoneDate,
+        actualDate: currentDate.toISOString().split('T')[0], // YYYY-MM-DD format
+        displayDate: currentDate.toLocaleDateString('en-US', { month: 'short', year: '2-digit' })
       });
     }
 
     return data;
-  }, [currentState, timelineMonths, extraMonthly, mainGoal.target, allocation]);
+  }, [currentState, timelineMonths, extraMonthly, mainGoal.target, allocation, selectedTimeline, customEndDate]);
 
   // Handle timeline changes
   const handleTimelineChange = (timeline: typeof TIMELINE_PRESETS[0]) => {
@@ -211,7 +254,8 @@ export function ScenarioTrajectoryChart({
   };
 
   const handleCustomTimelineSave = () => {
-    onTimelineChange?.(customMonths);
+    const months = getMonthsForTimeframe('custom');
+    onTimelineChange?.(months);
     setIsEditingTimeline(false);
   };
 
@@ -222,7 +266,7 @@ export function ScenarioTrajectoryChart({
       return (
         <div className="scenario-tooltip">
           <div className="tooltip-header">
-            Month {label}
+            {data.displayDate || `Month ${data.month}`}
           </div>
           <div className="tooltip-content">
             <div className="tooltip-row">
@@ -267,13 +311,38 @@ export function ScenarioTrajectoryChart({
       </div>
 
       <Card className="scenario-trajectory-chart">
-        {/* Chart Area - Above timeline controls */}
+        {/* Timeline Controls */}
+        {showTimelineControls && (
+          <div className="timeline-controls">
+            <div className="timeline-chips">
+              {TIMELINE_PRESETS.slice(0, 5).map(preset => (
+                <Chip
+                  key={preset.id}
+                  label={preset.label}
+                  selected={selectedTimeline === preset.id}
+                  onClick={() => handleTimelineChange(preset)}
+                />
+              ))}
+            </div>
+            <Button
+              variant={ButtonVariants.text}
+              size="small"
+              onClick={() => handleTimelineChange(TIMELINE_PRESETS[5])} // Custom option
+              aria-label="Custom timeline"
+              className="custom-timeline-button"
+            >
+              <Icon name={IconNames.calendar_today} size="sm" />
+            </Button>
+          </div>
+        )}
+
+        {/* Chart Area */}
         <div className="chart-container">
         <ResponsiveContainer width="100%" height={400}>
           <ComposedChart data={chartData} margin={{ top: 20, right: 10, left: 5, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
             <XAxis
-              dataKey="month"
+              dataKey="displayDate"
               stroke="var(--color-text-muted)"
               interval={Math.ceil(timelineMonths / 8)}
             />
@@ -364,6 +433,25 @@ export function ScenarioTrajectoryChart({
         </ResponsiveContainer>
       </div>
 
+      {/* Extra Monthly Control */}
+      {showTimelineControls && (
+        <div className="extra-monthly-control">
+          <div className="extra-labels">
+            <label className="control-label">Extra Monthly</label>
+            <span className="slider-value">{formatCurrency(extraMonthly)}</span>
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="2000"
+            step="50"
+            value={extraMonthly}
+            onChange={(e) => onExtraMonthlyChange?.(parseInt(e.target.value))}
+            className="extra-slider"
+          />
+        </div>
+      )}
+
       {/* Legend */}
       <div className="chart-legend">
         <div className="legend-section">
@@ -411,35 +499,6 @@ export function ScenarioTrajectoryChart({
         </div>
       </div>
 
-      {/* Timeline Controls */}
-      <div className="timeline-controls">
-        <div className="timeline-chips">
-          {TIMELINE_PRESETS.map(preset => (
-            <Chip
-              key={preset.id}
-              label={preset.label}
-              selected={selectedTimeline === preset.id}
-              onClick={() => handleTimelineChange(preset)}
-            />
-          ))}
-        </div>
-
-        <div className="extra-monthly-control">
-        <div className="extra-labels">
-          <label className="control-label">Extra Monthly</label>
-          <span className="slider-value">{formatCurrency(extraMonthly)}</span>
-          </div>
-          <input
-            type="range"
-            min="0"
-            max="2000"
-            step="50"
-            value={extraMonthly}
-            onChange={(e) => onExtraMonthlyChange?.(parseInt(e.target.value))}
-            className="extra-slider"
-          />
-        </div>
-      </div>
 
       {/* Custom Timeline Modal */}
       {isEditingTimeline && (
@@ -448,14 +507,28 @@ export function ScenarioTrajectoryChart({
           <div className="modal-content">
             <h4>Custom Timeline</h4>
             <div className="timeline-input-group">
-              <label>Months:</label>
+              <label>Target Date:</label>
               <input
-                type="number"
-                min="6"
-                max="360"
-                value={customMonths}
-                onChange={(e) => setCustomMonths(parseInt(e.target.value) || 24)}
+                type="date"
+                value={customEndDate}
+                min={new Date().toISOString().split('T')[0]}
+                max={new Date(Date.now() + 30 * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]} // 30 years from now
+                onChange={(e) => setCustomEndDate(e.target.value)}
               />
+              <div className="timeline-preview">
+                {(() => {
+                  const months = timelineMonths;
+                  const years = Math.floor(months / 12);
+                  const remainingMonths = months % 12;
+                  if (years > 0 && remainingMonths > 0) {
+                    return `${years} year${years > 1 ? 's' : ''} and ${remainingMonths} month${remainingMonths > 1 ? 's' : ''}`;
+                  } else if (years > 0) {
+                    return `${years} year${years > 1 ? 's' : ''}`;
+                  } else {
+                    return `${months} month${months > 1 ? 's' : ''}`;
+                  }
+                })()}
+              </div>
             </div>
             <div className="modal-actions">
               <Button

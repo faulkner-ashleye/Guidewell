@@ -2,7 +2,7 @@ import React from 'react';
 
 export interface ButtonProps {
   children: React.ReactNode;
-  variant?: 'contained' | 'outline' | 'text';
+  variant?: 'contained' | 'outline' | 'text' | 'round';
   color?: 'secondary' | 'error';
   size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
@@ -62,7 +62,8 @@ export function Button({
 export const ButtonVariants = {
   contained: 'contained' as const,
   outline: 'outline' as const,
-  text: 'text' as const
+  text: 'text' as const,
+  round: 'round' as const
 };
 
 export const ButtonColors = {

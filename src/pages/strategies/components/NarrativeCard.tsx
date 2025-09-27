@@ -35,7 +35,7 @@ export function NarrativeCard({
         {loading ? (
           <div className="narrative-loading">
             <div className="loading-spinner"></div>
-            <p>AI is analyzing your financial situation and generating personalized insights...</p>
+            <p>I'm putting the pieces together so your options are easier to see…</p>
           </div>
         ) : error ? (
           <div className="narrative-error">

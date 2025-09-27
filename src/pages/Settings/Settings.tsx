@@ -153,6 +153,13 @@ export function Settings() {
     <div className="settings">
       <AppHeader
         title="Settings"
+        showSettings={false}
+        showQuickActions={true}
+        onQuickActionsClick={() => {
+          if ((window as any).globalSheets) {
+            (window as any).globalSheets.openQuickActions();
+          }
+        }}
       />
       <div className="settings-content">
         {/* Financial Profile Section */}

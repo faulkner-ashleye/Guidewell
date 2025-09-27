@@ -82,6 +82,113 @@ export function Home() {
     return UserProfileUtils.createEnhancedProfile(userProfile, accounts, convertedGoals);
   }, [userProfile, accounts, convertedGoals]);
 
+  // Helper functions for content categorization
+  const getCategoryFromContent = (content: string): 'debt' | 'savings' | 'investing' | 'budgeting' | 'credit' | 'retirement' | 'general' => {
+    const lowerContent = content.toLowerCase();
+    if (lowerContent.includes('debt') || lowerContent.includes('payoff') || lowerContent.includes('loan')) return 'debt';
+    if (lowerContent.includes('savings') || lowerContent.includes('emergency') || lowerContent.includes('fund')) return 'savings';
+    if (lowerContent.includes('invest') || lowerContent.includes('stock') || lowerContent.includes('portfolio')) return 'investing';
+    if (lowerContent.includes('budget') || lowerContent.includes('expense') || lowerContent.includes('spending')) return 'budgeting';
+    if (lowerContent.includes('credit') || lowerContent.includes('score')) return 'credit';
+    if (lowerContent.includes('retirement') || lowerContent.includes('401k') || lowerContent.includes('ira')) return 'retirement';
+    return 'general';
+  };
+
+  const getDifficultyFromContent = (content: string): 'beginner' | 'intermediate' | 'advanced' => {
+    const lowerContent = content.toLowerCase();
+    const advancedTerms = ['portfolio', 'diversification', 'tax-advantaged', 'compound', 'strategic', 'optimization'];
+    const beginnerTerms = ['basic', 'simple', 'start', 'begin', 'first', 'intro'];
+    
+    if (advancedTerms.some(term => lowerContent.includes(term))) return 'advanced';
+    if (beginnerTerms.some(term => lowerContent.includes(term))) return 'beginner';
+    return 'intermediate';
+  };
+
+  const createSummaryFromContent = (content: string): string => {
+    // Create a concise summary that's different from the full content
+    const lowerContent = content.toLowerCase();
+    
+    if (lowerContent.includes('debt')) {
+      return 'Learn effective strategies to tackle debt and improve your financial health.';
+    }
+    if (lowerContent.includes('savings') || lowerContent.includes('emergency')) {
+      return 'Discover how to build a strong financial foundation with proper savings habits.';
+    }
+    if (lowerContent.includes('invest')) {
+      return 'Explore investment opportunities that align with your financial goals and risk tolerance.';
+    }
+    if (lowerContent.includes('budget')) {
+      return 'Master budgeting techniques to take control of your finances and reach your goals.';
+    }
+    if (lowerContent.includes('credit')) {
+      return 'Improve your credit score and understand how it impacts your financial opportunities.';
+    }
+    
+    return 'Personalized financial guidance to help you make informed decisions about your money.';
+  };
+
+  const createKeyPointsFromContent = (content: string): string[] => {
+    // Create varied key points based on content category
+    const lowerContent = content.toLowerCase();
+    
+    if (lowerContent.includes('debt')) {
+      return [
+        'Prioritize high-interest debt first',
+        'Consider debt consolidation options',
+        'Create a realistic payment plan',
+        'Track your progress regularly'
+      ];
+    }
+    if (lowerContent.includes('savings') || lowerContent.includes('emergency')) {
+      return [
+        'Start with a small, achievable goal',
+        'Automate your savings contributions',
+        'Keep emergency funds easily accessible',
+        'Gradually increase your savings rate'
+      ];
+    }
+    if (lowerContent.includes('invest')) {
+      return [
+        'Start with employer retirement matching',
+        'Diversify your investment portfolio',
+        'Consider your risk tolerance',
+        'Invest regularly for long-term growth'
+      ];
+    }
+    if (lowerContent.includes('budget')) {
+      return [
+        'Track all income and expenses',
+        'Categorize spending habits',
+        'Set realistic spending limits',
+        'Review and adjust monthly'
+      ];
+    }
+    
+    return [
+      'Assess your current financial situation',
+      'Set clear, achievable goals',
+      'Create a plan that fits your lifestyle',
+      'Monitor progress and adjust as needed'
+    ];
+  };
+
+  const createFullContentFromRecommendation = (rec: string, category: 'debt' | 'savings' | 'investing' | 'budgeting' | 'credit' | 'retirement' | 'general'): string => {
+    // Create expanded content that's more detailed than the original recommendation
+    const baseContent = rec;
+    
+    const categoryContext: Record<string, string> = {
+      debt: '\n\nDebt management is a crucial part of financial health. By focusing on high-interest debts first and creating a systematic approach, you can reduce your overall debt burden and improve your credit score over time.',
+      savings: '\n\nBuilding savings provides financial security and peace of mind. An emergency fund acts as a buffer against unexpected expenses, while long-term savings help you achieve major life goals.',
+      investing: '\n\nInvesting allows your money to work for you over time. By starting early and staying consistent, you can build substantial wealth through the power of compound growth.',
+      budgeting: '\n\nA well-planned budget gives you control over your finances and helps you allocate resources toward your most important goals. Regular review and adjustment ensure your budget stays relevant to your changing needs.',
+      credit: '\n\nGood credit opens doors to better interest rates, loan approvals, and financial opportunities. Understanding how credit works and managing it responsibly is essential for long-term financial success.',
+      retirement: '\n\nRetirement planning is about securing your financial future. By starting early and maximizing employer matching, you can build a substantial nest egg for your golden years.',
+      general: '\n\nTaking control of your finances requires knowledge, planning, and consistent action. Start with small steps and build momentum toward your financial goals.'
+    };
+    
+    return baseContent + (categoryContext[category] || categoryContext.general);
+  };
+
   // Load AI-powered content recommendations
   useEffect(() => {
     const loadContentRecommendations = async () => {
@@ -105,32 +212,62 @@ export function Home() {
         if (response.ok) {
           const data = await response.json();
           
-          // Convert AI recommendations to content items
-          const recommendations = data.recommendations?.slice(0, 3).map((rec: string, index: number) => ({
-            recommendation: {
-              contentId: `ai-rec-${index}`,
-              reason: rec,
-              priority: 'high' as const,
-              personalizedFor: enhancedUserProfile.firstName || 'User'
-            },
-            content: {
-              id: `ai-rec-${index}`,
-              title: rec.split(':')[0] || rec.substring(0, 50) + '...',
-              type: 'article' as const,
-              category: 'general' as const,
-              difficulty: 'intermediate' as const,
-              estimatedTime: 5,
-              tags: ['personalized', 'ai-generated'],
-              content: rec,
-              summary: rec,
-              keyPoints: [rec],
-              prerequisites: [],
-              relatedContent: [],
-              lastUpdated: new Date().toISOString(),
-              author: 'Guidewell AI',
-              version: '1.0'
-            }
-          })) || [];
+          // Convert AI recommendations to content items with deduplication
+          const rawRecommendations = data.recommendations || [];
+          const seenTitles = new Set<string>();
+          const seenContent = new Set<string>();
+          
+          const recommendations = rawRecommendations
+            .filter((rec: string) => {
+              const title = rec.split(':')[0] || rec.substring(0, 50);
+              const content = rec.toLowerCase();
+              
+              // Skip if we've already seen this title or very similar content
+              if (seenTitles.has(title) || seenContent.has(content)) {
+                return false;
+              }
+              
+              seenTitles.add(title);
+              seenContent.add(content);
+              return true;
+            })
+            .slice(0, 1)
+            .map((rec: string, index: number) => {
+              const title = rec.split(':')[0] || rec.substring(0, 50) + '...';
+              const category = getCategoryFromContent(rec);
+              const difficulty = getDifficultyFromContent(rec);
+              
+              // Create varied content structure to avoid repetition
+              const summary = createSummaryFromContent(rec);
+              const keyPoints = createKeyPointsFromContent(rec);
+              const fullContent = createFullContentFromRecommendation(rec, category);
+              
+              return {
+                recommendation: {
+                  contentId: `ai-rec-${Date.now()}-${index}`,
+                  reason: rec,
+                  priority: 'high' as const,
+                  personalizedFor: enhancedUserProfile.firstName || 'User'
+                },
+                content: {
+                  id: `ai-rec-${Date.now()}-${index}`,
+                  title: title,
+                  type: 'article' as const,
+                  category: category,
+                  difficulty: difficulty,
+                  estimatedTime: Math.max(3, Math.min(15, Math.floor(rec.length / 50))),
+                  tags: ['personalized', 'ai-generated', category],
+                  content: fullContent,
+                  summary: summary,
+                  keyPoints: keyPoints,
+                  prerequisites: [],
+                  relatedContent: [],
+                  lastUpdated: new Date().toISOString(),
+                  author: 'Guidewell AI',
+                  version: '1.0'
+                }
+              };
+            });
 
           setContentRecommendations(recommendations);
         } else {

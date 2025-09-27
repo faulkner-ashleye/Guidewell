@@ -182,7 +182,15 @@ export function Strategies() {
 
   return (
     <div className="strategies">
-      <AppHeader title="Strategies" />
+      <AppHeader 
+        title="Strategies" 
+        showQuickActions={true}
+        onQuickActionsClick={() => {
+          if ((window as any).globalSheets) {
+            (window as any).globalSheets.openQuickActions();
+          }
+        }}
+      />
 
 
       <div className="strategy-page">

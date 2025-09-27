@@ -100,6 +100,12 @@ export function Plan() {
     <div className="plan-page">
       <AppHeader
         title="Plan"
+        showQuickActions={true}
+        onQuickActionsClick={() => {
+          if ((window as any).globalSheets) {
+            (window as any).globalSheets.openQuickActions();
+          }
+        }}
       />
 
 

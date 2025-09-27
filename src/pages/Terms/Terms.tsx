@@ -12,6 +12,12 @@ export function Terms() {
     <div className="terms-page">
       <AppHeader
         title="Terms of Service"
+        showQuickActions={true}
+        onQuickActionsClick={() => {
+          if ((window as any).globalSheets) {
+            (window as any).globalSheets.openQuickActions();
+          }
+        }}
         leftAction={
           <Button
             variant={ButtonVariants.text}
