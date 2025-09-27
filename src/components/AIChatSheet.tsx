@@ -220,6 +220,9 @@ export function AIChatSheet({ open, onClose }: AIChatSheetProps) {
   };
 
   const personalizedQuestions = generatePersonalizedQuestions();
+  
+  // Debug: Log the generated questions
+  console.log('Generated personalized questions:', personalizedQuestions);
 
   // Helper function to format message content with proper line breaks
   const formatMessageContent = (content: any) => {
@@ -255,18 +258,24 @@ export function AIChatSheet({ open, onClose }: AIChatSheetProps) {
             <div className="chat-empty">
               <p>Ask me anything about your finances! 💬</p>
               <div className="suggested-questions">
-                {personalizedQuestions.map((q, index) => (
+                {personalizedQuestions.map((questionObj, index) => (
                   <Button 
                     key={index}
                     variant="outline" 
                     size="small" 
                     onClick={() => {
-                      console.log('Button clicked, question object:', q, 'question property:', q.question);
-                      sendChatMessage(q.question);
+                      console.log('Button clicked, question object:', questionObj, 'question property:', questionObj.question);
+                      const questionText = questionObj.question;
+                      console.log('Question text to send:', questionText);
+                      if (questionText) {
+                        sendChatMessage(questionText);
+                      } else {
+                        console.error('Question text is undefined!', questionObj);
+                      }
                     }}
                     style={{ marginBottom: '8px', textAlign: 'left' }}
                   >
-                    {q.text}
+                    {questionObj.text}
                   </Button>
                 ))}
               </div>
