@@ -136,7 +136,7 @@ export function OpportunitiesDashboard({
       <div className="opportunities-dashboard">
         <div className="loading-state">
           <div className="loading-spinner"></div>
-          <p>🤖 AI is generating personalized content recommendations...</p>
+          <p>I'm putting the pieces together so your options are easier to see…</p>
         </div>
       </div>
     );

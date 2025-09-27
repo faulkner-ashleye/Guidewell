@@ -825,6 +825,13 @@ body.sheet-open {
     display: flex;
     gap: 4px;
     align-items: center;
+    margin-bottom: 8px;
+}
+
+.typing-text {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    font-style: italic;
 }
 
 .typing-indicator span {

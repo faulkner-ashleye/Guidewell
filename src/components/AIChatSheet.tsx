@@ -287,6 +287,7 @@ export function AIChatSheet({ open, onClose }: AIChatSheetProps) {
                   <span></span>
                   <span></span>
                 </div>
+                <div className="typing-text">Wellie is typing...</div>
               </div>
             </div>
           )}
