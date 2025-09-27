@@ -62,7 +62,7 @@ Remember: This is educational content only, not professional financial advice.`
     };
 
     const completion = await openai.chat.completions.create({
-      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+      model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
       messages: [systemMessage, ...conversation],
       max_tokens: 300,
       temperature: 0.7,

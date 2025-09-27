@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
   try {
     const hasApiKey = !!process.env.OPENAI_API_KEY;
-    const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+    const model = process.env.OPENAI_MODEL || 'gpt-3.5-turbo';
     
     res.status(200).json({
       status: 'healthy',

@@ -48,11 +48,11 @@ export default async function handler(req, res) {
     // Generate AI analysis with encouraging tone
     const prompt = generateAnalysisPrompt(userProfile, accounts, goals, analysisType);
     
-    console.log('🤖 Calling OpenAI API with model:', process.env.OPENAI_MODEL || 'gpt-4o-mini');
+    console.log('🤖 Calling OpenAI API with model:', process.env.OPENAI_MODEL || 'gpt-3.5-turbo');
     console.log('📝 Prompt length:', prompt.length);
     
     const completion = await openai.chat.completions.create({
-      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+      model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
       messages: [
         {
           role: 'system',
