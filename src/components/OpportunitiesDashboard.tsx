@@ -148,7 +148,7 @@ export function OpportunitiesDashboard({
     return (
       <div className="opportunities-dashboard">
         <div className="dashboard-header">
-          <h1>Insights</h>
+          <h1>Insights</h1>
           <div className="market-data-status">
             <span className="status-indicator loading">Loading...</span>
           </div>

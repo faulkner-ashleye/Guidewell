@@ -1,5 +1,6 @@
 import React from 'react';
 import { Opportunity } from '../data/marketData';
+import { Icon, IconNames } from './Icon';
 import './OpportunityCard.css';
 
 interface OpportunityCardProps {
@@ -12,28 +13,28 @@ export function OpportunityCard({ opportunity, onActionClick, onDismiss }: Oppor
 
   const getEffortIcon = (effort: string) => {
     switch (effort) {
-      case 'low': return '⚡';
-      case 'medium': return '🔧';
-      case 'high': return '🏗️';
-      default: return '📋';
+      case 'low': return IconNames.lightbulb_outline;
+      case 'medium': return IconNames.settings;
+      case 'high': return IconNames.trending_up;
+      default: return IconNames.info;
     }
   };
 
   const getTimeframeIcon = (timeframe: string) => {
     switch (timeframe) {
-      case 'immediate': return '🚀';
-      case 'short_term': return '📅';
-      case 'long_term': return '🗓️';
-      default: return '⏰';
+      case 'immediate': return IconNames.auto_awesome;
+      case 'short_term': return IconNames.schedule;
+      case 'long_term': return IconNames.calendar_today;
+      default: return IconNames.access_time;
     }
   };
 
   const getRiskIcon = (risk: string) => {
     switch (risk) {
-      case 'low': return '✅';
-      case 'medium': return '⚠️';
-      case 'high': return '🚨';
-      default: return '❓';
+      case 'low': return IconNames.check_circle;
+      case 'medium': return IconNames.warning;
+      case 'high': return IconNames.error;
+      default: return IconNames.help;
     }
   };
 
@@ -70,15 +71,21 @@ export function OpportunityCard({ opportunity, onActionClick, onDismiss }: Oppor
 
         <div className="opportunity-attributes">
           <div className="attribute">
-            <span className="attribute-icon">{getEffortIcon(opportunity.effort)}</span>
+            <span className="attribute-icon">
+              <Icon name={getEffortIcon(opportunity.effort)} size="sm" />
+            </span>
             <span className="attribute-text">{opportunity.effort} effort</span>
           </div>
           <div className="attribute">
-            <span className="attribute-icon">{getTimeframeIcon(opportunity.timeframe)}</span>
+            <span className="attribute-icon">
+              <Icon name={getTimeframeIcon(opportunity.timeframe)} size="sm" />
+            </span>
             <span className="attribute-text">{opportunity.timeframe.replace('_', ' ')}</span>
           </div>
           <div className="attribute">
-            <span className="attribute-icon">{getRiskIcon(opportunity.risk)}</span>
+            <span className="attribute-icon">
+              <Icon name={getRiskIcon(opportunity.risk)} size="sm" />
+            </span>
             <span className="attribute-text">{opportunity.risk} risk</span>
           </div>
         </div>

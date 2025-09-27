@@ -5,9 +5,22 @@
   margin-bottom: 16px;
   overflow: hidden;
   border: 1px solid var(--color-root-divider);
-  position: relative;
 }
 
+.opportunity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 16px 0 16px;
+}
+
+.opportunity-title h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.4;
+}
 
 .opportunity-badges {
   display: flex;
@@ -25,9 +38,6 @@
 }
 
 .dismiss-button {
-  position: absolute;
-  top: 8px;
-  right: 8px;
   background: none;
   border: none;
   font-size: 20px;
@@ -36,7 +46,6 @@
   padding: 4px;
   border-radius: 4px;
   transition: background-color 0.2s ease;
-  z-index: 10;
 }
 
 .dismiss-button:hover {
@@ -97,8 +106,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 14px;
-  color: #6B7280;
+  color: var(--color-text-secondary);
 }
 
 .attribute-icon {
@@ -145,8 +153,8 @@
   display: flex;
   gap: 12px;
   padding: 16px;
-  background: #F9FAFB;
-  border-top: 1px solid #E5E7EB;
+  background: var(--color-background-paper);
+  border-top: 1px solid var(--color-root-divider);
 }
 
 .action-button {
