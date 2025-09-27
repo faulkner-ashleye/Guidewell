@@ -60,6 +60,10 @@
   margin: var(--spacing-sm) auto var(--spacing-2xl);
 }
 
+text.recharts-text.recharts-cartesian-axis-tick-value{
+    font-size: var(--font-size-xs);
+}
+
 .extra-labels{
     display: flex;
     flex-direction:row;

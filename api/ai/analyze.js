@@ -160,7 +160,7 @@ Format your response as JSON with these fields:
   "motivation": "encouraging message about their financial journey"
 }
 
-CRITICAL: You must return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks, do NOT use backticks, do NOT add any formatting. Just return the pure JSON object starting with { and ending with }.
+CRITICAL: You must return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks, do NOT use backticks, do NOT add any formatting. Just return the pure JSON object starting with { and ending with }.`;
   }
 
   // Check if this is a strategy-specific analysis
@@ -209,7 +209,7 @@ Format your response as JSON with these fields:
   "motivation": "motivational closing message"
 }
 
-CRITICAL: You must return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks, do NOT use backticks, do NOT add any formatting. Just return the pure JSON object starting with { and ending with }.
+CRITICAL: You must return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks, do NOT use backticks, do NOT add any formatting. Just return the pure JSON object starting with { and ending with }.`;
   }
 
   // Default analysis prompt for general analysis
@@ -278,12 +278,30 @@ function parseAIResponse(response, analysisType) {
     
     // Try to parse as JSON
     const parsed = JSON.parse(cleanedResponse);
+    
+    // Clean up the parsed content to remove any remaining JSON artifacts
+    const cleanText = (text) => {
+      if (!text) return text;
+      return text
+        .replace(/```json\s*/g, '')
+        .replace(/```\s*/g, '')
+        .replace(/^\s*[\{\[]\s*/, '')
+        .replace(/\s*[\}\]]\s*$/, '')
+        .replace(/["']/g, '')
+        .replace(/\\n/g, '\n')
+        .replace(/\\"/g, '"')
+        .replace(/\\'/g, "'")
+        .trim();
+    };
+    
     return {
       analysisType,
-      summary: parsed.summary || cleanedResponse,
-      recommendations: parsed.recommendations || [],
-      nextStep: parsed.nextStep || '',
-      motivation: parsed.motivation || '',
+      summary: cleanText(parsed.summary) || cleanText(response),
+      recommendations: Array.isArray(parsed.recommendations) 
+        ? parsed.recommendations.map(cleanText)
+        : [],
+      nextStep: cleanText(parsed.nextStep) || '',
+      motivation: cleanText(parsed.motivation) || '',
       rawResponse: response
     };
   } catch (error) {
@@ -296,9 +314,21 @@ function parseAIResponse(response, analysisType) {
       fallbackSummary = summaryMatch[1];
     }
     
+    // Clean the fallback summary
+    const cleanedSummary = fallbackSummary
+      .replace(/```json\s*/g, '')
+      .replace(/```\s*/g, '')
+      .replace(/^\s*[\{\[]\s*/, '')
+      .replace(/\s*[\}\]]\s*$/, '')
+      .replace(/["']/g, '')
+      .replace(/\\n/g, '\n')
+      .replace(/\\"/g, '"')
+      .replace(/\\'/g, "'")
+      .trim();
+    
     return {
       analysisType,
-      summary: fallbackSummary,
+      summary: cleanedSummary,
       recommendations: [],
       nextStep: '',
       motivation: '',

@@ -40,19 +40,21 @@ export default function AppHeader({
           {shouldShowSettings && (
             <Button
             variant={ButtonVariants.text}
+              size="small"
               onClick={() => navigate('/settings')}
               aria-label="Settings"
             >
-              <Icon name={IconNames.settings} size="md" />
+              <Icon name={IconNames.settings} size="sm" />
             </Button>
           )}
           {showQuickActions && onQuickActionsClick && (
             <Button
               variant={ButtonVariants.text}
+              size="small"
               onClick={onQuickActionsClick}
               aria-label="Quick actions"
             >
-              <Icon name={IconNames.add} size="md" />
+              <Icon name={IconNames.add} size="sm" />
             </Button>
           )}
           {rightAction && <div>{rightAction}</div>}

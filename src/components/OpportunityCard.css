@@ -1,16 +1,10 @@
 .opportunity-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--color-background-paper);
+  border-radius: var(--spacing-sm);
+  box-shadow:var(--shadow-sm);
   margin-bottom: 16px;
   overflow: hidden;
-  border: 1px solid #E5E7EB;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.opportunity-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--color-root-divider);
 }
 
 .opportunity-header {
@@ -136,7 +130,6 @@
 }
 
 .opportunity-action {
-  background: #F9FAFB;
   padding: 12px;
   border-radius: 8px;
   margin-bottom: 16px;
@@ -144,8 +137,7 @@
 
 .action-required,
 .estimated-impact {
-  font-size: 13px;
-  color: #374151;
+  color: var(--color-text-secondary);
   margin-bottom: 8px;
 }
 
@@ -204,16 +196,16 @@
     grid-template-columns: 1fr;
     gap: 12px;
   }
-  
+
   .opportunity-attributes {
     flex-direction: column;
     gap: 8px;
   }
-  
+
   .opportunity-footer {
     flex-direction: column;
   }
-  
+
   .action-button {
     flex: none;
   }

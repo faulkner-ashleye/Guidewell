@@ -719,11 +719,47 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
         
         // Try to parse as JSON
         const parsed = JSON.parse(cleanedResponse);
-        return parsed;
-      } catch (error) {
-        // If JSON parsing fails, return the raw response as summary
+        
+        // Clean up the parsed content to remove any remaining JSON artifacts
+        const cleanText = (text: any) => {
+          if (!text) return text;
+          if (typeof text !== 'string') return text;
+          return text
+            .replace(/```json\s*/g, '')
+            .replace(/```\s*/g, '')
+            .replace(/^\s*[\{\[]\s*/, '')
+            .replace(/\s*[\}\]]\s*$/, '')
+            .replace(/["']/g, '')
+            .replace(/\\n/g, '\n')
+            .replace(/\\"/g, '"')
+            .replace(/\\'/g, "'")
+            .trim();
+        };
+        
         return {
-          summary: response,
+          summary: cleanText(parsed.summary) || cleanText(response),
+          recommendations: Array.isArray(parsed.recommendations) 
+            ? parsed.recommendations.map(cleanText)
+            : [],
+          nextStep: cleanText(parsed.nextStep) || '',
+          motivation: cleanText(parsed.motivation) || '',
+          ...parsed
+        };
+      } catch (error) {
+        // If JSON parsing fails, clean the raw response and return as summary
+        const cleanedSummary = response
+          .replace(/```json\s*/g, '')
+          .replace(/```\s*/g, '')
+          .replace(/^\s*[\{\[]\s*/, '')
+          .replace(/\s*[\}\]]\s*$/, '')
+          .replace(/["']/g, '')
+          .replace(/\\n/g, '\n')
+          .replace(/\\"/g, '"')
+          .replace(/\\'/g, "'")
+          .trim();
+        
+        return {
+          summary: cleanedSummary,
           recommendations: [],
           nextStep: '',
           motivation: '',

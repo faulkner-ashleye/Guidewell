@@ -41,22 +41,89 @@ export default async function handler(req, res) {
       conversation = conversation.slice(-10);
     }
 
-    // Create system message with user context
+    // Create system message with user context and preferences
+    const aiPersonality = userProfile?.aiPersonality || 'encouraging';
+    const communicationStyle = userProfile?.communicationStyle || 'concise';
+    const detailLevel = userProfile?.detailLevel || 'medium';
+    const preferredLanguage = userProfile?.preferredLanguage || 'simple';
+    
+    // Build personality instructions
+    let personalityInstructions = '';
+    switch (aiPersonality) {
+      case 'encouraging':
+        personalityInstructions = '- Encouraging and supportive\n- Optimistic but realistic\n- Uses motivational language and emojis appropriately';
+        break;
+      case 'analytical':
+        personalityInstructions = '- Analytical and data-driven\n- Focused on facts and metrics\n- Provides detailed explanations\n- Uses precise language';
+        break;
+      case 'casual':
+        personalityInstructions = '- Casual and friendly\n- Uses conversational language\n- Relatable and approachable\n- Less formal tone';
+        break;
+      case 'professional':
+        personalityInstructions = '- Professional and formal\n- Uses business-appropriate language\n- Structured and clear\n- Authoritative tone';
+        break;
+    }
+    
+    // Build communication style instructions
+    let styleInstructions = '';
+    switch (communicationStyle) {
+      case 'detailed':
+        styleInstructions = 'Provide comprehensive explanations with context and background information.';
+        break;
+      case 'concise':
+        styleInstructions = 'Be direct and to the point. Avoid unnecessary elaboration.';
+        break;
+      case 'visual':
+        styleInstructions = 'Use descriptive language and paint clear pictures of scenarios.';
+        break;
+    }
+    
+    // Build detail level instructions
+    let detailInstructions = '';
+    switch (detailLevel) {
+      case 'high':
+        detailInstructions = 'Include comprehensive details, examples, and step-by-step explanations.';
+        break;
+      case 'medium':
+        detailInstructions = 'Provide balanced detail with key points and practical examples.';
+        break;
+      case 'low':
+        detailInstructions = 'Keep responses brief and focused on essential information only.';
+        break;
+    }
+    
+    // Build language instructions
+    let languageInstructions = '';
+    switch (preferredLanguage) {
+      case 'simple':
+        languageInstructions = 'Use simple, everyday language. Avoid jargon and technical terms.';
+        break;
+      case 'technical':
+        languageInstructions = 'Use appropriate financial terminology and technical concepts.';
+        break;
+      case 'mixed':
+        languageInstructions = 'Use a mix of simple explanations with technical terms when needed, always explaining complex concepts.';
+        break;
+    }
+
     const systemMessage = {
       role: 'system',
       content: `You are Guidewell's AI financial advisor. Your personality is:
-- Encouraging and supportive
-- Optimistic but realistic
-- Focused on actionable steps
-- Uses emojis appropriately
-- Speaks in simple, clear language
+${personalityInstructions}
 - Always includes disclaimers about consulting professionals
+- This is educational content only, not professional financial advice
+
+Communication Preferences:
+- ${styleInstructions}
+- ${detailInstructions}
+- ${languageInstructions}
 
 User Context:
 - Name: ${userProfile?.firstName || 'User'}
 - Income: $${userProfile?.income || 0}/year
 - Risk Tolerance: ${userProfile?.riskTolerance || 'moderate'}
 - Main Goals: ${userProfile?.mainGoals?.join(', ') || 'Not specified'}
+- Financial Literacy: ${userProfile?.financialLiteracy || 'intermediate'}
 
 Remember: This is educational content only, not professional financial advice.`
     };

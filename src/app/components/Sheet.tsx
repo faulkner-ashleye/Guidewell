@@ -1,5 +1,6 @@
 'use client';
 import { ReactNode, useEffect } from 'react';
+import { Icon, IconNames } from '../../components/Icon';
 
 export default function Sheet({ open, onClose, title, children, footer }:{
   open:boolean; onClose:()=>void; title?:string; children:ReactNode; footer?:ReactNode;
@@ -38,6 +39,9 @@ export default function Sheet({ open, onClose, title, children, footer }:{
       <div className="sheet" onClick={(e)=>e.stopPropagation()}>
         <div className="sheet-header">
           <div>{title}</div>
+          <button onClick={onClose} aria-label="Close" className="sheet-close">
+            <Icon name={IconNames.close} size="md" />
+          </button>
         </div>
         <div className="sheet-body">{children}</div>
         {footer && <div className="sheet-footer">{footer}</div>}

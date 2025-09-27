@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ContentItem, ContentRecommendation } from '../data/contentLibrary';
 import { Button, ButtonVariants } from './Button';
 import './ContentRecommendationCard.css';
@@ -20,6 +21,7 @@ export function ContentRecommendationCard({
   onDismiss,
   isBookmarked = false
 }: ContentRecommendationCardProps) {
+  const navigate = useNavigate();
   const getTypeIcon = (type: string) => {
     switch (type) {
       case 'article': return '📄';
@@ -90,8 +92,8 @@ export function ContentRecommendationCard({
           size="medium"
           fullWidth={true}
           onClick={() => {
-            // Navigate to insights page
-            window.location.href = '/opportunities';
+            // Navigate to insights page using React Router
+            navigate('/opportunities');
           }}
         >
           Discover more insights

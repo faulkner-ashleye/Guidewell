@@ -15,8 +15,6 @@ import {
   accountHealth
 } from '../../state/financeSelectors';
 import { getGoalsFromAccounts } from '../../state/planSelectors';
-import Sheet from '../../components/Sheet';
-import { ConnectChoose } from '../Onboarding/steps/ConnectChoose';
 import { Goal } from '../../app/types';
 import { Account } from '../../state/AppStateContext';
 import { Contribution } from '../../state/activitySelectors';
@@ -37,11 +35,7 @@ export function Plan() {
   const series = buildNetWorthSeries(accounts, [], 56);
   const groups = groupAccountsByType(accounts);
 
-  const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'accounts' | 'goals'>('accounts');
-
-  // Connect account state
-  const [connectOpen, setConnectOpen] = useState(false);
 
   // Handle viewing a goal
   const handleViewGoal = (goalId: string) => {
@@ -191,15 +185,6 @@ export function Plan() {
                 </div>
               )}
 
-              <div className="plan-actions-section">
-                <Button
-                  variant={ButtonVariants.outline}
-                  color={ButtonColors.secondary}
-                  onClick={() => setOpen(true)}
-                >
-                  Add accounts another way
-                </Button>
-              </div>
             </>
           ) : (
             <>
@@ -226,18 +211,6 @@ export function Plan() {
           )}
         </div>
       </section>
-
-
-
-      {/* Add another way sheet */}
-      <Sheet open={open} onClose={() => setOpen(false)} title="Add accounts another way">
-        <ConnectChoose
-          onClose={() => setOpen(false)}
-          onComplete={() => {
-            setOpen(false);
-          }}
-        />
-      </Sheet>
     </div>
   );
 }

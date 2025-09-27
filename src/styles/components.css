@@ -360,10 +360,15 @@
   margin: 0;
 }
 
+.card-content .typography-h6{
+    color:var(--color-text-primary);
+}
+
 .card-subtitle {
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
   margin: var(--spacing-xs) 0 0 0;
+  text-align:left;
 }
 
 .card-body {

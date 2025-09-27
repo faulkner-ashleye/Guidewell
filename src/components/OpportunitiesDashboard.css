@@ -10,7 +10,6 @@
   align-items: center;
   margin-bottom: 24px;
   flex-wrap: wrap;
-  gap: 16px;
 }
 
 .dashboard-header h2 {
@@ -54,11 +53,11 @@
 }
 
 .dashboard-summary {
-  background: #F9FAFB;
-  border-radius: 12px;
-  padding: 20px;
+  background: var(--color-background-paper);
+  border-radius: var(--spacing-sm);
+  padding: var(--spacing-lg);
   margin-bottom: 24px;
-  border: 1px solid #E5E7EB;
+  border: 1px solid var(--color-root-divider);
 }
 
 .summary-stats {
@@ -74,23 +73,21 @@
 
 .stat-value {
   display: block;
-  font-size: 24px;
+  font-size: var(--font-size-xl);
   font-weight: 700;
-  color: #1F2937;
+  color: var(--color-success-main);
   margin-bottom: 4px;
 }
 
 .stat-label {
-  font-size: 12px;
-  color: #6B7280;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
   font-weight: 500;
 }
 
 .summary-text p {
   margin: 0;
-  font-size: 14px;
-  color: #374151;
-  line-height: 1.5;
+  color: var(--color-text-secondary);
 }
 
 .filter-controls {
@@ -264,29 +261,29 @@
   .opportunities-dashboard {
     padding: 12px;
   }
-  
+
   .dashboard-header {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .dashboard-header h2 {
     font-size: 20px;
   }
-  
+
   .summary-stats {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .filter-controls {
     justify-content: center;
   }
-  
+
   .filter-button {
     flex: 1;
     min-width: 0;
   }
-  
+
   .dismissed-info {
     flex-direction: column;
     gap: 8px;
