@@ -294,17 +294,18 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
         analysisType
       );
 
-      if (analysis.aiResponse) {
+      if (analysis && analysis.aiResponse && analysis.aiResponse.summary && !analysis.aiResponse.fallback) {
         // Use AI response to create personalized narrative
         let narrative = analysis.aiResponse.summary;
         
         // Add strategy-specific context
         narrative += `\n\nThis ${avatar.name} approach focuses on ${scopeText} over ${timeframeText[timeframe]}. `;
-        narrative += `With ${extraText} toward savings, ${analysis.aiResponse.nextStep}`;
+        narrative += `With ${extraText} toward savings, ${analysis.aiResponse.nextStep || 'you can make significant progress toward your goals.'}`;
         
         setAiNarrative(narrative);
       } else {
         // Fallback to enhanced rule-based narrative
+        console.log('Using fallback narrative - AI analysis failed or returned fallback');
         setAiNarrative(generateEnhancedNarrative());
       }
     } catch (error) {

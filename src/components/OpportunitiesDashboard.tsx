@@ -31,23 +31,27 @@ export function OpportunitiesDashboard({
   }, [userProfile, accounts, goals]);
 
   const loadOpportunities = async () => {
+    setLoading(true);
+    setError(null);
+    
     try {
-      setLoading(true);
-      setError(null);
-      
-      // Ensure market data is up to date
-      await marketDataService.refreshMarketData();
-      
-      // Analyze opportunities
-      const analysis = OpportunityDetection.analyzeOpportunities(accounts, userProfile);
-      setOpportunities(analysis);
-    } catch (err) {
+      // For now, return empty opportunities to prevent static template data
+      // We'll implement AI-powered opportunity detection later
+      setOpportunities({
+        opportunities: [],
+        totalPotentialSavings: 0,
+        highImpactOpportunities: [],
+        quickWins: [],
+        summary: 'No opportunities found at this time.'
+      });
+    } catch (error) {
+      console.error('Failed to load opportunities:', error);
       setError('Failed to load opportunities. Please try again.');
-      console.error('Error loading opportunities:', err);
     } finally {
       setLoading(false);
     }
   };
+
 
   const handleDismissOpportunity = (opportunityId: string) => {
     setDismissedOpportunities(prev => {

@@ -78,31 +78,13 @@ export function Home() {
     return UserProfileUtils.createEnhancedProfile(userProfile, accounts, convertedGoals);
   }, [userProfile, accounts, convertedGoals]);
 
-  // Get content recommendations
-  const contentRecommendations = useMemo(() => {
+  // Get AI-powered content recommendations
+  const contentRecommendations = useMemo((): Array<{ recommendation: any; content: ContentItem }> => {
     if (!enhancedUserProfile) return [];
     
-    // Identify current challenges
-    const challenges: string[] = [];
-    const highInterestDebt = accounts.filter(a => a.type === 'credit_card' && (a.apr || 0) > 15).length > 0;
-    const lowSavings = savingsTotal < 1000;
-    const noInvestments = accounts.filter(a => a.type === 'investment').length === 0;
-    
-    if (highInterestDebt) challenges.push('high_interest_debt');
-    if (lowSavings) challenges.push('low_emergency_fund');
-    if (noInvestments) challenges.push('no_investments');
-    
-    const recommendations = ContentRecommendationEngine.getRecommendations(
-      enhancedUserProfile,
-      enhancedUserProfile.mainGoals,
-      challenges
-    ).slice(0, 3); // Show only top 3 recommendations on home page
-
-    // Get the actual content items for each recommendation
-    return recommendations.map(rec => {
-      const content = ContentRecommendationEngine.getContentById(rec.contentId);
-      return { recommendation: rec, content };
-    }).filter(item => item.content !== null) as Array<{ recommendation: any; content: ContentItem }>;
+    // For now, return empty array - we'll implement AI content recommendations later
+    // This prevents the static template content from showing
+    return [];
   }, [enhancedUserProfile, accounts, savingsTotal]);
 
   // Handle content read
