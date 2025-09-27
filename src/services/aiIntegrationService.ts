@@ -583,7 +583,10 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
       }
 
       const data = await response.json();
-      return data;
+      
+      // Parse the response to ensure clean JSON without markdown artifacts
+      const parsedData = this.parseAIResponse(data);
+      return parsedData;
     } catch (error) {
       console.error('AI API call failed:', error);
       return null;

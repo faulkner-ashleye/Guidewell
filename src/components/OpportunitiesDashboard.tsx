@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Opportunity, OpportunityAnalysis } from '../data/marketData';
 import { OpportunityCard } from './OpportunityCard';
 import { marketDataService } from '../services/marketDataService';
-import { OpportunityDetection } from '../data/marketData';
+import { aiIntegrationService } from '../services/aiIntegrationService';
 import { EnhancedUserProfile } from '../data/enhancedUserProfile';
 import { Account, Goal } from '../data/types';
 import './OpportunitiesDashboard.css';
@@ -35,25 +35,17 @@ export function OpportunitiesDashboard({
     setError(null);
     
     try {
-      // Use AI to generate personalized opportunities
-      const response = await fetch('/api/ai-analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userProfile,
-          accounts,
-          goals,
-          analysisType: 'opportunities'
-        }),
-      });
+      // Use AI integration service to generate personalized opportunities
+      const analysis = await aiIntegrationService.callAIAnalysisAPI(
+        userProfile,
+        accounts,
+        goals,
+        'opportunities'
+      );
 
-      if (response.ok) {
-        const data = await response.json();
-        
+      if (analysis) {
         // Extract opportunities from AI response
-        const opportunities = data.recommendations?.map((rec: string, index: number) => ({
+        const opportunities = analysis.recommendations?.map((rec: string, index: number) => ({
           id: `opp-${index}`,
           title: rec,
           type: 'savings' as const,
@@ -70,7 +62,7 @@ export function OpportunitiesDashboard({
           totalPotentialSavings: opportunities.reduce((sum: number, opp: any) => sum + opp.potentialSavings, 0),
           highImpactOpportunities: opportunities.filter((opp: any) => opp.impact === 'high'),
           quickWins: opportunities.filter((opp: any) => opp.difficulty === 'easy'),
-          summary: data.summary || 'AI-generated personalized opportunities based on your financial profile.'
+          summary: analysis.summary || 'AI-generated personalized opportunities based on your financial profile.'
         });
       } else {
         throw new Error('Failed to load AI opportunities');
