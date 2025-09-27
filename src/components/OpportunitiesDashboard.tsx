@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Opportunity, OpportunityAnalysis } from '../data/marketData';
 import { OpportunityCard } from './OpportunityCard';
-import { marketDataService } from '../services/marketDataService';
 import { aiIntegrationService } from '../services/aiIntegrationService';
 import { EnhancedUserProfile } from '../data/enhancedUserProfile';
 import { Account, Goal } from '../data/types';
@@ -131,27 +130,12 @@ export function OpportunitiesDashboard({
       .sort((a, b) => b.potentialSavings - a.potentialSavings);
   };
 
-  const getMarketDataStatus = () => {
-    const lastUpdate = marketDataService.getLastUpdateTime();
-    const isStale = marketDataService.isMarketDataStale();
-
-    if (!lastUpdate) return 'Never updated';
-    if (isStale) return 'Data may be outdated';
-
-    const hoursAgo = Math.floor((Date.now() - lastUpdate.getTime()) / (1000 * 60 * 60));
-    if (hoursAgo < 1) return 'Updated recently';
-    if (hoursAgo < 24) return `Updated ${hoursAgo} hours ago`;
-    return `Updated ${Math.floor(hoursAgo / 24)} days ago`;
-  };
 
   if (loading) {
     return (
       <div className="opportunities-dashboard">
         <div className="dashboard-header">
           <h1>Insights</h1>
-          <div className="market-data-status">
-            <span className="status-indicator loading">Loading...</span>
-          </div>
         </div>
         <div className="loading-state">
           <div className="loading-spinner"></div>
@@ -183,17 +167,7 @@ export function OpportunitiesDashboard({
   return (
     <div className="opportunities-dashboard">
       <div className="dashboard-header">
-        <h2>Financial Opportunities</h2>
-        <div className="market-data-status">
-          <span className="status-indicator">Market data: {getMarketDataStatus()}</span>
-          <button
-            className="refresh-button"
-            onClick={loadOpportunities}
-            title="Refresh market data"
-          >
-            🔄
-          </button>
-        </div>
+        <h1>Insights</h1>
       </div>
 
       {opportunities && (

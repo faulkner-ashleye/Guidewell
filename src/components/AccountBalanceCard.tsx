@@ -1,8 +1,6 @@
 import React from 'react';
 import { Account } from '../data/types';
 import { formatCurrency } from '../state/selectors';
-import { Icon } from './Icon';
-import { Button } from './Button';
 import './AccountBalanceCard.css';
 
 interface AccountBalanceCardProps {
@@ -68,19 +66,6 @@ export function AccountBalanceCard({ accounts }: AccountBalanceCardProps) {
           );
         })}
       </div>
-      
-              <div className="card-footer">
-                <Button
-                  variant="text"
-                  color="secondary"
-                  size="medium"
-                  fullWidth={true}
-                  onClick={() => window.location.href = '/plan'}
-                >
-                  View Financial Plan
-                  <Icon name="arrow_forward" size="sm" style={{ marginLeft: '4px' }} />
-                </Button>
-              </div>
     </div>
   );
 }

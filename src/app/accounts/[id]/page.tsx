@@ -143,10 +143,7 @@ export default function AccountDetailPage() {
               </div>
             </div>
 
-            {/* Sparkline placeholder */}
-            <div className="account-sparkline">
-              📈 Sparkline
-            </div>
+            
           </div>
         </div>
 

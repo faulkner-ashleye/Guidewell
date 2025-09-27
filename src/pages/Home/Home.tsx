@@ -172,6 +172,20 @@ export function Home() {
     ];
   };
 
+  const createConciseTitle = (category: 'debt' | 'savings' | 'investing' | 'budgeting' | 'credit' | 'retirement' | 'general'): string => {
+    const titleMap: Record<string, string> = {
+      debt: 'Pay Down High-Interest Debt',
+      savings: 'Build Your Emergency Fund',
+      investing: 'Start Investing for Growth',
+      budgeting: 'Create a Monthly Budget',
+      credit: 'Improve Your Credit Score',
+      retirement: 'Boost Your Retirement Savings',
+      general: 'Improve Your Financial Health'
+    };
+    
+    return titleMap[category] || titleMap.general;
+  };
+
   const createFullContentFromRecommendation = (rec: string, category: 'debt' | 'savings' | 'investing' | 'budgeting' | 'credit' | 'retirement' | 'general'): string => {
     // Create expanded content that's more detailed than the original recommendation
     const baseContent = rec;
@@ -233,8 +247,8 @@ export function Home() {
             })
             .slice(0, 1)
             .map((rec: string, index: number) => {
-              const title = rec.split(':')[0] || rec.substring(0, 50) + '...';
               const category = getCategoryFromContent(rec);
+              const title = createConciseTitle(category);
               const difficulty = getDifficultyFromContent(rec);
               
               // Create varied content structure to avoid repetition
