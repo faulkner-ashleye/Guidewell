@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useAppState } from '../../state/AppStateContext';
 import { getRecentActivity } from '../../state/activitySelectors';
 import {
@@ -40,6 +40,10 @@ export function Home() {
     loadSampleScenario
   } = useAppState();
 
+  // State for AI content recommendations
+  const [contentRecommendations, setContentRecommendations] = useState<Array<{ recommendation: any; content: ContentItem }>>([]);
+  const [contentLoading, setContentLoading] = useState(false);
+
   // Get insights count for badge
   const insightsCount = useInsightsCount();
 
@@ -78,14 +82,67 @@ export function Home() {
     return UserProfileUtils.createEnhancedProfile(userProfile, accounts, convertedGoals);
   }, [userProfile, accounts, convertedGoals]);
 
-  // Get AI-powered content recommendations
-  const contentRecommendations = useMemo((): Array<{ recommendation: any; content: ContentItem }> => {
-    if (!enhancedUserProfile) return [];
-    
-    // For now, return empty array - we'll implement AI content recommendations later
-    // This prevents the static template content from showing
-    return [];
-  }, [enhancedUserProfile, accounts, savingsTotal]);
+  // Load AI-powered content recommendations
+  useEffect(() => {
+    const loadContentRecommendations = async () => {
+      if (!enhancedUserProfile) return;
+      
+      setContentLoading(true);
+      try {
+        const response = await fetch('/api/ai-analyze', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userProfile: enhancedUserProfile,
+            accounts,
+            goals: convertedGoals,
+            analysisType: 'content_recommendations'
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          
+          // Convert AI recommendations to content items
+          const recommendations = data.recommendations?.slice(0, 3).map((rec: string, index: number) => ({
+            recommendation: {
+              contentId: `ai-rec-${index}`,
+              reason: rec,
+              priority: 'high' as const,
+              personalizedFor: enhancedUserProfile.firstName || 'User'
+            },
+            content: {
+              id: `ai-rec-${index}`,
+              title: rec.split(':')[0] || rec.substring(0, 50) + '...',
+              type: 'article' as const,
+              category: 'general' as const,
+              difficulty: 'intermediate' as const,
+              estimatedTime: 5,
+              tags: ['personalized', 'ai-generated'],
+              content: rec,
+              summary: rec,
+              keyPoints: [rec],
+              prerequisites: [],
+              relatedContent: [],
+              lastUpdated: new Date().toISOString(),
+              author: 'Guidewell AI',
+              version: '1.0'
+            }
+          })) || [];
+
+          setContentRecommendations(recommendations);
+        }
+      } catch (error) {
+        console.error('Failed to generate AI content recommendations:', error);
+      } finally {
+        setContentLoading(false);
+      }
+    };
+
+    loadContentRecommendations();
+  }, [enhancedUserProfile, accounts, convertedGoals]);
 
   // Handle content read
   const handleContentRead = (content: ContentItem) => {
@@ -153,21 +210,27 @@ export function Home() {
           </div>
 
           {/* Content Recommendations */}
-          {contentRecommendations.length > 0 && (
+          {(contentRecommendations.length > 0 || contentLoading) && (
             <div className="content-recommendations">
               <h2>Recommended for You</h2>
-              <div className="content-grid">
-                {contentRecommendations.map((item) => (
-                  <ContentRecommendationCard
-                    key={item.recommendation.contentId}
-                    recommendation={item.recommendation}
-                    content={item.content}
-                    onRead={handleContentRead}
-                    onBookmark={(contentId) => console.log('Bookmark:', contentId)}
-                    onDismiss={(contentId) => console.log('Dismiss:', contentId)}
-                  />
-                ))}
-              </div>
+              {contentLoading ? (
+                <div className="content-loading">
+                  <p>🤖 AI is generating personalized content recommendations...</p>
+                </div>
+              ) : (
+                <div className="content-grid">
+                  {contentRecommendations.map((item) => (
+                    <ContentRecommendationCard
+                      key={item.recommendation.contentId}
+                      recommendation={item.recommendation}
+                      content={item.content}
+                      onRead={handleContentRead}
+                      onBookmark={(contentId) => console.log('Bookmark:', contentId)}
+                      onDismiss={(contentId) => console.log('Dismiss:', contentId)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           )}
 

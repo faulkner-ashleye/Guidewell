@@ -35,8 +35,50 @@ export function OpportunitiesDashboard({
     setError(null);
     
     try {
-      // For now, return empty opportunities to prevent static template data
-      // We'll implement AI-powered opportunity detection later
+      // Use AI to generate personalized opportunities
+      const response = await fetch('/api/ai-analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userProfile,
+          accounts,
+          goals,
+          analysisType: 'opportunities'
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        
+        // Extract opportunities from AI response
+        const opportunities = data.recommendations?.map((rec: string, index: number) => ({
+          id: `opp-${index}`,
+          title: rec,
+          type: 'savings' as const,
+          potentialSavings: Math.floor(Math.random() * 2000) + 500, // Mock savings amount
+          difficulty: 'medium' as const,
+          timeframe: '3-6 months' as const,
+          description: rec,
+          actionRequired: 'Review and implement',
+          impact: 'medium' as const
+        })) || [];
+
+        setOpportunities({
+          opportunities,
+          totalPotentialSavings: opportunities.reduce((sum: number, opp: any) => sum + opp.potentialSavings, 0),
+          highImpactOpportunities: opportunities.filter((opp: any) => opp.impact === 'high'),
+          quickWins: opportunities.filter((opp: any) => opp.difficulty === 'easy'),
+          summary: data.summary || 'AI-generated personalized opportunities based on your financial profile.'
+        });
+      } else {
+        throw new Error('Failed to load AI opportunities');
+      }
+    } catch (error) {
+      console.error('Failed to load opportunities:', error);
+      setError('Failed to load opportunities. Please try again.');
+      // Fallback to empty state
       setOpportunities({
         opportunities: [],
         totalPotentialSavings: 0,
@@ -44,9 +86,6 @@ export function OpportunitiesDashboard({
         quickWins: [],
         summary: 'No opportunities found at this time.'
       });
-    } catch (error) {
-      console.error('Failed to load opportunities:', error);
-      setError('Failed to load opportunities. Please try again.');
     } finally {
       setLoading(false);
     }

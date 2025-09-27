@@ -156,11 +156,13 @@ ${goals.map(goal => `- ${goal.name}: $${goal.target.toLocaleString()} by ${goal.
 **Strategy: ${strategyName}**
 
 Create a personalized narrative that:
-1. Acknowledges their current financial situation positively
-2. Explains how the ${strategyName} strategy fits their goals
-3. Provides specific, actionable next steps
-4. Motivates them to stay on track
-5. Uses encouraging language with appropriate emojis
+1. Acknowledges their current financial situation positively but vary your language - avoid repetitive phrases
+2. Explains how the ${strategyName} strategy fits their goals with specific details about their accounts
+3. Provides specific, actionable next steps tailored to their exact financial situation
+4. Motivates them to stay on track using varied encouragement styles
+5. Uses encouraging language with appropriate emojis but keep it natural and conversational
+6. Reference their specific account names, balances, and goals to make it truly personalized
+7. Vary your opening greetings and closing statements - don't use the same template every time
 
 Format your response as JSON with these fields:
 {
@@ -214,17 +216,26 @@ Format your response as JSON with these fields:
 
 function parseAIResponse(response, analysisType) {
   try {
-    // Try to parse as JSON first
-    const parsed = JSON.parse(response);
+    // Clean the response - remove markdown code blocks if present
+    let cleanedResponse = response.trim();
+    if (cleanedResponse.startsWith('```json')) {
+      cleanedResponse = cleanedResponse.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+    } else if (cleanedResponse.startsWith('```')) {
+      cleanedResponse = cleanedResponse.replace(/^```\s*/, '').replace(/\s*```$/, '');
+    }
+    
+    // Try to parse as JSON
+    const parsed = JSON.parse(cleanedResponse);
     return {
       analysisType,
-      summary: parsed.summary || response,
+      summary: parsed.summary || cleanedResponse,
       recommendations: parsed.recommendations || [],
       nextStep: parsed.nextStep || '',
       motivation: parsed.motivation || '',
       rawResponse: response
     };
   } catch (error) {
+    console.log('JSON parsing failed, using raw response:', error.message);
     // If JSON parsing fails, return the raw response
     return {
       analysisType,
