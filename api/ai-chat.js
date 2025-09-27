@@ -140,7 +140,7 @@ ${accounts && accounts.length > 0 ? accounts.map(account =>
 
 Total Net Worth: $${accounts && accounts.length > 0 ? accounts.reduce((sum, account) => sum + (account.balance || 0), 0).toLocaleString() : '0'}
 
-You have access to the user's actual financial data and can provide specific, personalized advice based on their real financial situation. Use this information to give relevant, actionable guidance.
+IMPORTANT: You DO have direct access to the user's financial data shown above. You can see their exact account balances, debts, income, and net worth. Use this specific information to provide personalized advice. Do NOT say you don't have access to their data - you do have it and should reference the specific numbers provided.
 
 Remember: This is educational content only, not professional financial advice.`
     };
