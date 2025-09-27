@@ -1,18 +1,7 @@
 {
   "version": 2,
-  "framework": "create-react-app",
   "buildCommand": "npm run build",
-  "outputDirectory": "build",
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/build/index.html"
-    }
-  ]
+  "outputDirectory": "build"
 }
 
 
