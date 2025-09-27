@@ -698,7 +698,7 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
         // Clean the response - remove markdown code blocks and extra whitespace
         let cleanedResponse = response.trim();
         
-        // Remove various markdown code block patterns
+        // Remove various markdown code block patterns (more aggressive)
         cleanedResponse = cleanedResponse.replace(/^```json\s*/i, '').replace(/\s*```$/i, '');
         cleanedResponse = cleanedResponse.replace(/^```\s*/i, '').replace(/\s*```$/i, '');
         cleanedResponse = cleanedResponse.replace(/^`\s*/i, '').replace(/\s*`$/i, '');
@@ -706,10 +706,12 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
         // Remove any remaining markdown artifacts
         cleanedResponse = cleanedResponse.replace(/^json\s*/i, '');
         
-        // Try to find JSON object boundaries if there's extra text
-        const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          cleanedResponse = jsonMatch[0];
+        // Remove any text before the first { and after the last }
+        const firstBrace = cleanedResponse.indexOf('{');
+        const lastBrace = cleanedResponse.lastIndexOf('}');
+        
+        if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+          cleanedResponse = cleanedResponse.substring(firstBrace, lastBrace + 1);
         }
         
         // Try to parse as JSON
