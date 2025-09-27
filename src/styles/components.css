@@ -874,7 +874,6 @@ body.sheet-open {
 }
 
 .sheet.ai-chat .message-content {
-  max-width: 70%;
   padding: 12px 16px;
   border-radius: 12px;
   word-wrap: break-word;

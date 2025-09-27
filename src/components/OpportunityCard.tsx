@@ -41,11 +41,11 @@ export function OpportunityCard({ opportunity, onActionClick, onDismiss }: Oppor
   return (
     <div className="opportunity-card">
       <button 
-        className="dismiss-button"
+        className="sheet-close"
         onClick={() => onDismiss(opportunity.id)}
         aria-label="Dismiss opportunity"
       >
-        ×
+        <Icon name={IconNames.close} size="md" />
       </button>
       <div className="opportunity-details">
         <div className="opportunity-metrics">
@@ -94,15 +94,6 @@ export function OpportunityCard({ opportunity, onActionClick, onDismiss }: Oppor
           <p>{opportunity.description}</p>
         </div>
 
-      </div>
-
-      <div className="opportunity-footer">
-        <button 
-          className="action-button secondary"
-          onClick={() => onDismiss(opportunity.id)}
-        >
-          Not Now
-        </button>
       </div>
     </div>
   );

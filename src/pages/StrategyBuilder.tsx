@@ -429,8 +429,8 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
 
   // Generate narrative based on current selections
   const generateNarrative = () => {
-    // Use AI narrative if available, otherwise fallback
-    return aiNarrative || generateEnhancedNarrative();
+    // Always use the enhanced narrative for better tradeoff analysis
+    return generateEnhancedNarrative();
   };
 
   // Check if each step is completed (build mode)
