@@ -26,6 +26,13 @@ export default async function handler(req, res) {
   try {
     const { userId, message, userProfile, accounts } = req.body;
 
+    // Debug: Log the received data
+    console.log('AI Chat API - Received data:');
+    console.log('userId:', userId);
+    console.log('message:', message);
+    console.log('userProfile:', userProfile);
+    console.log('accounts:', accounts);
+
     if (!userId || !message) {
       return res.status(400).json({ error: 'Missing userId or message' });
     }
@@ -137,6 +144,9 @@ You have access to the user's actual financial data and can provide specific, pe
 
 Remember: This is educational content only, not professional financial advice.`
     };
+
+    // Debug: Log the system message
+    console.log('System message being sent to AI:', systemMessage.content);
 
     const completion = await openai.chat.completions.create({
       model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
