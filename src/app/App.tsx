@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { AppStateProvider } from '../state/AppStateContext';
 import { NavBar } from '../components/NavBar';
 import { MobilePhoneWrapper } from '../components/MobilePhoneWrapper';
+import { ScrollToTop } from '../components/ScrollToTop';
 import { Home } from '../pages/Home/Home';
 import { Strategies } from '../pages/Strategies';
 import { StrategyBuilder } from '../pages/StrategyBuilder';
@@ -28,6 +29,7 @@ function AppContent() {
 
   return (
     <div className="app">
+      <ScrollToTop />
       <MobilePhoneWrapper>
         <main className="app-main">
           <Routes>

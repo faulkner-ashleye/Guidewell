@@ -386,6 +386,12 @@ export function Home() {
         greeting={`Hi ${getDisplayName()} 👋`}
         subtitle="Your financial snapshot today"
         insightsCount={insightsCount}
+        showQuickActions={true}
+        onQuickActionsClick={() => {
+          if ((window as any).globalSheets) {
+            (window as any).globalSheets.openQuickActions();
+          }
+        }}
       />
 
 

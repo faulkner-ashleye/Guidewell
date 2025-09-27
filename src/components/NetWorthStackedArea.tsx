@@ -9,6 +9,12 @@ interface NetWorthStackedAreaProps {
 export function NetWorthStackedArea({ data }: NetWorthStackedAreaProps) {
   if (!data || data.length === 0) return null;
 
+  // Format date for X-axis display
+  const formatXAxisDate = (tickItem: string) => {
+    const date = new Date(tickItem);
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  };
+
   return (
     <div className="chartFull">
       <div className="chartTitle">
@@ -18,7 +24,7 @@ export function NetWorthStackedArea({ data }: NetWorthStackedAreaProps) {
         <ResponsiveContainer>
           <AreaChart
             data={data}
-            margin={{ left: 8, right: 8, top: 8, bottom: 8 }}
+            margin={{ left: 8, right: 8, top: 8, bottom: 30 }}
           >
             <CartesianGrid 
               strokeDasharray="3 3" 
@@ -26,8 +32,16 @@ export function NetWorthStackedArea({ data }: NetWorthStackedAreaProps) {
               strokeOpacity={0.3}
             />
             <XAxis 
-              dataKey="date" 
-              hide 
+              dataKey="date"
+              tickFormatter={formatXAxisDate}
+              tick={{ 
+                fontSize: 12, 
+                fill: 'var(--color-text-secondary)',
+                fontFamily: 'var(--font-family-base)'
+              }}
+              axisLine={{ stroke: 'var(--color-border)', strokeWidth: 1 }}
+              tickLine={{ stroke: 'var(--color-border)', strokeWidth: 1 }}
+              interval="preserveStartEnd"
             />
             <YAxis 
               hide 

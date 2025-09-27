@@ -39,7 +39,7 @@ export default function HomeHeader({
             onClick={() => navigate('/settings')}
             aria-label="Settings"
           >
-            <Icon name={IconNames.settings} size="sm" />
+            <Icon name={IconNames.settings} size="md" />
           </Button>
           {showQuickActions && onQuickActionsClick && (
             <Button
@@ -48,7 +48,7 @@ export default function HomeHeader({
               onClick={onQuickActionsClick}
               aria-label="Quick actions"
             >
-              <Icon name={IconNames.add} size="sm" />
+              <Icon name={IconNames.add} size="md" />
             </Button>
           )}
           {rightAction && (

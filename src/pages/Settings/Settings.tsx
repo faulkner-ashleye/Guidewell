@@ -301,47 +301,49 @@ export function Settings() {
           </div>
         </Card>
 
-        {/* AI Coaching Preferences Section */}
-        <Card className="settings-section">
-          <h3 className="section-title">AI Coaching Preferences</h3>
-          <div className="profile-form">
-          <div className="form">
-            <label className="form-label">AI Personality</label>
-            <Select
-              value={userProfile?.aiPersonality || 'encouraging'}
-              onChange={(value) => setUserProfile({ ...userProfile!, aiPersonality: value as any })}
-              options={aiPersonalityOptions}
-            />
-          </div>
+        {/* AI Coaching Preferences Section - Hidden for now */}
+        {false && (
+          <Card className="settings-section">
+            <h3 className="section-title">AI Coaching Preferences</h3>
+            <div className="profile-form">
+            <div className="form">
+              <label className="form-label">AI Personality</label>
+              <Select
+                value={userProfile?.aiPersonality || 'encouraging'}
+                onChange={(value) => setUserProfile({ ...userProfile!, aiPersonality: value as any })}
+                options={aiPersonalityOptions}
+              />
+            </div>
 
-          <div className="form-group">
-            <label className="form-label">Communication Style</label>
-            <Select
-              value={userProfile?.communicationStyle || 'concise'}
-              onChange={(value) => setUserProfile({ ...userProfile!, communicationStyle: value as any })}
-              options={communicationStyleOptions}
-            />
-          </div>
+            <div className="form-group">
+              <label className="form-label">Communication Style</label>
+              <Select
+                value={userProfile?.communicationStyle || 'concise'}
+                onChange={(value) => setUserProfile({ ...userProfile!, communicationStyle: value as any })}
+                options={communicationStyleOptions}
+              />
+            </div>
 
-          <div className="form-group">
-            <label className="form-label">Detail Level</label>
-            <Select
-              value={userProfile?.detailLevel || 'medium'}
-              onChange={(value) => setUserProfile({ ...userProfile!, detailLevel: value as any })}
-              options={detailLevelOptions}
-            />
-          </div>
+            <div className="form-group">
+              <label className="form-label">Detail Level</label>
+              <Select
+                value={userProfile?.detailLevel || 'medium'}
+                onChange={(value) => setUserProfile({ ...userProfile!, detailLevel: value as any })}
+                options={detailLevelOptions}
+              />
+            </div>
 
-          <div className="form-group">
-            <label className="form-label">Preferred Language</label>
-            <Select
-              value={userProfile?.preferredLanguage || 'simple'}
-              onChange={(value) => setUserProfile({ ...userProfile!, preferredLanguage: value as any })}
-              options={preferredLanguageOptions}
-            />
-          </div>
-          </div>
-        </Card>
+            <div className="form-group">
+              <label className="form-label">Preferred Language</label>
+              <Select
+                value={userProfile?.preferredLanguage || 'simple'}
+                onChange={(value) => setUserProfile({ ...userProfile!, preferredLanguage: value as any })}
+                options={preferredLanguageOptions}
+              />
+            </div>
+            </div>
+          </Card>
+        )}
 
         {/* Appearance Section */}
         <Card className="settings-section">

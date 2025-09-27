@@ -27,7 +27,6 @@ export function NarrativeCard({
     >
       <h3 className="narrative-title">
         {title}
-        {loading && <span className="loading-indicator"> 🤖 Generating AI insights...</span>}
         {error && <span className="error-indicator"> ⚠️ Using fallback narrative</span>}
       </h3>
       
@@ -35,7 +34,6 @@ export function NarrativeCard({
         {loading ? (
           <div className="narrative-loading">
             <div className="loading-spinner"></div>
-            <p>I'm putting the pieces together so your options are easier to see…</p>
           </div>
         ) : error ? (
           <div className="narrative-error">

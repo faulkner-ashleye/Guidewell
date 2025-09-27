@@ -27,16 +27,19 @@
 
 
 /* Timeline Controls */
-.timeline-controls {
-  margin-top:48px;
-}
+
 
 .timeline-chips {
   display: flex;
-  flex-wrap: wrap;
+  flex-flow: row nowrap;
   gap: var(--spacing-xs);
   justify-content: center;
   margin-bottom: 0;
+}
+
+.strategy-page .timeline-chips{
+    margin-bottom: 24px;
+    flex-wrap: wrap;
 }
 
 .custom-timeline-button{

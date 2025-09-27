@@ -170,14 +170,6 @@ export function Strategies() {
         allocation: recommendedStrategy.allocation
       }
     });
-
-    // Ensure scroll to top after navigation
-    setTimeout(() => {
-      const phoneContent = document.querySelector('.phone-content');
-      if (phoneContent) {
-        phoneContent.scrollTo(0, 0);
-      }
-    }, 50);
   };
 
   return (

@@ -49,7 +49,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding:var(--spacing-xl) var(--spacing-lg) 0;
+  padding:var(--spacing-xl) var(--spacing-lg);
 }
 
 .settings-section {

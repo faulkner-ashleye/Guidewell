@@ -73,7 +73,7 @@ export function NetWorthChartWithTimeline({ data, title = "Assets vs Debts" }: N
         <ResponsiveContainer width="100%" height={300}>
           <AreaChart
             data={filteredData}
-            margin={{ left: 20, right: 20, top: 20, bottom: 20 }}
+            margin={{ left: 20, right: 20, top: 20, bottom: 40 }}
           >
             <CartesianGrid
               strokeDasharray="3 3"
@@ -82,7 +82,15 @@ export function NetWorthChartWithTimeline({ data, title = "Assets vs Debts" }: N
             />
             <XAxis
               dataKey="date"
-              hide
+              tickFormatter={formatXAxisDate}
+              tick={{ 
+                fontSize: 12, 
+                fill: 'var(--color-text-secondary)',
+                fontFamily: 'var(--font-family-base)'
+              }}
+              axisLine={{ stroke: 'var(--color-border)', strokeWidth: 1 }}
+              tickLine={{ stroke: 'var(--color-border)', strokeWidth: 1 }}
+              interval="preserveStartEnd"
             />
             <YAxis
               hide

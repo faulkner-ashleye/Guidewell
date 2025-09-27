@@ -134,12 +134,8 @@ export function OpportunitiesDashboard({
   if (loading) {
     return (
       <div className="opportunities-dashboard">
-        <div className="dashboard-header">
-          <h1>Insights</h1>
-        </div>
         <div className="loading-state">
           <div className="loading-spinner"></div>
-          <p>Analyzing your financial situation for opportunities...</p>
         </div>
       </div>
     );
@@ -148,9 +144,6 @@ export function OpportunitiesDashboard({
   if (error) {
     return (
       <div className="opportunities-dashboard">
-        <div className="dashboard-header">
-          <h2>Financial Opportunities</h2>
-        </div>
         <div className="error-state">
           <div className="error-icon">⚠️</div>
           <p>{error}</p>
@@ -166,9 +159,6 @@ export function OpportunitiesDashboard({
 
   return (
     <div className="opportunities-dashboard">
-      <div className="dashboard-header">
-        <h1>Insights</h1>
-      </div>
 
       {opportunities && (
         <div className="dashboard-summary">
