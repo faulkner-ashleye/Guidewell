@@ -159,6 +159,7 @@ export function OpportunitiesDashboard({
 
   return (
     <div className="opportunities-dashboard">
+      <h1>Insights</h1>
 
       {opportunities && (
         <div className="dashboard-summary">
