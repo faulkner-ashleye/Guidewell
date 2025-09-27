@@ -303,14 +303,12 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
         ? '$0/month' 
         : `$${extra.toLocaleString()}/month`;
 
-      // Create a custom analysis type for strategy narratives
-      const analysisType = `strategy_narrative_${strategy}`;
-      
+      // Use tradeoff_insights analysis type for comprehensive narrative
       const analysis = await aiIntegrationService.generateAIAnalysisWithAPI(
         enhancedUserProfile,
         accounts,
         convertedGoals,
-        analysisType
+        'tradeoff_insights'
       );
 
       if (analysis && analysis.aiResponse && analysis.aiResponse.summary && !analysis.aiResponse.fallback) {
@@ -351,37 +349,79 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
     };
 
     const scopeText = scope === 'all' ? 'all accounts' : scope;
+    const timeframeDisplay = timeframe ? timeframeText[timeframe] : 'your timeline';
 
-    let narrative = `This ${avatar.name} scenario focuses on ${scopeText} over ${timeframe ? timeframeText[timeframe] : 'your timeline'}. `;
+    // Calculate basic financial metrics for tradeoff analysis
+    const totalDebt = accounts.filter(a => ['loan', 'credit_card'].includes(a.type)).reduce((sum, a) => sum + a.balance, 0);
+    const totalSavings = accounts.filter(a => ['checking', 'savings'].includes(a.type)).reduce((sum, a) => sum + a.balance, 0);
+    const totalInvestment = accounts.filter(a => a.type === 'investment').reduce((sum, a) => sum + a.balance, 0);
+    const monthlyExtra = extra || 0;
 
-    if (extra === undefined || extra === null || extra === 0) {
-      narrative += `With $0/month toward savings, your goals could accelerate. `;
-    } else {
-      narrative += `With $${extra.toLocaleString()}/month toward savings, your goals could accelerate. `;
-    }
+    let narrative = `This ${avatar.name} scenario focuses on ${scopeText} over ${timeframeDisplay}.\n\n`;
 
-    // Add strategy-specific details
+    // Add tradeoff analysis based on strategy
     switch (strategy) {
       case 'debt_crusher':
-        narrative += `This approach prioritizes paying down high-interest debt while maintaining minimum payments elsewhere.`;
+        narrative += `By prioritizing debt payoff, you'll save significantly on interest costs. `;
+        if (totalDebt > 0) {
+          narrative += `With your current debt of $${totalDebt.toLocaleString()}, this approach could save you thousands in interest over time.\n\n`;
+        }
+        narrative += `The tradeoff: while you're building wealth through debt reduction, you're missing out on potential investment growth. `;
+        if (totalInvestment === 0) {
+          narrative += `Since you don't have investments yet, this debt-first approach makes sense, but consider starting small investments once your highest-interest debt is paid off.\n\n`;
+        } else {
+          narrative += `\n\n`;
+        }
         break;
+        
       case 'goal_keeper':
-        narrative += `This balanced approach focuses on building savings goals while managing debt responsibly.`;
+        narrative += `This balanced approach helps you build savings while managing debt responsibly.\n\n`;
+        narrative += `The benefit: you maintain financial flexibility and can handle unexpected expenses.\n\n`;
+        narrative += `The tradeoff: you may pay more interest on debt and miss some investment opportunities compared to more aggressive strategies.\n\n`;
         break;
+        
       case 'nest_builder':
-        narrative += `This long-term strategy emphasizes wealth building through investments while maintaining financial stability.`;
+        narrative += `This strategy emphasizes building a strong financial foundation through savings and emergency funds. `;
+        if (totalSavings < 10000) {
+          narrative += `With your current savings of $${totalSavings.toLocaleString()}, building a larger emergency fund provides crucial financial security.\n\n`;
+        } else {
+          narrative += `\n\n`;
+        }
+        narrative += `The tradeoff: while you're building security, you're missing out on the potential compound growth of investments.\n\n`;
         break;
-      case 'safety_builder':
-        narrative += `This conservative approach prioritizes building a strong financial foundation with low-risk strategies.`;
-        break;
+        
       case 'future_investor':
-        narrative += `This growth-focused strategy emphasizes long-term wealth building through strategic investments.`;
+        narrative += `This growth-oriented strategy focuses on long-term wealth building through investments.\n\n`;
+        narrative += `The benefit: you're maximizing the power of compound growth over time.\n\n`;
+        narrative += `The tradeoff: you may pay more interest on debt and have less liquid savings for emergencies. `;
+        if (totalDebt > 0) {
+          narrative += `With $${totalDebt.toLocaleString()} in debt, consider whether your debt interest rates are lower than expected investment returns.\n\n`;
+        } else {
+          narrative += `\n\n`;
+        }
         break;
+        
       case 'balanced_builder':
-        narrative += `This well-rounded approach balances debt management, savings, and investments for steady progress.`;
+        narrative += `This well-rounded approach balances debt payoff, savings, and investments.\n\n`;
+        narrative += `The benefit: you're building wealth in multiple ways while maintaining flexibility.\n\n`;
+        narrative += `The tradeoff: you may not optimize any single area as much as specialized strategies would.\n\n`;
         break;
+        
       default:
-        narrative += `This strategy is tailored to your specific financial goals and risk tolerance.`;
+        narrative += `This strategy is designed to help you make progress toward your financial goals.\n\n`;
+    }
+
+    // Add goal impact analysis
+    if (convertedGoals.length > 0) {
+      const goalNames = convertedGoals.map(g => g.name).join(', ');
+      narrative += `Your goals (${goalNames}) will be impacted by this strategy's allocation between debt, savings, and investments.\n\n`;
+    }
+
+    // Add extra contribution context
+    if (monthlyExtra > 0) {
+      narrative += `With an extra $${monthlyExtra.toLocaleString()}/month, this strategy becomes more powerful and can accelerate your progress significantly.`;
+    } else {
+      narrative += `Without additional monthly contributions, this strategy shows potential based on your current financial flow.`;
     }
 
     return narrative;

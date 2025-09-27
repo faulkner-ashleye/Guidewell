@@ -14,11 +14,11 @@ interface OpportunitiesDashboardProps {
   onOpportunityAction: (opportunity: Opportunity) => void;
 }
 
-export function OpportunitiesDashboard({ 
-  userProfile, 
-  accounts, 
-  goals, 
-  onOpportunityAction 
+export function OpportunitiesDashboard({
+  userProfile,
+  accounts,
+  goals,
+  onOpportunityAction
 }: OpportunitiesDashboardProps) {
   const [opportunities, setOpportunities] = useState<OpportunityAnalysis | null>(null);
   const [loading, setLoading] = useState(true);
@@ -32,7 +32,7 @@ export function OpportunitiesDashboard({
   const loadOpportunities = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       // Use AI integration service to generate personalized opportunities
       const analysis = await aiIntegrationService.callAIAnalysisAPI(
@@ -49,7 +49,7 @@ export function OpportunitiesDashboard({
           const hasSavings = rec.toLowerCase().includes('save') || rec.toLowerCase().includes('savings');
           const hasRate = rec.match(/(\d+\.?\d*)%/);
           const hasAmount = rec.match(/\$(\d+(?:,\d{3})*(?:\.\d{2})?)/);
-          
+
           // Extract potential savings amount if mentioned
           let potentialSavings = 0;
           if (hasAmount) {
@@ -57,7 +57,7 @@ export function OpportunitiesDashboard({
           } else if (hasSavings) {
             potentialSavings = Math.floor(Math.random() * 1500) + 200; // Only generate if savings-related
           }
-          
+
           // Extract rate if mentioned
           let currentValue = undefined;
           let potentialValue = undefined;
@@ -65,7 +65,7 @@ export function OpportunitiesDashboard({
             currentValue = parseFloat(hasRate[1]);
             potentialValue = currentValue + (Math.random() * 2 + 0.5); // Add 0.5-2.5% improvement
           }
-          
+
           return {
             id: `opp-${index}`,
             type: 'savings' as const,
@@ -134,10 +134,10 @@ export function OpportunitiesDashboard({
   const getMarketDataStatus = () => {
     const lastUpdate = marketDataService.getLastUpdateTime();
     const isStale = marketDataService.isMarketDataStale();
-    
+
     if (!lastUpdate) return 'Never updated';
     if (isStale) return 'Data may be outdated';
-    
+
     const hoursAgo = Math.floor((Date.now() - lastUpdate.getTime()) / (1000 * 60 * 60));
     if (hoursAgo < 1) return 'Updated recently';
     if (hoursAgo < 24) return `Updated ${hoursAgo} hours ago`;
@@ -148,7 +148,7 @@ export function OpportunitiesDashboard({
     return (
       <div className="opportunities-dashboard">
         <div className="dashboard-header">
-          <h2>Financial Opportunities</h2>
+          <h1>Insights</h>
           <div className="market-data-status">
             <span className="status-indicator loading">Loading...</span>
           </div>
@@ -186,7 +186,7 @@ export function OpportunitiesDashboard({
         <h2>Financial Opportunities</h2>
         <div className="market-data-status">
           <span className="status-indicator">Market data: {getMarketDataStatus()}</span>
-          <button 
+          <button
             className="refresh-button"
             onClick={loadOpportunities}
             title="Refresh market data"
@@ -216,7 +216,7 @@ export function OpportunitiesDashboard({
               <span className="stat-label">High Impact</span>
             </div>
           </div>
-          
+
           <div className="summary-text">
             <p>{opportunities.summary}</p>
           </div>
@@ -250,7 +250,7 @@ export function OpportunitiesDashboard({
           <p>
             {dismissedOpportunities.size} opportunity{dismissedOpportunities.size !== 1 ? 'ies' : 'y'} dismissed
           </p>
-          <button 
+          <button
             className="reset-button"
             onClick={() => setDismissedOpportunities(new Set<string>())}
           >
