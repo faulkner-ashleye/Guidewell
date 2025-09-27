@@ -101,7 +101,7 @@ export function Home() {
             analysisType: 'content_recommendations'
           }),
         });
-
+        
         if (response.ok) {
           const data = await response.json();
           
@@ -133,9 +133,67 @@ export function Home() {
           })) || [];
 
           setContentRecommendations(recommendations);
+        } else {
+          console.error('❌ Content API failed with status:', response.status);
+          // Add fallback content when API fails
+          setContentRecommendations([
+            {
+              recommendation: {
+                contentId: 'fallback-1',
+                reason: 'Building your emergency fund is crucial for financial security',
+                priority: 'high' as const,
+                personalizedFor: enhancedUserProfile.firstName || 'User'
+              },
+              content: {
+                id: 'fallback-1',
+                title: 'Emergency Fund Essentials',
+                type: 'article' as const,
+                category: 'general' as const,
+                difficulty: 'beginner' as const,
+                estimatedTime: 5,
+                tags: ['emergency-fund', 'financial-security'],
+                content: 'Learn how to build and maintain an emergency fund that covers 3-6 months of expenses.',
+                summary: 'Essential guide to building your emergency fund',
+                keyPoints: ['Calculate your monthly expenses', 'Set a target amount', 'Choose the right account'],
+                prerequisites: [],
+                relatedContent: [],
+                lastUpdated: new Date().toISOString(),
+                author: 'Guidewell Team',
+                version: '1.0'
+              }
+            }
+          ]);
         }
       } catch (error) {
-        console.error('Failed to generate AI content recommendations:', error);
+        console.error('❌ Failed to generate AI content recommendations:', error);
+        // Add fallback content when there's an error
+        setContentRecommendations([
+          {
+            recommendation: {
+              contentId: 'fallback-1',
+              reason: 'Building your emergency fund is crucial for financial security',
+              priority: 'high' as const,
+              personalizedFor: enhancedUserProfile.firstName || 'User'
+            },
+            content: {
+              id: 'fallback-1',
+              title: 'Emergency Fund Essentials',
+              type: 'article' as const,
+              category: 'general' as const,
+              difficulty: 'beginner' as const,
+              estimatedTime: 5,
+              tags: ['emergency-fund', 'financial-security'],
+              content: 'Learn how to build and maintain an emergency fund that covers 3-6 months of expenses.',
+              summary: 'Essential guide to building your emergency fund',
+              keyPoints: ['Calculate your monthly expenses', 'Set a target amount', 'Choose the right account'],
+              prerequisites: [],
+              relatedContent: [],
+              lastUpdated: new Date().toISOString(),
+              author: 'Guidewell Team',
+              version: '1.0'
+            }
+          }
+        ]);
       } finally {
         setContentLoading(false);
       }

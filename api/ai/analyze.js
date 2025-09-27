@@ -49,7 +49,6 @@ export default async function handler(req, res) {
     const prompt = generateAnalysisPrompt(userProfile, accounts, goals, analysisType);
     
     console.log('🤖 Calling OpenAI API with model:', process.env.OPENAI_MODEL || 'gpt-3.5-turbo');
-    console.log('📝 Prompt length:', prompt.length);
     
     const completion = await openai.chat.completions.create({
       model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
@@ -75,8 +74,6 @@ Remember: This is educational content only, not professional financial advice.`
       temperature: 0.7,
     });
     
-    console.log('✅ OpenAI API call successful');
-
     const aiResponse = completion.choices[0].message.content;
     
     // Parse the response into structured data
@@ -126,6 +123,46 @@ function generateAnalysisPrompt(userProfile, accounts, goals, analysisType) {
 
   const netWorth = totalAssets - totalDebt;
 
+  // Check if this is a content recommendations request
+  if (analysisType === 'content_recommendations') {
+    return `Create personalized financial content recommendations for this user:
+
+**User Profile:**
+- Name: ${userProfile.firstName || 'User'}
+- Age: ${userProfile.age || 'Not specified'}
+- Income: $${userProfile.income || 0}/year
+- Risk Tolerance: ${userProfile.riskTolerance || 'moderate'}
+- Main Goals: ${userProfile.mainGoals?.join(', ') || 'Not specified'}
+
+**Financial Summary:**
+- Total Assets: $${totalAssets.toLocaleString()}
+- Total Debt: $${totalDebt.toLocaleString()}
+- Net Worth: $${netWorth.toLocaleString()}
+- Emergency Fund: $${accounts.filter(a => a.type === 'savings').reduce((sum, a) => sum + a.balance, 0).toLocaleString()}
+
+**Accounts:**
+${accounts.map(acc => `- ${acc.name}: $${acc.balance.toLocaleString()} (${acc.type})`).join('\n')}
+
+**Goals:**
+${goals.map(goal => `- ${goal.name}: $${goal.target.toLocaleString()} by ${goal.targetDate}`).join('\n')}
+
+Based on their financial situation, recommend 3 specific articles or topics they should read to improve their financial health. Focus on:
+1. Their most pressing financial needs
+2. Their specific account types and balances
+3. Their stated goals
+4. Their risk tolerance level
+
+Format your response as JSON with these fields:
+{
+  "summary": "brief summary of their financial situation and learning needs",
+  "recommendations": ["specific article topic 1", "specific article topic 2", "specific article topic 3"],
+  "nextStep": "one specific action they can take today",
+  "motivation": "encouraging message about their financial journey"
+}
+
+IMPORTANT: Return ONLY valid JSON without any markdown formatting, code blocks, or extra text.
+  }
+
   // Check if this is a strategy-specific analysis
   const isStrategyAnalysis = analysisType.startsWith('strategy_narrative_');
   
@@ -170,7 +207,9 @@ Format your response as JSON with these fields:
   "recommendations": ["specific rec1", "specific rec2", "specific rec3"],
   "nextStep": "one specific action they can take today",
   "motivation": "motivational closing message"
-}`;
+}
+
+IMPORTANT: Return ONLY valid JSON without any markdown formatting, code blocks, or extra text.
   }
 
   // Default analysis prompt for general analysis
@@ -209,19 +248,30 @@ Format your response as JSON with these fields:
   "recommendations": ["rec1", "rec2", "rec3"],
   "nextStep": "specific action they can take today",
   "motivation": "motivational closing message"
-}`;
+}
+
+IMPORTANT: Return ONLY valid JSON without any markdown formatting, code blocks, or extra text.
 
   return prompt;
 }
 
 function parseAIResponse(response, analysisType) {
   try {
-    // Clean the response - remove markdown code blocks if present
+    // Clean the response - remove markdown code blocks and extra whitespace
     let cleanedResponse = response.trim();
-    if (cleanedResponse.startsWith('```json')) {
-      cleanedResponse = cleanedResponse.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-    } else if (cleanedResponse.startsWith('```')) {
-      cleanedResponse = cleanedResponse.replace(/^```\s*/, '').replace(/\s*```$/, '');
+    
+    // Remove various markdown code block patterns
+    cleanedResponse = cleanedResponse.replace(/^```json\s*/i, '').replace(/\s*```$/i, '');
+    cleanedResponse = cleanedResponse.replace(/^```\s*/i, '').replace(/\s*```$/i, '');
+    cleanedResponse = cleanedResponse.replace(/^`\s*/i, '').replace(/\s*`$/i, '');
+    
+    // Remove any remaining markdown artifacts
+    cleanedResponse = cleanedResponse.replace(/^json\s*/i, '');
+    
+    // Try to find JSON object boundaries if there's extra text
+    const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      cleanedResponse = jsonMatch[0];
     }
     
     // Try to parse as JSON
@@ -235,11 +285,18 @@ function parseAIResponse(response, analysisType) {
       rawResponse: response
     };
   } catch (error) {
-    console.log('JSON parsing failed, using raw response:', error.message);
-    // If JSON parsing fails, return the raw response
+    // If JSON parsing fails, try to extract meaningful content
+    let fallbackSummary = response;
+    
+    // Try to extract summary from common patterns
+    const summaryMatch = response.match(/summary["\s]*:["\s]*["']([^"']+)["']/i);
+    if (summaryMatch) {
+      fallbackSummary = summaryMatch[1];
+    }
+    
     return {
       analysisType,
-      summary: response,
+      summary: fallbackSummary,
       recommendations: [],
       nextStep: '',
       motivation: '',

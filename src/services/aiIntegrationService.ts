@@ -565,13 +565,6 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
     analysisType: string = 'general'
   ): Promise<any> {
     try {
-      // Debug: Log what data is being sent to AI
-      console.log('🔍 AI Analysis Debug - Data being sent:');
-      console.log('User Profile:', JSON.stringify(userProfile, null, 2));
-      console.log('Accounts:', JSON.stringify(accounts, null, 2));
-      console.log('Goals:', JSON.stringify(goals, null, 2));
-      console.log('Analysis Type:', analysisType);
-      
       const response = await fetch(`${this.baseUrl}/ai-analyze`, {
         method: 'POST',
         headers: {
@@ -590,7 +583,6 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
       }
 
       const data = await response.json();
-      console.log('🤖 AI Response:', data);
       return data;
     } catch (error) {
       console.error('AI API call failed:', error);
@@ -608,13 +600,6 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
     accounts: Account[]
   ): Promise<{ response: string; fallback?: boolean }> {
     try {
-      // Debug: Log what data is being sent to AI chat
-      console.log('💬 AI Chat Debug - Data being sent:');
-      console.log('User ID:', userId);
-      console.log('Message:', message);
-      console.log('User Profile:', JSON.stringify(userProfile, null, 2));
-      console.log('Accounts:', JSON.stringify(accounts, null, 2));
-      
       const response = await fetch(`${this.baseUrl}/ai-chat`, {
         method: 'POST',
         headers: {
@@ -633,7 +618,6 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
       }
 
       const data = await response.json();
-      console.log('🤖 AI Chat Response:', data);
       return {
         response: data.response,
         fallback: data.fallback
@@ -683,15 +667,67 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
       // Call ChatGPT API for enhanced insights
       const aiResponse = await this.callAIAnalysisAPI(userProfile, accounts, goals, analysisType);
       
+      // Parse the AI response to extract structured data
+      const parsedResponse = this.parseAIResponse(aiResponse);
+      
       return {
         ...baseAnalysis,
-        aiResponse
+        aiResponse: parsedResponse
       };
     } catch (error) {
       console.error('Error generating AI analysis with API:', error);
       // Return base analysis if API fails
       return await this.generateAIAnalysis(userProfile, accounts, goals);
     }
+  }
+
+  /**
+   * Parse AI response to extract structured data (similar to backend parsing)
+   */
+  private parseAIResponse(response: any): any {
+    if (!response) return null;
+    
+    // If response is already parsed (has summary, recommendations, etc.), return as-is
+    if (response.summary && response.recommendations) {
+      return response;
+    }
+    
+    // If response is a string, try to parse it
+    if (typeof response === 'string') {
+      try {
+        // Clean the response - remove markdown code blocks and extra whitespace
+        let cleanedResponse = response.trim();
+        
+        // Remove various markdown code block patterns
+        cleanedResponse = cleanedResponse.replace(/^```json\s*/i, '').replace(/\s*```$/i, '');
+        cleanedResponse = cleanedResponse.replace(/^```\s*/i, '').replace(/\s*```$/i, '');
+        cleanedResponse = cleanedResponse.replace(/^`\s*/i, '').replace(/\s*`$/i, '');
+        
+        // Remove any remaining markdown artifacts
+        cleanedResponse = cleanedResponse.replace(/^json\s*/i, '');
+        
+        // Try to find JSON object boundaries if there's extra text
+        const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          cleanedResponse = jsonMatch[0];
+        }
+        
+        // Try to parse as JSON
+        const parsed = JSON.parse(cleanedResponse);
+        return parsed;
+      } catch (error) {
+        // If JSON parsing fails, return the raw response as summary
+        return {
+          summary: response,
+          recommendations: [],
+          nextStep: '',
+          motivation: '',
+          fallback: true
+        };
+      }
+    }
+    
+    return response;
   }
 }
 
