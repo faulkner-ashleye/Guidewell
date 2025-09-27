@@ -23,9 +23,11 @@
 
 .avatar-grid {
   display: flex;
-  flex-direction:column;
-  gap: var(--spacing-2xl);
+  flex-direction:row;
+  gap: var(--spacing-lg);
   margin-bottom: 24px;
+  overflow-y: auto;
+  padding:12px 0;
 }
 
 .avatar-card {
@@ -38,6 +40,7 @@
   position: relative;
   overflow: hidden;
   box-shadow:var(--shadow-sm);
+  min-width: 100%;
 }
 
 .avatar-card:hover {
