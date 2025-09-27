@@ -68,13 +68,13 @@ export default async function handler(req, res) {
     let styleInstructions = '';
     switch (communicationStyle) {
       case 'detailed':
-        styleInstructions = 'Provide comprehensive explanations with context and background information.';
+        styleInstructions = 'Provide comprehensive explanations with context and background information, but keep responses focused and concise.';
         break;
       case 'concise':
-        styleInstructions = 'Be direct and to the point. Avoid unnecessary elaboration.';
+        styleInstructions = 'Be direct and to the point. Avoid unnecessary elaboration. Keep responses brief and actionable.';
         break;
       case 'visual':
-        styleInstructions = 'Use descriptive language and paint clear pictures of scenarios.';
+        styleInstructions = 'Use descriptive language and paint clear pictures of scenarios, but keep descriptions concise.';
         break;
     }
     
@@ -82,10 +82,10 @@ export default async function handler(req, res) {
     let detailInstructions = '';
     switch (detailLevel) {
       case 'high':
-        detailInstructions = 'Include comprehensive details, examples, and step-by-step explanations.';
+        detailInstructions = 'Include comprehensive details, examples, and step-by-step explanations, but keep responses concise and focused.';
         break;
       case 'medium':
-        detailInstructions = 'Provide balanced detail with key points and practical examples.';
+        detailInstructions = 'Provide balanced detail with key points and practical examples. Keep responses reasonably brief.';
         break;
       case 'low':
         detailInstructions = 'Keep responses brief and focused on essential information only.';
@@ -117,6 +117,7 @@ Communication Preferences:
 - ${styleInstructions}
 - ${detailInstructions}
 - ${languageInstructions}
+- IMPORTANT: Keep all responses concise and focused. Avoid lengthy explanations unless specifically requested.
 
 User Context:
 - Name: ${userProfile?.firstName || 'User'}
@@ -131,7 +132,7 @@ Remember: This is educational content only, not professional financial advice.`
     const completion = await openai.chat.completions.create({
       model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
       messages: [systemMessage, ...conversation],
-      max_tokens: 300,
+      max_tokens: 400,
       temperature: 0.7,
     });
 

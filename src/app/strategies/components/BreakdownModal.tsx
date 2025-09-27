@@ -57,9 +57,7 @@ export function BreakdownModal({
   userProfile,
   assumedAnnualReturn = 0.06
 }: Props) {
-  // State for AI-powered narrative and market insights (must be called before any early returns)
-  const [narrative, setNarrative] = useState<string>('Generating personalized insights...');
-  const [isLoadingNarrative, setIsLoadingNarrative] = useState(true);
+  // State for market insights
   const [marketInsights, setMarketInsights] = useState<string[]>([]);
   const [isLoadingInsights, setIsLoadingInsights] = useState(true);
 
@@ -117,37 +115,20 @@ export function BreakdownModal({
     };
   }, [open]);
 
-  // Generate AI-powered narrative and market insights
+  // Generate market insights
   useEffect(() => {
     const generateContent = async () => {
-      setIsLoadingNarrative(true);
       setIsLoadingInsights(true);
 
       try {
-        // Generate narrative
-        const aiNarrative = await generateAINarrative(
-          scope,
-          strategy,
-          timeframe,
-          months,
-          extraDollars,
-          accounts,
-          goals,
-          userProfile,
-          effectiveAllocation
-        );
-        setNarrative(aiNarrative);
-
         // Generate market insights
         const insights = await generateMarketInsights(accounts, userProfile, strategy);
         setMarketInsights(insights);
 
       } catch (error) {
-        console.error('Error generating content:', error);
-        setNarrative(generateFallbackNarrative(scope, strategy, timeframe, months, extraDollars));
+        console.error('Error generating market insights:', error);
         setMarketInsights(['Market insights temporarily unavailable.']);
       } finally {
-        setIsLoadingNarrative(false);
         setIsLoadingInsights(false);
       }
     };
@@ -155,7 +136,7 @@ export function BreakdownModal({
     if (open) {
       generateContent();
     }
-  }, [open, scope, strategy, timeframe, months, extraDollars, accounts, goals, userProfile, effectiveAllocation]);
+  }, [open, accounts, userProfile, strategy]);
 
   if (!open) return null;
 
@@ -188,15 +169,6 @@ export function BreakdownModal({
         </div>
 
         <div className="breakdown-modal-body">
-          {/* Overview */}
-          <div className="breakdown-modal-section breakdown-modal-overview">
-            <h3 className="breakdown-modal-section-title breakdown-modal-overview-title">
-              Scenario Overview
-            </h3>
-            <p className="breakdown-modal-text">
-              {narrative}
-            </p>
-          </div>
 
           {/* Debt Impact */}
           {extraMonthlyToDebt > 0 && debtAccounts.length > 0 && (
@@ -321,122 +293,6 @@ function getDefaultAllocation(strategy: Strat): { debt: number; savings: number;
   }
 }
 
-async function generateAINarrative(
-  scope: Scope,
-  strategy: Strat,
-  timeframe: Timeframe,
-  months: number,
-  extraDollars: number | undefined,
-  accounts: Account[],
-  goals: Goal[],
-  userProfile: EnhancedUserProfile | undefined,
-  allocation: { debt: number; savings: number; investing: number }
-): Promise<string> {
-  try {
-    // Get the narrative avatar for this strategy
-    const avatar = AvatarUtils.getAvatarById(strategy);
-    if (!avatar) {
-      return generateFallbackNarrative(scope, strategy, timeframe, months, extraDollars);
-    }
-
-    // Calculate user context
-    const totalDebt = accounts
-      .filter(a => ['loan', 'credit_card'].includes(a.type))
-      .reduce((sum, a) => sum + a.balance, 0);
-
-    const totalSavings = accounts
-      .filter(a => ['checking', 'savings'].includes(a.type))
-      .reduce((sum, a) => sum + a.balance, 0);
-
-    const totalInvestment = accounts
-      .filter(a => a.type === 'investment')
-      .reduce((sum, a) => sum + a.balance, 0);
-
-    const monthlyContribution = extraDollars !== undefined ? extraDollars : 0; // No default - use actual user data
-
-    // Generate avatar-based narrative with user context
-    let narrative = AvatarUtils.generateAvatarNarrative(avatar, {
-      totalDebt,
-      totalSavings,
-      totalInvestment,
-      monthlyContribution
-    });
-
-    // Add personalized insights if user profile is available
-    if (userProfile) {
-      narrative = addPersonalizedInsights(narrative, userProfile, avatar, allocation, months, extraDollars);
-    }
-
-    // Add timeframe and scope context
-    const timeframeText = {
-      '1yr': '1 year',
-      '2yr': '2 years',
-      '3yr': '3 years',
-      '5yr': '5 years',
-      '10yr': '10 years',
-      'custom': 'custom timeline'
-    };
-
-    const scopeText = scope === 'all' ? 'all accounts' : scope;
-
-    narrative += ` This ${avatar.name} scenario focuses on ${scopeText} over ${timeframeText[timeframe]}.`;
-
-
-    return narrative;
-  } catch (error) {
-    console.error('Error generating AI narrative:', error);
-    return generateFallbackNarrative(scope, strategy, timeframe, months, extraDollars);
-  }
-}
-
-function generateFallbackNarrative(scope: Scope, strategy: Strat, timeframe: Timeframe, months: number, extraDollars?: number): string {
-  const strategyNames = {
-    debt_crusher: 'Debt Crusher',
-    steady_payer: 'Steady Payer',
-    juggler: 'Juggler',
-    interest_minimizer: 'Interest Minimizer',
-    goal_keeper: 'Goal Keeper',
-    safety_builder: 'Safety Builder',
-    auto_pilot: 'Auto-Pilot',
-    opportunistic_saver: 'Opportunistic Saver',
-    nest_builder: 'Nest Builder',
-    future_investor: 'Future Investor',
-    balanced_builder: 'Balanced Builder',
-    risk_taker: 'Risk Taker'
-  };
-
-  const timeframeText = {
-    '1yr': '1 year',
-    '2yr': '2 years',
-    '3yr': '3 years',
-    '5yr': '5 years',
-    '10yr': '10 years',
-    'custom': 'custom timeline'
-  };
-
-  const scopeText = scope === 'all' ? 'all accounts' : scope;
-
-  let narrative = `This ${strategyNames[strategy]} scenario focuses on ${scopeText} over ${timeframeText[timeframe]}. `;
-
-  if (extraDollars === undefined) {
-    const emphasisCategory =
-      ['debt_crusher', 'steady_payer', 'juggler', 'interest_minimizer'].includes(strategy) ? 'debt' :
-      ['goal_keeper', 'safety_builder', 'auto_pilot', 'opportunistic_saver'].includes(strategy) ? 'savings' :
-      'investing';
-
-    narrative += `Since no extra contribution was specified, we assume the maximum of ${months} months for this timeline and show how emphasizing ${emphasisCategory} may affect your other goals. `;
-  } else {
-    const primaryFocus =
-      ['debt_crusher', 'steady_payer', 'juggler', 'interest_minimizer'].includes(strategy) ? 'higher-interest debt' :
-      ['goal_keeper', 'safety_builder', 'auto_pilot', 'opportunistic_saver'].includes(strategy) ? 'savings goals' :
-      'investments';
-
-    narrative += `With an extra ${formatCurrency(extraDollars)}/mo directed primarily to ${primaryFocus}, you could accelerate progress while maintaining minimum payments elsewhere. `;
-  }
-
-
-  return narrative;
-}
 
 async function generateMarketInsights(
   accounts: Account[],
@@ -506,51 +362,3 @@ async function generateMarketInsights(
   }
 }
 
-function addPersonalizedInsights(
-  baseNarrative: string,
-  userProfile: EnhancedUserProfile,
-  avatar: NarrativeAvatar,
-  allocation: { debt: number; savings: number; investing: number },
-  months: number,
-  extraDollars: number | undefined
-): string {
-  let personalizedNarrative = baseNarrative;
-
-  // Add personalization based on AI personality
-  if (userProfile.aiPersonality === 'encouraging') {
-    personalizedNarrative = `You're doing great! ${personalizedNarrative}`;
-  } else if (userProfile.aiPersonality === 'analytical') {
-    personalizedNarrative = `Based on your financial profile: ${personalizedNarrative}`;
-  } else if (userProfile.aiPersonality === 'casual') {
-    personalizedNarrative = `Here's the deal: ${personalizedNarrative}`;
-  }
-
-  // Add detail level adjustments
-  if (userProfile.detailLevel === 'low') {
-    // Keep it simple - already done by avatar selection
-  } else if (userProfile.detailLevel === 'high') {
-    personalizedNarrative += ` This approach considers your risk tolerance (${userProfile.riskTolerance}) and aligns with your main goals: ${userProfile.mainGoals.join(', ')}.`;
-  }
-
-  // Add communication style adjustments
-  if (userProfile.communicationStyle === 'visual') {
-    personalizedNarrative += ` 📊 Visual breakdowns below show the impact.`;
-  }
-
-  // Add specific allocation insights
-  const debtAllocation = allocation.debt;
-  const savingsAllocation = allocation.savings;
-  const investingAllocation = allocation.investing;
-
-  if (extraDollars === undefined) {
-    personalizedNarrative += ` This educational scenario shows potential impact without specific contribution amounts.`;
-  } else if (debtAllocation > 50) {
-    personalizedNarrative += ` With ${debtAllocation}% going to debt, you're prioritizing financial freedom.`;
-  } else if (savingsAllocation > 50) {
-    personalizedNarrative += ` With ${savingsAllocation}% going to savings, you're building security first.`;
-  } else if (investingAllocation > 50) {
-    personalizedNarrative += ` With ${investingAllocation}% going to investments, you're focused on long-term growth.`;
-  }
-
-  return personalizedNarrative;
-}

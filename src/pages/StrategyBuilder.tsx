@@ -40,16 +40,17 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
   const { accounts = [], transactions = [], goals = [], userProfile } = useAppState();
 
   // State management
-  const [scope, setScope] = useState<Scope>('all');
+  const [scope, setScope] = useState<Scope | undefined>(undefined);
   const [scopeSelection, setScopeSelection] = useState<'all' | 'one'>('all');
   const [accountId, setAccountId] = useState<string | undefined>(undefined);
-  const [strategy, setStrategy] = useState<Strategy>('debt_crusher');
-  const [timeframe, setTimeframe] = useState<Timeframe>('3yr');
+  const [strategy, setStrategy] = useState<Strategy | undefined>(undefined);
+  const [timeframe, setTimeframe] = useState<Timeframe | undefined>(undefined);
   const [extra, setExtra] = useState<number | undefined>(undefined);
 
   // For build mode
   const [selectedAvatar, setSelectedAvatar] = useState<NarrativeAvatar | null>(null);
   const [animateStep, setAnimateStep] = useState<number>(1);
+  const [visibleSteps, setVisibleSteps] = useState<Set<number>>(new Set([1]));
 
   // AI-powered narrative state
   const [aiNarrative, setAiNarrative] = useState<string>('');
@@ -84,6 +85,21 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
     const timeoutId = setTimeout(scrollToTop, 100);
     return () => clearTimeout(timeoutId);
   }, []);
+
+  // Reset step visibility when in build mode
+  useEffect(() => {
+    if (mode === 'build') {
+      setVisibleSteps(new Set([1]));
+      setAnimateStep(1);
+      setSelectedAvatar(null);
+      setScope(undefined);
+      setScopeSelection('all');
+      setAccountId(undefined);
+      setStrategy(undefined);
+      setTimeframe(undefined);
+      setExtra(undefined);
+    }
+  }, [mode]);
 
   // Prevent scrolling when edit parameters modal is open (custom mode only)
   useEffect(() => {
@@ -267,7 +283,7 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
     setNarrativeError(null);
 
     try {
-      const avatar = AvatarUtils.getAvatarById(strategy);
+      const avatar = strategy ? AvatarUtils.getAvatarById(strategy) : null;
       if (!avatar) {
         setNarrativeError('Invalid strategy selected');
         return;
@@ -302,7 +318,7 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
         let narrative = analysis.aiResponse.summary;
         
         // Add strategy-specific context
-        narrative += `\n\nThis ${avatar.name} approach focuses on ${scopeText} over ${timeframeText[timeframe]}. `;
+        narrative += `\n\nThis ${avatar.name} approach focuses on ${scopeText} over ${timeframe ? timeframeText[timeframe] : 'your timeline'}. `;
         narrative += `With ${extraText} toward savings, ${analysis.aiResponse.nextStep || 'you can make significant progress toward your goals.'}`;
         
         setAiNarrative(narrative);
@@ -322,7 +338,7 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
 
   // Enhanced fallback narrative generation
   const generateEnhancedNarrative = () => {
-    const avatar = AvatarUtils.getAvatarById(strategy);
+    const avatar = strategy ? AvatarUtils.getAvatarById(strategy) : null;
     if (!avatar) return 'Select a strategy to see your narrative.';
 
     const timeframeText = {
@@ -336,7 +352,7 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
 
     const scopeText = scope === 'all' ? 'all accounts' : scope;
 
-    let narrative = `This ${avatar.name} scenario focuses on ${scopeText} over ${timeframeText[timeframe]}. `;
+    let narrative = `This ${avatar.name} scenario focuses on ${scopeText} over ${timeframe ? timeframeText[timeframe] : 'your timeline'}. `;
 
     if (extra === undefined || extra === null || extra === 0) {
       narrative += `With $0/month toward savings, your goals could accelerate. `;
@@ -383,10 +399,55 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
       case 1: return scope !== undefined && (scope === 'all' || scopeSelection === 'all' || !!accountId);
       case 2: return selectedAvatar !== null;
       case 3: return timeframe !== undefined;
-      case 4: return true; // Extra contribution is optional, always considered "completed"
+      case 4: return true; // Step 4 is always considered completed once visible (extra contribution is optional)
       default: return false;
     }
   };
+
+  // Function to reveal the next step with animation
+  const revealNextStep = (stepNumber: number) => {
+    setTimeout(() => {
+      setVisibleSteps(prev => {
+        const newSet = new Set(prev);
+        newSet.add(stepNumber);
+        return newSet;
+      });
+      setAnimateStep(stepNumber);
+    }, 300); // Small delay for smooth transition
+  };
+
+  // Function to hide a step with slide down animation
+  const hideStep = (stepNumber: number) => {
+    // First trigger the slide down animation
+    setAnimateStep(stepNumber * -1); // Use negative number to indicate slide down
+    
+    // Then remove from visible steps after animation completes
+    setTimeout(() => {
+      setVisibleSteps(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(stepNumber);
+        return newSet;
+      });
+    }, 400); // Wait for slide down animation to complete
+  };
+
+  // Effect to handle step progression
+  useEffect(() => {
+    if (mode === 'build') {
+      // Step 2 should appear when step 1 is completed
+      if (isStepCompleted(1) && !visibleSteps.has(2)) {
+        revealNextStep(2);
+      }
+      // Step 3 should appear when step 2 is completed
+      if (isStepCompleted(2) && !visibleSteps.has(3)) {
+        revealNextStep(3);
+      }
+      // Step 4 should appear when step 3 is completed
+      if (isStepCompleted(3) && !visibleSteps.has(4)) {
+        revealNextStep(4);
+      }
+    }
+  }, [scope, scopeSelection, accountId, selectedAvatar, timeframe, visibleSteps, mode]);
 
   // Check if we have valid data to show (custom mode)
   const hasValidData = scope && strategy && timeframe;
@@ -450,11 +511,11 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
           <ScenarioTrajectoryChart
             accounts={accounts}
             goals={goals}
-            strategy={strategy}
-            timeframe={timeframe}
-            scope={scope}
+            strategy={strategy || 'debt_crusher'}
+            timeframe={timeframe || '3yr'}
+            scope={scope || 'all'}
             extraMonthly={extra}
-            allocation={AvatarUtils.getAvatarById(strategy)?.allocation}
+            allocation={strategy ? AvatarUtils.getAvatarById(strategy)?.allocation : undefined}
             onTimelineChange={(newTimeline) => {
               if (typeof newTimeline === 'string' && newTimeline !== 'custom') {
                 setTimeframe(newTimeline as Timeframe);
@@ -466,15 +527,9 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
 
           {/* Narrative Card */}
           <NarrativeCard
-            title={strategy === 'debt_crusher' ? 'Debt Crusher' :
-                  strategy === 'goal_keeper' ? 'Goal Keeper' : 
-                  strategy === 'nest_builder' ? 'Nest Builder' :
-                  strategy === 'safety_builder' ? 'Safety Builder' :
-                  strategy === 'future_investor' ? 'Future Investor' :
-                  strategy === 'balanced_builder' ? 'Balanced Builder' :
-                  AvatarUtils.getAvatarById(strategy)?.name || 'Strategy'}
+            title="Your path at a glance"
             narrative={generateNarrative()}
-            onViewBreakdown={handleViewBreakdown}
+            onViewBreakdown={handleRunAgain}
             className="card narrative-card"
             loading={narrativeLoading}
             error={narrativeError}
@@ -621,23 +676,6 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
                     </ChipGroup>
                   </QuestionBlock>
 
-                  {/* Step 4: Extra Contribution Input */}
-                  <QuestionBlock
-                    title="Step 4: Extra Contribution (Optional)"
-                    description="How much extra can you contribute monthly? Leave blank if you don't want to specify."
-                    completed={true}
-                    locked={false}
-                  >
-                    <ContributionEditor
-                      extra={extra}
-                      strategy={strategy}
-                      scope={scope}
-                      accounts={accounts}
-                      transactions={transactions}
-                      goalsMonthly={goalsMonthly}
-                      onExtraChange={setExtra}
-                    />
-                  </QuestionBlock>
                 </div>
 
                 {/* Footer */}
@@ -655,15 +693,6 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
             </div>
           )}
 
-          {/* Run Again Button */}
-          <Button
-            onClick={handleRunAgain}
-            variant={ButtonVariants.outline}
-            color={ButtonColors.secondary}
-            fullWidth
-          >
-            Run Again
-          </Button>
 
           {/* Footer */}
           <div className="custom-strategy-footer"></div>
@@ -673,11 +702,11 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
         <BreakdownModal
           open={breakdownOpen}
           onClose={() => setBreakdownOpen(false)}
-          scope={scope}
-          strategy={strategy}
-          timeframe={timeframe}
+          scope={scope || 'all'}
+          strategy={strategy || 'debt_crusher'}
+          timeframe={timeframe || '3yr'}
           extraDollars={extra}
-          allocation={AvatarUtils.getAvatarById(strategy)?.allocation}
+          allocation={strategy ? AvatarUtils.getAvatarById(strategy)?.allocation : undefined}
           accounts={accounts}
           goals={goals}
           transactions={transactions}
@@ -701,8 +730,9 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
 
       <div className="build-strategy-content">
         {/* Step 1: Scope Selection */}
+        {visibleSteps.has(1) && (
         <div
-          className={`strategy-step ${animateStep >= 1 ? 'animate-slide-up' : 'animate-fade-in'}`}
+          className={`strategy-step animate-fade-in ${isStepCompleted(1) ? 'completed' : ''}`}
         >
           <QuestionBlock
             title="Step 1: Choose Your Scope"
@@ -775,11 +805,16 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
           )}
           </QuestionBlock>
         </div>
+        )}
 
         {/* Step 2: Strategy Selection */}
-        {scope && (
+        {visibleSteps.has(2) && (
         <div
-          className={`strategy-step ${animateStep >= 2 ? 'animate-slide-up' : 'animate-fade-in'}`}
+          className={`strategy-step ${
+            animateStep === 2 ? 'animate-slide-up' : 
+            animateStep === -2 ? 'animate-slide-down' : 
+            'animate-fade-in'
+          } ${isStepCompleted(2) ? 'completed' : ''}`}
         >
             <QuestionBlock
               title="Step 2: Choose Your Strategy"
@@ -798,9 +833,13 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
         )}
 
         {/* Step 3: Timeframe Selection */}
-        {selectedAvatar && (
+        {visibleSteps.has(3) && (
         <div
-          className={`strategy-step ${animateStep >= 3 ? 'animate-slide-up' : 'animate-fade-in'}`}
+          className={`strategy-step ${
+            animateStep === 3 ? 'animate-slide-up' : 
+            animateStep === -3 ? 'animate-slide-down' : 
+            'animate-fade-in'
+          } ${isStepCompleted(3) ? 'completed' : ''}`}
         >
             <QuestionBlock
               title="Step 3: Set Your Timeline"
@@ -840,9 +879,13 @@ export function StrategyBuilder({ mode = 'build' }: StrategyBuilderProps) {
         )}
 
         {/* Step 4: Extra Contribution Input */}
-        {timeframe && (
+        {visibleSteps.has(4) && (
         <div
-          className={`strategy-step ${animateStep >= 4 ? 'animate-slide-up' : 'animate-fade-in'}`}
+          className={`strategy-step ${
+            animateStep === 4 ? 'animate-slide-up' : 
+            animateStep === -4 ? 'animate-slide-down' : 
+            'animate-fade-in'
+          } ${isStepCompleted(4) ? 'completed' : ''}`}
         >
             <QuestionBlock
               title="Step 4: Extra Contribution (Optional)"

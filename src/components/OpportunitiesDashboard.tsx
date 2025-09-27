@@ -24,7 +24,6 @@ export function OpportunitiesDashboard({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dismissedOpportunities, setDismissedOpportunities] = useState<Set<string>>(new Set());
-  const [filter, setFilter] = useState<'all' | 'quick_wins' | 'high_impact' | 'low_risk'>('all');
 
   useEffect(() => {
     loadOpportunities();
@@ -127,26 +126,9 @@ export function OpportunitiesDashboard({
   const getFilteredOpportunities = (): Opportunity[] => {
     if (!opportunities) return [];
 
-    let filtered = opportunities.opportunities.filter(
-      opp => !dismissedOpportunities.has(opp.id)
-    );
-
-    switch (filter) {
-      case 'quick_wins':
-        filtered = filtered.filter(opp => opp.effort === 'low' && opp.timeframe === 'immediate');
-        break;
-      case 'high_impact':
-        filtered = filtered.filter(opp => opp.potentialSavings > 500);
-        break;
-      case 'low_risk':
-        filtered = filtered.filter(opp => opp.risk === 'low');
-        break;
-      default:
-        // Show all opportunities
-        break;
-    }
-
-    return filtered.sort((a, b) => b.potentialSavings - a.potentialSavings);
+    return opportunities.opportunities
+      .filter(opp => !dismissedOpportunities.has(opp.id))
+      .sort((a, b) => b.potentialSavings - a.potentialSavings);
   };
 
   const getMarketDataStatus = () => {
@@ -241,32 +223,6 @@ export function OpportunitiesDashboard({
         </div>
       )}
 
-      <div className="filter-controls">
-        <button 
-          className={`filter-button ${filter === 'all' ? 'active' : ''}`}
-          onClick={() => setFilter('all')}
-        >
-          All ({opportunities?.opportunities.length || 0})
-        </button>
-        <button 
-          className={`filter-button ${filter === 'quick_wins' ? 'active' : ''}`}
-          onClick={() => setFilter('quick_wins')}
-        >
-          Quick Wins ({opportunities?.quickWins.length || 0})
-        </button>
-        <button 
-          className={`filter-button ${filter === 'high_impact' ? 'active' : ''}`}
-          onClick={() => setFilter('high_impact')}
-        >
-          High Impact ({opportunities?.highImpactOpportunities.length || 0})
-        </button>
-        <button 
-          className={`filter-button ${filter === 'low_risk' ? 'active' : ''}`}
-          onClick={() => setFilter('low_risk')}
-        >
-          Low Risk ({opportunities?.opportunities.filter(o => o.risk === 'low').length || 0})
-        </button>
-      </div>
 
       <div className="opportunities-list">
         {filteredOpportunities.length === 0 ? (
@@ -274,19 +230,8 @@ export function OpportunitiesDashboard({
             <div className="empty-icon">🎯</div>
             <h3>No opportunities found</h3>
             <p>
-              {filter === 'all' 
-                ? "Great job! We couldn't find any significant financial opportunities at this time."
-                : `No ${filter.replace('_', ' ')} opportunities found. Try a different filter.`
-              }
+              Great job! We couldn't find any significant financial opportunities at this time.
             </p>
-            {filter !== 'all' && (
-              <button 
-                className="clear-filter-button"
-                onClick={() => setFilter('all')}
-              >
-                Show All Opportunities
-              </button>
-            )}
           </div>
         ) : (
           filteredOpportunities.map(opportunity => (

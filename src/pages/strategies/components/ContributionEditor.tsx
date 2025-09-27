@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { CurrencyInput } from '../../../components/CurrencyInput';
 import { estimateBaselineMonthly, Scope } from '../../../state/baseline';
 import { Account } from '../../../state/AppStateContext';
 import { Transaction } from '../../../lib/supabase';
+import { formatCurrency } from '../../../state/selectors';
 
 type Strategy = 'debt_crusher' | 'goal_keeper' | 'nest_builder' | 'steady_payer' | 'juggler' | 'interest_minimizer' | 'safety_builder' | 'auto_pilot' | 'opportunistic_saver' | 'future_investor' | 'balanced_builder' | 'risk_taker';
 
@@ -74,33 +74,42 @@ export function ContributionEditor({
   const suggestedLow = Math.floor(0.05 * monthlyIncome);
   const suggestedHigh = Math.floor(0.15 * monthlyIncome);
 
+  // Calculate slider range (0 to 2x suggested high, with reasonable max)
+  const sliderMax = Math.min(2000, Math.max(suggestedHigh * 2, 1000));
+  const sliderValue = extraDollars || 0;
+
   return (
     <div className="flex flex-col gap-lg">
-      {/* Currency Input */}
-      <div>
-        <CurrencyInput
-          value={extraDollars}
-          onChange={(value) => {
-            setExtraDollars(value);
-          }}
-          placeholder="300"
-          label="Extra contribution ($)"
-        />
-
-        {/* Helper text when empty */}
-        {extraDollars === undefined && (
-          <div className="m-sm text-xs text-grey-500 italic">
-            If left blank, we'll assume the maximum time for the selected timeline.
-          </div>
-        )}
-
-        {/* Suggested range - always show */}
-        <div className="alert info text-sm">
-          Suggested range: ${suggestedLow.toLocaleString()}–${suggestedHigh.toLocaleString()} 
-          {transactions && transactions.length > 0 
-            ? ` based on your recent income patterns` 
-            : ` based on typical income patterns`}
+      {/* Slider Control */}
+      <div className="contribution-slider">
+        <div className="slider-labels">
+          <label className="slider-label">Extra contribution ($)</label>
+          <span className="slider-value">{formatCurrency(sliderValue)}</span>
         </div>
+        <input
+          type="range"
+          min="0"
+          max={sliderMax}
+          step="25"
+          value={sliderValue}
+          onChange={(e) => {
+            const newValue = parseInt(e.target.value);
+            setExtraDollars(newValue);
+          }}
+          className="contribution-range-slider"
+        />
+        <div className="slider-range-labels">
+          <span>$0</span>
+          <span>{formatCurrency(sliderMax)}</span>
+        </div>
+      </div>
+
+      {/* Suggested range - always show */}
+      <div className="alert info text-sm">
+        Suggested range: ${suggestedLow.toLocaleString()}–${suggestedHigh.toLocaleString()} 
+        {transactions && transactions.length > 0 
+          ? ` based on your recent income patterns` 
+          : ` based on typical income patterns`}
       </div>
 
     </div>

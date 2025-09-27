@@ -58,7 +58,7 @@ export function NarrativeCard({
             color={ButtonColors.secondary}
             fullWidth
           >
-            See full breakdown →
+            Try new strategy
           </Button>
         )}
       </div>

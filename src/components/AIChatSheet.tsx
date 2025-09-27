@@ -207,6 +207,18 @@ export function AIChatSheet({ open, onClose }: AIChatSheetProps) {
 
   const personalizedQuestions = generatePersonalizedQuestions();
 
+  // Helper function to format message content with proper line breaks
+  const formatMessageContent = (content: string) => {
+    return content
+      .split('\n')
+      .map((line, index) => (
+        <span key={index}>
+          {line}
+          {index < content.split('\n').length - 1 && <br />}
+        </span>
+      ));
+  };
+
   if (!open) return null;
 
   return (
@@ -243,7 +255,7 @@ export function AIChatSheet({ open, onClose }: AIChatSheetProps) {
             chatMessages.map((message, index) => (
               <div key={index} className={`chat-message ${message.role}`}>
                 <div className="message-content">
-                  {message.content}
+                  {formatMessageContent(message.content)}
                 </div>
                 <div className="message-time">
                   {message.timestamp.toLocaleTimeString()}

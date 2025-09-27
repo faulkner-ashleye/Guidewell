@@ -36,25 +36,23 @@ export default function AppHeader({
             <div className="app-title">{title}</div>
           </div>
         </div>
-        <div className="flex items-center gap-sm">
+        <div className="flex items-center">
           {shouldShowSettings && (
             <Button
             variant={ButtonVariants.text}
-              size="small"
               onClick={() => navigate('/settings')}
               aria-label="Settings"
             >
-              <Icon name={IconNames.settings} size="sm" />
+              <Icon name={IconNames.settings} size="md" />
             </Button>
           )}
           {showQuickActions && onQuickActionsClick && (
             <Button
               variant={ButtonVariants.text}
-              size="small"
               onClick={onQuickActionsClick}
               aria-label="Quick actions"
             >
-              <Icon name={IconNames.add} size="sm" />
+              <Icon name={IconNames.add} size="md" />
             </Button>
           )}
           {rightAction && <div>{rightAction}</div>}

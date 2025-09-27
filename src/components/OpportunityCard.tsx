@@ -39,19 +39,13 @@ export function OpportunityCard({ opportunity, onActionClick, onDismiss }: Oppor
 
   return (
     <div className="opportunity-card">
-      <div className="opportunity-header">
-        <div className="opportunity-title">
-          <h3>{opportunity.description.split('.')[0]}</h3>
-        </div>
-        <button 
-          className="dismiss-button"
-          onClick={() => onDismiss(opportunity.id)}
-          aria-label="Dismiss opportunity"
-        >
-          ×
-        </button>
-      </div>
-
+      <button 
+        className="dismiss-button"
+        onClick={() => onDismiss(opportunity.id)}
+        aria-label="Dismiss opportunity"
+      >
+        ×
+      </button>
       <div className="opportunity-details">
         <div className="opportunity-metrics">
           {opportunity.currentValue !== undefined && opportunity.currentValue !== null && opportunity.currentValue > 0 && (
