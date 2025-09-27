@@ -621,7 +621,6 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
       }
 
       const data = await response.json();
-      console.log('AI Service Response Data:', data); // Debug log
       
       // Handle case where data might be malformed or response might be missing
       if (!data || typeof data !== 'object') {

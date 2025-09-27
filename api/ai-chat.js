@@ -126,6 +126,15 @@ User Context:
 - Main Goals: ${userProfile?.mainGoals?.join(', ') || 'Not specified'}
 - Financial Literacy: ${userProfile?.financialLiteracy || 'intermediate'}
 
+Financial Accounts:
+${accounts && accounts.length > 0 ? accounts.map(account => 
+  `- ${account.name || 'Account'}: $${Math.abs(account.balance || 0).toLocaleString()} ${account.balance < 0 ? 'debt' : 'balance'} (${account.type || 'unknown'}${account.apr ? `, ${account.apr}% APR` : ''})`
+).join('\n') : '- No accounts connected'}
+
+Total Net Worth: $${accounts && accounts.length > 0 ? accounts.reduce((sum, account) => sum + (account.balance || 0), 0).toLocaleString() : '0'}
+
+You have access to the user's actual financial data and can provide specific, personalized advice based on their real financial situation. Use this information to give relevant, actionable guidance.
+
 Remember: This is educational content only, not professional financial advice.`
     };
 
