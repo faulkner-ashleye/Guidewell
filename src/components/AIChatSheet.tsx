@@ -48,6 +48,14 @@ export function AIChatSheet({ open, onClose }: AIChatSheetProps) {
     checkAIHealth();
   }, []);
 
+  // Reset chat state when component unmounts or chat is closed
+  useEffect(() => {
+    if (!open) {
+      setLoading(false);
+      setChatInput('');
+    }
+  }, [open]);
+
   const checkAIHealth = async () => {
     try {
       const health = await aiIntegrationService.checkAIHealth();
@@ -58,9 +66,14 @@ export function AIChatSheet({ open, onClose }: AIChatSheetProps) {
     }
   };
 
-  const sendChatMessage = async (message?: string) => {
-    const messageToSend = message || chatInput.trim();
-    if (!messageToSend) return;
+  const sendChatMessage = async (message?: any) => {
+    // Ensure message is a string
+    const messageString = typeof message === 'string' ? message : String(message || '');
+    const messageToSend = messageString || chatInput.trim();
+    
+    console.log('sendChatMessage called with:', message, 'converted to:', messageToSend); // Debug log
+    
+    if (!messageToSend || loading) return; // Prevent multiple simultaneous requests
 
     setChatInput('');
     setLoading(true);
@@ -78,9 +91,10 @@ export function AIChatSheet({ open, onClose }: AIChatSheetProps) {
       );
 
       // Add AI response to chat
+      console.log('AI Response:', response); // Debug log
       setChatMessages(prev => [...prev, { 
         role: 'assistant' as const, 
-        content: response.response, 
+        content: response.response || 'No response received', 
         timestamp: new Date() 
       }]);
     } catch (error) {
@@ -208,13 +222,16 @@ export function AIChatSheet({ open, onClose }: AIChatSheetProps) {
   const personalizedQuestions = generatePersonalizedQuestions();
 
   // Helper function to format message content with proper line breaks
-  const formatMessageContent = (content: string) => {
-    return content
+  const formatMessageContent = (content: any) => {
+    // Ensure content is a string
+    const contentString = typeof content === 'string' ? content : String(content || '');
+    
+    return contentString
       .split('\n')
       .map((line, index) => (
         <span key={index}>
           {line}
-          {index < content.split('\n').length - 1 && <br />}
+          {index < contentString.split('\n').length - 1 && <br />}
         </span>
       ));
   };
@@ -222,7 +239,7 @@ export function AIChatSheet({ open, onClose }: AIChatSheetProps) {
   if (!open) return null;
 
   return (
-    <div className="sheet-overlay sheet-last-child" onClick={onClose}>
+    <div className="sheet-overlay" onClick={onClose}>
       <div className="sheet ai-chat" onClick={(e) => e.stopPropagation()}>
         <div className="sheet-header">
           <div className="chat-header-content">
@@ -243,7 +260,10 @@ export function AIChatSheet({ open, onClose }: AIChatSheetProps) {
                     key={index}
                     variant="outline" 
                     size="small" 
-                    onClick={() => sendChatMessage(q.question)}
+                    onClick={() => {
+                      console.log('Button clicked, question object:', q, 'question property:', q.question);
+                      sendChatMessage(q.question);
+                    }}
                     style={{ marginBottom: '8px', textAlign: 'left' }}
                   >
                     {q.text}
@@ -255,7 +275,7 @@ export function AIChatSheet({ open, onClose }: AIChatSheetProps) {
             chatMessages.map((message, index) => (
               <div key={index} className={`chat-message ${message.role}`}>
                 <div className="message-content">
-                  {formatMessageContent(message.content)}
+                  {formatMessageContent(message.content || '')}
                 </div>
                 <div className="message-time">
                   {message.timestamp.toLocaleTimeString()}

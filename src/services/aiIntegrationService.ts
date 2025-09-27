@@ -621,8 +621,21 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
       }
 
       const data = await response.json();
+      console.log('AI Service Response Data:', data); // Debug log
+      
+      // Handle case where data might be malformed or response might be missing
+      if (!data || typeof data !== 'object') {
+        return {
+          response: "I received an unexpected response format. Please try again! 😊",
+          fallback: true
+        };
+      }
+      
+      // Ensure response is a string
+      const responseText = typeof data.response === 'string' ? data.response : String(data.response || 'No response received');
+      
       return {
-        response: data.response,
+        response: responseText,
         fallback: data.fallback
       };
     } catch (error) {
