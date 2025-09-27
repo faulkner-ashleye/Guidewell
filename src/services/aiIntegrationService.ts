@@ -565,6 +565,13 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
     analysisType: string = 'general'
   ): Promise<any> {
     try {
+      // Debug: Log what data is being sent to AI
+      console.log('🔍 AI Analysis Debug - Data being sent:');
+      console.log('User Profile:', JSON.stringify(userProfile, null, 2));
+      console.log('Accounts:', JSON.stringify(accounts, null, 2));
+      console.log('Goals:', JSON.stringify(goals, null, 2));
+      console.log('Analysis Type:', analysisType);
+      
       const response = await fetch(`${this.baseUrl}/ai-analyze`, {
         method: 'POST',
         headers: {
@@ -583,6 +590,7 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
       }
 
       const data = await response.json();
+      console.log('🤖 AI Response:', data);
       return data;
     } catch (error) {
       console.error('AI API call failed:', error);
@@ -600,6 +608,13 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
     accounts: Account[]
   ): Promise<{ response: string; fallback?: boolean }> {
     try {
+      // Debug: Log what data is being sent to AI chat
+      console.log('💬 AI Chat Debug - Data being sent:');
+      console.log('User ID:', userId);
+      console.log('Message:', message);
+      console.log('User Profile:', JSON.stringify(userProfile, null, 2));
+      console.log('Accounts:', JSON.stringify(accounts, null, 2));
+      
       const response = await fetch(`${this.baseUrl}/ai-chat`, {
         method: 'POST',
         headers: {
@@ -618,6 +633,7 @@ Always use conditional language ("could", "might", "scenario shows") and emphasi
       }
 
       const data = await response.json();
+      console.log('🤖 AI Chat Response:', data);
       return {
         response: data.response,
         fallback: data.fallback
