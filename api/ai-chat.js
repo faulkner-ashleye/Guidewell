@@ -75,13 +75,13 @@ export default async function handler(req, res) {
     let styleInstructions = '';
     switch (communicationStyle) {
       case 'detailed':
-        styleInstructions = 'Provide comprehensive explanations with context and background information, but keep responses focused and concise.';
+        styleInstructions = 'Provide helpful information but keep it brief and mobile-friendly. Maximum 2-3 sentences.';
         break;
       case 'concise':
-        styleInstructions = 'Be direct and to the point. Avoid unnecessary elaboration. Keep responses brief and actionable.';
+        styleInstructions = 'Be direct and to the point. Keep responses brief and actionable. 1-2 sentences preferred.';
         break;
       case 'visual':
-        styleInstructions = 'Use descriptive language and paint clear pictures of scenarios, but keep descriptions concise.';
+        styleInstructions = 'Use simple, clear language. Keep descriptions short and mobile-friendly.';
         break;
     }
     
@@ -89,13 +89,13 @@ export default async function handler(req, res) {
     let detailInstructions = '';
     switch (detailLevel) {
       case 'high':
-        detailInstructions = 'Include comprehensive details, examples, and step-by-step explanations, but keep responses concise and focused.';
+        detailInstructions = 'Provide key information but keep it short. Maximum 2-3 sentences.';
         break;
       case 'medium':
-        detailInstructions = 'Provide balanced detail with key points and practical examples. Keep responses reasonably brief.';
+        detailInstructions = 'Give essential points only. Keep responses brief and mobile-friendly.';
         break;
       case 'low':
-        detailInstructions = 'Keep responses brief and focused on essential information only.';
+        detailInstructions = 'Keep responses very brief - 1-2 sentences maximum.';
         break;
     }
     
@@ -124,7 +124,7 @@ Communication Preferences:
 - ${styleInstructions}
 - ${detailInstructions}
 - ${languageInstructions}
-- IMPORTANT: Keep all responses concise and focused. Avoid lengthy explanations unless specifically requested.
+- CRITICAL: Keep responses SHORT and mobile-friendly. Maximum 2-3 sentences per response. Use bullet points sparingly. Avoid long lists or detailed breakdowns unless specifically requested.
 
 User Context:
 - Name: ${userProfile?.firstName || 'User'}
